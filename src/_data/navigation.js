@@ -1,31 +1,15 @@
 export default {
   top: [
     {
-      text: 'About',
-      url: '/about/'
+      text: 'Now',
+      url: '/now/'
     },
     {
-      text: 'Docs',
-      url: '/get-started/'
-    },
-    {
-      text: 'Built with',
-      url: '/built-with/'
-    },
-    {
-      text: 'Blog',
-      url: '/blog/'
+      text: 'Articles',
+      url: '/articles/'
     }
   ],
   bottom: [
-    {
-      text: 'Style guide',
-      url: '/styleguide/'
-    },
-    {
-      text: 'Imprint',
-      url: '/imprint/'
-    },
     {
       text: 'Privacy',
       url: '/privacy/'

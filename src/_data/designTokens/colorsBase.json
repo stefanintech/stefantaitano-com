@@ -10,12 +10,12 @@
   "shades_vibrant": [],
   "light_dark": [
     {
-      "name": "Pink",
-      "value": "#dd4462"
+      "name": "Amber",
+      "value": "#B45309"
     },
     {
-      "name": "Blue",
-      "value": "#4467dd"
+      "name": "Slate",
+      "value": "#64748B"
     },
     {
       "name": "Gold",

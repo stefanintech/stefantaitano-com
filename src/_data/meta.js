@@ -1,8 +1,8 @@
 export const url = process.env.URL || 'http://localhost:8080';
 // Extract domain from `url`
 export const domain = new URL(url).hostname;
-export const siteName = 'Eleventy Excellent';
-export const siteDescription = 'Eleventy starter for building modern, resilient websites';
+export const siteName = 'Stefan Taitano';
+export const siteDescription = 'Stefan corner of the internet';
 export const siteType = 'Person'; // schema
 export const locale = 'en_EN';
 export const lang = 'en';
@@ -21,16 +21,16 @@ export const creator = {
   // social: 'https://front-end.social/@lene'
 };
 export const pathToSvgLogo = 'src/assets/svg/misc/logo.svg'; // used for favicon generation
-export const themeColor = '#dd4462'; // used in manifest, for example primary color value
-export const themeLight = '#f8f8f8'; // used for meta tag theme-color, if light colors are prefered. best use value set for light bg
-export const themeDark = '#2e2e2e'; // used for meta tag theme-color, if dark colors are prefered. best use value set for dark bg
+export const themeColor = '#B45309'; // used in manifest, for example primary color value
+export const themeLight = '#F7F4EF'; // used for meta tag theme-color, if light colors are prefered. best use value set for light bg
+export const themeDark = '#1E2530'; // used for meta tag theme-color, if dark colors are prefered. best use value set for dark bg
 export const opengraph_default = '/assets/images/template/opengraph-default.jpg'; // fallback/default meta image
 export const opengraph_default_alt =
-  "Visible content: An Eleventy starter with CUBE CSS, Cube CSS, Every Layout, Design Tokens and Tailwind for uitility classes. A workflow for building modern and resilient websites, introduced by Andy Bell's project buildexcellentwebsit.es"; // alt text for default meta image"
+  'Stefan Taitano – ServiceNow Developer & Consultant, Veteran, based in Minneapolis, MN.'; // alt text for default meta image"
 export const blog = {
   // RSS feed
-  name: 'My Web Development Blog',
-  description: 'Tell the word what you are writing about in your blog. It will show up on feed readers.',
+  name: 'Stefan Taitano – Articles',
+  description: 'Writing on life, software development, and things I find worth sharing.',
   // feed links are looped over in the head. You may add more to the array.
   feedLinks: [
     {
@@ -49,7 +49,7 @@ export const blog = {
   tagPlural: 'Tags',
   tagMore: 'More tags:',
   // pagination
-  paginationLabel: 'Blog',
+  paginationLabel: 'Articles',
   paginationPage: 'Page',
   paginationPrevious: 'Previous',
   paginationNext: 'Next',
@@ -92,13 +92,13 @@ export const greenweb = {
 export const tests = {
   pa11y: {
     // keep customPaths empty if you want to test all pages
-    customPaths: ['/', '/about/', '/blog/', '/styleguide/'],
+    customPaths: ['/', '/now/', '/articles/'],
     globalIgnore: []
   }
 };
 export const viewRepo = {
   // this is for the view/edit on github link. The value in the package.json will be pulled in.
-  allow: true,
+  allow: false,
   infoText: 'View this page on GitHub'
 };
 export const easteregg = true;
