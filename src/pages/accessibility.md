@@ -6,30 +6,26 @@ permalink: /accessibility/index.html
 layout: page
 ---
 
-Accessibility design is about ensuring equal access for people with disabilities. It is about removing barriers to access.
+Accessibility means designing and building so that people with disabilities can use this site with fewer barriers. I care about that and try to improve the experience over time.
 
-I am very committed to this principle and I continually try to improve the user experience for everyone.
+## Conformance status
 
-## Conformance Status
+The [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/standards-guidelines/wcag/) define three levels of conformance: A, AA, and AAA.
 
-The [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/WAI/standards-guidelines/wcag/) define requirements for designers and developers to improve accessibility for people with disabilities. It defines three levels of conformance: Level A, Level AA, and Level AAA.
-
-_Eleventy Excellent_ aims to be conformant with [ WCAG 2.1 Level AA.](https://www.w3.org/WAI/standards-guidelines/wcag/)
-
-Compliance depends on how users implement and customize the starter for their specific content and use cases.
+This site is built on the [Eleventy Excellent](https://github.com/madrilene/eleventy-excellent) starter, which is **intended** to support WCAG 2.1 Level AA. My **content and customizations** can affect how well that holds in practice, so I do not claim guaranteed compliance with any specific legal standard—only that I work toward the same goals and welcome corrections.
 
 ## Testing
 
-[pa11y-ci](https://github.com/pa11y/pa11y-ci) is used to run automated accessibility tests, [see the Docs](/get-started/#tests).
+The project includes **pa11y-ci** for automated checks. From the repository you can run `npm run test:a11y` after a local build setup (see `package.json` and `src/_data/meta.js` for configured paths). Automated tests do not catch every issue; manual testing and real-user feedback still matter.
 
 ## Feedback
 
-I very much welcome your feedback and suggestions on the accessibility of this starter project. Please let me know if you encounter any accessibility barriers:
+If you run into a barrier on this site—keyboard navigation, screen readers, contrast, focus, or anything else—please tell me:
 
-- **GitHub Issues**: [Report accessibility issues](https://github.com/madrilene/eleventy-excellent/issues)
 - **Email**: {{ meta.creator.email }}
+- **GitHub**: [Open an issue](https://github.com/stefanintech/stefantaitano-com/issues) on the site repository (accessibility-related reports are welcome)
 
-**Response Time**: I aim to respond to feedback within one week.
+I will do my best to respond within a **reasonable time**, typically within about **one week**.
 
 ---
 

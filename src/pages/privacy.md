@@ -3,38 +3,38 @@ title: Privacy Policy
 discover:
   title: Privacy Policy
 permalink: /privacy/index.html
-description: I respect the EU General Data Protection Regulation (GDPR). This policy document explains how I collect and handle any information you provide to me.
+description: How this site handles information and respects your privacy.
 date: "Last Modified"
 layout: page
 ---
 
-Edit your details in `_data/personal.yaml`
+This policy describes how I handle information in connection with **stefantaitano.com**. I aim to collect as little as possible and to be straightforward about it.
 
-I respect the EU General Data Protection Regulation (GDPR) and this policy document explains how I collect and handle any information you provide to me.
+**What data is collected?**
 
-**What background data is collected?**
-This site does not use any third party tracking scripts.
+This site does not use third-party advertising or analytics scripts in the pages I publish. I do not use contact forms or comment systems on this site that would store your message on my servers.
 
-**How do I use the data you provide?**
-This website does not collect any data.
+The site is **hosted on Netlify** (and delivered over HTTPS). Like any hosting provider, Netlify may process technical data needed to operate the service (for example request metadata or server logs under their own policies). I do not use that data to profile visitors or to sell personal information.
 
-**How secure is your data?**
-Very secure, as this website does not collect any information.
+**How do I use data you send me?**
 
-**How secure is this website?**
-This website transmits itself using HTTPS, encrypting all data between the browser and the server. Your network provider can still see that you are downloading assets from this site, but not its content. This also protects you from third parties intercepting data, for example, while browsing on public WiFi, or from network providers injecting advertisements on this site. All relevant response HTTP headers are set for your protection and the Content Security Policy is adjusted to this websites requirements.
+If you email me directly, I use your message only to respond or follow up as you would expect. I do not add you to marketing lists unless you explicitly ask to be included.
+
+**Security**
+
+Pages are served over **HTTPS**. Standard security-related HTTP headers and a Content Security Policy appropriate to this site are configured to help protect your browsing session.
 
 **Data controller**
 
-{{ personal.address }}
+{{ meta.siteName }} (operator of this website). For questions about this policy or your information, contact me at **{{ personal.email }}**.
 
-If you have any questions or doubts, please contact me: {{ personal.email }}.
+**Changes**
 
-**Changes to the policy**
-If I change the content of this policy, those changes will be effective at the time I post them here.
+If I update this policy, the new version applies as soon as it is posted here.
 
 **Complaints**
-If you have any reason to complain about the way I handle your privacy, please contact me by email: {{ personal.email }}.
+
+If you have concerns about how I handle privacy, please contact me at **{{ personal.email }}**.
 
 ---
 
