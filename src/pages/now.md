@@ -5,23 +5,20 @@ description: 'What Stefan Taitano is focused on right now.'
 layout: page
 ---
 
-_Last updated: April 2026 · Minneapolis, MN_
+Last updated: April 2, 2026
 
-## Building
+- Learning backend development with [boot.dev](https://www.boot.dev/u/chessboot) - currently working through Python Functional Programming
 
-- [Asteroid game](https://github.com/stefanintech/asteroids-game) using pygame
+- Supporting [Vets Who Code](https://vetswhocode.io/)
 
-## Learning
+- Reading [The Psychology of Money](https://www.goodreads.com/book/show/51181015-the-psychology-of-money)
 
-- Backend development with [boot.dev](https://www.boot.dev) — currently working through Go.
+- Playing [Age of Empires 2](https://www.ageofempires.com/games/aoeiide/)
 
-## Reading
+- Watching [The Wire](https://www.imdb.com/title/tt0306414/)
 
-- The Psychology of Money
 
-## Chess
-
-Adult improver — trying to climb from 700 → 1200 on Lichess Rapid.
+Trying to climb from 700 → 1200 on Lichess Rapid.
 
 | | Rating | Games |
 |---|---|---|
@@ -35,9 +32,7 @@ _\* provisional rating · stats update on every site build_
 
 [Challenge me on Lichess](https://lichess.org/@/Late2TheBoard)
 
-## Supporting
 
-- [Vets Who Code](https://vetswhocode.io/) — supporting veterans getting into tech.
 
 ---
 
