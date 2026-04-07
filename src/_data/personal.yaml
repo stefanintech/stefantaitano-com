@@ -3,3 +3,14 @@ platforms:
   github: 'https://github.com/stefanintech'
   linkedin: 'https://www.linkedin.com/in/stefantaitano/'
   bluesky: 'https://bsky.app/profile/stefantaitano.com'
+links:
+  - text: Medium
+    url: 'https://medium.com/@stefantaitano'
+  - text: Bluesky
+    url: 'https://bsky.app/profile/stefantaitano.com'
+  - text: GitHub
+    url: 'https://github.com/stefanintech'
+  - text: Lichess
+    url: 'https://lichess.org/@/Late2TheBoard'
+  - text: LinkedIn
+    url: 'https://www.linkedin.com/in/stefantaitano/'

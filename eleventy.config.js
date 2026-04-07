@@ -99,13 +99,14 @@ export default async function (eleventyConfig) {
   // --------------------- Passthrough File Copy
 
   // -- same path
-  ['src/assets/fonts/', 'src/assets/images/template', 'src/assets/og-images'].forEach(path =>
+  ['src/assets/fonts/', 'src/assets/images/template', 'src/assets/images/stefan.png', 'src/assets/og-images'].forEach(path =>
     eleventyConfig.addPassthroughCopy(path)
   );
 
   eleventyConfig.addPassthroughCopy({
     // -- to root
-    'src/assets/images/favicon/*': '/',
+    'src/assets/images/favicon/': '/',
+    'src/assets/images/stefan.png': 'assets/images/stefan.png',
 
     // -- node_modules
     'node_modules/lite-youtube-embed/src/lite-yt-embed.{css,js}': `assets/components/`

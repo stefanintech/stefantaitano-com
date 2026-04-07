@@ -39,6 +39,7 @@ schema: BlogPosting
     </p>
 
     {{ content | safe }}
+    {% include "partials/newsletter-cta.njk" %}
     {% include 'partials/edit-on.njk' %}
   </div>
 

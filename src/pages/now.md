@@ -7,21 +7,26 @@ layout: page
 
 _Last updated: April 2026 · Minneapolis, MN_
 
-## Building
+## What I'm focused on
 
-- [Asteroid game](https://github.com/stefanintech/asteroids-game) using pygame
+- Preparing for ServiceNow's Certified Technical Architect exam
+- Working through Boot.dev's backend path, currently on Functional Programming
+
+## CTA certification
+
+CTA prep is the main professional goal right now. I want to expand my horizon as an architect while staying sharp with development.
 
 ## Learning
 
-- Backend development with [boot.dev](https://www.boot.dev) — currently working through Go.
+I'm teaching myself backend development through [Boot.dev](https://www.boot.dev), with most of my time going into Python, Go, and the fundamentals that make the rest of the stack make more sense. Current progress: Functional Programming.
 
 ## Reading
 
-- The Psychology of Money
+- _The Psychology of Money_
 
 ## Chess
 
-Adult improver — trying to climb from 700 → 1200 on Lichess Rapid.
+Adult improver, trying to climb from 700 to 1200 on Lichess Rapid.
 
 | | Rating | Games |
 |---|---|---|
@@ -35,9 +40,13 @@ _\* provisional rating · stats update on every site build_
 
 [Challenge me on Lichess](https://lichess.org/@/Late2TheBoard)
 
+## Writing
+
+I'm writing on [Medium](https://medium.com/@stefantaitano) about what I'm learning, building, and rethinking in real time.
+
 ## Supporting
 
-- [Vets Who Code](https://vetswhocode.io/) — supporting veterans getting into tech.
+- [Vets Who Code](https://vetswhocode.io/) - supporting veterans getting into tech.
 
 ---
 

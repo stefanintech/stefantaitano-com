@@ -1,8 +1,9 @@
-export const url = process.env.URL || 'http://localhost:8080';
+export const url = process.env.URL || 'https://www.stefantaitano.com';
 // Extract domain from `url`
 export const domain = new URL(url).hostname;
 export const siteName = 'Stefan Taitano';
-export const siteDescription = 'Stefan corner of the internet';
+export const siteDescription =
+  'Army veteran turned ServiceNow consultant, documenting the path to CTA certification, backend development, and relocating a family of four to Thailand.';
 export const siteType = 'Person'; // schema
 export const locale = 'en_EN';
 export const lang = 'en';
@@ -24,9 +25,9 @@ export const pathToSvgLogo = 'src/assets/svg/misc/logo.svg'; // used for favicon
 export const themeColor = '#B45309'; // used in manifest, for example primary color value
 export const themeLight = '#F7F4EF'; // used for meta tag theme-color, if light colors are prefered. best use value set for light bg
 export const themeDark = '#1E2530'; // used for meta tag theme-color, if dark colors are prefered. best use value set for dark bg
-export const opengraph_default = '/assets/images/template/opengraph-default.jpg'; // fallback/default meta image
+export const opengraph_default = '/assets/og-images/default-preview.svg'; // fallback/default meta image
 export const opengraph_default_alt =
-  'Stefan Taitano – ServiceNow Developer & Consultant, Veteran, based in Minneapolis, MN.'; // alt text for default meta image"
+  'Default social preview card for Stefan Taitano.'; // alt text for default meta image"
 export const blog = {
   // RSS feed
   name: 'Stefan Taitano – Articles',

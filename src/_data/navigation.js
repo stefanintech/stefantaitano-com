@@ -7,6 +7,14 @@ export default {
     {
       text: 'Articles',
       url: '/articles/'
+    },
+    {
+      text: 'Projects',
+      url: '/#projects'
+    },
+    {
+      text: 'Newsletter',
+      url: '/#newsletter'
     }
   ],
   bottom: [

@@ -8,6 +8,19 @@
   {%- endif -%}
 {% endset %}
 
+{% set metaTitle %}
+  {%- if discover.title -%}
+    {{- discover.title -}}
+  {%- elif title -%}
+    {{- title -}}
+  {%- else -%}
+    {{- meta.siteName -}}
+  {%- endif -%}
+{% endset %}
+
+{% set socialImage = meta.url + meta.opengraph_default %}
+{% set socialImageAlt = meta.opengraph_default_alt %}
+
 <meta name="description" content="{{ metaDescription }}" />
 <meta name="theme-color" content="{{ meta.themeDark }}" media="(prefers-color-scheme: dark)" />
 <meta name="theme-color" content="{{ meta.themeLight }}" media="(prefers-color-scheme: light)" />
@@ -38,40 +51,20 @@
 <!-- Open Graph meta  -->
 <meta property="og:url" content="{{ meta.url }}{{ page.url }}" />
 <meta property="og:type" content="website" />
-<meta
-  property="og:title"
-  content="{%- if discover.title -%}
-    {{- discover.title -}}
-  {%- elif title -%}
-    {{- title -}}
-  {%- else -%}
-    {{- meta.siteName -}}
-  {%- endif -%}"
-/>
-<meta
-  property="og:image"
-  content="{%- if layout == 'post' -%}
-    {{- meta.url -}}/assets/og-images/{{ title | slugify }}-preview.jpeg
-  {%- else -%}
-    {{- meta.url -}}{{- meta.opengraph_default -}}
-  {%- endif -%}"
-/>
-<meta
-  property="og:image:alt"
-  content="{%- if layout == 'post' -%}
-    {{- title -}}
-  {%- else -%}
-    {{- meta.opengraph_default_alt -}}
-  {%- endif -%}"
-/>
-<meta property="og:image:width" content="1200" />
-<meta property="og:image:height" content="630" />
+<meta property="og:title" content="{{ metaTitle }}" />
+<meta property="og:image" content="{{ socialImage }}" />
+<meta property="og:image:alt" content="{{ socialImageAlt }}" />
+<meta property="og:image:type" content="image/png" />
 <meta property="og:description" content="{{ metaDescription }}" />
 <meta property="og:site_name" content="{{ meta.siteName }}" />
 <meta property="og:locale" content="{{ meta.locale }}" />
 <meta property="article:author" content="{{ meta.author.name }}" />
 
-<!-- Twitter specific head data was removed in v2 -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="{{ metaTitle }}" />
+<meta name="twitter:description" content="{{ metaDescription }}" />
+<meta name="twitter:image" content="{{ socialImage }}" />
+<meta name="twitter:image:alt" content="{{ socialImageAlt }}" />
 
 <!-- RSS Autodiscovery. Loops over meta.blog.feedLinks -->
 {% for feedLink in meta.blog.feedLinks %}

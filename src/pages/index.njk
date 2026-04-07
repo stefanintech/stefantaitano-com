@@ -2,7 +2,7 @@
 layout: base
 permalink: /index.html
 title: 'Stefan Taitano'
-description: 'ServiceNow Developer & Consultant, Veteran, and Chess Enthusiast based in Minneapolis, MN.'
+description: 'Army veteran turned ServiceNow consultant, documenting the path to CTA certification, backend development, and relocating a family of four on a big adventure.'
 articles:
   title: 'Recent Articles'
   intro: 'A few things I have written lately.'
@@ -10,61 +10,168 @@ articles:
 
 <div class="wrapper">
   <header class="full | section" style="--spot-color: var(--color-primary)">
-    <div class="section__inner flow region">
-      <h1 class="text-center" style="color: var(--color-light);">{{ title }}</h1>
+    <div class="section__inner flow region" style="--region-space-top: var(--space-xl-2xl); --region-space-bottom: var(--space-xl-2xl);">
+      <div class="wrapper">
+        <div
+          style="display: flex; gap: var(--space-xl); align-items: center; justify-content: space-between; flex-wrap: wrap;"
+        >
+          <div class="flow" style="flex: 1; min-inline-size: 28ch; max-inline-size: 62ch;">
+            <h1 style="color: var(--color-light);">I build systems for a living and escape plans for fun.</h1>
+            <p style="font-size: var(--size-step-1); color: var(--color-light); opacity: 0.95;">
+              I'm Stefan, an Army veteran turned ServiceNow consultant, currently deep in CTA certification prep
+              and teaching myself backend development.
+            </p>
+            <p style="color: var(--color-light); opacity: 0.95;">
+              This site is where I write about tech, life design, and the patterns that show up when you pay
+              attention across domains.
+            </p>
+            <div class="cluster gutter-s" style="margin-top: var(--space-m);">
+              <a href="/now/" class="button" data-button-variant="tertiary">See what I'm doing now</a>
+              <a href="/articles/" class="button" data-ghost-button>Read the articles</a>
+            </div>
+          </div>
+
+          <figure
+            aria-label="Stefan Taitano"
+            style="flex-shrink: 0; inline-size: min(260px, 100%); aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 4px solid color-mix(in oklab, var(--color-light) 35%, transparent);"
+          >
+            <img
+              src="/assets/images/stefan.png"
+              alt="Stefan Taitano"
+              width="260"
+              height="260"
+              style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%;"
+            >
+          </figure>
+        </div>
+      </div>
     </div>
     {% svg "divider/waves", null, "divider" %}
   </header>
 
-  <article class="full | region">
+  <section id="now-preview" class="full | region">
     <div class="wrapper">
-      <div style="display: flex; gap: var(--space-xl); align-items: center; flex-wrap: wrap;">
-
-        <figure aria-label="Stefan Taitano" style="flex-shrink: 0; inline-size: min(220px, 100%); aspect-ratio: 1; border-radius: 50%; overflow: hidden;">
-          <img
-            src="/assets/images/stefan.png"
-            alt="Stefan Taitano"
-            width="220"
-            height="220"
-            style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%;"
-          >
-        </figure>
-
-        <div class="flow" style="flex: 1; min-inline-size: 25ch;">
-          <p style="font-size: var(--step-1); font-style: italic;">I build systems for a living and escape plans for fun.</p>
-          <p>
-            I'm Stefan — a ServiceNow Developer &amp; Consultant at Cognizant, based in Minneapolis, MN.
-            On the side, I'm deep in a backend development arc with <a href="https://www.boot.dev/u/chessboot">boot.dev</a>
-            and slowly dabbling in a variety of games.
-          </p>
-          <p>
-            Find me on
-            <a href="https://github.com/stefanintech">GitHub</a>,
-            <a href="https://www.linkedin.com/in/stefantaitano/">LinkedIn</a>, and
-            <a href="https://bsky.app/profile/stefantaitano.com">Bluesky</a>.
-            Want to know what I'm focused on right now? Check the <a href="/now/">Now page</a>.
-          </p>
+      <div
+        class="flow"
+        style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
+      >
+        <p style="font-size: var(--size-step-min-1); text-transform: uppercase; letter-spacing: 0.08em;">
+          What I'm doing now
+        </p>
+        <div class="flow">
+          <p>Preparing for ServiceNow's Certified Technical Architect exam.</p>
+          <p>Learning Python and Go through Boot.dev's backend path.</p>
+          <p>Playing chess on <a href="https://lichess.org/@/Late2TheBoard">Lichess</a> and improving slowly.</p>
+          <p>Writing on <a href="https://medium.com/@stefantaitano">Medium</a> about what I'm figuring out.</p>
         </div>
-
+        <p><a href="/now/">See the full /now page</a></p>
       </div>
     </div>
-  </article>
+  </section>
+
+  <section class="full | region">
+    <div class="wrapper flow">
+      <div class="flow">
+        <p style="font-size: var(--size-step-min-1); text-transform: uppercase; letter-spacing: 0.08em;">
+          Explore the site
+        </p>
+        <h2>Pick a trail.</h2>
+      </div>
+
+      <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 16rem;">
+        <a
+          href="/articles/"
+          style="display: block; padding: var(--space-l); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); text-decoration: none;"
+        >
+          <strong>Articles</strong>
+          <p style="margin-top: var(--space-xs);">Tech, life design, and cross-domain thinking.</p>
+        </a>
+        <a
+          href="/#projects"
+          style="display: block; padding: var(--space-l); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); text-decoration: none;"
+        >
+          <strong>Projects</strong>
+          <p style="margin-top: var(--space-xs);">Things I'm building and have built.</p>
+        </a>
+        <a
+          href="/#newsletter"
+          style="display: block; padding: var(--space-l); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); text-decoration: none;"
+        >
+          <strong>Field Notes</strong>
+          <p style="margin-top: var(--space-xs);">My occasional newsletter on building, moving, and figuring it out.</p>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <section class="full | region">
     <div class="prose wrapper flow">
       <h2>{{ articles.title }}</h2>
-      {% if articles.intro %}
-        <p>{{ articles.intro }}</p>
+      {% set itemList = collections.allPosts %}
+      {% if itemList.length > 0 %}
+        {% if articles.intro %}
+          <p>{{ articles.intro }}</p>
+        {% endif %}
+      {% else %}
+        <p>
+          The archive is just getting started. For now, you can browse <a href="/articles/">the articles page</a>
+          or read newer writing on <a href="https://medium.com/@stefantaitano">Medium</a>.
+        </p>
       {% endif %}
       <div class="feature | region region-space-l">
-        <custom-masonry layout="50-50">
-          {% set itemList = collections.allPosts %}
-          {% asyncEach item in itemList.slice(0, 4) %}
-            {% set headingLevel = "h3" %}
-            {% include "partials/card-blog.njk" %}
-          {% endeach %}
-        </custom-masonry>
+        {% if itemList.length > 0 %}
+          <custom-masonry layout="50-50">
+            {% asyncEach item in itemList.slice(0, 3) %}
+              {% set headingLevel = "h3" %}
+              {% include "partials/card-blog.njk" %}
+            {% endeach %}
+          </custom-masonry>
+        {% endif %}
       </div>
+      <p><a href="/articles/">Browse all articles</a></p>
+    </div>
+  </section>
+
+  <section id="projects" class="full | region">
+    <div class="wrapper">
+      <div
+        class="flow"
+        style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
+      >
+        <h2>Projects</h2>
+        <p>
+          This section will grow into a proper projects page, but it already points at the themes behind the work:
+          backend learning, AI tools, de-Googling, relocation systems, and the experiments that come with building in
+          public.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="full | region">
+    <div class="prose wrapper flow">
+      <h2>A bit more about me</h2>
+      <p>
+        Before tech, I served in the United States Army as a Fire Control Specialist, working as a Team Lead,
+        Program Manager, and Retention Manager. The military taught me how to build teams, run processes, and operate
+        in ambiguity, skills that turned out to transfer directly into consulting.
+      </p>
+      <p>
+        These days I work as a ServiceNow Technical Consultant, helping organizations automate and streamline their
+        workflows. I'm pursuing the CTA certification because I want to architect solutions, not just be a code monkey.
+        On a parallel track, I'm learning backend development through Boot.dev, Python and Go, with no rush and no
+        pressure.
+      </p>
+      <p>
+        Outside of work, I read constantly, train when I can, and think a lot about intentional life design -
+        building a life that fits rather than one that just happened.
+      </p>
+    </div>
+  </section>
+
+  <section id="newsletter" class="full | region">
+    <div class="wrapper">
+      {% include "partials/newsletter-cta.njk" %}
     </div>
   </section>
 </div>
