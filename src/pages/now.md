@@ -5,7 +5,7 @@ description: 'What Stefan Taitano is focused on right now.'
 layout: page
 ---
 
-_Last updated: April 2026 · Minneapolis, MN_
+Last updated: April 2, 2026
 
 ## What I'm focused on
 
@@ -16,11 +16,11 @@ _Last updated: April 2026 · Minneapolis, MN_
 
 CTA prep is the main professional goal right now. I want to expand my horizon as an architect while staying sharp with development.
 
-## Learning
+- Reading [The Psychology of Money](https://www.goodreads.com/book/show/51181015-the-psychology-of-money)
 
 I'm teaching myself backend development through [Boot.dev](https://www.boot.dev), with most of my time going into Python, Go, and the fundamentals that make the rest of the stack make more sense. Current progress: Functional Programming.
 
-## Reading
+- Watching [The Wire](https://www.imdb.com/title/tt0306414/)
 
 - _The Psychology of Money_
 
