@@ -1,153 +1,160 @@
-# Eleventy Excellent
+# stefantaitano.com
 
-Easy to use Eleventy starter, based on the workflow suggested by Andy Bell's [buildexcellentwebsit.es](https://buildexcellentwebsit.es/).
+Personal website and writing home for Stefan Taitano.
 
-![GitHub Repo stars](https://img.shields.io/github/stars/madrilene/eleventy-excellent?style=flat-square&logo=github&logoColor=white&label=GitHub%20stars)
-[![Follow @lene@front-end.social](https://img.shields.io/mastodon/follow/109292536543732634?domain=https%3A%2F%2Ffront-end.social&style=flat-square&logo=Mastodon&logoColor=white&labelColor=%235B4BE1)](https://front-end.social/@lene)
+Live site: [www.stefantaitano.com](https://www.stefantaitano.com)
 
-If you end up using this starter, feel free to send me a link, I'd love to see it!
+This repository powers a personal site built with Eleventy. It mixes long-form writing, a `/now` page, platform links, generated feeds, and a homepage that is slowly turning into a clearer home for projects, articles, and ongoing work.
 
-- [Eleventy Excellent](#eleventy-excellent)
-	- [Preview](#preview)
-	- [Features](#features)
-	- [First steps](#first-steps)
-	- [Development](#development)
-		- [Install dependencies](#install-dependencies)
-		- [Working locally](#working-locally)
-		- [Creating a production build](#creating-a-production-build)
-	- [Built with Eleventy Excellent](#built-with-eleventy-excellent)
-	- [Credits and Thank yous](#credits-and-thank-yous)
+## What This Site Is
 
-## Preview
+- Personal website
+- Article archive
+- `/now` page
+- Lightweight portfolio-in-progress
+- Home for experiments that do not fit cleanly on social platforms
 
-https://eleventy-excellent.netlify.app/
+## Current Status
 
-## Features
+- `Phase 1` work is effectively done: crawling, metadata, social preview cleanup, and stale-reference cleanup.
+- `Phase 2` work is effectively done: the homepage rewrite, clearer navigation, and a stronger `/now` path are live.
+- The biggest remaining product work is turning temporary sections into real destinations and tightening content flow.
 
-**This starter includes:**
+## Stack
 
-- **Cube Boilerplate**: Created by Andy Bell, available under the MIT License. [View Repository](https://github.com/Set-Creative-Studio/cube-boilerplate)
-- Accessible site navigation, editable in `src/_data/navigation.js`
-- Image optimization with Eleventy-img _([see blog post](https://eleventy-excellent.netlify.app/blog/post-with-an-image/))_
-- Youtube embed with lite-youtube _([see blog post](https://eleventy-excellent.netlify.app/blog/post-with-a-video/))_
-- Easy resource fetching with eleventy-fetch _([see blog post](https://eleventy-excellent.netlify.app/blog/post-with-fetched-content/))_
-- Syntax highlighting via eleventy-plugin-syntaxhighlight _([see blog post](https://eleventy-excellent.netlify.app/blog/post-with-some-code/))_
-- Advanced markdown handling _([see blog post](https://eleventy-excellent.netlify.app/blog/post-with-all-the-markdown/))_
-- 301 redirects for Netlify _([see blog post](https://eleventy-excellent.netlify.app/blog/post-with-301-redirects/))_
-- Automatically generated Open Graph images for blog posts _([see blog post](https://eleventy-excellent.netlify.app/blog/open-graph-images/))_
-- Tailwind CSS - but not how you might expect _([see blog post](https://eleventy-excellent.netlify.app/blog/what-is-tailwind-css-doing-here/))_
-- XML-sitemap
-- dayjs handling dates & times
-- Bundling via esbuild
-- RSS feed (now you can add more than one)
-- Links to platforms and social media profiles
-- Mastodon domain verification snippet
-- carbon.txt - to show that their digital infrastructure runs on green electricity
-- Accessible dark and light mode based on user preference and custom toggle
-- Tags in blog posts
-- Accessible blog pagination
-- A styleguide™
+- [Eleventy](https://www.11ty.dev/) as the static site generator
+- Nunjucks, Markdown, and data files for content and templates
+- Tailwind-based styling plus local CSS layers
+- Netlify for deployment
+- Generated Atom and JSON feeds
+- Generated Open Graph assets and image optimization
+- Accessibility checks available through `pa11y`
 
-## First steps
+## Local Development
 
-[Read the Get started docs!](https://eleventy-excellent.netlify.app/get-started/)
+### Requirements
 
-## Development
+- Node `>=20`
 
-### Install dependencies
+### Install
 
-```
+```bash
 npm install
 ```
 
-### Working locally
+### Run locally
 
-Starts watch tasks to compile when changes detected
-
-```
+```bash
 npm start
 ```
 
-### Creating a production build
+### Build for production
 
-Minify JS, CSS and HTML.
-
-```
+```bash
 npm run build
 ```
 
-## Built with Eleventy Excellent
+### Run accessibility checks
 
-[Sites that are based on / built with Eleventy Excellent. ](https://eleventy-excellent.netlify.app/built-with/)
-Add your site by submitting a pull request! :)
+```bash
+npm run test:a11y
+```
 
-## Credits and Thank yous
+## Deployment
 
-**Andy Bell**
+The site is configured for Netlify.
 
-> Be the browser's mentor, not its micromanager. Give the browser some solid rules and hints, then let it make the right decisions for the people that visit it, based on their device, connection quality and capabilities.
+- Build command: `npm run build`
+- Publish directory: `dist`
+- Security headers are defined in `netlify.toml`
 
-- https://buildexcellentwebsit.es/
-- https://cube.fyi/
-- https://learneleventyfromscratch.com/
+The canonical site URL comes from `src/_data/meta.js` and defaults to:
 
-**Heydon Pickering**
+```txt
+https://www.stefantaitano.com
+```
 
-Heydon creates some invaluable resources.
+If needed, you can override it with the `URL` environment variable.
 
-- https://every-layout.dev/
-- https://inclusive-components.design/
+## Project Structure
 
-**Zach Leatherman**
+```txt
+src/
+  _data/          Site metadata, navigation, personal links, external data
+  _includes/      Reusable partials and head templates
+  _layouts/       Base, page, post, and tag layouts
+  _config/        Eleventy config, filters, shortcodes, events, setup scripts
+  pages/          Standalone pages like home, now, privacy, accessibility
+  posts/          Blog posts and article content
+  common/         Feeds, redirects, sitemap, robots, manifest, misc outputs
+  assets/         CSS, JS, SVG, images
+```
 
-Zach is developing Eleventy and is constantly making it even better!
+## Key Files
 
-- https://www.11ty.dev/
-- https://www.zachleat.com/
+- `src/pages/index.njk`: homepage and current preview sections
+- `src/pages/now.md`: current `/now` page
+- `src/pages/articles.njk`: article index and pagination
+- `src/_layouts/post.njk`: post layout, newsletter CTA insertion, edit link
+- `src/_data/meta.js`: site URL, metadata, feeds, theme, and testing config
+- `src/_data/navigation.js`: top and bottom navigation links
+- `src/_data/personal.yaml`: personal links and profile/platform data
+- `src/_includes/partials/newsletter-cta.njk`: current Field Notes CTA
+- `netlify.toml`: deployment and security header config
 
-**Stephanie Eckles**
+## Content Workflow
 
-Stephanie provides a lot of resources for Eleventy and modern CSS.
+### Add a new article
 
-- https://smolcss.dev/
-- https://moderncss.dev/
+1. Create a new Markdown file in `src/posts/`
+2. Add front matter such as `title`, `description`, and `date`
+3. Optionally include hero image metadata if the post needs it
+4. Run `npm start` or `npm run build` to verify output
 
-**Ryan Mulligan**
+### Update a page
 
-I'm using Ryan's example of a breakout wrapper on this site.
+- Standalone pages live in `src/pages/`
+- Shared metadata and links live in `src/_data/`
+- Reusable UI pieces live in `src/_includes/partials/`
 
-Also have a look at those codepens!
+### External or generated content
 
-- https://ryanmulligan.dev/
-- https://codepen.io/hexagoncircle/
+- Lichess data is pulled through `src/_data/lichess.js`
+- Feed outputs are generated through `src/common/feed-atom.njk` and `src/common/feed-json.njk`
+- `robots.txt`, `_redirects`, and `sitemap.xml` are generated from `src/common/`
 
-**Sara Soueidan**
+## What Is Still On The Checklist
 
-I took a close look at Sara's recommendations for accessible theme switch and pagination in the Practical Accessibility course
+The next meaningful improvements are:
 
-- https://practical-accessibility.today/
-- https://www.sarasoueidan.com/
+- Create a real Projects experience instead of keeping it as a homepage placeholder
+- Add stronger end-of-article cross-links so each post suggests the next click
+- Replace the interim `Field Notes` email CTA with a real signup flow or dedicated page
+- Fix the legal/imprint data path so `personal.address` is either defined or the page is rewritten
+- Decide whether to add supporting pages like `Bookshelf`, `Uses`, and `Colophon`
+- Evaluate privacy-friendly analytics
 
-**Steven Woodson**
+## To-do
 
-The style guide was inspired by a [great talk on the Eleventy Meetup](https://www.youtube.com/watch?v=3mhA2bH6q8s). Steven also wrote a [blog post](https://stevenwoodson.com/blog/eleventy-style-guide-generator-step-by-step-guide-adding-to-an-existing-site/) about that.
+- [ ] Build a dedicated `Projects` page
+- [ ] Add article cross-links or related-post navigation
+- [ ] Replace the temporary `Field Notes` email CTA with a real signup destination
+- [ ] Finish the legal/imprint data path
+- [ ] Add optional supporting pages like `Uses`, `Bookshelf`, or `Colophon`
+- [ ] Evaluate privacy-friendly analytics
 
-**Aleksandr Hovhannisyan**
+## Notes For Interested Folks
 
-Aleksandr seems to value a well-structured project just as much as I do. It was the repo from aleksandrhovhannisyan.com that inspired me to write the article [Organizing the Eleventy config file](https://www.lenesaile.com/en/blog/organizing-the-eleventy-config-file/). The 301 redirect solution I'm using is from Aleksandr's article.
+This site started from the [Eleventy Excellent](https://eleventy-excellent.netlify.app/) starter, but it has been steadily reshaped into a personal site with custom homepage content, a custom `/now` page, personal metadata, feed configuration, and project-specific content structure.
 
-- https://github.com/AleksandrHovhannisyan
-- https://www.aleksandrhovhannisyan.com/blog/eleventy-netlify-redirects/
+If you are browsing because you are interested in the site itself, the best places to start are:
 
-**Manuel Matuzović**
+- `src/pages/index.njk`
+- `src/pages/now.md`
+- `src/_data/meta.js`
+- `src/_layouts/post.njk`
 
-Manuel is an accessibility expert. The menu I was using as default up to v2, is very much inspired by an article Manuel wrote on web.dev.
+## Credits
 
-- https://web.dev/website-navigation/
-- https://www.matuzo.at/
-
-**Bernard Nijenhuis**
-
-Bernard wrote the article on which the Open Graph Images implementation is based.
-
-- https://bnijenhuis.nl/notes/automatically-generate-open-graph-images-in-eleventy/
+- Built on top of [Eleventy Excellent](https://eleventy-excellent.netlify.app/) by Lene Saile
+- Inspired by the broader Eleventy, accessibility, and build-excellent-websites community
