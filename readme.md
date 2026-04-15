@@ -4,7 +4,7 @@ Personal website and writing home for Stefan Taitano.
 
 Live site: [www.stefantaitano.com](https://www.stefantaitano.com)
 
-This repository powers a personal site built with Eleventy. It mixes long-form writing, a `/now` page, platform links, generated feeds, and a homepage that is slowly turning into a clearer home for projects, articles, and ongoing work.
+This repository powers a personal site built with Eleventy. It mixes long-form writing, a `/now` page, platform links, generated feeds, and a homepage that is slowly turning into a clearer home for projects, articles, and ongoing work. Stefan is an Army veteran turned ServiceNow consultant, currently pursuing the CTA certification and teaching himself full-stack development through The Odin Project.
 
 ## What This Site Is
 
@@ -16,8 +16,11 @@ This repository powers a personal site built with Eleventy. It mixes long-form w
 
 ## Current Status
 
-- `Phase 1` work is effectively done: crawling, metadata, social preview cleanup, and stale-reference cleanup.
-- `Phase 2` work is effectively done: the homepage rewrite, clearer navigation, and a stronger `/now` path are live.
+- `Phase 1` is done: crawling, metadata, social preview cleanup, and stale-reference cleanup.
+- `Phase 2` is done: the homepage rewrite, clearer navigation, and a stronger `/now` path are live.
+- Branding is done: slate + amber color scheme, ST monogram logo, favicons, and a real profile photo on the homepage.
+- The article archive has real content: three Medium articles ported and one site-native post published.
+- The `/now` page pulls live Lichess stats at build time and has a balanced, narrative structure.
 - The biggest remaining product work is turning temporary sections into real destinations and tightening content flow.
 
 ## Stack
@@ -123,23 +126,37 @@ src/
 - Feed outputs are generated through `src/common/feed-atom.njk` and `src/common/feed-json.njk`
 - `robots.txt`, `_redirects`, and `sitemap.xml` are generated from `src/common/`
 
+## What Has Been Done
+
+- Personalized the Eleventy Excellent starter into a custom personal site
+- Rewrote the homepage with hero copy, profile photo, trail cards, and recent articles
+- Built a `/now` page with live Lichess stats pulled at build time
+- Ported three Medium articles and published one site-native post
+- Applied slate + amber branding, ST monogram logo, and regenerated favicons
+- Cleaned up stale starter content, demo posts, and unused data files
+- Replaced the starter README with a project-specific one
+
 ## What Is Still On The Checklist
 
 The next meaningful improvements are:
 
-- Create a real Projects experience instead of keeping it as a homepage placeholder
-- Add stronger end-of-article cross-links so each post suggests the next click
+- ~~Fix the legal/imprint data path~~ Done: rewritten as a lightweight legal notice with email contact
+- ~~Replace the default Open Graph image~~ Done: subtitle updated, 11ty logo replaced with ST monogram on per-post cards
+- Build a dedicated Projects page instead of the homepage placeholder
 - Replace the interim `Field Notes` email CTA with a real signup flow or dedicated page
-- Fix the legal/imprint data path so `personal.address` is either defined or the page is rewritten
+- Add end-of-article cross-links so each post suggests the next click
+- Swap default fonts for something that fits the brand
 - Decide whether to add supporting pages like `Bookshelf`, `Uses`, and `Colophon`
 - Evaluate privacy-friendly analytics
 
 ## To-do
 
+- [x] Fix the legal/imprint data path
+- [x] Replace the default Open Graph image
 - [ ] Build a dedicated `Projects` page
-- [ ] Add article cross-links or related-post navigation
 - [ ] Replace the temporary `Field Notes` email CTA with a real signup destination
-- [ ] Finish the legal/imprint data path
+- [ ] Add article cross-links or related-post navigation
+- [ ] Swap fonts
 - [ ] Add optional supporting pages like `Uses`, `Bookshelf`, or `Colophon`
 - [ ] Evaluate privacy-friendly analytics
 

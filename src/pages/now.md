@@ -5,9 +5,9 @@ description: 'What Stefan Taitano is focused on right now.'
 layout: page
 ---
 
-Last updated: April 7, 2026
+Last updated: April 14, 2026
 
-This is one of those seasons where a lot of threads are running at once. Professionally, I'm pushing toward ServiceNow's Certified Technical Architect exam. Outside of that, I'm teaching myself backend development, rebuilding this site into something more durable, writing a little more in public, and trying to keep a few hobbies alive so life does not become one long work sprint.
+This is one of those seasons where a lot of threads are running at once. Professionally, I'm pushing toward ServiceNow's Certified Technical Architect exam. Outside of that, I'm teaching myself full-stack development, rebuilding this site into something more durable, writing a little more in public, and trying to keep a few hobbies alive so life does not become one long work sprint.
 
 ## Work
 
@@ -15,7 +15,7 @@ CTA prep is still the biggest professional goal right now. I want to stretch bey
 
 ## Learning
 
-I'm working through [Boot.dev](https://www.boot.dev?bannerlord=chessboot)'s backend path, currently on Functional Programming. A lot of my learning time is going into Python, Go, and the fundamentals that make the rest of the stack feel less mysterious.
+I'm working through [The Odin Project](https://www.theodinproject.com/)'s full-stack Ruby on Rails path. Most of my learning time is going into Ruby, Rails, and building real projects that tie frontend and backend together.
 
 ## Building
 
