@@ -46,20 +46,6 @@
       </nav>
     </div>
 
-    <nav class="cluster gutter-xs mt-s-m text-step-min-1" aria-label="Elsewhere">
-      {% for item in personal.links %}
-        <a class="no-indicator" href="{{ item.url }}" rel="me">{{ item.text }}</a>
-      {% endfor %}
-      <a
-        class="no-indicator"
-        href="{{ meta.blog.feedLinks[0].url }}"
-        rel="alternate"
-        type="{{ meta.blog.feedLinks[0].type }}"
-      >
-        RSS
-      </a>
-    </nav>
-
     {% include 'partials/theme-switch.njk' %}
 
     <aside class="creator | cluster gutter-2xs text-step-min-1 mt-xl">
