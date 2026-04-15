@@ -87,7 +87,7 @@ articles:
           <p style="margin-top: var(--space-xs);">Tech, life design, and cross-domain thinking.</p>
         </a>
         <a
-          href="/#projects"
+          href="/projects/"
           style="display: block; padding: var(--space-l); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); text-decoration: none;"
         >
           <strong>Projects</strong>
@@ -133,18 +133,35 @@ articles:
   </section>
 
   <section id="projects" class="full | region">
-    <div class="wrapper">
-      <div
-        class="flow"
-        style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
-      >
-        <h2>Projects</h2>
-        <p>
-          This section will grow into a proper projects page, but it already points at the themes behind the work:
-          full-stack learning, AI tools, de-Googling, relocation systems, and the experiments that come with building in
-          public.
+    <div class="wrapper flow">
+      <div class="flow">
+        <p style="font-size: var(--size-step-min-1); text-transform: uppercase; letter-spacing: 0.08em;">
+          Things I'm building
         </p>
+        <h2>Projects</h2>
       </div>
+      <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 16rem;">
+        {% for project in projects %}
+          {% if not project.draft %}
+            <div
+              class="flow"
+              style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
+            >
+              <strong>{{ project.title }}</strong>
+              <p style="margin-top: var(--space-xs);">{{ project.description }}</p>
+              <div class="cluster gutter-s" style="margin-top: var(--space-s);">
+                {% if project.url %}
+                  <a href="{{ project.url }}" style="font-size: var(--size-step-min-1);">View site &rarr;</a>
+                {% endif %}
+                {% if project.repo %}
+                  <a href="{{ project.repo }}" style="font-size: var(--size-step-min-1);">View code &rarr;</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <p><a href="/projects/">See all projects</a></p>
     </div>
   </section>
 

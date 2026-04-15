@@ -142,8 +142,8 @@ The next meaningful improvements are:
 
 - ~~Fix the legal/imprint data path~~ Done: rewritten as a lightweight legal notice with email contact
 - ~~Replace the default Open Graph image~~ Done: subtitle updated, 11ty logo replaced with ST monogram on per-post cards
-- Build a dedicated Projects page instead of the homepage placeholder
-- Replace the interim `Field Notes` email CTA with a real signup flow or dedicated page
+- ~~Build a dedicated Projects page~~ Done: data-driven via projects.yaml, live at /projects/
+- ~~Replace the interim Field Notes email CTA~~ Done: links to Beehiiv publication at stefans-dispatch.beehiiv.com
 - Add end-of-article cross-links so each post suggests the next click
 - Swap default fonts for something that fits the brand
 - Decide whether to add supporting pages like `Bookshelf`, `Uses`, and `Colophon`
@@ -153,8 +153,8 @@ The next meaningful improvements are:
 
 - [x] Fix the legal/imprint data path
 - [x] Replace the default Open Graph image
-- [ ] Build a dedicated `Projects` page
-- [ ] Replace the temporary `Field Notes` email CTA with a real signup destination
+- [x] Build a dedicated `Projects` page
+- [x] Replace the temporary `Field Notes` email CTA with a real signup destination
 - [ ] Add article cross-links or related-post navigation
 - [ ] Swap fonts
 - [ ] Add optional supporting pages like `Uses`, `Bookshelf`, or `Colophon`

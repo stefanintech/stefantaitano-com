@@ -1,0 +1,58 @@
+---
+layout: base
+permalink: /projects/index.html
+title: 'Projects'
+description: 'Things Stefan Taitano is building and has built — from personal sites to Python games.'
+---
+
+<div class="wrapper">
+  <header class="full | section" style="--spot-color: var(--color-primary)">
+    <div class="section__inner flow region" style="--region-space-top: var(--space-xl-2xl); --region-space-bottom: var(--space-xl-2xl);">
+      <div class="wrapper">
+        <div class="flow" style="max-inline-size: 62ch;">
+          <h1 style="color: var(--color-light);">Projects</h1>
+          <p style="font-size: var(--size-step-1); color: var(--color-light); opacity: 0.95;">
+            I learn by building. These are the projects I am working on or have shipped. Some are polished, some are
+            experiments — all of them taught me something.
+          </p>
+        </div>
+      </div>
+    </div>
+    {% svg "divider/waves", null, "divider" %}
+  </header>
+
+  <section class="full | region">
+    <div class="wrapper flow">
+      <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 20rem;">
+        {% for project in projects %}
+          {% if not project.draft %}
+            <div
+              class="flow"
+              style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
+            >
+              <div class="flow" style="--flow-space: var(--space-xs);">
+                <h2 style="font-size: var(--size-step-1);">{{ project.title }}</h2>
+                <div class="cluster gutter-xs" style="flex-wrap: wrap;">
+                  {% for tag in project.tech %}
+                    <span
+                      style="font-size: var(--size-step-min-1); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.2em 0.6em; border: 1px solid var(--color-bg-accent-2); border-radius: 999px;"
+                    >{{ tag }}</span>
+                  {% endfor %}
+                </div>
+              </div>
+              <p>{{ project.description }}</p>
+              <div class="cluster gutter-s" style="margin-top: var(--space-m);">
+                {% if project.url %}
+                  <a class="button" data-button-variant="primary" href="{{ project.url }}">View site</a>
+                {% endif %}
+                {% if project.repo %}
+                  <a class="button" data-ghost-button href="{{ project.repo }}">View code</a>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+</div>

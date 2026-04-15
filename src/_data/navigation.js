@@ -10,7 +10,7 @@ export default {
     },
     {
       text: 'Projects',
-      url: '/#projects'
+      url: '/projects/'
     },
     {
       text: 'Newsletter',

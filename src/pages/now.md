@@ -5,7 +5,7 @@ description: 'What Stefan Taitano is focused on right now.'
 layout: page
 ---
 
-Last updated: April 14, 2026
+Last updated: April 15, 2026
 
 This is one of those seasons where a lot of threads are running at once. Professionally, I'm pushing toward ServiceNow's Certified Technical Architect exam. Outside of that, I'm teaching myself full-stack development, rebuilding this site into something more durable, writing a little more in public, and trying to keep a few hobbies alive so life does not become one long work sprint.
 
@@ -19,7 +19,7 @@ I'm working through [The Odin Project](https://www.theodinproject.com/)'s full-s
 
 ## Building
 
-I'm also putting real energy into this site. The goal is to turn it into a home for my writing, projects, and the things I'm learning in real time instead of leaving everything scattered across platforms. Right now that means tightening the `/now` page, shaping a better projects section, and figuring out what `Field Notes` should become.
+I'm also putting real energy into this site. The goal is to turn it into a home for my writing, projects, and the things I'm learning in real time instead of leaving everything scattered across platforms. The Projects page is live, Field Notes is on Beehiiv, and the next push is better article cross-linking and a font refresh.
 
 ## Writing
 

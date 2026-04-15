@@ -1,0 +1,20 @@
+- title: stefantaitano.com
+  description: This site. A personal home for writing, projects, and ongoing work — built with Eleventy and deployed on Netlify. Features a /now page with live Lichess stats, auto-generated Open Graph images, and an Atom feed.
+  tech:
+    - Eleventy
+    - Nunjucks
+    - Tailwind CSS
+  url: https://www.stefantaitano.com
+  repo: https://github.com/stefanintech/stefantaitano-com
+
+- title: Asteroids Game
+  description: A classic arcade-style asteroids game built in Python. Ships, rocks, and the fundamentals of object-oriented game logic — written as part of learning Python from the ground up.
+  tech:
+    - Python
+  repo: https://github.com/stefanintech/asteroids-game
+
+- title: Python Project 2
+  description: Coming soon.
+  tech:
+    - Python
+  draft: true
