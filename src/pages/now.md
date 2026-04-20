@@ -19,7 +19,7 @@ I'm working through [The Odin Project](https://www.theodinproject.com/)'s full-s
 
 ## Building
 
-I'm also putting real energy into this site. The goal is to turn it into a home for my writing, projects, and the things I'm learning in real time instead of leaving everything scattered across platforms. The Projects page is live, Field Notes is on Beehiiv, and the next push is better article cross-linking and a font refresh.
+I'm also putting real energy into this site. The goal is to turn it into a home for my writing, projects, and the things I'm learning in real time instead of leaving everything scattered across platforms. The Projects page is live, Field Notes is on Buttondown, and the next push is better article cross-linking and a font refresh.
 
 ## Writing
 
