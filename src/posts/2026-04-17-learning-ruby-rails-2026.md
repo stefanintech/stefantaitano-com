@@ -5,7 +5,7 @@ date: 2026-04-17
 draft: false
 ---
 
-![My Odin Project dashboard showing 86% completion of Foundations](/assets/images/blog/learning-ruby-rails-2026-odin-dashboard.png){eleventy:widths="860" sizes="100vw"class="image-centered"}
+<img src="/assets/images/blog/learning-ruby-rails-2026-odin-dashboard.png" alt="My Odin Project dashboard showing 86% completion of Foundations" eleventy:widths="860" sizes="100vw">
 
 I've switched languages and platforms enough times in the last year that I stopped telling people what I was learning. It was the Go track on Boot.dev for a while, then back to The Odin Project which put me in JavaScript land, and somewhere in there I kept finding myself watching content built around web development at night instead of doing whatever I was supposed to be doing. The real hook was [Lex Fridman's interview with DHH](https://youtu.be/vagyIcmIGOQ?si=Fjzjc5Vn9UAgxsaw), where he explains why Ruby is beautiful compared to other languages, and watching how passionate the community is about it pulled me the rest of the way in, from [SF Ruby 2025](https://sfruby.com/talks/) talks to [RubyConTH](https://rubyconfth.com/).
 
@@ -21,4 +21,4 @@ What I want out of all of this is to solve problems and build things without rea
 
 That's the flag. See you in 2027.
 
-![Astronaut planting a Ruby flag on the moon](/assets/images/blog/learning-ruby-rails-2026-hero.png){eleventy:widths="420" sizes="420px" class="image-centered"}
+<img src="/assets/images/blog/learning-ruby-rails-2026-hero.png" alt="Astronaut planting a Ruby flag on the moon" eleventy:widths="420" sizes="420px" class="image-centered">
