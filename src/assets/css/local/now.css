@@ -1,0 +1,67 @@
+.now-entry__date {
+  font-size: var(--size-step-min-1);
+  margin-block-end: var(--space-xs);
+}
+
+.now-entries {
+  list-style: none;
+  padding: 0;
+  margin-block-start: var(--space-l);
+}
+
+.now-entries > li {
+  border-block-start: 1px solid var(--color-bg-accent);
+  padding-block-start: var(--space-l);
+  margin-block-start: var(--space-l-xl);
+}
+
+.now-entries > li:first-child {
+  margin-block-start: var(--space-l);
+}
+
+.now-previously {
+  margin-block-start: var(--space-xl);
+}
+
+.now-previously > summary {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--space-s);
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-size: var(--size-step-2);
+  font-weight: var(--font-extra-bold);
+  letter-spacing: var(--tracking-s);
+  line-height: var(--leading-fine);
+}
+
+.now-previously > summary::-webkit-details-marker,
+.now-previously > summary::marker {
+  display: none;
+  content: '';
+}
+
+.now-previously > summary::after {
+  content: '+';
+  font-family: var(--font-mono);
+  color: var(--color-primary);
+  font-weight: var(--font-regular);
+}
+
+.now-previously[open] > summary::after {
+  content: '–';
+}
+
+.now-previously > summary:hover,
+.now-previously > summary:focus-visible,
+.now-previously[open] > summary {
+  color: var(--color-primary);
+}
+
+.now-previously__count {
+  font-family: var(--font-base);
+  font-size: var(--size-step-min-1);
+  font-weight: var(--font-regular);
+  color: var(--color-text-accent);
+}

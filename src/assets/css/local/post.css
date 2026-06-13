@@ -37,3 +37,17 @@
 .post .meta {
   font-size: var(--size-step-min-1);
 }
+
+.post .image-centered {
+  display: block;
+  margin-inline: auto;
+  max-inline-size: 420px;
+  inline-size: 100%;
+}
+
+.post picture:has(.image-centered) {
+  display: block;
+  max-inline-size: 420px;
+  inline-size: 100%;
+  margin-inline: auto;
+}

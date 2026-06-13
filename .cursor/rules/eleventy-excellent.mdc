@@ -1,0 +1,12 @@
+---
+description: Eleventy Excellent theme — tokens, CSS layout, and docs pointer
+alwaysApply: true
+---
+
+# This site (Eleventy Excellent fork)
+
+- Read **`docs/eleventy-excellent-reference.md`** for design tokens, CSS bundle rules, config layout, `{% svg %}`, images, and links to the upstream [style guide](https://eleventy-excellent.netlify.app/styleguide/) and [Get started](https://eleventy-excellent.netlify.app/get-started/).
+- Prefer **existing custom properties** from `src/assets/css/global/base/variables.css` (and related tokens) over ad hoc colors or spacing.
+- **Scoped CSS:** `src/assets/css/local/` and include via `{% css "local" %}` / `{% include "css/…" %}` in layouts or templates.
+- **Global CSS:** `src/assets/css/global/blocks/`; architecture is CUBE CSS with cascade layers on global, not on local.
+- When this repo differs from generic starter docs (e.g. `/articles/`, custom layouts), follow **this repo’s** `src/pages/`, `src/posts/`, and `eleventy.config.js`.

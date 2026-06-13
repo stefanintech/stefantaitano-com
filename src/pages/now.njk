@@ -1,0 +1,76 @@
+---
+title: Now
+permalink: /now/index.html
+description: 'What Stefan Taitano is focused on right now.'
+layout: page
+---
+
+{% set entries = collections.nowEntries %}
+
+{% if entries.length %}
+  {% set latest = entries[0] %}
+  <p class="now-entry__date">
+    <time datetime="{{ latest.date | formatDateUtc('YYYY-MM-DD') }}">{{ latest.date | formatDateUtc('MMMM D, YYYY') }}</time>
+  </p>
+  {{ latest.templateContent | safe }}
+
+  {% if entries.length > 1 %}
+    <details class="now-previously">
+      <summary>
+        <span class="now-previously__label">Previously&hellip;</span>
+        <span class="now-previously__count" aria-hidden="true">{{ entries.length - 1 }}</span>
+      </summary>
+      <ol class="now-entries flow" role="list">
+        {% for entry in entries %}{% if not loop.first %}
+          <li class="flow">
+            <p class="now-entry__date">
+              <time datetime="{{ entry.date | formatDateUtc('YYYY-MM-DD') }}">{{ entry.date | formatDateUtc('MMMM D, YYYY') }}</time>
+            </p>
+            {{ entry.templateContent | safe }}
+          </li>
+        {% endif %}{% endfor %}
+      </ol>
+    </details>
+  {% endif %}
+{% endif %}
+
+<h2>Chess</h2>
+
+<p>Adult improver, trying to climb from 700 to 1200 on Lichess Rapid.</p>
+
+<table style="display: inline-table; inline-size: auto; width: auto; max-inline-size: none; border-collapse: collapse; table-layout: auto;">
+  <caption style="text-align: left; margin-bottom: 0.5rem;">Lichess rating and games played</caption>
+  <thead>
+    <tr>
+      <th scope="col" style="padding: 0 2rem 0.4rem 0; text-align: left; vertical-align: top;">Mode</th>
+      <th scope="col" style="padding: 0 2rem 0.4rem 0; text-align: left; vertical-align: top;">Rating</th>
+      <th scope="col" style="padding: 0 0 0.4rem 0; text-align: left; vertical-align: top;">Games</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Mode" style="padding: 0 2rem 0.35rem 0; text-align: left; vertical-align: top;">Rapid</td>
+      <td data-label="Rating" style="padding: 0 2rem 0.35rem 0; text-align: left; vertical-align: top;">{{ lichess.perfs.rapid.rating }}</td>
+      <td data-label="Games" style="padding: 0 0 0.35rem 0; text-align: left; vertical-align: top;">{{ lichess.perfs.rapid.games }}</td>
+    </tr>
+    <tr>
+      <td data-label="Mode" style="padding: 0 2rem 0.35rem 0; text-align: left; vertical-align: top;">Puzzles</td>
+      <td data-label="Rating" style="padding: 0 2rem 0.35rem 0; text-align: left; vertical-align: top;">{{ lichess.perfs.puzzle.rating }}</td>
+      <td data-label="Games" style="padding: 0 0 0.35rem 0; text-align: left; vertical-align: top;">{{ lichess.perfs.puzzle.games }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>Record: <strong>{{ lichess.count.win }}W / {{ lichess.count.draw }}D / {{ lichess.count.loss }}L</strong></p>
+
+<p><em>stats update on every site build</em></p>
+
+<p><a href="https://lichess.org/@/Late2TheBoard">Challenge me on Lichess</a></p>
+
+<hr>
+
+<p><em>This page is inspired by <a href="https://nownownow.com/about">nownownow.com</a>.</em></p>
+
+{% css "local" %}
+  {% include "css/now.css" %}
+{% endcss %}
