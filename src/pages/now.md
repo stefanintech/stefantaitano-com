@@ -5,25 +5,23 @@ description: 'What Stefan Taitano is focused on right now.'
 layout: page
 ---
 
-Last updated: April 15, 2026
+Last updated: June 13, 2026
 
-This is one of those seasons where a lot of threads are running at once. Professionally, I'm pushing toward ServiceNow's Certified Technical Architect exam. Outside of that, I'm teaching myself full-stack development, rebuilding this site into something more durable, writing a little more in public, and trying to keep a few hobbies alive so life does not become one long work sprint.
+The CTA beta exam is on June 17. The main professional goal right now is getting through that and doing well. Outside of that, Ruby is a side hobby keeping things interesting, chess is still in the rotation, and life outside the browser is steady.
 
 ## Work
 
-CTA prep is still the biggest professional goal right now. I want to stretch beyond developer work and keep growing into a hybrid developer/architect who can think clearly about systems, tradeoffs, and long-term design.
+CTA exam prep is daily. The beta runs June 17 and I've been grinding through the material. After the exam, the focus shifts back to consulting and architecture work.
+
+{% include "partials/exam-countdown.njk" %}
 
 ## Learning
 
-I'm working through [The Odin Project](https://www.theodinproject.com/)'s full-stack Ruby on Rails path. Most of my learning time is going into Ruby, Rails, and building real projects that tie frontend and backend together.
-
-## Building
-
-I'm also putting real energy into this site. The goal is to turn it into a home for my writing, projects, and the things I'm learning in real time instead of leaving everything scattered across platforms. The Projects page is live, Field Notes is on Beehiiv, and the next push is better article cross-linking and a font refresh.
+I'm dabbling in Ruby and just exploring the language for fun. It's a nice contrast to the structured exam prep.
 
 ## Writing
 
-I'm writing on [Medium](https://medium.com/@stefantaitano) about what I'm learning, building, and rethinking in real time. Over time, I want more of that writing to live here too, but Medium is still part of the mix for now.
+I published a Field Notes issue last month. Writing in public is still part of the plan. Over time more of it will live here, but Medium and Field Notes are both still in the mix.
 
 ## Life Outside The Browser
 
