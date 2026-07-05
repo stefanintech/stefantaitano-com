@@ -29,11 +29,21 @@
 }
 
 @font-face {
-  font-family: 'Redhat';
+  font-family: 'Caveat';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src:
+    local(''),
+    url('/assets/fonts/caveat/caveat-latin-600.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Fraunces';
   font-style: normal;
   font-display: swap;
   font-weight: 900;
   src:
     local(''),
-    url('/assets/fonts/redhat/red-hat-display-v7-latin-900.woff2') format('woff2');
+    url('/assets/fonts/fraunces/fraunces-latin-900.woff2') format('woff2');
 }

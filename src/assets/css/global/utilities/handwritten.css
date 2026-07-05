@@ -1,0 +1,10 @@
+/* Handwritten accent for small asides and section labels.
+   Caveat renders small at a given size, so bump it to match surrounding text. */
+.handwritten {
+  font-family: var(--font-handwriting);
+  font-weight: 600;
+  font-size: 1.4em;
+  line-height: var(--leading-fine);
+  letter-spacing: normal;
+  text-transform: none;
+}

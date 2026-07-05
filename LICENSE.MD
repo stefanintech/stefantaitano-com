@@ -36,9 +36,9 @@ SOFTWARE.
 
 ### SIL OPEN FONT LICENSE
 
-The Fonts **Red Hat Display** and **Atkinson Hyperlegible** are licensed under the SIL License, Version 1.1.
+The Fonts **Fraunces** and **Atkinson Hyperlegible** are licensed under the SIL License, Version 1.1.
 
-Copyright (c) Red Hat, Inc. and (c) Braille Institute.
+Copyright (c) Undercase Type (Fraunces) and (c) Braille Institute.
 
 This license allows
 

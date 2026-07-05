@@ -23,8 +23,8 @@ export const creator = {
 };
 export const pathToSvgLogo = 'src/assets/svg/misc/logo.svg'; // used for favicon generation
 export const themeColor = '#B45309'; // used in manifest, for example primary color value
-export const themeLight = '#F7F4EF'; // used for meta tag theme-color, if light colors are prefered. best use value set for light bg
-export const themeDark = '#1E2530'; // used for meta tag theme-color, if dark colors are prefered. best use value set for dark bg
+export const themeLight = '#fbf8f3'; // used for meta tag theme-color, if light colors are prefered. best use value set for light bg
+export const themeDark = '#322d25'; // used for meta tag theme-color, if dark colors are prefered. best use value set for dark bg
 export const opengraph_default = '/assets/og-images/default-preview.svg'; // fallback/default meta image
 export const opengraph_default_alt =
   'Default social preview card for Stefan Taitano.'; // alt text for default meta image"

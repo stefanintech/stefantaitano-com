@@ -144,10 +144,10 @@ The next meaningful improvements are:
 - ~~Replace the default Open Graph image~~ Done: subtitle updated, 11ty logo replaced with ST monogram on per-post cards
 - ~~Build a dedicated Projects page~~ Done: data-driven via projects.yaml, live at /projects/
 - ~~Replace the interim Field Notes email CTA~~ Done: links to the Buttondown publication
-- Swap default fonts for something that fits the brand
+- ~~Swap default fonts for something that fits the brand~~ Done: Fraunces for headings, Atkinson Hyperlegible kept for body
 - Decide whether to add supporting pages like `Bookshelf`, `Uses`, and `Colophon`
-- Evaluate privacy-friendly analytics
 - Add end-of-article cross-links so each post suggests the next click
+- Evaluate privacy-friendly analytics (deprioritized; currently no analytics by choice)
 
 ## To-do
 
@@ -155,10 +155,10 @@ The next meaningful improvements are:
 - [x] Replace the default Open Graph image
 - [x] Build a dedicated `Projects` page
 - [x] Replace the temporary `Field Notes` email CTA with a real signup destination
-- [ ] Swap fonts
+- [x] Swap fonts (Fraunces display, Atkinson Hyperlegible body)
 - [ ] Add optional supporting pages like `Uses`, `Bookshelf`, or `Colophon`
-- [ ] Evaluate privacy-friendly analytics
 - [ ] Add article cross-links or related-post navigation
+- [ ] Evaluate privacy-friendly analytics (deprioritized)
 
 ## Notes For Interested Folks
 

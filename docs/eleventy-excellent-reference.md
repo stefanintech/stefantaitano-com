@@ -35,7 +35,7 @@ Tokens live in `src/_data/designTokens/`; generated custom properties land in `s
 
 ### Typography
 
-- Display: `var(--font-display)` (Red Hat Display stack)
+- Display: `var(--font-display)` (Fraunces stack, serif fallbacks)
 - Body: `var(--font-base)` (Atkinson Hyperlegible stack)
 - Mono: `var(--font-mono)`
 
