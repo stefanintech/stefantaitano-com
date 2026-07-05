@@ -3,7 +3,7 @@ export const url = process.env.URL || 'https://www.stefantaitano.com';
 export const domain = new URL(url).hostname;
 export const siteName = 'Stefan Taitano';
 export const siteDescription =
-  'Army veteran turned ServiceNow consultant, documenting the path to CTA certification, backend development, and relocating a family of four to Thailand.';
+  'Army veteran turned ServiceNow consultant, writing about ServiceNow, Ruby, software development, and building a more intentional life.';
 export const siteType = 'Person'; // schema
 export const locale = 'en_EN';
 export const lang = 'en';

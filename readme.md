@@ -4,7 +4,7 @@ Personal website and writing home for Stefan Taitano.
 
 Live site: [www.stefantaitano.com](https://www.stefantaitano.com)
 
-This repository powers a personal site built with Eleventy. It mixes long-form writing, a `/now` page, platform links, generated feeds, and a homepage that is slowly turning into a clearer home for projects, articles, and ongoing work. Stefan is an Army veteran turned ServiceNow consultant, currently pursuing the CTA certification and teaching himself full-stack development through The Odin Project.
+This repository powers a personal site built with Eleventy. It mixes long-form writing, a `/now` page, platform links, generated feeds, and a homepage that is slowly turning into a clearer home for projects, articles, and ongoing work. Stefan is an Army veteran turned ServiceNow consultant, getting deeper into Ruby and slowly training for a 2027 marathon.
 
 ## What This Site Is
 
@@ -20,7 +20,7 @@ This repository powers a personal site built with Eleventy. It mixes long-form w
 - `Phase 2` is done: the homepage rewrite, clearer navigation, and a stronger `/now` path are live.
 - Branding is done: slate + amber color scheme, ST monogram logo, favicons, and a real profile photo on the homepage.
 - The article archive has real content: three Medium articles ported and one site-native post published.
-- The `/now` page pulls live Lichess stats at build time and has a balanced, narrative structure.
+- The `/now` page uses dated Markdown entries, shows the latest update first, and pulls live Lichess stats at build time.
 - The biggest remaining product work is turning temporary sections into real destinations and tightening content flow.
 
 ## Stack
@@ -96,7 +96,7 @@ src/
 ## Key Files
 
 - `src/pages/index.njk`: homepage and current preview sections
-- `src/pages/now.md`: current `/now` page
+- `src/pages/now.njk`: current `/now` page
 - `src/pages/articles.njk`: article index and pagination
 - `src/_layouts/post.njk`: post layout, newsletter CTA insertion, edit link
 - `src/_data/meta.js`: site URL, metadata, feeds, theme, and testing config
@@ -143,11 +143,11 @@ The next meaningful improvements are:
 - ~~Fix the legal/imprint data path~~ Done: rewritten as a lightweight legal notice with email contact
 - ~~Replace the default Open Graph image~~ Done: subtitle updated, 11ty logo replaced with ST monogram on per-post cards
 - ~~Build a dedicated Projects page~~ Done: data-driven via projects.yaml, live at /projects/
-- ~~Replace the interim Field Notes email CTA~~ Done: links to Beehiiv publication at stefans-dispatch.beehiiv.com
-- Add end-of-article cross-links so each post suggests the next click
+- ~~Replace the interim Field Notes email CTA~~ Done: links to the Buttondown publication
 - Swap default fonts for something that fits the brand
 - Decide whether to add supporting pages like `Bookshelf`, `Uses`, and `Colophon`
 - Evaluate privacy-friendly analytics
+- Add end-of-article cross-links so each post suggests the next click
 
 ## To-do
 
@@ -155,10 +155,10 @@ The next meaningful improvements are:
 - [x] Replace the default Open Graph image
 - [x] Build a dedicated `Projects` page
 - [x] Replace the temporary `Field Notes` email CTA with a real signup destination
-- [ ] Add article cross-links or related-post navigation
 - [ ] Swap fonts
 - [ ] Add optional supporting pages like `Uses`, `Bookshelf`, or `Colophon`
 - [ ] Evaluate privacy-friendly analytics
+- [ ] Add article cross-links or related-post navigation
 
 ## Notes For Interested Folks
 
@@ -167,7 +167,7 @@ This site started from the [Eleventy Excellent](https://eleventy-excellent.netli
 If you are browsing because you are interested in the site itself, the best places to start are:
 
 - `src/pages/index.njk`
-- `src/pages/now.md`
+- `src/pages/now.njk`
 - `src/_data/meta.js`
 - `src/_layouts/post.njk`
 
