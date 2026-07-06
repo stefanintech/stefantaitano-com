@@ -25,6 +25,10 @@ export default {
     {
       text: 'Accessibility',
       url: '/accessibility/'
+    },
+    {
+      text: 'Colophon',
+      url: '/colophon/'
     }
   ]
 };
