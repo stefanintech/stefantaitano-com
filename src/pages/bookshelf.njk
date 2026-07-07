@@ -1,0 +1,82 @@
+---
+layout: base
+permalink: /bookshelf/index.html
+title: 'Bookshelf'
+description: 'What Stefan Taitano is reading and listening to - mostly audiobooks, always books.'
+---
+
+<div class="wrapper">
+  <header class="full | section" style="--spot-color: var(--color-primary)">
+    <div class="section__inner flow region" style="--region-space-top: var(--space-xl-2xl); --region-space-bottom: var(--space-xl-2xl);">
+      <div class="wrapper">
+        <div class="flow" style="max-inline-size: 62ch;">
+          <h1 style="color: var(--color-light);">Bookshelf</h1>
+          <p style="font-size: var(--size-step-1); color: var(--color-light); opacity: 0.95;">
+            What I'm reading, have read, and want to read next. Most of these went through
+            my ears, not my eyes. A book is a book.
+          </p>
+          <p style="font-size: var(--size-step-min-1); color: var(--color-light); opacity: 0.9;">
+            I usually listen through Libro.fm. If you want to try it, here's my
+            <a href="https://libro.fm/referral?rf_code=lfm1105085" style="color: inherit;">referral link</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+    {% svg "divider/waves", null, "divider" %}
+  </header>
+
+  {% set statusGroups = [
+    { key: 'reading', label: 'Currently reading' },
+    { key: 'finished', label: 'Finished' },
+    { key: 'queued', label: 'Up next' }
+  ] %}
+  {% set grouped = books | groupby('status') %}
+
+  {% for group in statusGroups %}
+    {% set groupBooks = grouped[group.key] %}
+    {% if group.key == 'finished' and groupBooks %}
+      {% set groupBooks = groupBooks | sort(true, false, 'finished') %}
+    {% endif %}
+    {% if groupBooks %}
+      <section class="full | region">
+        <div class="wrapper flow">
+          <p class="handwritten" style="font-size: var(--size-step-1); color: var(--color-primary);">
+            {{ group.label }}
+          </p>
+          <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 20rem;">
+            {% for book in groupBooks %}
+              <div
+                class="flow"
+                style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
+              >
+                <div class="flow" style="--flow-space: var(--space-xs);">
+                  <h2 style="font-size: var(--size-step-1);">
+                    {% if book.url %}
+                      <a href="{{ book.url }}">{{ book.title }}</a>
+                    {% else %}
+                      {{ book.title }}
+                    {% endif %}
+                  </h2>
+                  <p style="font-size: var(--size-step-min-1);">by {{ book.author }}</p>
+                  <div class="cluster gutter-xs" style="flex-wrap: wrap;">
+                    <span
+                      style="font-size: var(--size-step-min-1); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.2em 0.6em; border: 1px solid var(--color-bg-accent-2); border-radius: 999px;"
+                    >{{ book.format }}</span>
+                    {% if book.finished %}
+                      <span
+                        style="font-size: var(--size-step-min-1); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.2em 0.6em; border: 1px solid var(--color-bg-accent-2); border-radius: 999px;"
+                      >{{ book.finished }}</span>
+                    {% endif %}
+                  </div>
+                </div>
+                {% if book.note %}
+                  <p>{{ book.note }}</p>
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+    {% endif %}
+  {% endfor %}
+</div>

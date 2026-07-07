@@ -13,6 +13,10 @@ export default {
       url: '/projects/'
     },
     {
+      text: 'Bookshelf',
+      url: '/bookshelf/'
+    },
+    {
       text: 'Newsletter',
       url: '/#newsletter'
     }

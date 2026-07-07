@@ -145,7 +145,7 @@ The next meaningful improvements are:
 - ~~Build a dedicated Projects page~~ Done: data-driven via projects.yaml, live at /projects/
 - ~~Replace the interim Field Notes email CTA~~ Done: links to the Buttondown publication
 - ~~Swap default fonts for something that fits the brand~~ Done: Fraunces for headings, Atkinson Hyperlegible kept for body
-- ~~Decide whether to add supporting pages like `Bookshelf`, `Uses`, and `Colophon`~~ Done: Colophon live at /colophon/; Bookshelf possible later, Uses skipped
+- ~~Decide whether to add supporting pages like `Bookshelf`, `Uses`, and `Colophon`~~ Done: Colophon live at /colophon/, Bookshelf live at /bookshelf/, Uses skipped
 - Add end-of-article cross-links so each post suggests the next click
 - Evaluate privacy-friendly analytics (deprioritized; currently no analytics by choice)
 
@@ -156,7 +156,7 @@ The next meaningful improvements are:
 - [x] Build a dedicated `Projects` page
 - [x] Replace the temporary `Field Notes` email CTA with a real signup destination
 - [x] Swap fonts (Fraunces display, Atkinson Hyperlegible body)
-- [x] Add optional supporting pages (Colophon live; Bookshelf possible later, Uses skipped)
+- [x] Add optional supporting pages (Colophon and Bookshelf live; Uses skipped)
 - [ ] Add article cross-links or related-post navigation
 - [ ] Evaluate privacy-friendly analytics (deprioritized)
 

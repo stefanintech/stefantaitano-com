@@ -1,0 +1,79 @@
+# Bookshelf entries. Add a book in 30 seconds:
+#
+# - title: Book Title
+#   author: Author Name
+#   format: audio          # audio | print | ebook
+#   status: reading        # reading | finished | queued
+#   finished: 2026         # optional, year only is fine (used for sorting, newest first)
+#   note: >
+#     One or two sentences in your own voice. What it left you with,
+#     not a book report.
+#   url: https://example.com/book  # optional link on the title
+
+- title: The Psychology of Money
+  author: Morgan Housel
+  format: print
+  status: reading
+  note: >
+    Picked this up while thinking about intentional life design. Short chapters,
+    big ideas about how behavior beats spreadsheets. Currently on pause, but it
+    keeps pulling me back.
+  url: https://www.goodreads.com/book/show/51181015-the-psychology-of-money
+
+- title: Mistborn
+  author: Brandon Sanderson
+  format: audio
+  status: reading
+  note: >
+    Finally starting the Mistborn saga. A fantasy heist against an immortal
+    ruler feels like a pretty strong way into Sanderson's world.
+  url: https://www.goodreads.com/book/show/68428.Mistborn
+
+- title: Show Your Work!
+  author: Austin Kleon
+  format: audio
+  status: finished
+  finished: 2026
+  note: >
+    Ten short chapters on why sharing the process beats waiting for the polished
+    result. Half the reason this site has a /now page, a colophon, and articles
+    about things I'm still learning.
+  url: https://www.goodreads.com/book/show/20874659-show-your-work
+
+- title: The Mamba Mentality
+  author: Kobe Bryant
+  format: print
+  status: finished
+  finished: 2022
+  note: >
+    Kobe on process over results, and working hard in the dark to shine in the
+    light. Read it years ago and the mindset stuck with me longer than any
+    specific play he breaks down.
+  url: https://www.goodreads.com/book/show/40242434-the-mamba-mentality
+
+- title: Project Hail Mary
+  author: Andy Weir
+  format: audio
+  status: queued
+  note: >
+    A space survival story that keeps coming up as a great audiobook. Feels like
+    the kind of sci-fi that could make the commute disappear.
+  url: https://www.goodreads.com/en/book/show/54493401-project-hail-mary
+
+- title: James
+  author: Percival Everett
+  format: audio
+  status: queued
+  note: >
+    A reimagining of Huckleberry Finn from Jim's point of view. One of those
+    books I keep seeing recommended and want to finally make time for.
+  url: https://www.goodreads.com/book/show/173754979-james
+
+- title: One Day, Everyone Will Have Always Been Against This
+  author: Omar El Akkad
+  format: audio
+  status: queued
+  note: >
+    A sharp, timely nonfiction book about empire, the west, and what people
+    choose to say only when it becomes safe to say it.
+  url: https://www.goodreads.com/book/show/213870084-one-day-everyone-will-have-always-been-against-this
