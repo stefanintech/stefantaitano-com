@@ -5,6 +5,10 @@ export default {
       url: '/now/'
     },
     {
+      text: 'Links',
+      url: '/links/'
+    },
+    {
       text: 'Articles',
       url: '/articles/'
     },

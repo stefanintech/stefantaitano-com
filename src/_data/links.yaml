@@ -1,0 +1,20 @@
+tagline: ServiceNow consultant · Ruby hobbyist
+# Shown after the tagline; delete or blank this line after the conference
+event: at RubyConf
+links:
+  - label: Website
+    url: https://www.stefantaitano.com
+  - label: Bluesky
+    url_key: bluesky
+  - label: GitHub
+    url_key: github
+  - label: Field Notes
+    url: https://buttondown.com/stefantaitano
+  - label: LinkedIn
+    url_key: linkedin
+  - label: Email
+    email: true
+    variant: ghost
+  - label: Lichess
+    url_key: lichess
+    variant: ghost

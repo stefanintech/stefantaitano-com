@@ -1,0 +1,56 @@
+---
+layout: base
+permalink: /links/index.html
+title: Stefan Taitano — Links
+description: 'Links and contact for Stefan Taitano — ServiceNow consultant, Ruby hobbyist.'
+---
+
+<div class="links-page wrapper region">
+  <div class="links-profile flow">
+    <button type="button" class="links-avatar" id="links-avatar" aria-label="Stefan Taitano">
+      <img
+        src="/assets/images/stefan.png"
+        alt=""
+        width="120"
+        height="120"
+        loading="eager"
+        fetchpriority="high"
+        decoding="sync"
+      >
+    </button>
+
+    <div class="links-identity flow">
+      <h1 class="links-name">Stefan Taitano</h1>
+      <p class="links-tagline">{{ links.tagline }}{% if links.event %} · {{ links.event }}{% endif %}</p>
+    </div>
+
+    <nav class="links-nav flow" aria-label="Stefan's links">
+      {%- for item in links.links %}
+        {%- if item.url_key %}
+          {%- set href = personal.platforms[item.url_key] %}
+        {%- elif item.email %}
+          {%- set href = "mailto:" + personal.email %}
+        {%- else %}
+          {%- set href = item.url %}
+        {%- endif %}
+        <a
+          href="{{ href }}"
+          class="button links-button"
+          {%- if item.variant == "ghost" %} data-ghost-button{% else %} data-button-variant="primary"{% endif %}
+          {%- if item.url_key %} rel="me"{% endif %}
+        >{{ item.label }}</a>
+      {%- endfor %}
+    </nav>
+
+    <p class="links-hint">
+      <span class="links-hint__touch">press and hold the photo ♟</span>
+      <span class="links-hint__keyboard">type <kbd>stefan</kbd> for a surprise</span>
+    </p>
+  </div>
+</div>
+
+<script type="module" src="/assets/scripts/components/custom-links-egg.js"></script>
+
+{% css "local" %}
+  {% include "css/links.css" %}
+{% endcss %}

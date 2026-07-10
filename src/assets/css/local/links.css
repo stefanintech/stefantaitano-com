@@ -1,0 +1,157 @@
+/* Keep .wrapper's grid + gutters intact; center via the inner column instead */
+.links-page {
+  --region-space-top: var(--space-l);
+  --region-space-bottom: var(--space-xl);
+}
+
+@media (min-width: 48em) {
+  .links-page {
+    --region-space-top: var(--space-xl-2xl);
+    --region-space-bottom: var(--space-xl-2xl);
+  }
+}
+
+.links-profile {
+  --flow-space: var(--space-m);
+  width: min(28rem, 100%);
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.links-avatar {
+  /* Reset native button chrome */
+  appearance: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+
+  inline-size: 120px;
+  block-size: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 4px solid color-mix(in oklab, var(--color-primary) 35%, transparent);
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.links-avatar:hover,
+.links-avatar:focus-visible {
+  transform: scale(1.04);
+  border-color: var(--color-primary);
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.links-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  pointer-events: none;
+}
+
+.links-identity {
+  --flow-space: var(--space-3xs);
+}
+
+.links-name {
+  font-family: var(--font-display);
+  font-size: var(--size-step-3);
+  font-weight: 900;
+  line-height: var(--leading-fine);
+  letter-spacing: var(--tracking-s);
+  margin: 0;
+}
+
+.links-tagline {
+  font-size: var(--size-step-min-1);
+  color: var(--color-text-accent);
+  margin: 0;
+}
+
+.links-nav {
+  --flow-space: var(--space-s);
+  width: 100%;
+  margin-block-start: var(--space-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-s);
+}
+
+.links-button {
+  width: 100%;
+  justify-content: center;
+  min-block-size: 3.125rem;
+  padding-block: var(--space-s);
+  font-size: var(--size-step-0);
+  font-weight: var(--font-medium, 500);
+}
+
+.links-hint {
+  margin-block-start: var(--space-xl);
+  font-size: var(--size-step-min-2);
+  color: var(--color-text-accent);
+}
+
+/* Input-aware hint: touch devices get the long-press wording,
+   pointer/keyboard devices get the typing wording. display:none also
+   removes the inactive variant from the accessibility tree. */
+.links-hint__touch {
+  display: none;
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .links-hint__touch {
+    display: inline;
+  }
+
+  .links-hint__keyboard {
+    display: none;
+  }
+}
+
+.links-hint kbd {
+  font-family: var(--font-mono);
+  background: var(--color-bg-accent);
+  border: 1px solid var(--color-bg-accent-2);
+  border-radius: 3px;
+  padding: 0.1em 0.35em;
+  font-size: 0.9em;
+}
+
+/* Toast that appears when the avatar easter egg triggers */
+.links-toast {
+  position: fixed;
+  bottom: var(--space-l);
+  left: 50%;
+  translate: -50% 0;
+  background: var(--color-dark);
+  color: var(--color-light);
+  padding: var(--space-xs) var(--space-m);
+  border-radius: var(--border-radius-medium);
+  font-size: var(--size-step-min-1);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
+  z-index: 100;
+}
+
+.links-toast[data-visible] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.links-toast a {
+  color: var(--color-tertiary);
+  font-weight: var(--font-medium, 500);
+}
