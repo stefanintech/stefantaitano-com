@@ -46,7 +46,11 @@
         aria-current=page
       {% endif %}
     {% endset %}
-    {% include "partials/header.njk" %}
+    {% if compactHeader %}
+      {% include "partials/header-compact.njk" %}
+    {% else %}
+      {% include "partials/header.njk" %}
+    {% endif %}
 
     <main id="main" class="flow">{{ content | safe }}</main>
 

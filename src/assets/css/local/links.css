@@ -1,3 +1,35 @@
+.compact-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-s);
+  padding-block: var(--space-xs);
+  border-block-end: 1px solid var(--color-bg-accent-2);
+}
+
+.compact-header__home {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-weight: var(--font-bold);
+}
+
+.compact-header .theme-switch {
+  margin-block-start: 0;
+}
+
+.compact-header .theme-switch h2 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Keep .wrapper's grid + gutters intact; center via the inner column instead */
 .links-page {
   --region-space-top: var(--space-l);

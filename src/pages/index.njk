@@ -17,11 +17,11 @@ articles:
         >
           <div class="home-hero__content flow" style="flex: 1; min-inline-size: 28ch; max-inline-size: 62ch;">
             <h1 class="home-hero__title" style="color: var(--color-light);">I build systems for a living and escape plans for fun.</h1>
-            <p class="handwritten" style="color: var(--color-light); opacity: 0.9;" aria-hidden="true">
-              (the escape plans mostly involve Ruby and running)
+            <p class="handwritten" style="color: var(--color-light); opacity: 0.9;">
+              (the escape plans involve Ruby, running, and a more intentional life)
             </p>
             <p style="font-size: var(--size-step-1); color: var(--color-light); opacity: 0.95;">
-              I'm Stefan, an Army veteran turned ServiceNow consultant, getting deeper into Ruby and slowly training for a 2027 marathon.
+              I'm Stefan, an Army veteran turned ServiceNow developer and consultant, growing toward architecture while I get deeper into Ruby.
             </p>
             <div class="home-hero__actions cluster gutter-s">
               <a href="/resume/" class="button" data-button-variant="tertiary">View my résumé</a>
@@ -140,21 +140,27 @@ articles:
       <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 16rem;">
         {% for project in projects %}
           {% if not project.draft %}
-            <div
-              class="flow"
-              style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
-            >
+            <article class="project-card flow">
               <strong>{{ project.title }}</strong>
+              <div class="project-card__meta" aria-label="Project status and date">
+                <span>{{ project.status }}</span>
+                <span>{{ project.date }}</span>
+              </div>
+              <div class="cluster gutter-xs" style="flex-wrap: wrap;">
+                {% for tag in project.tech %}
+                  <span class="project-card__tag">{{ tag }}</span>
+                {% endfor %}
+              </div>
               <p style="margin-top: var(--space-xs);">{{ project.description }}</p>
               <div class="cluster gutter-s" style="margin-top: var(--space-s);">
                 {% if project.url %}
-                  <a href="{{ project.url }}" style="font-size: var(--size-step-min-1);">View site &rarr;</a>
+                  <a href="{{ project.url }}" style="font-size: var(--size-step-min-1);">View {{ project.title }} live &rarr;</a>
                 {% endif %}
                 {% if project.repo %}
-                  <a href="{{ project.repo }}" style="font-size: var(--size-step-min-1);">View code &rarr;</a>
+                  <a href="{{ project.repo }}" style="font-size: var(--size-step-min-1);">View {{ project.title }} source &rarr;</a>
                 {% endif %}
               </div>
-            </div>
+            </article>
           {% endif %}
         {% endfor %}
       </div>
@@ -195,4 +201,5 @@ articles:
 
 {% css "local" %}
   {% include "css/home.css" %}
+  {% include "css/projects.css" %}
 {% endcss %}

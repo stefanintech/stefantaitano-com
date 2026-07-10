@@ -5,6 +5,8 @@ date: 2026-04-17
 draft: false
 ---
 
+**July 2026 update:** I'm back in The Odin Project's Ruby lessons, preparing for RubyConf, and getting familiar with RubyEvents ahead of the hackspace. The pace is still small and unglamorous, but the flag is still planted. The latest is on [my /now page](/now/).
+
 <img src="/assets/images/blog/learning-ruby-rails-2026-odin-dashboard.png" alt="My Odin Project dashboard showing 86% completion of Foundations" eleventy:widths="860" sizes="100vw">
 
 I've switched languages and platforms enough times in the last year that I stopped telling people what I was learning. It was the Go track on Boot.dev for a while, then back to The Odin Project which put me in JavaScript land, and somewhere in there I kept finding myself watching content built around web development at night instead of doing whatever I was supposed to be doing. The real hook was [Lex Fridman's interview with DHH](https://youtu.be/vagyIcmIGOQ?si=Fjzjc5Vn9UAgxsaw), where he explains why Ruby is beautiful compared to other languages, and watching how passionate the community is about it pulled me the rest of the way in, from [SF Ruby 2025](https://sfruby.com/talks/) talks to [RubyConTH](https://rubyconfth.com/).

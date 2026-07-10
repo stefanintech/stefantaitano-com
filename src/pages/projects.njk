@@ -26,33 +26,50 @@ description: 'Things Stefan Taitano is building and has built — from personal 
       <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 20rem;">
         {% for project in projects %}
           {% if not project.draft %}
-            <div
-              class="flow"
-              style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
-            >
+            <article class="project-card flow">
               <div class="flow" style="--flow-space: var(--space-xs);">
                 <h2 style="font-size: var(--size-step-1);">{{ project.title }}</h2>
+                <div class="project-card__meta" aria-label="Project status and date">
+                  <span>{{ project.status }}</span>
+                  <span>{{ project.date }}</span>
+                </div>
                 <div class="cluster gutter-xs" style="flex-wrap: wrap;">
                   {% for tag in project.tech %}
-                    <span
-                      style="font-size: var(--size-step-min-1); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.2em 0.6em; border: 1px solid var(--color-bg-accent-2); border-radius: 999px;"
-                    >{{ tag }}</span>
+                    <span class="project-card__tag">{{ tag }}</span>
                   {% endfor %}
                 </div>
               </div>
               <p>{{ project.description }}</p>
+              <dl class="project-card__proof">
+                <div>
+                  <dt>Role</dt>
+                  <dd>{{ project.role }}</dd>
+                </div>
+                <div>
+                  <dt>Challenge</dt>
+                  <dd>{{ project.challenge }}</dd>
+                </div>
+                <div>
+                  <dt>Result</dt>
+                  <dd>{{ project.result }}</dd>
+                </div>
+              </dl>
               <div class="cluster gutter-s" style="margin-top: var(--space-m);">
                 {% if project.url %}
-                  <a class="button" data-button-variant="primary" href="{{ project.url }}">View site</a>
+                  <a class="button" data-button-variant="primary" href="{{ project.url }}">View {{ project.title }} live</a>
                 {% endif %}
                 {% if project.repo %}
-                  <a class="button" data-ghost-button href="{{ project.repo }}">View code</a>
+                  <a class="button" data-ghost-button href="{{ project.repo }}">View {{ project.title }} source</a>
                 {% endif %}
               </div>
-            </div>
+            </article>
           {% endif %}
         {% endfor %}
       </div>
     </div>
   </section>
 </div>
+
+{% css "local" %}
+  {% include "css/projects.css" %}
+{% endcss %}
