@@ -1,0 +1,27 @@
+.home-hero__inner {
+  --region-space-top: var(--space-xl-2xl);
+  --region-space-bottom: var(--space-xl-2xl);
+}
+
+.home-hero__actions {
+  margin-block-start: var(--space-m);
+}
+
+@media (max-width: 47.99em) {
+  .home-hero__inner {
+    --region-space-top: var(--space-l);
+    --region-space-bottom: var(--space-l);
+  }
+
+  .home-hero__content {
+    --flow-space: var(--space-s);
+  }
+
+  .home-hero__title {
+    font-size: var(--size-step-4);
+  }
+
+  .home-hero__actions {
+    margin-block-start: var(--space-s);
+  }
+}

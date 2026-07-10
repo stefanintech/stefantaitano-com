@@ -10,22 +10,22 @@ articles:
 
 <div class="wrapper">
   <header class="full | section" style="--spot-color: var(--color-primary)">
-    <div class="section__inner flow region" style="--region-space-top: var(--space-xl-2xl); --region-space-bottom: var(--space-xl-2xl);">
+    <div class="home-hero__inner section__inner flow region">
       <div class="wrapper">
         <div
           style="display: flex; gap: var(--space-xl); align-items: center; justify-content: space-between; flex-wrap: wrap;"
         >
-          <div class="flow" style="flex: 1; min-inline-size: 28ch; max-inline-size: 62ch;">
-            <h1 style="color: var(--color-light);">I build systems for a living and escape plans for fun.</h1>
+          <div class="home-hero__content flow" style="flex: 1; min-inline-size: 28ch; max-inline-size: 62ch;">
+            <h1 class="home-hero__title" style="color: var(--color-light);">I build systems for a living and escape plans for fun.</h1>
             <p class="handwritten" style="color: var(--color-light); opacity: 0.9;" aria-hidden="true">
               (the escape plans mostly involve Ruby and running)
             </p>
             <p style="font-size: var(--size-step-1); color: var(--color-light); opacity: 0.95;">
               I'm Stefan, an Army veteran turned ServiceNow consultant, getting deeper into Ruby and slowly training for a 2027 marathon.
             </p>
-            <div class="cluster gutter-s" style="margin-top: var(--space-m);">
-              <a href="/now/" class="button" data-button-variant="tertiary">See what I'm doing now</a>
-              <a href="/articles/" class="button" data-ghost-button>Read the articles</a>
+            <div class="home-hero__actions cluster gutter-s">
+              <a href="/resume/" class="button" data-button-variant="tertiary">View my résumé</a>
+              <a href="{{ personal.platforms.github }}" class="button" data-ghost-button rel="me">See my GitHub</a>
             </div>
           </div>
 
@@ -192,3 +192,7 @@ articles:
     </div>
   </section>
 </div>
+
+{% css "local" %}
+  {% include "css/home.css" %}
+{% endcss %}
