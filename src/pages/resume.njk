@@ -1,0 +1,113 @@
+---
+layout: base
+permalink: /resume/index.html
+title: 'Résumé — Stefan Taitano'
+description: 'Professional résumé for Stefan Taitano — ServiceNow Developer and Technical Consultant based in Minneapolis, MN.'
+schema: ProfilePage
+lastUpdated: '2026-07-10'
+---
+
+<div class="resume-page wrapper region" style="--region-space-top: var(--space-xl-2xl); --region-space-bottom: var(--space-xl-2xl);">
+  <article class="resume prose flow" aria-label="Résumé">
+
+    <header class="resume-header flow">
+      <div class="resume-header__identity">
+        <h1 class="resume-header__name">{{ resume.name }}</h1>
+        <p class="resume-header__title">{{ resume.title }}</p>
+      </div>
+      <address class="resume-header__contact cluster" aria-label="Contact information">
+        <span>{{ resume.location }}</span>
+        <a href="mailto:{{ resume.email }}">{{ resume.email }}</a>
+        <a href="{{ resume.website }}" rel="me">stefantaitano.com</a>
+        <a href="{{ resume.github }}" rel="me noopener" target="_blank">github.com/stefanintech</a>
+        <a href="{{ resume.linkedin }}" rel="me noopener" target="_blank">LinkedIn</a>
+      </address>
+      <div class="resume-header__actions cluster">
+        <a
+          href="/resume/stefan-taitano-resume.pdf"
+          class="button"
+          data-button-variant="primary"
+          download="Stefan_Taitano_Resume.pdf"
+        >Download résumé (PDF)</a>
+        <a href="/links/" class="button" data-ghost-button>All links</a>
+      </div>
+    </header>
+
+    <section class="resume-section flow" aria-labelledby="resume-summary-heading">
+      <h2 id="resume-summary-heading" class="resume-section__heading">Summary</h2>
+      <p>{{ resume.summary }}</p>
+    </section>
+
+    <section class="resume-section flow" aria-labelledby="resume-skills-heading">
+      <h2 id="resume-skills-heading" class="resume-section__heading">Skills</h2>
+      <dl class="resume-skills flow">
+        {%- for skill in resume.skills %}
+          <div class="resume-skills__row">
+            <dt>{{ skill.group }}</dt>
+            <dd>{{ skill.items }}</dd>
+          </div>
+        {%- endfor %}
+      </dl>
+    </section>
+
+    <section class="resume-section flow" aria-labelledby="resume-experience-heading">
+      <h2 id="resume-experience-heading" class="resume-section__heading">Experience</h2>
+      {%- for job in resume.experience %}
+        <div class="resume-job flow">
+          <div class="resume-job__meta">
+            <h3 class="resume-job__role">{{ job.role }}</h3>
+            <p class="resume-job__org">
+              {{ job.org }}
+              {%- if job.location %}, {{ job.location }}{% endif %}
+            </p>
+            <p class="resume-job__dates">
+              <time>{{ job.start }}</time>
+              <span aria-hidden="true"> — </span>
+              <time>{{ job.end }}</time>
+            </p>
+          </div>
+          <ul class="resume-job__bullets flow">
+            {%- for bullet in job.bullets %}
+              <li>{{ bullet }}</li>
+            {%- endfor %}
+          </ul>
+        </div>
+      {%- endfor %}
+    </section>
+
+    <section class="resume-section flow" aria-labelledby="resume-certs-heading">
+      <h2 id="resume-certs-heading" class="resume-section__heading">Certifications</h2>
+      <ul class="resume-certs flow">
+        {%- for cert in resume.certifications %}
+          <li>{{ cert }}</li>
+        {%- endfor %}
+      </ul>
+    </section>
+
+    <section class="resume-section flow" aria-labelledby="resume-education-heading">
+      <h2 id="resume-education-heading" class="resume-section__heading">Education</h2>
+      {%- for edu in resume.education %}
+        <div class="resume-edu flow">
+          <h3 class="resume-edu__institution">{{ edu.institution }}</h3>
+          <p class="resume-edu__field">{{ edu.field }}</p>
+          <p class="resume-edu__dates">
+            <time>{{ edu.start }}</time>
+            <span aria-hidden="true"> — </span>
+            <time>{{ edu.end }}</time>
+          </p>
+        </div>
+      {%- endfor %}
+    </section>
+
+    <footer class="resume-footer">
+      <p class="resume-footer__updated">
+        Last updated: <time datetime="{{ resume.lastUpdated }}">{{ resume.lastUpdated | formatDate('MMMM D, YYYY') }}</time>
+      </p>
+    </footer>
+
+  </article>
+</div>
+
+{% css "local" %}
+  {% include "css/resume.css" %}
+{% endcss %}

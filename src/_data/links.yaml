@@ -8,6 +8,8 @@ links:
     url_key: bluesky
   - label: GitHub
     url_key: github
+  - label: Résumé
+    url: /resume/
   - label: Field Notes
     url: https://buttondown.com/stefantaitano
   - label: LinkedIn

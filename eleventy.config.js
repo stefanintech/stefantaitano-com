@@ -110,6 +110,9 @@ export default async function (eleventyConfig) {
     'src/assets/images/favicon/': '/',
     'src/assets/images/stefan.png': 'assets/images/stefan.png',
 
+    // -- resume PDF at stable public URL
+    'src/assets/documents/stefan-taitano-resume.pdf': 'resume/stefan-taitano-resume.pdf',
+
     // -- node_modules
     'node_modules/lite-youtube-embed/src/lite-yt-embed.{css,js}': `assets/components/`
   });

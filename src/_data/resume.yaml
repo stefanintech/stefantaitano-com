@@ -1,0 +1,84 @@
+name: Stefan Taitano
+title: ServiceNow Developer and Technical Consultant
+location: Minneapolis, MN
+email: hello@stefantaitano.com
+website: https://www.stefantaitano.com
+github: https://github.com/stefanintech
+linkedin: https://www.linkedin.com/in/stefantaitano/
+lastUpdated: '2026-07-10'
+
+summary: >
+  ServiceNow Developer and Technical Consultant experienced in supporting clients as a platform
+  admin, developer, and architect. Proven expertise in managing end-to-end platform health,
+  from leading platform upgrades and security hardening to designing and implementing high-value
+  products like Software Asset Management (SAM). Skilled in collaborating with C-Suite
+  stakeholders to define strategy, gather requirements, and drive continuous process improvement.
+
+skills:
+  - group: Coding
+    items: JavaScript, Python, Ruby, Bash, HTML, CSS, Git, GitHub, XML
+  - group: ServiceNow Core Platform
+    items: SAM, CSM, HRSD, ITSM, CMDB, App Engine, Service Catalog, UI Builder, Service Portal
+
+experience:
+  - role: ServiceNow Developer
+    org: Thirdera-Cognizant
+    location: Minneapolis
+    start: Feb 2024
+    end: Present
+    bullets:
+      - >
+        Launched a Software Asset Management (SAM) program, projecting over $10,000 in annual
+        savings and eliminating 500+ hours of manual work by implementing ServiceNow SAM Pro and
+        automating license discovery through integration with Microsoft SCCM, Intune,
+        Microsoft 365, and Adobe.
+      - >
+        Ensured the success of the SAM implementation by leading a CMDB cleanup initiative,
+        reducing stale configuration item (CI) data by 50%.
+      - >
+        Led bi-annual platform upgrade from Washington DC to Xanadu, and from Xanadu to Zurich,
+        achieving a flawless transition as measured by zero critical incidents and maintaining
+        100% platform uptime.
+      - >
+        Enhanced platform security posture, achieving a 50% reduction in security findings
+        (from 150 to 75) and boosting the platform hardening score to 85% by implementing
+        ServiceNow security best practices through Security Center.
+      - >
+        Collaborated with C-Suite stakeholders to define platform strategy, securing executive
+        buy-in for new solutions by leading technical demos and successfully managing a critical
+        Mainframe integration project.
+      - >
+        Managed the daily operational health of the platform, maintaining a 100% triaged and
+        prioritized work backlog, by collaborating directly with the platform owner to execute
+        all incidents and requests through a formal Agile SDLC.
+      - >
+        Enabled seamless operational continuity and accelerated future admin onboarding by
+        authoring a comprehensive documentation library for complex, repeatable procedures,
+        including manual (air-gapped) MID server upgrades, Azure certificate/secret renewals,
+        and platform cloning/upgrade procedures.
+
+  - role: Team Lead and Program Manager
+    org: U.S. Army
+    location: Various Locations
+    start: Oct 2015
+    end: Feb 2024
+    bullets:
+      - >
+        Led and mentored teams of up to 5 personnel in mission-critical operations. Managed all
+        team programs, operations, and technical readiness, improving efficiency by designing and
+        authoring a new technical documentation library.
+
+certifications:
+  - Architecture Excellence (ArchX)
+  - Certified Implementation Specialist — Software Asset Management (CIS-SAM)
+  - Certified Implementation Specialist — IT Service Management (CIS-ITSM)
+  - Certified Application Developer (CAD)
+  - Certified System Administrator (CSA)
+  - ITIL 4 Foundation Certification
+  - 15x Micro-Certifications
+
+education:
+  - institution: Southern New Hampshire University
+    field: Computer Science
+    start: Jun 2023
+    end: Dec 2023
