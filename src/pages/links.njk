@@ -2,7 +2,7 @@
 layout: base
 permalink: /links/index.html
 title: Stefan Taitano — Links
-description: 'Links and contact for Stefan Taitano — ServiceNow consultant, Ruby hobbyist.'
+description: 'Links and contact for Stefan Taitano — ServiceNow consultant, Ruby learner.'
 compactHeader: true
 ---
 
@@ -42,6 +42,15 @@ compactHeader: true
         >{{ item.label }}</a>
       {%- endfor %}
     </nav>
+
+    {% if links.nudge %}
+      <p class="links-nudge">
+        We met at RubyConf? Say hello on
+        <a href="{{ personal.platforms.bluesky }}" rel="me">Bluesky</a>
+        or
+        <a href="{{ personal.platforms.linkedin }}" rel="me">LinkedIn</a>.
+      </p>
+    {% endif %}
 
     <p class="links-hint">
       <span class="links-hint__touch">press and hold the photo ♟</span>
