@@ -1,0 +1,29 @@
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "PresentationDigitalDocument",
+    "@id": "{{ meta.url }}{{ page.url }}#presentation",
+    "name": "{{ title }}",
+    "description": "{{ description }}",
+    "url": "{{ meta.url }}{{ page.url }}",
+    "inLanguage": "{{ meta.lang }}",
+    "about": {
+      "@type": "Event",
+      "name": "{{ event }}"
+    },
+    "author": {
+      "@type": "Person",
+      "@id": "{{ meta.url }}#person",
+      "name": "{{ meta.author.name }}",
+      "url": "{{ meta.url }}"
+    },
+    "isPartOf": {
+      "@id": "{{ meta.url }}#website"
+    },
+    "associatedMedia": {
+      "@type": "MediaObject",
+      "name": "Interactive slides",
+      "contentUrl": "{{ meta.url }}{{ slidesUrl }}"
+    }
+  }
+</script>

@@ -5,7 +5,7 @@ date: 2026-04-17
 draft: false
 ---
 
-**July 2026 update:** I'm back in The Odin Project's Ruby lessons, preparing for RubyConf, and getting familiar with RubyEvents ahead of the hackspace. The pace is still small and unglamorous, but the flag is still planted. The latest is on [my /now page](/now/).
+**July 2026 update:** I'm back in The Odin Project's Ruby lessons, and I gave a [RubyConf lightning talk about volunteering before feeling ready](/talks/rubyconf-2026/). The pace is still small and unglamorous, but the flag is still planted. The latest is on [my /now page](/now/).
 
 <img src="/assets/images/blog/learning-ruby-rails-2026-odin-dashboard.png" alt="My Odin Project dashboard showing 86% completion of Foundations" eleventy:widths="860" sizes="100vw">
 

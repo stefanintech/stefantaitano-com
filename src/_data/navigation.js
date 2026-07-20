@@ -13,6 +13,10 @@ export default {
       url: '/articles/'
     },
     {
+      text: 'Talks',
+      url: '/talks/'
+    },
+    {
       text: 'Projects',
       url: '/projects/'
     },

@@ -1,0 +1,240 @@
+.talk-page,
+.talks-index {
+  --talk-ruby: #e0245c;
+  --talk-ruby-deep: #7a0c2e;
+  --talk-ink: #0d0508;
+  --talk-cream: #f3e9dc;
+  --talk-mist: #c9b4ba;
+}
+
+.talk-hero {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  min-block-size: min(48rem, calc(100svh - 5rem));
+  overflow: hidden;
+  color: var(--talk-cream);
+  background:
+    radial-gradient(circle at 78% 35%, rgb(224 36 92 / 24%), transparent 35%),
+    radial-gradient(circle at 15% 88%, rgb(122 12 46 / 42%), transparent 42%),
+    var(--talk-ink);
+}
+
+.talk-hero::after {
+  position: absolute;
+  z-index: -1;
+  inset: var(--space-m);
+  border: 2px solid rgb(243 233 220 / 68%);
+  content: '';
+  pointer-events: none;
+}
+
+.talk-hero__atmosphere {
+  position: absolute;
+  z-index: -2;
+  inset: -30%;
+  background: conic-gradient(from 40deg at 70% 40%, transparent, rgb(224 36 92 / 14%), transparent 35%);
+  animation: talk-atmosphere 18s ease-in-out infinite alternate;
+}
+
+.talk-hero__inner {
+  display: grid;
+  align-items: center;
+  padding-block: var(--space-2xl-3xl);
+}
+
+.talk-hero__content {
+  max-inline-size: 64rem;
+  padding: var(--space-l-xl);
+}
+
+.talk-hero__context {
+  color: var(--talk-ruby);
+  font-family: var(--font-mono);
+  font-size: var(--size-step-min-1);
+  font-weight: var(--font-bold);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  animation: talk-rise 600ms ease-out both;
+}
+
+.talk-hero h1 {
+  max-inline-size: 15ch;
+  color: var(--talk-cream);
+  font-size: var(--size-step-5);
+  line-height: 0.96;
+  text-wrap: balance;
+  animation: talk-rise 700ms 100ms ease-out both;
+}
+
+.talk-hero__description {
+  max-inline-size: 62ch;
+  color: var(--talk-mist);
+  font-size: var(--size-step-1);
+  animation: talk-rise 700ms 200ms ease-out both;
+}
+
+.talk-hero__actions {
+  align-items: center;
+  animation: talk-rise 700ms 300ms ease-out both;
+}
+
+.talk-hero__all {
+  color: var(--talk-cream);
+}
+
+.talk-hero__hint {
+  color: var(--talk-mist);
+  font-family: var(--font-mono);
+  font-size: var(--size-step-min-1);
+}
+
+.talk-message {
+  color: var(--talk-cream);
+  background: var(--talk-ruby);
+}
+
+.talk-message__inner {
+  padding-block: var(--space-xl-2xl);
+}
+
+.talk-message .handwritten {
+  color: var(--talk-ink);
+  font-size: var(--size-step-1);
+}
+
+.talk-message h2 {
+  max-inline-size: 22ch;
+  color: var(--talk-cream);
+  font-size: var(--size-step-4);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.talk-about {
+  padding-block-end: var(--space-xl-2xl);
+}
+
+.talks-index__intro {
+  color: var(--talk-cream);
+  background:
+    radial-gradient(circle at 82% 30%, rgb(224 36 92 / 28%), transparent 30%),
+    var(--talk-ink);
+}
+
+.talks-index__intro .wrapper {
+  padding-block: var(--space-2xl-3xl);
+}
+
+.talks-index__intro .handwritten {
+  color: var(--talk-ruby);
+  font-size: var(--size-step-1);
+}
+
+.talks-index__intro h1 {
+  color: var(--talk-cream);
+  font-size: var(--size-step-5);
+}
+
+.talks-index__intro p:last-child {
+  max-inline-size: 52ch;
+  color: var(--talk-mist);
+  font-size: var(--size-step-1);
+}
+
+.talk-list {
+  padding: 0;
+  list-style: none;
+}
+
+.talk-listing {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.3fr) minmax(0, 1fr);
+  gap: var(--space-l-xl);
+  padding-block: var(--space-l-xl);
+  border-block-start: 1px solid var(--color-bg-accent-2);
+}
+
+.talk-list li:last-child .talk-listing {
+  border-block-end: 1px solid var(--color-bg-accent-2);
+}
+
+.talk-listing__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  color: var(--color-text-accent);
+  font-family: var(--font-mono);
+  font-size: var(--size-step-min-1);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.talk-listing__content {
+  max-inline-size: 66ch;
+}
+
+.talk-listing h2 {
+  font-size: var(--size-step-2);
+  line-height: 1.1;
+}
+
+@keyframes talk-rise {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes talk-atmosphere {
+  to {
+    transform: translate3d(-4%, 3%, 0) rotate(5deg);
+  }
+}
+
+@media (max-width: 42rem) {
+  .talk-hero {
+    min-block-size: calc(100svh - 4rem);
+  }
+
+  .talk-hero::after {
+    inset: var(--space-s);
+  }
+
+  .talk-hero__content {
+    padding-inline: var(--space-m);
+  }
+
+  .talk-hero h1 {
+    font-size: var(--size-step-4);
+  }
+
+  .talk-listing {
+    grid-template-columns: 1fr;
+    gap: var(--space-s);
+  }
+
+  .talk-listing__meta {
+    flex-direction: row;
+  }
+
+  .talk-listing__meta span + span::before {
+    margin-inline-end: var(--space-xs);
+    content: '·';
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .talk-hero__atmosphere,
+  .talk-hero__context,
+  .talk-hero h1,
+  .talk-hero__description,
+  .talk-hero__actions {
+    animation: none;
+  }
+}

@@ -1,0 +1,46 @@
+---
+layout: base
+permalink: /talks/index.html
+title: Talks
+description: Talks by Stefan Taitano about learning, software, and participating in technical communities.
+discover:
+  title: Talks by Stefan Taitano
+  description: Conference talks and presentations by Stefan Taitano.
+---
+
+<div class="talks-index">
+  <header class="talks-index__intro full | section">
+    <div class="wrapper region flow">
+      <p class="handwritten">Speaking and sharing</p>
+      <h1>Talks</h1>
+      <p>Presentations about learning in public, building community, and finding useful ways to participate.</p>
+    </div>
+  </header>
+
+  <section class="full | region" aria-labelledby="talks-list-title">
+    <div class="wrapper flow">
+      <h2 id="talks-list-title" class="visually-hidden">All talks</h2>
+      <ol class="talk-list" role="list">
+        {% for talk in collections.allTalks %}
+          <li>
+            <article class="talk-listing">
+              <div class="talk-listing__meta">
+                <span>{{ talk.data.event }}</span>
+                <span>{{ talk.data.format }}</span>
+              </div>
+              <div class="talk-listing__content flow">
+                <h2><a href="{{ talk.url }}">{{ talk.data.title }}</a></h2>
+                <p>{{ talk.data.description }}</p>
+                <a href="{{ talk.url }}">View talk and slides &rarr;</a>
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </section>
+</div>
+
+{% css "local" %}
+  {% include "css/talks.css" %}
+{% endcss %}

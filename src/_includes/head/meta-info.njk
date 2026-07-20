@@ -18,8 +18,8 @@
   {%- endif -%}
 {% endset %}
 
-{% set socialImage = meta.url + meta.opengraph_default %}
-{% set socialImageAlt = meta.opengraph_default_alt %}
+{% set socialImage = meta.url + (discover.image or meta.opengraph_default) %}
+{% set socialImageAlt = discover.imageAlt or meta.opengraph_default_alt %}
 
 <meta name="description" content="{{ metaDescription }}" />
 <meta name="theme-color" content="{{ meta.themeDark }}" media="(prefers-color-scheme: dark)" />

@@ -15,7 +15,7 @@ dotenv.config();
 import yaml from 'js-yaml';
 
 //  config import
-import {getAllPosts, getNowEntries, showInSitemap, tagList} from './src/_config/collections.js';
+import {getAllPosts, getAllTalks, getNowEntries, showInSitemap, tagList} from './src/_config/collections.js';
 import events from './src/_config/events.js';
 import filters from './src/_config/filters.js';
 import plugins from './src/_config/plugins.js';
@@ -40,6 +40,7 @@ export default async function (eleventyConfig) {
 
   //	---------------------  Collections
   eleventyConfig.addCollection('allPosts', getAllPosts);
+  eleventyConfig.addCollection('allTalks', getAllTalks);
   eleventyConfig.addCollection('nowEntries', getNowEntries);
   eleventyConfig.addCollection('showInSitemap', showInSitemap);
   eleventyConfig.addCollection('tagList', tagList);
@@ -110,6 +111,9 @@ export default async function (eleventyConfig) {
 
     // -- resume PDF at stable public URL
     'src/assets/documents/stefan-taitano-resume.pdf': 'resume/stefan-taitano-resume.pdf',
+
+    // -- interactive RubyConf presentation at a stable public URL
+    'src/assets/talks/rubyconf-2026/slides/': 'talks/rubyconf-2026/slides/',
 
     // -- node_modules
     'node_modules/lite-youtube-embed/src/lite-yt-embed.{css,js}': `assets/components/`
