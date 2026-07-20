@@ -120,6 +120,8 @@ export default async function (eleventyConfig) {
   });
 
   // ----------------------  ignore test files
+  eleventyConfig.ignores.add('src/assets/talks/**/*.html');
+
   if (process.env.ELEVENTY_ENV != 'test') {
     eleventyConfig.ignores.add('src/common/pa11y.njk');
   }

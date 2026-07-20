@@ -637,9 +637,7 @@ body { font-family: var(--font-body); color: var(--cream); }
             </div>
         </section>
 
-        <!-- ============ 02 · LEARNING RUBY ============
-             Optional screenshot: save your Odin Project progress
-             image as  assets/odin-project.png  next to this file. -->
+        <!-- ============ 02 · LEARNING RUBY ============ -->
         <section class="slide shot-slide s2" role="group" aria-roledescription="slide" aria-label="3 of 11" aria-hidden="true" inert>
             <div class="frame"></div>
             <div class="head">
@@ -647,14 +645,13 @@ body { font-family: var(--font-body); color: var(--cream); }
                 <h2 data-edit>Learning <em>Ruby</em></h2>
             </div>
             <figure class="shot">
-                <div class="placeholder">
+                <div class="placeholder" role="img" aria-label="The Odin Project progress image was not included with the hosted presentation">
                     <svg viewBox="0 0 720 780" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="gem">
                         <polygon points="180,120 540,120 660,300 360,700 60,300"/>
                         <polygon points="60,300 300,300 360,700 420,300 660,300"/>
                     </svg>
-                    <div class="hint">assets/odin-project.png</div>
+                    <div class="hint">The Odin Project progress</div>
                 </div>
-                <img class="deck-image" src="assets/odin-project.png" alt="The Odin Project dashboard showing Stefan’s Ruby learning progress">
             </figure>
             <figcaption class="shot-caption">The Odin Project</figcaption>
         </section>
@@ -666,8 +663,7 @@ body { font-family: var(--font-body); color: var(--cream); }
             </div>
         </section>
 
-        <!-- ============ 04 · VOLUNTEER HANDS-ON ============
-             Photo: assets/volunteer-hands-on.jpg  (RubyConf volunteers group photo) -->
+        <!-- ============ 04 · VOLUNTEER HANDS-ON ============ -->
         <section class="slide shot-slide s4" role="group" aria-roledescription="slide" aria-label="5 of 11" aria-hidden="true" inert>
             <div class="frame"></div>
             <div class="head">
@@ -675,14 +671,13 @@ body { font-family: var(--font-body); color: var(--cream); }
                 <h2 data-edit>Volunteer <em>Hands-On</em></h2>
             </div>
             <figure class="shot">
-                <div class="placeholder">
+                <div class="placeholder" role="img" aria-label="The RubyConf volunteer group photo was not included with the hosted presentation">
                     <svg viewBox="0 0 720 780" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="gem">
                         <polygon points="180,120 540,120 660,300 360,700 60,300"/>
                         <polygon points="60,300 300,300 360,700 420,300 660,300"/>
                     </svg>
-                    <div class="hint">assets/volunteer-hands-on.jpg</div>
+                    <div class="hint">RubyConf volunteer group</div>
                 </div>
-                <img class="deck-image" src="assets/volunteer-hands-on.jpg" alt="RubyConf volunteers posing together for a group photo">
             </figure>
             <figcaption class="shot-caption">Volunteer Hands-On</figcaption>
         </section>
@@ -786,18 +781,9 @@ class SlidePresentation {
         this.progress = document.querySelector('.progress');
         this.status = document.getElementById('presentationStatus');
         this.current = 0;
-        this.setupImageFallbacks();
         this.setupStageScale();
         this.setupNav();
         this.show(0);
-    }
-
-    setupImageFallbacks() {
-        document.querySelectorAll('.deck-image').forEach((image) => {
-            const hideBrokenImage = () => { image.hidden = true; };
-            image.addEventListener('error', hideBrokenImage);
-            if (image.complete && image.naturalWidth === 0) hideBrokenImage();
-        });
     }
 
     /* Scale the whole 1920×1080 stage uniformly; letterbox as needed */
