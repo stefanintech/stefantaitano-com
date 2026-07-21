@@ -8,7 +8,10 @@ schema: PresentationDigitalDocument
     <div class="talk-hero__atmosphere" aria-hidden="true"></div>
     <div class="wrapper talk-hero__inner">
       <div class="talk-hero__content flow">
-        <p class="talk-hero__context">{{ event }} · {{ format }}</p>
+        <p class="talk-hero__context">
+          <span class="talk-hero__event">{{ event }}</span>
+          <span class="talk-hero__format">{{ format }}</span>
+        </p>
         <h1>{{ title }}</h1>
         <p class="talk-hero__description">{{ description }}</p>
         <div class="talk-hero__actions cluster gutter-s">

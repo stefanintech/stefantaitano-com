@@ -49,13 +49,28 @@
 }
 
 .talk-hero__context {
-  color: var(--talk-ruby);
-  font-family: var(--font-mono);
-  font-size: var(--size-step-min-1);
-  font-weight: var(--font-bold);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  align-items: baseline;
+  padding-inline-start: var(--space-s);
+  border-inline-start: 0.25rem solid var(--talk-ruby);
+  color: var(--talk-mist);
+  font-family: var(--font-base);
+  font-size: var(--size-step-0);
+  letter-spacing: var(--tracking);
   animation: talk-rise 600ms ease-out both;
+}
+
+.talk-hero__event {
+  color: var(--talk-cream);
+  font-weight: var(--font-bold);
+}
+
+.talk-hero__format::before {
+  margin-inline-end: var(--space-xs);
+  color: var(--talk-ruby);
+  content: '·';
 }
 
 .talk-hero h1 {
@@ -164,10 +179,18 @@
   flex-direction: column;
   gap: var(--space-2xs);
   color: var(--color-text-accent);
-  font-family: var(--font-mono);
+  font-family: var(--font-base);
+  font-size: var(--size-step-0);
+  letter-spacing: var(--tracking);
+}
+
+.talk-listing__event {
+  color: var(--color-text);
+  font-weight: var(--font-bold);
+}
+
+.talk-listing__format {
   font-size: var(--size-step-min-1);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .talk-listing__content {
@@ -223,7 +246,7 @@
     flex-direction: row;
   }
 
-  .talk-listing__meta span + span::before {
+  .talk-listing__format::before {
     margin-inline-end: var(--space-xs);
     content: '·';
   }
