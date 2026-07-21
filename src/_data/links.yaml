@@ -1,13 +1,11 @@
 tagline: ServiceNow consultant · Ruby learner
-# Shown after the tagline; delete or blank this line after the conference
-event: at RubyConf
-# Conference follow-up line below the link buttons; delete or set to false after the event
-nudge: true
 links:
   - label: GitHub
     url_key: github
   - label: Résumé
     url: /resume/
+  - label: RubyConf Talk
+    url: /talks/rubyconf-2026/
   - label: Bluesky
     url_key: bluesky
     variant: ghost
