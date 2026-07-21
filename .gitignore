@@ -11,3 +11,6 @@ src/_includes/scripts
 
 # secret data
 .env
+
+# local newsletter drafts
+/draft-newsletters/
