@@ -2,6 +2,11 @@
 title: Why I Am Learning Chess in My Late 20s
 description: And no it's not because of The Queen's Gambit
 date: 2023-10-17
+related:
+  - title: It is 2026 and I’m learning Ruby on Rails
+    url: /articles/it-is-2026-and-im-learning-ruby-on-rails/
+  - title: I’m De-Googling My Family’s Digital Life
+    url: /articles/im-de-googling-my-familys-digital-life/
 ---
 
 I never cared about chess. I saw it as a hobby for grandpas in parks or gifted kids in school. Now I spend my nights studying pawn moves and knight strategies between changing diapers for my two children.

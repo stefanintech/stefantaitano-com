@@ -2,6 +2,11 @@
 title: Military Transition into the ServiceNow Training Program Reflections and Preparations
 description: The early stages of my pivot into tech from the military
 date: 2023-11-02
+related:
+  - title: It is 2026 and I’m learning Ruby on Rails
+    url: /articles/it-is-2026-and-im-learning-ruby-on-rails/
+  - title: Creating my new website in 2026
+    url: /articles/creating-my-new-website-in-2026/
 ---
 
 It feels like crunchtime right now. I currently have a lot of thoughts running through my mind every second of the day. Preparing to clear out the military, move my family temporarily to the west coast, all while being two weeks away from the ServiceNow training program.

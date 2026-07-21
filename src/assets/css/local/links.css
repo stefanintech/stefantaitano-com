@@ -128,13 +128,6 @@
   font-weight: var(--font-medium, 500);
 }
 
-.links-nudge {
-  width: 100%;
-  margin-block-start: var(--space-m);
-  font-size: var(--size-step-min-1);
-  color: var(--color-text-accent);
-}
-
 .links-hint {
   margin-block-start: var(--space-xl);
   font-size: var(--size-step-min-2);

@@ -1,0 +1,15 @@
+{% if related %}
+  <aside class="related-reading flow" aria-labelledby="related-reading-title">
+    <h2 id="related-reading-title">Keep reading</h2>
+    <ul class="related-reading__list" role="list">
+      {% for item in related %}
+        <li>
+          <a href="{{ item.url }}">
+            <span>{{ item.title }}</span>
+            <span aria-hidden="true">&rarr;</span>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </aside>
+{% endif %}

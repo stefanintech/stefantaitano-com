@@ -3,6 +3,11 @@ title: It is 2026 and I’m learning Ruby on Rails
 description: I enjoy going against the norms of hype and technology
 date: 2026-04-17
 draft: false
+related:
+  - title: Volunteering at RubyConf Before I Felt Ready
+    url: /articles/volunteering-at-rubyconf-before-i-felt-ready/
+  - title: Military Transition into the ServiceNow Training Program
+    url: /articles/military-transition-into-the-servicenow-training-program-reflections-and-preparations/
 ---
 
 **July 2026 update:** I'm back in The Odin Project's Ruby lessons, and I gave a [RubyConf lightning talk about volunteering before feeling ready](/talks/rubyconf-2026/). The pace is still small and unglamorous, but the flag is still planted. The latest is on [my /now page](/now/).

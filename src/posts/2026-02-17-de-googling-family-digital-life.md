@@ -2,6 +2,11 @@
 title: I’m De-Googling My Family’s Digital Life
 description: Protecting our digital lives one tool at a time
 date: 2026-02-17
+related:
+  - title: Creating my new website in 2026
+    url: /articles/creating-my-new-website-in-2026/
+  - title: Why I Am Learning Chess in My Late 20s
+    url: /articles/why-i-am-learning-chess-in-my-late-20s/
 ---
 
 I spent 29 days moving my family off Google. I carry lessons.

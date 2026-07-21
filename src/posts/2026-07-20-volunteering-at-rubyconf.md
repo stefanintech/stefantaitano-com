@@ -7,6 +7,11 @@ permalink: /articles/volunteering-at-rubyconf-before-i-felt-ready/index.html
 discover:
   image: /assets/og-images/volunteering-at-rubyconf-before-i-felt-ready-preview.png
   imageAlt: Social preview for Volunteering at RubyConf Before I Felt Ready by Stefan Taitano.
+related:
+  - title: It is 2026 and I’m learning Ruby on Rails
+    url: /articles/it-is-2026-and-im-learning-ruby-on-rails/
+  - title: Military Transition into the ServiceNow Training Program
+    url: /articles/military-transition-into-the-servicenow-training-program-reflections-and-preparations/
 ---
 
 I'm finally back from RubyConf 2026 in Las Vegas. It was my first Ruby conference, my first Ruby-related tech event, and only my second tech conference ever.
