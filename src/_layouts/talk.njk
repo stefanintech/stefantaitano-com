@@ -1,0 +1,50 @@
+---
+layout: base
+schema: PresentationDigitalDocument
+---
+
+<article class="talk-page">
+  <header class="talk-hero full">
+    <div class="talk-hero__atmosphere" aria-hidden="true"></div>
+    <div class="wrapper talk-hero__inner">
+      <div class="talk-hero__content flow">
+        <p class="talk-hero__context">
+          <span class="talk-hero__event">{{ event }}</span>
+          <span class="talk-hero__format">{{ format }}</span>
+        </p>
+        <h1>{{ title }}</h1>
+        <p class="talk-hero__description">{{ description }}</p>
+        <div class="talk-hero__actions cluster gutter-s">
+          <a class="button" data-button-variant="tertiary" href="{{ slidesUrl }}">Launch interactive slides</a>
+          <a class="talk-hero__all" href="/talks/">View all talks</a>
+        </div>
+        <p class="talk-hero__hint">Use arrow keys, click, scroll, or swipe. A landscape screen works best.</p>
+      </div>
+    </div>
+  </header>
+
+  <section class="talk-message full | region" aria-labelledby="talk-message-title">
+    <div class="wrapper talk-message__inner">
+      <div class="flow">
+        <p class="handwritten">The idea I wanted to leave behind</p>
+        <h2 id="talk-message-title">{{ message }}</h2>
+      </div>
+    </div>
+  </section>
+
+  <section class="talk-about full | region" aria-labelledby="talk-about-title">
+    <div class="wrapper flow prose">
+      <h2 id="talk-about-title">About this talk</h2>
+      <p>{{ description }}</p>
+      <p>
+        The hosted deck preserves the animation, typography, and pacing of the presentation as it was delivered in the
+        browser.
+      </p>
+      <p><a href="{{ slidesUrl }}">Open the full presentation &rarr;</a></p>
+    </div>
+  </section>
+</article>
+
+{% css "local" %}
+  {% include "css/talks.css" %}
+{% endcss %}

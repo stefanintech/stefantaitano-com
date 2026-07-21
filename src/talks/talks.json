@@ -1,0 +1,4 @@
+{
+  "layout": "talk",
+  "permalink": "/talks/{{ talkSlug }}/index.html"
+}
