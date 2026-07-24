@@ -126,6 +126,7 @@ related:
 - Standalone pages live in `src/pages/`
 - Shared metadata and links live in `src/_data/`
 - Reusable UI pieces live in `src/_includes/partials/`
+- Check `docs/site-voice.md` before writing headings, introductions, project summaries, or calls to action
 
 ### External or generated content
 

@@ -2,7 +2,7 @@
 layout: base
 permalink: /projects/index.html
 title: 'Projects'
-description: 'Things Stefan Taitano is building and has built — from personal sites to Python games.'
+description: 'A few projects Stefan Taitano has built, including a family sticker machine, this site, and a Python Asteroids game.'
 ---
 
 <div class="wrapper">
@@ -12,8 +12,8 @@ description: 'Things Stefan Taitano is building and has built — from personal 
         <div class="flow" style="max-inline-size: 62ch;">
           <h1 style="color: var(--color-light);">Projects</h1>
           <p style="font-size: var(--size-step-1); color: var(--color-light); opacity: 0.95;">
-            I learn by building. These are the projects I am working on or have shipped. Some are polished, some are
-            experiments — all of them taught me something.
+            A few things I've built while learning. The list is short because I only want to include projects I can
+            actually talk about.
           </p>
         </div>
       </div>
@@ -42,21 +42,22 @@ description: 'Things Stefan Taitano is building and has built — from personal 
               <p>{{ project.description }}</p>
               <dl class="project-card__proof">
                 <div>
-                  <dt>Role</dt>
-                  <dd>{{ project.role }}</dd>
-                </div>
-                <div>
-                  <dt>Challenge</dt>
+                  <dt>Why I built it</dt>
                   <dd>{{ project.challenge }}</dd>
                 </div>
                 <div>
-                  <dt>Result</dt>
+                  <dt>What came out of it</dt>
                   <dd>{{ project.result }}</dd>
                 </div>
               </dl>
               <div class="cluster gutter-s" style="margin-top: var(--space-m);">
                 {% if project.url %}
                   <a class="button" data-button-variant="primary" href="{{ project.url }}">View {{ project.title }} live</a>
+                {% elif project.article %}
+                  <a class="button" data-button-variant="primary" href="{{ project.article }}">Read how I built it</a>
+                {% endif %}
+                {% if project.article and project.url %}
+                  <a class="button" data-ghost-button href="{{ project.article }}">Read how I built it</a>
                 {% endif %}
                 {% if project.repo %}
                   <a class="button" data-ghost-button href="{{ project.repo }}">View {{ project.title }} source</a>

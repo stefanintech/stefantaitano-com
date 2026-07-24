@@ -3,7 +3,7 @@ export const url = process.env.URL || 'https://www.stefantaitano.com';
 export const domain = new URL(url).hostname;
 export const siteName = 'Stefan Taitano';
 export const siteDescription =
-  'Army veteran turned ServiceNow consultant, writing about ServiceNow, Ruby, software development, and building a more intentional life.';
+  'Army veteran, ServiceNow consultant, and Ruby learner writing about code, work, and life outside both.';
 export const siteType = 'Person'; // schema
 export const locale = 'en_EN';
 export const lang = 'en';
@@ -31,7 +31,7 @@ export const opengraph_default_alt =
 export const blog = {
   // RSS feed
   name: 'Stefan Taitano – Articles',
-  description: 'Writing on life, software development, and things I find worth sharing.',
+  description: 'Articles about ServiceNow, Ruby, work, and life outside the browser.',
   // feed links are looped over in the head. You may add more to the array.
   feedLinks: [
     {

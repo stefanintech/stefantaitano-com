@@ -1,6 +1,6 @@
 ---
 title: 'Accessibility Statement'
-description: 'Commitment to digital accessibility and how to report accessibility issues.'
+description: 'How I test this site for accessibility and where to report a problem.'
 date: "Last Modified"
 permalink: /accessibility/index.html
 layout: page
@@ -25,7 +25,7 @@ If you run into a barrier on this site—keyboard navigation, screen readers, co
 - **Email**: {{ meta.creator.email }}
 - **GitHub**: [Open an issue](https://github.com/stefanintech/stefantaitano-com/issues) on the site repository (accessibility-related reports are welcome)
 
-I will do my best to respond within a **reasonable time**, typically within about **one week**.
+I generally reply within **one week**.
 
 ---
 

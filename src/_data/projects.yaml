@@ -1,10 +1,23 @@
+- title: Family Sticker Machine
+  description: Say or type a sticker idea, get a black-and-white coloring-page image, and print it as a 4x6 label on a Phomemo thermal printer.
+  status: Local app
+  date: '2026'
+  challenge: Give my kids a way to turn a spoken idea into a printable coloring sticker without building a whole platform around it.
+  result: A small Flask app with hold-to-talk from a phone, Gemini image generation, and direct CUPS printing to a Phomemo PM-241BT.
+  tech:
+    - Python
+    - Flask
+    - Gemini
+    - CUPS
+  article: /articles/i-built-a-sticker-machine-for-my-kids/
+  repo: https://github.com/stefanintech/family-sticker-app
+
 - title: stefantaitano.com
-  description: This site. A personal home for writing, projects, and ongoing work — built with Eleventy and deployed on Netlify. Features a /now page with live Lichess stats, auto-generated Open Graph images, and an Atom feed.
+  description: The site you're on now. I built it with Eleventy so my writing, projects, and /now updates could live somewhere I control.
   status: Live
   date: '2026'
-  role: Design, development, and writing
-  challenge: Bring my writing, projects, and current work into one fast, accessible home.
-  result: A live personal site with a current /now page, social previews, and an Atom feed.
+  challenge: Move my writing and current work out of scattered platforms and into one site I own.
+  result: A fast personal site with a /now page, social preview images, and an Atom feed.
   tech:
     - Eleventy
     - Nunjucks
@@ -13,18 +26,11 @@
   repo: https://github.com/stefanintech/stefantaitano-com
 
 - title: Asteroids Game
-  description: A classic arcade-style asteroids game built in Python. Ships, rocks, and the fundamentals of object-oriented game logic — written as part of learning Python from the ground up.
+  description: A playable Asteroids clone I made while learning Python. It was my first real practice with classes, collision detection, and game state.
   status: Learning project
   date: '2026'
-  role: Solo developer
-  challenge: Practice object-oriented Python through movement, collisions, and game state.
-  result: A playable Asteroids clone and a clearer understanding of how objects work together.
+  challenge: Learn how Python objects work together by making something more interesting than another command-line exercise.
+  result: A playable game and a much better grasp of classes, movement, and collision handling.
   tech:
     - Python
   repo: https://github.com/stefanintech/asteroids-game
-
-- title: Python Project 2
-  description: Coming soon.
-  tech:
-    - Python
-  draft: true
