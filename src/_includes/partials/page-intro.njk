@@ -1,0 +1,16 @@
+<header class="page-intro region flow">
+  {% if kicker %}
+    <p class="page-intro__kicker handwritten">{{ kicker }}</p>
+  {% endif %}
+  <h1 class="page-intro__title">{{ title }}</h1>
+  {% if intro %}
+    <p class="page-intro__lede">{{ intro }}</p>
+  {% endif %}
+  {% if introNote %}
+    <p class="page-intro__note">{{ introNote | safe }}</p>
+  {% endif %}
+</header>
+
+{% css "local" %}
+  {% include "css/page-intro.css" %}
+{% endcss %}

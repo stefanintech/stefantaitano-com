@@ -1,0 +1,26 @@
+.page-intro {
+  --region-space-top: var(--space-xl-2xl);
+  --region-space-bottom: var(--space-l);
+  --flow-space: var(--space-xs);
+}
+
+.page-intro__kicker {
+  font-size: var(--size-step-1);
+  color: var(--color-primary);
+}
+
+.page-intro__title {
+  text-wrap: balance;
+}
+
+.page-intro__lede {
+  max-inline-size: 62ch;
+  font-size: var(--size-step-1);
+  line-height: var(--leading-standard);
+}
+
+.page-intro__note {
+  max-inline-size: 62ch;
+  font-size: var(--size-step-min-1);
+  color: var(--color-text-accent);
+}

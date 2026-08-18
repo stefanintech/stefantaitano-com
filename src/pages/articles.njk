@@ -10,13 +10,9 @@ permalink: 'articles/{% if pagination.pageNumber >=1 %}page-{{ pagination.pageNu
 ---
 
 <div class="wrapper">
-  <header class="full | section" style="--spot-color: var(--color-secondary)">
-    <div class="section__inner flow region" style="--region-space-top: var(--space-xl-2xl)">
-      <h1 class="text-center" style="color: var(--color-light);">{{ title }}</h1>
-    </div>
-
-    {% svg "divider/edgy", null, "divider" %}
-  </header>
+  {% set kicker = "Writing" %}
+  {% set intro = "ServiceNow, Ruby, work, and life outside the browser." %}
+  {% include "partials/page-intro.njk" %}
 
   {% if pagination.items.length %}
     <custom-masonry layout="50-50">
@@ -25,7 +21,7 @@ permalink: 'articles/{% if pagination.pageNumber >=1 %}page-{{ pagination.pageNu
       {% endeach %}
     </custom-masonry>
   {% else %}
-    <div class="prose wrapper flow region" style="--region-space-top: var(--space-l-xl)">
+    <div class="prose flow region" style="--region-space-top: var(--space-l)">
       <p>No articles published yet. When something is ready, it will show up here.</p>
     </div>
   {% endif %}
