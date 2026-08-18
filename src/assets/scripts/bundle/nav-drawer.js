@@ -7,29 +7,28 @@ const buttonDrawer = burgerClone.querySelector('button[data-drawer-toggle]');
 
 list.style.setProperty('display', 'flex');
 
-buttonDrawer.addEventListener('click', e => {
-  const isOpenDrawer = buttonDrawer.getAttribute('aria-expanded') === 'true';
-  buttonDrawer.setAttribute('aria-expanded', !isOpenDrawer);
+const isOpen = () => buttonDrawer.getAttribute('aria-expanded') === 'true';
+
+buttonDrawer.addEventListener('click', () => {
+  buttonDrawer.setAttribute('aria-expanded', String(!isOpen()));
 });
 
 const disableMenu = () => {
-  buttonDrawer.setAttribute('aria-expanded', false);
+  buttonDrawer.setAttribute('aria-expanded', 'false');
 };
 
-//  close on escape
-nav.addEventListener('keyup', event => {
-  if (event.code === 'Escape') {
+document.addEventListener('keyup', event => {
+  if (event.code === 'Escape' && isOpen()) {
     disableMenu();
     buttonDrawer.focus();
   }
 });
 
-// close if clicked outside of event target
 document.addEventListener('click', event => {
-  const isClickInsideElement = nav.contains(event.target);
-  if (!isClickInsideElement) {
-    disableMenu();
-  }
+  if (!isOpen()) return;
+  if (buttonDrawer.contains(event.target)) return;
+  if (event.target.closest('a, [data-submenu-toggle]') && list.contains(event.target)) return;
+  disableMenu();
 });
 
 // avoid drawer flashing on page load

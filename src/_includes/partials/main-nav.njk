@@ -3,7 +3,7 @@
 {% set subMenu = meta.navigation.subMenu %}
 
 <nav id="mainnav" class="mainnav" aria-label="{{ meta.navigation.ariaTop }}">
-  <ul class="cluster" role="list" data-no-flash>
+  <ul id="mainnav-list" class="cluster" role="list" data-no-flash>
     {% for item in navigation.top %}
       {% if item.submenu %}
         <li class="relative">
@@ -54,7 +54,7 @@
   <!-- see also: https://kittygiraudel.com/2022/09/30/templating-in-html/ -->
 
   <template id="burger-template">
-    <button data-drawer-toggle class="cluster" type="button" aria-expanded="false" aria-controls="mainnav">
+    <button data-drawer-toggle class="cluster" type="button" aria-expanded="false" aria-controls="mainnav-list">
       <span>{{ meta.navigation.navLabel }}</span>
 
       <svg
