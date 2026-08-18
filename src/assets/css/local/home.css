@@ -1,27 +1,330 @@
-.home-hero__inner {
-  --region-space-top: var(--space-xl-2xl);
+/* Homepage pixel hero + overlay header. Local bundle only. */
+
+body.has-pixel-hero {
+  --pixel-ink: #241810;
+  --pixel-paper: var(--color-light);
+  --pixel-amber: var(--color-amber);
+  --pixel-gold: var(--color-gold);
+  position: relative;
+  overflow-x: clip;
+}
+
+body.has-pixel-hero main.flow {
+  --flow-space: 0;
+}
+
+/* Full-bleed night band before JS paints the canvases. */
+.pixel-hero {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-block-size: 16rem;
+  background: var(--pixel-ink);
+  line-height: 0;
+}
+
+.pixel-hero canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  image-rendering: pixelated;
+}
+
+.pixel-hero__ground {
+  margin-block-end: -1px;
+}
+
+/* Logo and nav sit on the sky. */
+body.has-pixel-hero > header {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  z-index: 2;
+  background: transparent;
+  color: var(--pixel-paper);
+  --gap: clamp(1.5rem, 10vw, 4rem);
+  padding-block-start: var(--space-m);
+}
+
+body.has-pixel-hero main > .wrapper {
+  --gap: clamp(1.5rem, 10vw, 4rem);
+}
+
+body.has-pixel-hero > header::before {
+  position: absolute;
+  z-index: -1;
+  inset-inline: 0;
+  inset-block-start: 0;
+  block-size: 4.5rem;
+  background: linear-gradient(to bottom, rgb(36 24 16 / 40%), transparent);
+  pointer-events: none;
+  content: '';
+}
+
+.pixel-hero__hit {
+  position: absolute;
+  z-index: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.pixel-hero__hit--quest {
+  display: block;
+}
+
+.pixel-hero__hit:focus-visible {
+  outline: 2px solid var(--pixel-gold);
+  outline-offset: 3px;
+}
+
+body.has-pixel-hero > header .logo {
+  color: var(--pixel-paper);
+}
+
+body.has-pixel-hero .mainnav [data-drawer-toggle] {
+  background: transparent;
+  color: var(--pixel-paper);
+  text-decoration-color: color-mix(in oklab, var(--pixel-paper) 45%, transparent);
+}
+
+body.has-pixel-hero .mainnav [data-drawer-toggle] svg {
+  color: var(--pixel-paper);
+}
+
+body.has-pixel-hero .mainnav [data-drawer-toggle][aria-expanded='true'] {
+  background: transparent;
+  color: var(--pixel-paper);
+  text-decoration-color: var(--pixel-paper);
+}
+
+body.has-pixel-hero .mainnav [data-drawer-toggle][aria-expanded='true'] svg {
+  color: var(--pixel-paper);
+}
+
+/* Open menu is a full-screen overlay, not a side panel. */
+body.has-pixel-hero:has([data-drawer-toggle][aria-expanded='true'])::before {
+  background: rgb(36 24 16 / 0.55);
+}
+
+body.has-pixel-hero .mainnav > ul {
+  color: var(--pixel-paper);
+}
+
+@media screen(ltnavigation) {
+  body.has-pixel-hero .mainnav > ul :is(a, [data-submenu-toggle]) {
+    --nav-item-text-color: var(--pixel-paper);
+  }
+
+  body.has-pixel-hero .mainnav > ul :is(a, [data-submenu-toggle]):hover {
+    --nav-item-text-color: var(--pixel-paper);
+    --nav-item-decoration-color: color-mix(in oklab, var(--pixel-paper) 55%, transparent);
+  }
+
+  body.has-pixel-hero .mainnav > ul [aria-current='page'],
+  body.has-pixel-hero .mainnav > ul [data-state='active'] {
+    --nav-item-background: transparent;
+    --nav-item-text-color: var(--pixel-gold);
+    --nav-item-decoration-color: var(--pixel-gold);
+  }
+}
+
+@media screen(navigation) {
+  body.has-pixel-hero .mainnav svg {
+    color: var(--pixel-paper);
+  }
+
+  body.has-pixel-hero .mainnav :is(a, [data-submenu-toggle]) {
+    --nav-item-text-color: var(--pixel-paper);
+  }
+
+  body.has-pixel-hero .mainnav :is(a, [data-submenu-toggle]):hover {
+    --nav-item-text-color: var(--pixel-paper);
+    --nav-item-decoration-color: color-mix(in oklab, var(--pixel-paper) 55%, transparent);
+  }
+
+  body.has-pixel-hero .mainnav [aria-current='page'],
+  body.has-pixel-hero .mainnav [data-state='active'] {
+    --nav-item-background: transparent;
+    --nav-item-text-color: var(--pixel-gold);
+    --nav-item-decoration-color: var(--pixel-gold);
+  }
+}
+
+/* Intro sits on the themed page below the hills. */
+.home-intro {
+  --region-space-top: var(--space-2xl);
   --region-space-bottom: var(--space-xl-2xl);
 }
 
-.home-hero__actions {
-  margin-block-start: var(--space-m);
+.home-intro__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xl) var(--space-2xl);
+  align-items: flex-start;
+}
+
+.home-intro__content {
+  --flow-space: var(--space-l);
+  flex: 1;
+  min-inline-size: min(100%, 28ch);
+  max-inline-size: 62ch;
+}
+
+.home-intro__title {
+  line-height: 1.45;
+  letter-spacing: var(--tracking);
+  text-wrap: balance;
+}
+
+.home-intro__content > .handwritten {
+  line-height: var(--leading-standard);
+  margin-block-start: var(--space-xl);
+}
+
+.home-intro__bio {
+  font-size: var(--size-step-1);
+  line-height: var(--leading-standard);
+  max-inline-size: 48ch;
+}
+
+.home-intro__actions {
+  margin-block-start: var(--space-l);
+}
+
+.home-intro__actions .button {
+  --button-padding: var(--space-s) var(--space-m);
+}
+
+.home-intro__portrait {
+  flex-shrink: 0;
+  inline-size: min(260px, 100%);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 4px solid color-mix(in oklab, var(--color-text) 22%, transparent);
+  border-radius: 50%;
+}
+
+.home-intro__portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+#now-preview.region,
+.home-explore.region,
+.home-articles.region,
+.home-newsletter.region {
+  --region-space-top: var(--space-xl-2xl);
+  --region-space-bottom: var(--space-xl);
+}
+
+.home-kicker {
+  font-size: var(--size-step-1);
+  color: var(--color-primary);
+}
+
+.home-panel {
+  --flow-space: var(--space-m);
+  background: var(--color-bg);
+  border: 1px solid var(--color-bg-accent-2);
+  border-radius: var(--border-radius-medium);
+  padding: var(--space-xl) var(--space-l-xl);
+}
+
+.home-panel > .flow {
+  --flow-space: var(--space-s-m);
+}
+
+.home-explore {
+  --flow-space: var(--space-l);
+}
+
+.home-explore__intro {
+  --flow-space: var(--space-xs);
+  margin-block-end: var(--space-l);
+}
+
+.home-explore__grid {
+  --grid-placement: auto-fit;
+  --grid-min-item-size: 16rem;
+  --gutter: var(--space-m);
+}
+
+.home-card {
+  display: block;
+  padding: var(--space-l-xl);
+  border: 1px solid var(--color-bg-accent-2);
+  border-radius: var(--border-radius-medium);
+  text-decoration: none;
+}
+
+.home-card p {
+  margin-block-start: var(--space-s);
+}
+
+.home-articles > .flow {
+  --flow-space: var(--space-m);
+}
+
+.home-articles__list {
+  margin-block: var(--space-l);
+}
+
+@media (min-width: 48em) {
+  .home-intro__inner {
+    align-items: center;
+    justify-content: space-between;
+  }
 }
 
 @media (max-width: 47.99em) {
-  .home-hero__inner {
-    --region-space-top: var(--space-l);
-    --region-space-bottom: var(--space-l);
+  .pixel-hero {
+    min-block-size: 9rem;
   }
 
-  .home-hero__content {
-    --flow-space: var(--space-s);
+  body.has-pixel-hero > header {
+    padding-block-start: var(--space-m);
   }
 
-  .home-hero__title {
+  .home-intro {
+    --region-space-top: var(--space-xl);
+    --region-space-bottom: var(--space-xl);
+  }
+
+  .home-intro__inner {
+    flex-direction: column;
+    gap: var(--space-l);
+  }
+
+  .home-intro__content {
+    --flow-space: var(--space-l);
+  }
+
+  .home-intro__title {
     font-size: var(--size-step-4);
+    line-height: 1.45;
   }
 
-  .home-hero__actions {
-    margin-block-start: var(--space-s);
+  .home-intro__actions {
+    margin-block-start: var(--space-m);
+  }
+
+  .home-intro__portrait {
+    inline-size: min(9.5rem, 42vw);
+  }
+
+  .home-panel {
+    padding: var(--space-l-xl) var(--space-l);
+  }
+
+  #now-preview.region,
+  .home-explore.region,
+  .home-articles.region,
+  .home-newsletter.region {
+    --region-space-top: var(--space-xl);
+    --region-space-bottom: var(--space-xl);
   }
 }

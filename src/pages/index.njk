@@ -8,106 +8,77 @@ articles:
   intro: 'A few things I have written lately.'
 ---
 
+{% include "partials/pixel-hero.njk" %}
+
 <div class="wrapper">
-  <header class="full | section" style="--spot-color: var(--color-primary)">
-    <div class="home-hero__inner section__inner flow region">
-      <div class="wrapper">
-        <div
-          style="display: flex; gap: var(--space-xl); align-items: center; justify-content: space-between; flex-wrap: wrap;"
-        >
-          <div class="home-hero__content flow" style="flex: 1; min-inline-size: 28ch; max-inline-size: 62ch;">
-            <h1 class="home-hero__title" style="color: var(--color-light);">I build systems for a living and escape plans for fun.</h1>
-            <p class="handwritten" style="color: var(--color-light); opacity: 0.9;">
-              (right now that means Ruby, running, and planning our next move)
-            </p>
-            <p style="font-size: var(--size-step-1); color: var(--color-light); opacity: 0.95;">
-              I'm Stefan. I spent nine years in the Army, now work in ServiceNow, and am slowly getting better at Ruby.
-            </p>
-            <div class="home-hero__actions cluster gutter-s">
-              <a href="/resume/" class="button" data-button-variant="tertiary">View my résumé</a>
-              <a href="{{ personal.platforms.github }}" class="button" data-ghost-button rel="me">See my GitHub</a>
-            </div>
-          </div>
-
-          <figure
-            aria-label="Stefan Taitano"
-            style="flex-shrink: 0; inline-size: min(260px, 100%); aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 4px solid color-mix(in oklab, var(--color-light) 35%, transparent);"
-          >
-            <img
-              src="/assets/images/stefan.png"
-              alt="Stefan Taitano"
-              width="260"
-              height="260"
-              style="width: 100%; height: 100%; object-fit: cover; object-position: center 20%;"
-            >
-          </figure>
-        </div>
-      </div>
-    </div>
-    {% svg "divider/waves", null, "divider" %}
-  </header>
-
-  <section id="now-preview" class="full | region">
-    <div class="wrapper">
-      <div
-        class="flow"
-        style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
-      >
-        <p class="handwritten" style="font-size: var(--size-step-1); color: var(--color-primary);">
-          What I'm doing now
+  <section class="home-intro region">
+    <div class="home-intro__inner">
+      <div class="home-intro__content flow">
+        <h1 class="home-intro__title">I build systems for a living and escape plans for fun.</h1>
+        <p class="handwritten">
+          (right now that means Ruby, running, and planning our next move)
         </p>
-        <div class="flow">
-          <p>
-            RubyConf 2026 is in the books. I volunteered and gave my first
-            <a href="/talks/rubyconf-2026/">conference lightning talk about showing up before feeling ready</a>.
-          </p>
-          <p>
-            I'm still working through <a href="https://www.theodinproject.com/">The Odin Project</a> Ruby path and
-            looking for another chance to help out while I learn.
-          </p>
+        <p class="home-intro__bio">
+          I'm Stefan. I spent nine years in the Army, now work in ServiceNow, and am slowly getting better at Ruby.
+        </p>
+        <div class="home-intro__actions cluster gutter-s">
+          <a href="/talks/rubyconf-2026/" class="button" data-button-variant="tertiary">Read my first talk</a>
+          <a href="/resume/" class="button" data-ghost-button>View my résumé</a>
         </div>
-        <p><a href="/now/">See the full /now page</a></p>
       </div>
+
+      <figure class="home-intro__portrait" aria-label="Stefan Taitano">
+        <img
+          src="/assets/images/stefan.png"
+          alt="Stefan Taitano"
+          width="260"
+          height="260"
+        >
+      </figure>
     </div>
   </section>
 
-  <section class="full | region">
-    <div class="wrapper flow">
+  <section id="now-preview" class="home-now region">
+    <div class="home-panel flow">
+      <p class="home-kicker handwritten">What I'm doing now</p>
       <div class="flow">
-        <p class="handwritten" style="font-size: var(--size-step-1); color: var(--color-primary);">
-          Explore the site
+        <p>
+          RubyConf 2026 is in the books. I volunteered and gave my first
+          <a href="/talks/rubyconf-2026/">conference lightning talk about showing up before feeling ready</a>.
         </p>
-        <h2>Start here.</h2>
+        <p>
+          I'm still working through <a href="https://www.theodinproject.com/">The Odin Project</a> Ruby path and
+          looking for another chance to help out while I learn.
+        </p>
       </div>
-
-      <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 16rem;">
-        <a
-          href="/articles/"
-          style="display: block; padding: var(--space-l); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); text-decoration: none;"
-        >
-          <strong>Articles</strong>
-          <p style="margin-top: var(--space-xs);">ServiceNow, Ruby, and whatever else is on my mind.</p>
-        </a>
-        <a
-          href="/projects/"
-          style="display: block; padding: var(--space-l); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); text-decoration: none;"
-        >
-          <strong>Projects</strong>
-          <p style="margin-top: var(--space-xs);">This site, a Python game, and whatever I build next.</p>
-        </a>
-        <a
-          href="/#newsletter"
-          style="display: block; padding: var(--space-l); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); text-decoration: none;"
-        >
-          <strong>Field Notes</strong>
-          <p style="margin-top: var(--space-xs);">An occasional email about Ruby, work, and life outside the browser.</p>
-        </a>
-      </div>
+      <p><a href="/now/">See the full /now page</a></p>
     </div>
   </section>
 
-  <section class="full | region">
-    <div class="prose wrapper flow">
+  <section class="home-explore region">
+    <div class="home-explore__intro flow">
+      <p class="home-kicker handwritten">Explore the site</p>
+      <h2>Start here.</h2>
+    </div>
+
+    <div class="home-explore__grid grid">
+      <a href="/articles/" class="home-card">
+        <strong>Articles</strong>
+        <p>ServiceNow, Ruby, and whatever else is on my mind.</p>
+      </a>
+      <a href="/projects/" class="home-card">
+        <strong>Projects</strong>
+        <p>This site, a Python game, and whatever I build next.</p>
+      </a>
+      <a href="/#newsletter" class="home-card">
+        <strong>Field Notes</strong>
+        <p>An occasional email about Ruby, work, and life outside the browser.</p>
+      </a>
+    </div>
+  </section>
+
+  <section class="home-articles region">
+    <div class="flow">
       <h2>{{ articles.title }}</h2>
       {% set itemList = collections.allPosts %}
       {% if itemList.length > 0 %}
@@ -120,90 +91,25 @@ articles:
           or read newer writing on <a href="https://medium.com/@stefantaitano">Medium</a>.
         </p>
       {% endif %}
-      <div class="feature | region region-space-l">
-        {% if itemList.length > 0 %}
+      {% if itemList.length > 0 %}
+        <div class="home-articles__list">
           <custom-masonry layout="50-50">
             {% asyncEach item in itemList.slice(0, 3) %}
               {% set headingLevel = "h3" %}
               {% include "partials/card-blog.njk" %}
             {% endeach %}
           </custom-masonry>
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
       <p><a href="/articles/">Browse all articles</a></p>
     </div>
   </section>
 
-  <section id="projects" class="full | region">
-    <div class="wrapper flow">
-      <div class="flow">
-        <p class="handwritten" style="font-size: var(--size-step-1); color: var(--color-primary);">
-          Things I'm building
-        </p>
-        <h2>Projects</h2>
-      </div>
-      <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 16rem;">
-        {% for project in projects %}
-          {% if not project.draft %}
-            <article class="project-card flow">
-              <strong>{{ project.title }}</strong>
-              <div class="project-card__meta" aria-label="Project status and date">
-                <span>{{ project.status }}</span>
-                <span>{{ project.date }}</span>
-              </div>
-              <div class="cluster gutter-xs" style="flex-wrap: wrap;">
-                {% for tag in project.tech %}
-                  <span class="project-card__tag">{{ tag }}</span>
-                {% endfor %}
-              </div>
-              <p style="margin-top: var(--space-xs);">{{ project.description }}</p>
-              <div class="cluster gutter-s" style="margin-top: var(--space-s);">
-                {% if project.url %}
-                  <a href="{{ project.url }}" style="font-size: var(--size-step-min-1);">View {{ project.title }} live &rarr;</a>
-                {% endif %}
-                {% if project.article %}
-                  <a href="{{ project.article }}" style="font-size: var(--size-step-min-1);">Read how I built it &rarr;</a>
-                {% endif %}
-                {% if project.repo %}
-                  <a href="{{ project.repo }}" style="font-size: var(--size-step-min-1);">View {{ project.title }} source &rarr;</a>
-                {% endif %}
-              </div>
-            </article>
-          {% endif %}
-        {% endfor %}
-      </div>
-      <p><a href="/projects/">See all projects</a></p>
-    </div>
-  </section>
-
-  <section class="full | region">
-    <div class="prose wrapper flow">
-      <h2>A bit more about me</h2>
-      <p>
-        Before tech, I spent nine years in the United States Army as a Fire Control Specialist. I also led a small
-        team, managed programs, and learned that clear documentation matters most when something breaks.
-      </p>
-      <p>
-        These days I work as a ServiceNow Technical Consultant. Outside of work, I'm learning Ruby through
-        The Odin Project. I gave my first <a href="/talks/rubyconf-2026/">RubyConf lightning talk</a> in 2026.
-      </p>
-      <p>
-        When I'm away from a laptop, I'm usually reading, running, or losing a rapid game on Lichess.
-      </p>
-      <div class="cluster" style="margin-block-start: var(--space-m);">
-        <a href="/resume/" class="button" data-button-variant="primary">View my résumé</a>
-      </div>
-    </div>
-  </section>
-
-  <section id="newsletter" class="full | region">
-    <div class="wrapper">
-      {% include "partials/newsletter-cta.njk" %}
-    </div>
+  <section id="newsletter" class="home-newsletter region">
+    {% include "partials/newsletter-cta.njk" %}
   </section>
 </div>
 
 {% css "local" %}
   {% include "css/home.css" %}
-  {% include "css/projects.css" %}
 {% endcss %}

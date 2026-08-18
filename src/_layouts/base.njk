@@ -40,7 +40,7 @@
     {% include "head/meta-info.njk" %}
   </head>
 
-  <body class="{{ layout }}">
+  <body class="{{ layout }}{% if page.url == '/' %} has-pixel-hero{% endif %}">
     {% set indicateActiveHome %}
       {% if page.url == "/" %}
         aria-current=page

@@ -1,27 +1,28 @@
 .mainnav {
   --nav-list-timing-function: cubic-bezier(0.68, -0.55, 0.27, 1.55);
-  position: var(--nav-position, absolute);
-  inset-inline-end: 0;
+  position: var(--nav-position, static);
 }
 
 .mainnav:has([data-drawer-toggle][aria-expanded='true']) {
   --nav-position: fixed;
+  inset-block-start: var(--space-s);
   inset-inline-end: var(--gap);
 }
 
 .mainnav ul {
   /* configuration */
   --gutter: var(--space-xs);
-  --cluster-vertical-alignment: normal;
+  --cluster-vertical-alignment: flex-start;
+  --cluster-horizontal-alignment: flex-start;
   --cluster-wrap: wrap;
   --cluster-direction: column;
-  --nav-list-background: var(--color-bg);
-  --nav-list-shadow: -5px 0 11px 0 hsl(0 0% 0% / 0.2);
+  --nav-list-background: transparent;
+  --nav-list-shadow: none;
   --nav-list-height: 100dvh;
-  --nav-list-padding-block: var(--space-2xl);
-  --nav-list-padding-inline: var(--space-s);
+  --nav-list-padding-block: 5.5rem var(--space-xl);
+  --nav-list-padding-inline: var(--gap, clamp(1.5rem, 10vw, 4rem));
   --nav-list-position: fixed;
-  --nav-list-width: min(18rem, 100vw);
+  --nav-list-width: 100%;
   --nav-list-visibility: hidden;
   --nav-list-opacity: 0;
 
@@ -34,12 +35,12 @@
   padding-inline: var(--nav-list-padding-inline);
   position: var(--nav-list-position);
   inset-block-start: 0;
-  inset-inline-end: 0;
+  inset-inline: 0;
   inline-size: var(--nav-list-width);
   opacity: var(--nav-list-opacity);
   transition:
-    opacity 0.3 var(--nav-list-timing-function),
-    visibility 0.3s ease-in-out;
+    opacity 0.28s ease,
+    visibility 0.28s ease;
   visibility: var(--nav-list-visibility);
 }
 
@@ -48,15 +49,6 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .mainnav > ul {
-    --nav-list-transform: translateX(100%);
-    --nav-list-opacity: 1;
-    transform: var(--nav-list-transform);
-    transition:
-      transform 0.5s var(--nav-list-timing-function),
-      visibility 0.3s linear;
-  }
-
   .mainnav svg {
     transition: transform 0.4s var(--nav-list-timing-function);
   }
@@ -65,24 +57,46 @@
 .mainnav [data-drawer-toggle] {
   --gutter: var(--space-2xs);
   --cluster-vertical-alignment: center;
-  background: var(--color-bg);
+  background: transparent;
   display: var(--nav-button-display, inline-flex);
   position: relative;
-  z-index: 2;
-  padding: var(--space-2xs) 0;
+  z-index: 6;
+  min-block-size: 2.75rem;
+  min-inline-size: 2.75rem;
+  padding: var(--space-s) var(--space-xs);
+  border: 0;
+  border-radius: var(--border-radius-small);
   line-height: var(--leading-flat);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklab, currentColor 35%, transparent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.28em;
+}
+
+.mainnav [data-drawer-toggle]:hover,
+.mainnav [data-drawer-toggle]:focus-visible {
+  text-decoration-color: currentColor;
 }
 
 .mainnav [data-drawer-toggle][aria-expanded='true'] + ul {
   --cluster-wrap: nowrap;
   --nav-list-visibility: visible;
-  --nav-list-transform: translateX(0);
   --nav-list-opacity: 1;
   overflow-y: auto;
+  z-index: 5;
 }
 
 body:has([data-drawer-toggle][aria-expanded='true']) {
   overflow: hidden;
+}
+
+body:has([data-drawer-toggle][aria-expanded='true'])::before {
+  position: fixed;
+  z-index: 1;
+  inset: 0;
+  background: color-mix(in oklab, var(--color-bg) 78%, transparent);
+  backdrop-filter: blur(12px);
+  content: '';
 }
 
 .mainnav span {
@@ -106,16 +120,19 @@ body:has([data-drawer-toggle][aria-expanded='true']) {
   /* configuration */
   --nav-item-background: transparent;
   --nav-item-text-color: var(--color-text);
-  --nav-item-padding: var(--space-xs) var(--space-2xs);
+  --nav-item-padding: var(--space-s) 0;
   --nav-item-decoration-color: transparent;
-  --nav-item-font-size: var(--size-step-0);
+  --nav-item-font-size: var(--size-step-3);
   --nav-item-font-weight: var(--font-bold);
 
   background: var(--nav-item-background);
   color: var(--nav-item-text-color);
   font-size: var(--nav-item-font-size);
+  font-family: var(--font-display);
   padding: var(--nav-item-padding);
-  display: block;
+  display: flex;
+  align-items: center;
+  min-block-size: 2.75rem;
   border-radius: var(--border-radius-medium);
   text-decoration-line: underline;
   text-decoration-color: var(--nav-item-decoration-color);
@@ -147,7 +164,7 @@ body:has([data-drawer-toggle][aria-expanded='true']) {
 
 .mainnav [aria-current='page'],
 .mainnav [data-state='active'] {
-  --nav-item-background: var(--color-bg);
+  --nav-item-background: transparent;
   --nav-item-text-color: var(--color-primary);
   --nav-item-decoration-color: var(--color-primary);
 }
@@ -188,6 +205,16 @@ li:has(ul a[aria-current='page']) > [data-submenu-toggle] {
 }
 
 @media screen(navigation) {
+  header > .repel {
+    flex-wrap: nowrap;
+    align-items: center;
+    column-gap: var(--space-m);
+  }
+
+  header > .repel > .logo {
+    flex-shrink: 0;
+  }
+
   .mainnav {
     --nav-position: static;
     --nav-button-display: none;
@@ -195,18 +222,25 @@ li:has(ul a[aria-current='page']) > [data-submenu-toggle] {
 
   .mainnav :is(a, [data-submenu-toggle]) {
     --nav-item-font-weight: var(--font-regular);
+    --nav-item-padding: var(--space-xs) var(--space-s);
+    --nav-item-font-size: var(--size-step-min-1);
+    min-block-size: 0;
+    font-family: var(--font-base);
   }
 
   .mainnav ul {
     --cluster-direction: row;
+    --cluster-wrap: nowrap;
+    --gutter: var(--space-2xs);
+    --nav-list-background: transparent;
     --nav-list-position: static;
-    --nav-list-padding-block: 0;
+    --nav-list-padding-block: var(--space-2xs);
     --nav-list-padding-inline: 0;
     --nav-list-height: auto;
-    --nav-list-width: 100%;
+    --nav-list-width: auto;
     --nav-list-shadow: none;
     --nav-list-visibility: visible;
-    --nav-list-transform: translateX(0);
+    --nav-list-transform: none;
     --nav-list-opacity: 1;
   }
 
@@ -244,14 +278,15 @@ assumes that the button doesn’t exist without JS, making the list the first ch
 
 .mainnav ul:first-child {
   --cluster-direction: row;
+  --nav-list-background: transparent;
   --nav-list-position: static;
-  --nav-list-padding-block: 0;
+  --nav-list-padding-block: var(--space-2xs);
   --nav-list-padding-inline: 0;
   --nav-list-height: auto;
-  --nav-list-width: 100%;
+  --nav-list-width: auto;
   --nav-list-shadow: none;
   --nav-list-visibility: visible;
-  --nav-list-transform: translateX(0);
+  --nav-list-transform: none;
   --nav-list-opacity: 1;
 }
 
