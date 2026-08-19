@@ -1,5 +1,5 @@
 ---
-title: Military Transition into the ServiceNow Training Program Reflections and Preparations
+title: Military Transition into the ServiceNow Training Program
 description: The early stages of my pivot into tech from the military
 date: 2023-11-02
 related:

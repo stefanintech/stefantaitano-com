@@ -5,10 +5,6 @@ export default {
       url: '/now/'
     },
     {
-      text: 'Links',
-      url: '/links/'
-    },
-    {
       text: 'Articles',
       url: '/articles/'
     },
@@ -19,17 +15,24 @@ export default {
     {
       text: 'Projects',
       url: '/projects/'
-    },
+    }
+  ],
+  bottom: [
     {
       text: 'Bookshelf',
       url: '/bookshelf/'
     },
     {
-      text: 'Newsletter',
-      url: '/#newsletter'
+      text: 'Field Notes',
+      url: 'https://buttondown.com/stefantaitano',
+      external: true
+    },
+    {
+      text: 'Links',
+      url: '/links/'
     }
   ],
-  bottom: [
+  legal: [
     {
       text: 'Privacy',
       url: '/privacy/'

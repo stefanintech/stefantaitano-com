@@ -6,67 +6,54 @@ description: 'A few projects Stefan Taitano has built, including a family sticke
 ---
 
 <div class="wrapper">
-  <header class="full | section" style="--spot-color: var(--color-primary)">
-    <div class="section__inner flow region" style="--region-space-top: var(--space-xl-2xl); --region-space-bottom: var(--space-xl-2xl);">
-      <div class="wrapper">
-        <div class="flow" style="max-inline-size: 62ch;">
-          <h1 style="color: var(--color-light);">Projects</h1>
-          <p style="font-size: var(--size-step-1); color: var(--color-light); opacity: 0.95;">
-            A few things I've built while learning. The list is short because I only want to include projects I can
-            actually talk about.
-          </p>
-        </div>
-      </div>
-    </div>
-    {% svg "divider/waves", null, "divider" %}
-  </header>
+  {% set kicker = "Making" %}
+  {% set intro = "A few things I've built while learning. The list is short because I only want to include projects I can actually talk about." %}
+  {% include "partials/page-intro.njk" %}
 
-  <section class="full | region">
-    <div class="wrapper flow">
-      <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 20rem;">
-        {% for project in projects %}
-          {% if not project.draft %}
-            <article class="project-card flow">
-              <div class="flow" style="--flow-space: var(--space-xs);">
-                <h2 style="font-size: var(--size-step-1);">{{ project.title }}</h2>
-                <div class="project-card__meta" aria-label="Project status and date">
-                  <span>{{ project.status }}</span>
-                  <span>{{ project.date }}</span>
-                </div>
-                <div class="cluster gutter-xs" style="flex-wrap: wrap;">
-                  {% for tag in project.tech %}
-                    <span class="project-card__tag">{{ tag }}</span>
-                  {% endfor %}
-                </div>
+  <section class="region" style="--region-space-top: var(--space-m)">
+    <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 20rem;">
+      {% for project in projects %}
+        {% if not project.draft %}
+          <article class="project-card flow">
+            <div class="flow" style="--flow-space: var(--space-xs);">
+              <h2 style="font-size: var(--size-step-1);">{{ project.title }}</h2>
+              <div class="project-card__meta" aria-label="Project status and date">
+                <span>{{ project.status }}</span>
+                <span>{{ project.date }}</span>
               </div>
-              <p>{{ project.description }}</p>
-              <dl class="project-card__proof">
-                <div>
-                  <dt>Why I built it</dt>
-                  <dd>{{ project.challenge }}</dd>
-                </div>
-                <div>
-                  <dt>What came out of it</dt>
-                  <dd>{{ project.result }}</dd>
-                </div>
-              </dl>
-              <div class="cluster gutter-s" style="margin-top: var(--space-m);">
-                {% if project.url %}
-                  <a class="button" data-button-variant="primary" href="{{ project.url }}">View {{ project.title }} live</a>
-                {% elif project.article %}
-                  <a class="button" data-button-variant="primary" href="{{ project.article }}">Read how I built it</a>
-                {% endif %}
-                {% if project.article and project.url %}
-                  <a class="button" data-ghost-button href="{{ project.article }}">Read how I built it</a>
-                {% endif %}
-                {% if project.repo %}
-                  <a class="button" data-ghost-button href="{{ project.repo }}">View {{ project.title }} source</a>
-                {% endif %}
+              <div class="cluster gutter-xs" style="flex-wrap: wrap;">
+                {% for tag in project.tech %}
+                  <span class="project-card__tag">{{ tag }}</span>
+                {% endfor %}
               </div>
-            </article>
-          {% endif %}
-        {% endfor %}
-      </div>
+            </div>
+            <p>{{ project.description }}</p>
+            <dl class="project-card__proof">
+              <div>
+                <dt>Why I built it</dt>
+                <dd>{{ project.challenge }}</dd>
+              </div>
+              <div>
+                <dt>What came out of it</dt>
+                <dd>{{ project.result }}</dd>
+              </div>
+            </dl>
+            <div class="cluster gutter-s" style="margin-top: var(--space-m);">
+              {% if project.url %}
+                <a class="button" data-button-variant="primary" href="{{ project.url }}">View {{ project.title }} live</a>
+              {% elif project.article %}
+                <a class="button" data-button-variant="primary" href="{{ project.article }}">Read how I built it</a>
+              {% endif %}
+              {% if project.article and project.url %}
+                <a class="button" data-ghost-button href="{{ project.article }}">Read how I built it</a>
+              {% endif %}
+              {% if project.repo %}
+                <a class="button" data-ghost-button href="{{ project.repo }}">View {{ project.title }} source</a>
+              {% endif %}
+            </div>
+          </article>
+        {% endif %}
+      {% endfor %}
     </div>
   </section>
 </div>
