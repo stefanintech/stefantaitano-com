@@ -1,0 +1,52 @@
+/* Bookshelf groups and cards. Local bundle only. */
+
+.bookshelf {
+  --flow-space: var(--space-xl);
+}
+
+.bookshelf .page-intro {
+  --region-space-bottom: 0;
+}
+
+.bookshelf-group {
+  --flow-space: var(--space-m);
+}
+
+.bookshelf-group__label {
+  font-size: var(--size-step-1);
+  color: var(--color-primary);
+}
+
+.bookshelf-grid {
+  --grid-placement: auto-fit;
+  --grid-min-item-size: 20rem;
+}
+
+.bookshelf-card {
+  --flow-space: var(--space-s);
+  padding: var(--space-l);
+  background: var(--color-bg);
+  border: 1px solid var(--color-bg-accent-2);
+  border-radius: var(--border-radius-medium);
+}
+
+.bookshelf-card__header {
+  --flow-space: var(--space-xs);
+}
+
+.bookshelf-card__title {
+  font-size: var(--size-step-1);
+}
+
+.bookshelf-card__author {
+  font-size: var(--size-step-min-1);
+}
+
+.bookshelf-card__tag {
+  padding: 0.2em 0.6em;
+  border: 1px solid var(--color-bg-accent-2);
+  border-radius: 999px;
+  font-size: var(--size-step-min-1);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
