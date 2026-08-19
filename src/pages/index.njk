@@ -10,7 +10,7 @@ articles:
 
 {% include "partials/pixel-hero.njk" %}
 
-<div class="wrapper">
+<div class="wrapper flow">
   <section class="home-intro region">
     <div class="home-intro__inner">
       <div class="home-intro__content flow">
@@ -38,68 +38,40 @@ articles:
     </div>
   </section>
 
-  <section id="now-preview" class="home-now region">
-    <div class="home-panel flow">
-      <p class="home-kicker handwritten">What I'm doing now</p>
-      <div class="flow">
-        <p>
-          RubyConf 2026 is in the books. I volunteered and gave my first
-          <a href="/talks/rubyconf-2026/">conference lightning talk about showing up before feeling ready</a>.
-        </p>
-        <p>
-          I'm still working through <a href="https://www.theodinproject.com/">The Odin Project</a> Ruby path and
-          looking for another chance to help out while I learn.
-        </p>
+  <section id="now-preview" class="home-now region flow">
+    <p class="home-kicker handwritten">What I'm doing now</p>
+    <p>
+      I'll be volunteering at <a href="https://www.commityourcode.com/">Commit Your Code</a> in Plano,
+      September 2–4.
+    </p>
+    <p>
+      I'm still working through <a href="https://www.theodinproject.com/">The Odin Project</a> Ruby path
+      after RubyConf.
+    </p>
+    <p><a href="/now/">See the full /now page</a></p>
+  </section>
+
+  <section class="home-articles region flow">
+    <h2>{{ articles.title }}</h2>
+    {% set itemList = collections.allPosts %}
+    {% if itemList.length > 0 %}
+      {% if articles.intro %}
+        <p>{{ articles.intro }}</p>
+      {% endif %}
+    {% else %}
+      <p>No articles published yet. When something is ready, it will show up here.</p>
+    {% endif %}
+    {% if itemList.length > 0 %}
+      <div class="home-articles__list">
+        <custom-masonry layout="50-50">
+          {% asyncEach item in itemList.slice(0, 3) %}
+            {% set headingLevel = "h3" %}
+            {% include "partials/card-blog.njk" %}
+          {% endeach %}
+        </custom-masonry>
       </div>
-      <p><a href="/now/">See the full /now page</a></p>
-    </div>
-  </section>
-
-  <section class="home-explore region">
-    <div class="home-explore__intro flow">
-      <p class="home-kicker handwritten">Explore the site</p>
-      <h2>Start here.</h2>
-    </div>
-
-    <div class="home-explore__grid grid">
-      <a href="/articles/" class="home-card">
-        <strong>Articles</strong>
-        <p>ServiceNow, Ruby, and whatever else is on my mind.</p>
-      </a>
-      <a href="/projects/" class="home-card">
-        <strong>Projects</strong>
-        <p>This site, a Python game, and whatever I build next.</p>
-      </a>
-      <a href="/#newsletter" class="home-card">
-        <strong>Field Notes</strong>
-        <p>An occasional email about Ruby, work, and life outside the browser.</p>
-      </a>
-    </div>
-  </section>
-
-  <section class="home-articles region">
-    <div class="flow">
-      <h2>{{ articles.title }}</h2>
-      {% set itemList = collections.allPosts %}
-      {% if itemList.length > 0 %}
-        {% if articles.intro %}
-          <p>{{ articles.intro }}</p>
-        {% endif %}
-      {% else %}
-        <p>No articles published yet. When something is ready, it will show up here.</p>
-      {% endif %}
-      {% if itemList.length > 0 %}
-        <div class="home-articles__list">
-          <custom-masonry layout="50-50">
-            {% asyncEach item in itemList.slice(0, 3) %}
-              {% set headingLevel = "h3" %}
-              {% include "partials/card-blog.njk" %}
-            {% endeach %}
-          </custom-masonry>
-        </div>
-      {% endif %}
-      <p><a href="/articles/">Browse all articles</a></p>
-    </div>
+    {% endif %}
+    <p><a href="/articles/">Browse all articles</a></p>
   </section>
 
   <section id="newsletter" class="home-newsletter region">

@@ -46,8 +46,11 @@ body.has-pixel-hero > header {
   padding-block-start: var(--space-m);
 }
 
-body.has-pixel-hero main > .wrapper {
+/* Flow spaces homepage sections. Keep main flow at 0 so the pixel hero
+   does not pick up a gap. */
+body.has-pixel-hero main > .wrapper.flow {
   --gap: clamp(1.5rem, 10vw, 4rem);
+  --flow-space: var(--space-2xl);
 }
 
 body.has-pixel-hero > header::before {
@@ -152,10 +155,11 @@ body.has-pixel-hero .mainnav > ul {
   }
 }
 
-/* Intro sits on the themed page below the hills. */
+/* Intro sits on the themed page below the hills. Only top padding —
+   the wrapper flow owns the gap to the next section. */
 .home-intro {
   --region-space-top: var(--space-2xl);
-  --region-space-bottom: var(--space-xl-2xl);
+  --region-space-bottom: 0;
 }
 
 .home-intro__inner {
@@ -214,10 +218,13 @@ body.has-pixel-hero .mainnav > ul {
 }
 
 #now-preview.region,
-.home-explore.region,
 .home-articles.region,
 .home-newsletter.region {
-  --region-space-top: var(--space-xl-2xl);
+  --region-space-top: 0;
+  --region-space-bottom: 0;
+}
+
+.home-newsletter.region {
   --region-space-bottom: var(--space-xl);
 }
 
@@ -226,51 +233,26 @@ body.has-pixel-hero .mainnav > ul {
   color: var(--color-primary);
 }
 
-.home-panel {
-  --flow-space: var(--space-m);
-  background: var(--color-bg);
-  border: 1px solid var(--color-bg-accent-2);
-  border-radius: var(--border-radius-medium);
-  padding: var(--space-xl) var(--space-l-xl);
-}
-
-.home-panel > .flow {
+.home-now {
   --flow-space: var(--space-s-m);
+  max-inline-size: 48ch;
 }
 
-.home-explore {
-  --flow-space: var(--space-l);
-}
-
-.home-explore__intro {
+.home-now .home-kicker + p {
   --flow-space: var(--space-xs);
-  margin-block-end: var(--space-l);
 }
 
-.home-explore__grid {
-  --grid-placement: auto-fit;
-  --grid-min-item-size: 16rem;
-  --gutter: var(--space-m);
-}
-
-.home-card {
-  display: block;
-  padding: var(--space-l-xl);
-  border: 1px solid var(--color-bg-accent-2);
-  border-radius: var(--border-radius-medium);
-  text-decoration: none;
-}
-
-.home-card p {
-  margin-block-start: var(--space-s);
-}
-
-.home-articles > .flow {
+.home-articles {
   --flow-space: var(--space-m);
 }
 
 .home-articles__list {
-  margin-block: var(--space-l);
+  --flow-space: var(--space-l);
+}
+
+.home-newsletter .newsletter-cta {
+  --flow-space: var(--space-s-m);
+  max-inline-size: 48ch;
 }
 
 @media (min-width: 48em) {
@@ -291,7 +273,7 @@ body.has-pixel-hero .mainnav > ul {
 
   .home-intro {
     --region-space-top: var(--space-xl);
-    --region-space-bottom: var(--space-xl);
+    --region-space-bottom: 0;
   }
 
   .home-intro__inner {
@@ -316,15 +298,7 @@ body.has-pixel-hero .mainnav > ul {
     inline-size: min(9.5rem, 42vw);
   }
 
-  .home-panel {
-    padding: var(--space-l-xl) var(--space-l);
-  }
-
-  #now-preview.region,
-  .home-explore.region,
-  .home-articles.region,
-  .home-newsletter.region {
-    --region-space-top: var(--space-xl);
-    --region-space-bottom: var(--space-xl);
+  body.has-pixel-hero main > .wrapper.flow {
+    --flow-space: var(--space-xl);
   }
 }
