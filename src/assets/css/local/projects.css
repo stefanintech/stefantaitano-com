@@ -1,8 +1,30 @@
+.projects {
+  --flow-space: var(--space-xl);
+}
+
+.projects .page-intro {
+  --region-space-bottom: 0;
+}
+
+.projects-grid {
+  --grid-placement: auto-fit;
+  --grid-min-item-size: 20rem;
+}
+
 .project-card {
+  --flow-space: var(--space-m);
   padding: var(--space-l);
   background: var(--color-bg);
   border: 1px solid var(--color-bg-accent-2);
   border-radius: var(--border-radius-medium);
+}
+
+.project-card__header {
+  --flow-space: var(--space-xs);
+}
+
+.project-card__title {
+  font-size: var(--size-step-1);
 }
 
 .project-card__meta {

@@ -5,7 +5,7 @@ title: 'Bookshelf'
 description: 'What Stefan Taitano is reading and listening to - mostly audiobooks, always books.'
 ---
 
-<div class="wrapper">
+<div class="wrapper flow bookshelf">
   {% set kicker = "Reading" %}
   {% set intro = "What I'm reading, have read, and want to read next. Most of these went through my ears, not my eyes. A book is a book." %}
   {% set introNote %}I usually listen through Libro.fm. If you want to try it, here's my <a href="https://libro.fm/referral?rf_code=lfm1105085">referral link</a>.{% endset %}
@@ -24,45 +24,38 @@ description: 'What Stefan Taitano is reading and listening to - mostly audiobook
       {% set groupBooks = groupBooks | sort(true, false, 'finished') %}
     {% endif %}
     {% if groupBooks %}
-      <section class="region" style="--region-space-top: var(--space-l)">
-        <div class="flow">
-          <p class="handwritten" style="font-size: var(--size-step-1); color: var(--color-primary);">
-            {{ group.label }}
-          </p>
-          <div class="grid" style="--grid-placement: auto-fit; --grid-min-item-size: 20rem;">
-            {% for book in groupBooks %}
-              <div
-                class="flow"
-                style="background: var(--color-bg); border: 1px solid var(--color-bg-accent-2); border-radius: var(--border-radius-medium); padding: var(--space-l);"
-              >
-                <div class="flow" style="--flow-space: var(--space-xs);">
-                  <h2 style="font-size: var(--size-step-1);">
-                    {% if book.url %}
-                      <a href="{{ book.url }}">{{ book.title }}</a>
-                    {% else %}
-                      {{ book.title }}
-                    {% endif %}
-                  </h2>
-                  <p style="font-size: var(--size-step-min-1);">by {{ book.author }}</p>
-                  <div class="cluster gutter-xs" style="flex-wrap: wrap;">
-                    <span
-                      style="font-size: var(--size-step-min-1); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.2em 0.6em; border: 1px solid var(--color-bg-accent-2); border-radius: 999px;"
-                    >{{ book.format }}</span>
-                    {% if book.finished %}
-                      <span
-                        style="font-size: var(--size-step-min-1); text-transform: uppercase; letter-spacing: 0.06em; padding: 0.2em 0.6em; border: 1px solid var(--color-bg-accent-2); border-radius: 999px;"
-                      >{{ book.finished }}</span>
-                    {% endif %}
-                  </div>
+      <section class="bookshelf-group flow">
+        <p class="bookshelf-group__label handwritten">{{ group.label }}</p>
+        <div class="bookshelf-grid grid">
+          {% for book in groupBooks %}
+            <article class="bookshelf-card flow">
+              <div class="bookshelf-card__header flow">
+                <h2 class="bookshelf-card__title">
+                  {% if book.url %}
+                    <a href="{{ book.url }}">{{ book.title }}</a>
+                  {% else %}
+                    {{ book.title }}
+                  {% endif %}
+                </h2>
+                <p class="bookshelf-card__author">by {{ book.author }}</p>
+                <div class="cluster gutter-xs">
+                  <span class="bookshelf-card__tag">{{ book.format }}</span>
+                  {% if book.finished %}
+                    <span class="bookshelf-card__tag">{{ book.finished }}</span>
+                  {% endif %}
                 </div>
-                {% if book.note %}
-                  <p>{{ book.note }}</p>
-                {% endif %}
               </div>
-            {% endfor %}
-          </div>
+              {% if book.note %}
+                <p>{{ book.note }}</p>
+              {% endif %}
+            </article>
+          {% endfor %}
         </div>
       </section>
     {% endif %}
   {% endfor %}
 </div>
+
+{% css "local" %}
+  {% include "css/bookshelf.css" %}
+{% endcss %}
