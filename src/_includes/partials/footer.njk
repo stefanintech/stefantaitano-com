@@ -1,7 +1,7 @@
 <footer class="site-footer mt-l-xl p-s-m">
   <div class="wrapper">
     <div class="cluster gutter-xs">
-      <nav class="cluster text-step-0" aria-label="{{ meta.navigation.ariaBottom }}">
+      <nav class="cluster text-step-0" aria-label="{{ meta.navigation.ariaExplore }}">
         &copy; {% year %}
         <a href="/" {{ indicateActiveHome }}
           ><span class="font-display">{{ meta.siteName }}</span>
@@ -10,12 +10,21 @@
         {% for item in navigation.bottom %}
           <a
             href="{{ item.url }}"
-            {{
-              helpers.getLinkActiveState(item.url,
-              page.url)
-              |
-              safe
-            }}
+            {% if item.external %}
+              rel="noopener"
+            {% else %}
+              {{ helpers.getLinkActiveState(item.url, page.url) | safe }}
+            {% endif %}
+            >{{ item.text }}</a
+          >
+        {% endfor %}
+      </nav>
+
+      <nav class="cluster text-step-0" aria-label="{{ meta.navigation.ariaBottom }}">
+        {% for item in navigation.legal %}
+          <a
+            href="{{ item.url }}"
+            {{ helpers.getLinkActiveState(item.url, page.url) | safe }}
             >{{ item.text }}</a
           >
         {% endfor %}

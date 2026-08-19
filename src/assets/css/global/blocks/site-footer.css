@@ -2,6 +2,11 @@
   --cluster-horizontal-alignment: center;
 }
 
+.site-footer > .wrapper > .cluster {
+  --cluster-vertical-alignment: center;
+  row-gap: var(--space-s);
+}
+
 /* increase tab size */
 .site-footer a:not(.creator a) {
   padding: var(--space-xs);

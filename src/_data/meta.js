@@ -69,7 +69,8 @@ export const dialog = {
 export const navigation = {
   navLabel: 'Menu',
   ariaTop: 'Main',
-  ariaBottom: 'Complementary',
+  ariaExplore: 'Explore',
+  ariaBottom: 'About this site',
   ariaPlatforms: 'Platforms',
   drawerNav: true,
   subMenu: false
