@@ -47,10 +47,14 @@ body.has-pixel-hero > header {
 }
 
 /* Flow spaces homepage sections. Keep main flow at 0 so the pixel hero
-   does not pick up a gap. */
+   does not pick up a gap. Set the sibling gap on the children directly so
+   a section's own --flow-space cannot shrink the space between sections. */
 body.has-pixel-hero main > .wrapper.flow {
   --gap: clamp(1.5rem, 10vw, 4rem);
-  --flow-space: var(--space-2xl);
+}
+
+body.has-pixel-hero main > .wrapper.flow > * + * {
+  margin-block-start: var(--space-2xl);
 }
 
 body.has-pixel-hero > header::before {
@@ -162,17 +166,8 @@ body.has-pixel-hero .mainnav > ul {
   --region-space-bottom: 0;
 }
 
-.home-intro__inner {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-xl) var(--space-2xl);
-  align-items: flex-start;
-}
-
 .home-intro__content {
   --flow-space: var(--space-l);
-  flex: 1;
-  min-inline-size: min(100%, 28ch);
   max-inline-size: 62ch;
 }
 
@@ -201,22 +196,6 @@ body.has-pixel-hero .mainnav > ul {
   --button-padding: var(--space-s) var(--space-m);
 }
 
-.home-intro__portrait {
-  flex-shrink: 0;
-  inline-size: min(260px, 100%);
-  aspect-ratio: 1;
-  overflow: hidden;
-  border: 4px solid color-mix(in oklab, var(--color-text) 22%, transparent);
-  border-radius: 50%;
-}
-
-.home-intro__portrait img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 20%;
-}
-
 #now-preview.region,
 .home-articles.region,
 .home-newsletter.region {
@@ -239,7 +218,7 @@ body.has-pixel-hero .mainnav > ul {
 }
 
 .home-now .home-kicker + p {
-  --flow-space: var(--space-xs);
+  --flow-space: var(--space-m);
 }
 
 .home-articles {
@@ -253,13 +232,6 @@ body.has-pixel-hero .mainnav > ul {
 .home-newsletter .newsletter-cta {
   --flow-space: var(--space-s-m);
   max-inline-size: 48ch;
-}
-
-@media (min-width: 48em) {
-  .home-intro__inner {
-    align-items: center;
-    justify-content: space-between;
-  }
 }
 
 @media (max-width: 47.99em) {
@@ -276,15 +248,6 @@ body.has-pixel-hero .mainnav > ul {
     --region-space-bottom: 0;
   }
 
-  .home-intro__inner {
-    flex-direction: column;
-    gap: var(--space-l);
-  }
-
-  .home-intro__content {
-    --flow-space: var(--space-l);
-  }
-
   .home-intro__title {
     font-size: var(--size-step-4);
     line-height: 1.45;
@@ -294,11 +257,7 @@ body.has-pixel-hero .mainnav > ul {
     margin-block-start: var(--space-m);
   }
 
-  .home-intro__portrait {
-    inline-size: min(9.5rem, 42vw);
-  }
-
-  body.has-pixel-hero main > .wrapper.flow {
-    --flow-space: var(--space-xl);
+  body.has-pixel-hero main > .wrapper.flow > * + * {
+    margin-block-start: var(--space-xl-2xl);
   }
 }
