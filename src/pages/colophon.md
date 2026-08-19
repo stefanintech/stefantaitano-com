@@ -4,7 +4,7 @@ discover:
   title: Colophon
 permalink: /colophon/index.html
 description: How this site is made - the type, colors, tools, and principles behind stefantaitano.com.
-date: "Last Modified"
+date: 2026-08-19
 layout: page
 ---
 
@@ -24,11 +24,13 @@ All fonts are subsetted, self-hosted, and treated as an enhancement. If they hav
 
 The palette is slate and amber on warm cream. The background started life as a neutral gray and was deliberately warmed up, because cream reads like paper and gray reads like a settings menu. There is a dark theme too, built on warm charcoal rather than cold black, which follows your system preference or the toggle in the header.
 
+The homepage sky is the exception: that band is always night, even when the rest of the page is in light mode. The hills fade into whatever the current page background is.
+
 ## Built with
 
 - [Eleventy](https://www.11ty.dev/), a static site generator
 - [Eleventy Excellent](https://eleventy-excellent.netlify.app/), the excellent starter by [Lene Saile](https://www.lenesaile.com/) that this site grew out of
-- [CUBE CSS](https://cube.fyi/) with design tokens and fluid type scales
+- [CUBE CSS](https://cube.fyi/) with [Every Layout](https://every-layout.dev/) compositions, design tokens, and a [Utopia](https://utopia.fyi/) fluid type and space scale
 - [Netlify](https://www.netlify.com/) for hosting and deploys
 
 ## Principles
@@ -41,6 +43,10 @@ Accessibility gets checked with automated [pa11y](https://pa11y.org/) tests, tho
 
 ## Small details
 
+- The homepage night sky is original pixel canvas, not a stock illustration: a moon, a knight of stars, a runner, a campfire, and an airplane. It is JavaScript on top of a static fallback, and it freezes if you prefer reduced motion.
+- My photo lives on the [links page](/links/), as a rounded square. The homepage intro under the hills is just type.
+- [Talks](/talks/) keep a more cinematic treatment on purpose. The rest of the inner pages use a shared quiet intro: a handwritten kicker, a Fraunces title, and one sentence.
+- [Field Notes](https://buttondown.com/stefantaitano) is an occasional email, hosted on Buttondown.
 - The chess stats on the [now page](/now/) are pulled from the Lichess API at build time, so they update whenever the site deploys.
 - The now page itself is a little journal: each update is a dated Markdown file, and the newest one is promoted to the top automatically.
 - Social preview images are generated from SVG templates at build time, set in Fraunces to match the site.
