@@ -68,6 +68,7 @@ export const dialog = {
 };
 export const navigation = {
   navLabel: 'Menu',
+  closeLabel: 'Close',
   ariaTop: 'Main',
   ariaExplore: 'Explore',
   ariaBottom: 'About this site',
