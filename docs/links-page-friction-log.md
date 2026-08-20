@@ -1,80 +1,83 @@
-# Friction Log — /links Page Audit
+# Friction Log — /links Page
 
-Audited: July 10, 2026 · Viewports tested: 320px, 390px (mobile emulation), desktop · Local dev build
+First audited: July 10, 2026 · Re-audited: August 20, 2026 · Viewports: 320px, 390px, desktop
 
 Severity scale: **P0** = broken/hurts the primary job · **P1** = meaningful friction · **P2** = polish
 
 ---
 
-## P0 — Buttons run edge-to-edge on mobile (no side gutters)
+## Re-audit (20 Aug 2026)
 
-**What I saw:** At 390px, measured `profileLeft: 0` and `btnWidth: 390` — the buttons and avatar column touch the physical screen edges with zero horizontal padding.
+The July P0/P1 list is largely done. At 390px the photo and buttons sit in the wrapper gutters (~11px each side), the compact header is a single Home row, the photo is a real button with `loading="eager"`, and the link buttons do not use `target="_blank"`.
 
-**Why:** `.links-page` carries the `wrapper` class, but `links.css` sets `display: flex` on it. The site's `.wrapper` composition works by being `display: grid` with gutter columns (`--gap: clamp(1rem, 6vw, 3rem)`), so the flex override silently destroys the gutters and the `grid-column: content` placement of children.
+Still worth doing for a Commit Your Code scan (this pass):
 
-**Fix direction:** Don't fight the wrapper. Put the flex/centering on an inner element and let `.wrapper` keep its grid, or drop `wrapper` and add explicit `padding-inline`.
+- **P2 — Footer duplicated the button list.** Platform icon buttons (GitHub, LinkedIn, Bluesky, Medium, Lichess) plus RSS rendered again under the CTA column. Hidden on the compact-header layout.
+- **P1 — Hint assumed a keyboard.** The old query (`hover: none` and `pointer: coarse`) still showed “type `stefan`” in desktop device mode. Default is now “press and hold the photo”; keyboard wording only for fine pointers with hover.
+- **P2 — Tagline would go stale after the event.** `eventUntil: 2026-09-05` drops the Commit Your Code suffix on the next build after that date.
+- **P2 — Easter-egg toast opened a new tab.** Lichess link is same-tab, with `rel="me"`.
 
----
+Left as-is, on purpose:
 
-## P1 — Avatar is lazy-loaded but it's the LCP element
-
-**What I saw:** Built HTML has `loading="lazy"` on the avatar (added automatically by the image transform). The avatar is the first thing a QR scanner sees; lazy-loading the largest above-the-fold element delays LCP on hotel/conference Wi-Fi — exactly the network this page is designed for.
-
-**Fix direction:** Mark the avatar `loading="eager"` / `fetchpriority="high"` (the image shortcode or transform usually supports an override), or inline it small.
-
-## P1 — The easter-egg hint is unusable by the QR audience
-
-**What I saw:** The visible hint says "type `stefan` for a surprise" — but the primary audience arrives by phone, where there is no keyboard. The touch egg (long-press avatar) has no hint at all, and dblclick doesn't exist on touch.
-
-**Fix direction:** Make the hint input-aware (e.g. "press and hold the photo" on touch via a `@media (hover: none)` swap, keyboard wording on desktop), or drop the text hint and let the avatar subtly wiggle once to invite a tap.
-
-## P1 — Easter egg spoils itself to screen readers, and the `figure` is a fake button
-
-**What I saw:** The avatar `<figure>` has `tabindex="0"` and `aria-label="Stefan Taitano — double-click for a surprise"`. That announces the surprise to screen-reader users (spoiling it), exposes a focusable element with no real role, and traps Enter/Space on a non-button. Meanwhile the visible hint is `aria-hidden`, so SR users get the spoiler but not the hint — backwards.
-
-**Fix direction:** Either make it a real `<button>` with an innocuous label ("Stefan Taitano"), or remove it from the tab order entirely and keep the egg pointer-only.
-
-## P1 — Site chrome pushes content down on small screens
-
-**What I saw:** At 320px the top nav wraps to two rows (6 items now that Links was added), so the avatar starts roughly a third of the way down the screen. A links page's job is instant recognition; every scanned visitor pays this cost.
-
-**Fix direction:** Keep the header (brand trust is worth something) but tighten the page's top region spacing on small viewports, or use a minimal variant of the layout for this page.
-
-## P1 — `target="_blank"` on every link
-
-**What I saw:** All six external buttons force new tabs. On mobile browsers this stacks tabs the visitor didn't ask for, and back-button behavior becomes confusing. Link-in-bio convention is same-tab navigation — the page's whole job is to hand the visitor off.
-
-**Fix direction:** Remove `target="_blank"`; keep `rel="me"` for identity URLs (Bluesky, GitHub, LinkedIn, Lichess) only — it's not meaningful on Website/Field Notes.
+- Three primary buttons (GitHub, Résumé, Talk) and ghost for the rest. Clear enough for a hallway scan; not flattening to one “start here.”
+- Footer still has Bookshelf / Field Notes / legal. Those are site chrome, not the same as the platform CTAs.
+- No analytics.
 
 ---
 
-## P2 — Hint text fails contrast
+## July 10 findings (status)
 
-Computed: accent gray at `opacity: 0.6` on the dark background lands around 3.4:1 — under the 4.5:1 AA threshold for small text. If the text is worth showing, it's worth reading; if it's decorative, hide it. Bump opacity/color or restructure per the P1 hint item.
+### P0 — Buttons run edge-to-edge on mobile — **Fixed**
 
-## P2 — Flat button hierarchy
+`.links-page` no longer sets `display: flex` on `.wrapper`. Flex/centering lives on `.links-profile`, so gutter columns stay.
 
-All seven buttons are identical primary amber. Nothing tells a RubyConf hallway visitor "start here." Consider making Website (or GitHub, given the audience) visually primary and demoting Email/Lichess to ghost buttons — same list, clearer path.
+### P1 — Avatar is lazy-loaded but it's the LCP element — **Fixed**
 
-## P2 — Tagline will go stale after the conference
+Source `img` is `loading="eager"` / `fetchpriority="high"`. The image transform keeps those attributes.
 
-"…at RubyConf" is hardcoded in `links.yaml`. Fine for next week, guaranteed wrong the week after. Worth a reminder or a date-gated suffix.
+### P1 — The easter-egg hint is unusable by the QR audience — **Fixed (this pass)**
 
-## P2 — Footer duplicates four of the seven links
+Touch wording is the default. See re-audit.
 
-GitHub, LinkedIn, Bluesky, and Lichess icon buttons render again in the footer immediately below the button list on mobile. Not harmful, but it dilutes the single-column focus. Acceptable trade for keeping shared chrome — noting it for awareness.
+### P1 — Easter egg spoils itself to screen readers, and the `figure` is a fake button — **Fixed**
 
-## P2 — Tap target height is at the floor
+The photo is a `<button type="button" aria-label="Stefan Taitano">` with a decorative `alt=""`. Enter/Space still fire the egg. Hint variants use `display: none` so only one is in the accessibility tree.
 
-Buttons measure ~46px tall — above the 44px minimum but below the ~48px comfortable target. One padding step up costs nothing on this page.
+### P1 — Site chrome pushes content down on small screens — **Fixed**
+
+`compactHeader` is Home + theme, not the six-item nav.
+
+### P1 — `target="_blank"` on every link — **Fixed**
+
+CTA buttons are same-tab. `rel="me"` stays on identity URLs. Toast matched in this pass.
+
+### P2 — Hint text fails contrast — **Fixed**
+
+Hint uses `--color-text-accent` at full opacity, not 0.6 on a dark band.
+
+### P2 — Flat button hierarchy — **Fixed enough**
+
+GitHub, Résumé, and the talk are primary. The rest are ghost.
+
+### P2 — Tagline will go stale after the conference — **Fixed (this pass)**
+
+Date-gated with `eventUntil`.
+
+### P2 — Footer duplicates four of the seven links — **Fixed (this pass)**
+
+Platform cluster omitted when `compactHeader` is set.
+
+### P2 — Tap target height is at the floor — **Fixed**
+
+`.links-button` is `min-block-size: 3.125rem` (~50px) with `--space-s` block padding.
 
 ---
 
 ## What already works well (keep these)
 
 - Owned URL on your domain, no third-party branding or tracking
-- Correct semantic list inside `nav[aria-label]`; real links, no JS routing
-- Brand-consistent: Fraunces display name, amber buttons, cream/charcoal theme, both color schemes work
-- Data-driven via `links.yaml` resolving from `personal.yaml` — one place to update platform URLs
-- Confetti keyword egg inherited site-wide; egg never blocks a primary CTA
+- Compact header for instant recognition on a scan
+- Real `<button>` photo; egg never blocks a primary CTA
+- Data-driven via `links.yaml` resolving from `personal.yaml`
 - Avatar served through the image transform as optimized `<picture>`
+- Brand-consistent: Fraunces name, amber primaries, cream/charcoal, both color schemes

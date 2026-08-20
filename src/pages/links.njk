@@ -2,7 +2,7 @@
 layout: base
 permalink: /links/index.html
 title: Stefan Taitano — Links
-description: 'Links and contact for Stefan Taitano — ServiceNow consultant, Ruby learner.'
+description: 'Links and contact for Stefan Taitano — ServiceNow developer, learning Ruby.'
 compactHeader: true
 ---
 
@@ -22,7 +22,12 @@ compactHeader: true
 
     <div class="links-identity flow">
       <h1 class="links-name">Stefan Taitano</h1>
-      <p class="links-tagline">{{ links.tagline }}{% if links.event %} · {{ links.event }}{% endif %}</p>
+      <p class="links-tagline">
+        {{ links.tagline }}
+        {%- if links.event and helpers.isOnOrBefore(links.eventUntil) %}
+          · {{ links.event }}
+        {%- endif %}
+      </p>
     </div>
 
     <nav class="links-nav flow" aria-label="Stefan's links">
