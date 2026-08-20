@@ -1,23 +1,24 @@
 name: Stefan Taitano
-title: ServiceNow Developer and Technical Consultant
+title: ServiceNow developer · learning Ruby
 location: Minneapolis, MN
 email: hello@stefantaitano.com
 website: https://www.stefantaitano.com
 github: https://github.com/stefanintech
 linkedin: https://www.linkedin.com/in/stefantaitano/
-lastUpdated: '2026-07-10'
+lastUpdated: '2026-08-20'
 
 summary: >
-  ServiceNow Developer and Technical Consultant experienced in supporting clients as a platform
-  admin, developer, and architect. Proven expertise in managing end-to-end platform health,
-  from leading platform upgrades and security hardening to designing and implementing high-value
-  products like Software Asset Management (SAM). Skilled in collaborating with C-Suite
-  stakeholders to define strategy, gather requirements, and drive continuous process improvement.
+  I spent nine years in the Army and now work on ServiceNow platforms at
+  Thirdera-Cognizant in Minneapolis: upgrades, security, and Software Asset
+  Management. This year I started learning Ruby through The Odin Project. In July
+  I volunteered at RubyConf 2026, gave a lightning talk there, and got my first
+  Ruby-related pull request merged. In September I am volunteering at Commit Your
+  Code in Plano.
 
 skills:
   - group: Coding
     items: JavaScript, Python, Ruby, Bash, HTML, CSS, Git, GitHub, XML
-  - group: ServiceNow Core Platform
+  - group: ServiceNow
     items: SAM, CSM, HRSD, ITSM, CMDB, App Engine, Service Catalog, UI Builder, Service Portal
 
 experience:
@@ -28,45 +29,60 @@ experience:
     end: Present
     bullets:
       - >
-        Launched a Software Asset Management (SAM) program, projecting over $10,000 in annual
-        savings and eliminating 500+ hours of manual work by implementing ServiceNow SAM Pro and
-        automating license discovery through integration with Microsoft SCCM, Intune,
-        Microsoft 365, and Adobe.
+        Launched a Software Asset Management program, projecting over $10,000 in
+        annual savings and cutting 500+ hours of manual work, by putting SAM Pro
+        on Microsoft SCCM, Intune, Microsoft 365, and Adobe.
       - >
-        Ensured the success of the SAM implementation by leading a CMDB cleanup initiative,
-        reducing stale configuration item (CI) data by 50%.
+        Cleaned up the CMDB for that SAM work and cut stale configuration items
+        by 50%.
       - >
-        Led bi-annual platform upgrade from Washington DC to Xanadu, and from Xanadu to Zurich,
-        achieving a flawless transition as measured by zero critical incidents and maintaining
-        100% platform uptime.
+        Led the platform upgrades from Washington DC to Xanadu, then Xanadu to
+        Zurich, with zero critical incidents.
       - >
-        Enhanced platform security posture, achieving a 50% reduction in security findings
-        (from 150 to 75) and boosting the platform hardening score to 85% by implementing
-        ServiceNow security best practices through Security Center.
+        Cut security findings in half (150 to 75) and got the hardening score to
+        85% through Security Center.
       - >
-        Collaborated with C-Suite stakeholders to define platform strategy, securing executive
-        buy-in for new solutions by leading technical demos and successfully managing a critical
-        Mainframe integration project.
+        Ran technical demos for executives and managed a Mainframe integration on
+        the platform.
       - >
-        Managed the daily operational health of the platform, maintaining a 100% triaged and
-        prioritized work backlog, by collaborating directly with the platform owner to execute
-        all incidents and requests through a formal Agile SDLC.
+        Handled day-to-day platform work with the platform owner: incidents,
+        requests, and a triaged backlog.
       - >
-        Enabled seamless operational continuity and accelerated future admin onboarding by
-        authoring a comprehensive documentation library for complex, repeatable procedures,
-        including manual (air-gapped) MID server upgrades, Azure certificate/secret renewals,
-        and platform cloning/upgrade procedures.
+        Wrote the runbooks I wished I had: air-gapped MID server upgrades, Azure
+        certificate and secret renewals, and platform cloning.
 
   - role: Team Lead and Program Manager
     org: U.S. Army
-    location: Various Locations
+    location: Various locations
     start: Oct 2015
     end: Feb 2024
     bullets:
       - >
-        Led and mentored teams of up to 5 personnel in mission-critical operations. Managed all
-        team programs, operations, and technical readiness, improving efficiency by designing and
-        authoring a new technical documentation library.
+        Led teams of up to 5 people on mission-critical work, and wrote technical
+        documentation that made the work easier to repeat.
+
+community:
+  - role: Lightning talk
+    org: RubyConf 2026
+    location: Las Vegas
+    date: Jul 2026
+    title: Volunteering at RubyConf Before Becoming a Ruby Developer
+    detail: First talk, and I closed out the night.
+    url: https://www.stefantaitano.com/talks/rubyconf-2026/
+  - role: Volunteer
+    org: RubyConf 2026
+    location: Las Vegas
+    date: Jul 2026
+    detail: >
+      Helped throughout the conference and at the hack space. First Ruby-related
+      pull request merged on RubyEvents.
+  - role: Volunteer
+    org: Commit Your Code
+    location: Plano, TX
+    date: Sep 2026
+    detail: >
+      Community conference in Plano, September 2–4. Another chance to help out
+      after RubyConf.
 
 certifications:
   - Architecture Excellence (ArchX)
