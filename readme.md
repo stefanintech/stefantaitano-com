@@ -16,12 +16,12 @@ This repository powers a personal site built with Eleventy. It mixes long-form w
 
 ## Current Status
 
-- `Phase 1` is done: crawling, metadata, social preview cleanup, and stale-reference cleanup.
-- `Phase 2` is done: the homepage rewrite, clearer navigation, and a stronger `/now` path are live.
-- Branding is done: slate + amber color scheme, ST monogram logo, favicons, and a real profile photo on the homepage.
-- The article archive has real content: three Medium articles ported and one site-native post published.
-- The `/now` page uses dated Markdown entries, shows the latest update first, and pulls live Lichess stats at build time.
-- The biggest remaining product work is turning temporary sections into real destinations and tightening content flow.
+- Homepage is a pixel night-sky banner, then type (no circle portrait). `/now` leads with Commit Your Code volunteering.
+- Top nav is four items: Now, Articles, Talks, Projects. Bookshelf, Field Notes, and Links live in the footer.
+- Inner pages share a calm intro. Talks stay cinematic. The photo is on `/links/` as a rounded square.
+- Branding: slate + amber, Fraunces + Atkinson Hyperlegible + Caveat, ST monogram, favicons.
+- Writing lives here. Medium is a footer identity link, not a competing CTA.
+- Remaining product work: homepage header after scroll, overlay menu access details, then the résumé. Analytics is backlog.
 
 ## Stack
 
@@ -137,7 +137,7 @@ related:
 ## What Has Been Done
 
 - Personalized the Eleventy Excellent starter into a custom personal site
-- Rewrote the homepage with hero copy, profile photo, trail cards, and recent articles
+- Rewrote the homepage around a pixel night sky, type-first intro, `/now`, recent articles, and Field Notes
 - Built a `/now` page with live Lichess stats pulled at build time
 - Ported three Medium articles and published one site-native post
 - Applied slate + amber branding, ST monogram logo, and regenerated favicons
@@ -155,7 +155,13 @@ The next meaningful improvements are:
 - ~~Swap default fonts for something that fits the brand~~ Done: Fraunces for headings, Atkinson Hyperlegible kept for body
 - ~~Decide whether to add supporting pages like `Bookshelf`, `Uses`, and `Colophon`~~ Done: Colophon live at /colophon/, Bookshelf live at /bookshelf/, Uses skipped
 - ~~Add end-of-article cross-links so each post suggests the next click~~ Done: articles now use curated `related` links
-- Evaluate privacy-friendly analytics (deprioritized; currently no analytics by choice)
+- ~~Calm inner-page intros, four-item nav, and this site as the writing home~~ Done
+- ~~Homepage as type under the pixel sky; Bookshelf/Projects off inline styles~~ Done
+- ~~Update the colophon so it mentions the pixel sky and that the photo lives on `/links/`~~ Done
+- Keep the homepage header usable after you scroll past the sky
+- Finish overlay menu access details (focus trap, restore focus, Close name)
+- Bring the résumé into 2026 last (talk, volunteering, Ruby; drop the consulting one-pager voice)
+- Evaluate privacy-friendly analytics (backlog; currently no analytics by choice)
 
 ## To-do
 
@@ -166,7 +172,12 @@ The next meaningful improvements are:
 - [x] Swap fonts (Fraunces display, Atkinson Hyperlegible body)
 - [x] Add optional supporting pages (Colophon and Bookshelf live; Uses skipped)
 - [x] Add article cross-links or related-post navigation
-- [ ] Evaluate privacy-friendly analytics (deprioritized)
+- [x] Calm inner-page intros, four-item nav, writing home, type-first homepage
+- [x] Update Colophon for the pixel sky and `/links/` photo
+- [ ] Homepage header after scroll
+- [ ] Overlay menu access details
+- [ ] Bring the résumé into 2026 (last)
+- [ ] Evaluate privacy-friendly analytics (backlog)
 
 ## Notes For Interested Folks
 
