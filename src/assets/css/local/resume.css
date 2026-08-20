@@ -142,6 +142,11 @@
   color: var(--color-primary);
 }
 
+.resume-community__detail {
+  font-size: var(--size-step-min-1);
+  max-inline-size: 62ch;
+}
+
 /* Certifications */
 .resume-certs {
   --flow-space: var(--space-2xs);
@@ -209,9 +214,14 @@
    ========================================================= */
 
 @media print {
+  @page {
+    size: letter;
+    margin: 0.6in;
+  }
+
   /* Hide site chrome */
-  header[role='banner'],
-  footer,
+  body > header,
+  footer.site-footer,
   .resume-header__actions {
     display: none !important;
   }
@@ -219,13 +229,20 @@
   .resume-page {
     padding: 0;
     margin: 0;
+    --region-space-top: 0;
+    --region-space-bottom: 0;
   }
 
   .resume {
+    --flow-space: 0.7rem;
     max-width: 100%;
     color: #000;
     font-size: 10pt;
-    line-height: 1.4;
+    line-height: 1.35;
+  }
+
+  .resume-header {
+    padding-block-end: 0.6rem;
   }
 
   .resume-header__name {
@@ -239,6 +256,11 @@
   .resume-section__heading {
     font-size: 9pt;
     border-block-end-color: #000;
+    margin-block-end: 0.35rem;
+  }
+
+  .resume-job {
+    padding-block-end: 0.45rem;
   }
 
   a {

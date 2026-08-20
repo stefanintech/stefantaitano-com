@@ -21,7 +21,7 @@ This repository powers a personal site built with Eleventy. It mixes long-form w
 - Inner pages share a calm intro. Talks stay cinematic. The photo is on `/links/` as a rounded square.
 - Branding: slate + amber, Fraunces + Atkinson Hyperlegible + Caveat, ST monogram, favicons.
 - Writing lives here. Medium is a footer identity link, not a competing CTA.
-- Remaining product work: the résumé. Analytics is backlog.
+- Remaining product work: Analytics is backlog.
 
 ## Stack
 
@@ -160,7 +160,7 @@ The next meaningful improvements are:
 - ~~Update the colophon so it mentions the pixel sky and that the photo lives on `/links/`~~ Done
 - ~~Keep the homepage header usable after you scroll past the sky~~ Done: it follows and switches to page colors past the hills
 - ~~Finish overlay menu access details (focus trap, restore focus, Close name)~~ Done
-- Bring the résumé into 2026 last (talk, volunteering, Ruby; drop the consulting one-pager voice)
+- ~~Bring the résumé into 2026 last (talk, volunteering, Ruby; drop the consulting one-pager voice)~~ Done
 - Evaluate privacy-friendly analytics (backlog; currently no analytics by choice)
 
 ## To-do
@@ -176,7 +176,7 @@ The next meaningful improvements are:
 - [x] Update Colophon for the pixel sky and `/links/` photo
 - [x] Homepage header after scroll
 - [x] Overlay menu access details
-- [ ] Bring the résumé into 2026 (last)
+- [x] Bring the résumé into 2026 (last)
 - [ ] Evaluate privacy-friendly analytics (backlog)
 
 ## Notes For Interested Folks

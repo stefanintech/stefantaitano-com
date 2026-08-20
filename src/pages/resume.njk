@@ -2,9 +2,9 @@
 layout: base
 permalink: /resume/index.html
 title: 'Résumé — Stefan Taitano'
-description: 'Professional résumé for Stefan Taitano — ServiceNow Developer and Technical Consultant based in Minneapolis, MN.'
+description: 'Résumé for Stefan Taitano — ServiceNow developer in Minneapolis, learning Ruby, with a lightning talk from RubyConf 2026.'
 schema: ProfilePage
-lastUpdated: '2026-07-10'
+lastUpdated: '2026-08-20'
 ---
 
 <div class="resume-page wrapper region" style="--region-space-top: var(--space-xl-2xl); --region-space-bottom: var(--space-xl-2xl);">
@@ -71,6 +71,32 @@ lastUpdated: '2026-07-10'
               <li>{{ bullet }}</li>
             {%- endfor %}
           </ul>
+        </div>
+      {%- endfor %}
+    </section>
+
+    <section class="resume-section flow" aria-labelledby="resume-community-heading">
+      <h2 id="resume-community-heading" class="resume-section__heading">Talks and volunteering</h2>
+      {%- for item in resume.community %}
+        <div class="resume-job flow">
+          <div class="resume-job__meta">
+            <h3 class="resume-job__role">{{ item.role }}</h3>
+            <p class="resume-job__org">
+              {{ item.org }}
+              {%- if item.location %}, {{ item.location }}{% endif %}
+            </p>
+            <p class="resume-job__dates">
+              <time>{{ item.date }}</time>
+            </p>
+          </div>
+          <p class="resume-community__detail">
+            {%- if item.url and item.title -%}
+              <a href="{{ item.url }}">{{ item.title }}</a>.
+              {%- if item.detail %} {{ item.detail }}{% endif -%}
+            {%- elif item.detail -%}
+              {{ item.detail }}
+            {%- endif -%}
+          </p>
         </div>
       {%- endfor %}
     </section>
