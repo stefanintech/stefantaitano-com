@@ -158,7 +158,7 @@ The next meaningful improvements are:
 - ~~Calm inner-page intros, four-item nav, and this site as the writing home~~ Done
 - ~~Homepage as type under the pixel sky; Bookshelf/Projects off inline styles~~ Done
 - ~~Update the colophon so it mentions the pixel sky and that the photo lives on `/links/`~~ Done
-- Keep the homepage header usable after you scroll past the sky
+- ~~Keep the homepage header usable after you scroll past the sky~~ Done: it follows and switches to page colors past the hills
 - ~~Finish overlay menu access details (focus trap, restore focus, Close name)~~ Done
 - Bring the résumé into 2026 last (talk, volunteering, Ruby; drop the consulting one-pager voice)
 - Evaluate privacy-friendly analytics (backlog; currently no analytics by choice)
@@ -174,7 +174,7 @@ The next meaningful improvements are:
 - [x] Add article cross-links or related-post navigation
 - [x] Calm inner-page intros, four-item nav, writing home, type-first homepage
 - [x] Update Colophon for the pixel sky and `/links/` photo
-- [ ] Homepage header after scroll
+- [x] Homepage header after scroll
 - [x] Overlay menu access details
 - [ ] Bring the résumé into 2026 (last)
 - [ ] Evaluate privacy-friendly analytics (backlog)
