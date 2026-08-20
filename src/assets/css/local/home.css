@@ -34,7 +34,8 @@ body.has-pixel-hero main.flow {
   margin-block-end: -1px;
 }
 
-/* Logo and nav sit on the sky. */
+/* Logo and nav sit on the sky. With JS they stay put after the
+   hills scroll away; without JS they leave with the sky. */
 body.has-pixel-hero > header {
   position: absolute;
   inset-inline: 0;
@@ -44,6 +45,21 @@ body.has-pixel-hero > header {
   color: var(--pixel-paper);
   --gap: clamp(1.5rem, 10vw, 4rem);
   padding-block-start: var(--space-m);
+  padding-block-end: var(--space-xs);
+}
+
+body.has-pixel-hero.header-follows > header {
+  position: fixed;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  body.has-pixel-hero.header-follows > header {
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      box-shadow 0.2s ease,
+      backdrop-filter 0.2s ease;
+  }
 }
 
 /* Flow spaces homepage sections. Keep main flow at 0 so the pixel hero
@@ -157,6 +173,65 @@ body.has-pixel-hero .mainnav > ul {
     --nav-item-text-color: var(--pixel-gold);
     --nav-item-decoration-color: var(--pixel-gold);
   }
+}
+
+/* After the sky: page colors so logo and links stay readable. */
+body.has-pixel-hero.is-header-docked > header {
+  background: color-mix(in oklab, var(--color-bg) 88%, transparent);
+  backdrop-filter: blur(12px);
+  color: var(--color-text);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--color-text) 14%, transparent);
+}
+
+body.has-pixel-hero.is-header-docked > header::before {
+  opacity: 0;
+}
+
+body.has-pixel-hero.is-header-docked > header .logo {
+  color: var(--color-text);
+}
+
+body.has-pixel-hero.is-header-docked .mainnav [data-drawer-toggle] {
+  color: var(--color-text);
+  text-decoration-color: color-mix(in oklab, var(--color-text) 35%, transparent);
+}
+
+body.has-pixel-hero.is-header-docked .mainnav [data-drawer-toggle] svg {
+  color: var(--color-text);
+}
+
+@media screen(navigation) {
+  body.has-pixel-hero.is-header-docked .mainnav svg {
+    color: var(--color-text);
+  }
+
+  body.has-pixel-hero.is-header-docked .mainnav :is(a, [data-submenu-toggle]) {
+    --nav-item-text-color: var(--color-text);
+  }
+
+  body.has-pixel-hero.is-header-docked .mainnav :is(a, [data-submenu-toggle]):hover {
+    --nav-item-text-color: var(--color-text);
+    --nav-item-decoration-color: var(--color-primary);
+  }
+
+  body.has-pixel-hero.is-header-docked .mainnav [aria-current='page'],
+  body.has-pixel-hero.is-header-docked .mainnav [data-state='active'] {
+    --nav-item-background: transparent;
+    --nav-item-text-color: var(--color-primary);
+    --nav-item-decoration-color: var(--color-primary);
+  }
+}
+
+/* Open overlay is still night, so undo the docked bar while it is up. */
+body.has-pixel-hero.is-header-docked:has([data-drawer-toggle][aria-expanded='true']) > header {
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  color: var(--pixel-paper);
+}
+
+body.has-pixel-hero.is-header-docked:has([data-drawer-toggle][aria-expanded='true']) > header .logo {
+  color: var(--pixel-paper);
 }
 
 /* Intro sits on the themed page below the hills. Only top padding —
