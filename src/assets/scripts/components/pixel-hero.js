@@ -263,6 +263,8 @@ class PixelHero extends HTMLElement {
     const moonY = 44;
     const lightRidge = luminance(palette[1]) - luminance(palette[0]) < 48;
     const ridgeValue = lightRidge ? 2 : 1;
+    // Cream hills need ink figures; night hills keep cream silhouettes.
+    const figureValue = lightRidge ? 1 : 2;
     const pineY = this.ridgeNear[Math.min(W - 1, pineX + 4)] - 10;
     const fireY = this.ridgeNear[Math.min(W - 1, fireX)] - 7;
 
@@ -325,9 +327,9 @@ class PixelHero extends HTMLElement {
     }
 
     this.stampPlane(grid, W, H, t, moving);
-    stampSprite(grid, W, H, PINE, pineX, pineY, lightRidge ? 2 : 1);
+    stampSprite(grid, W, H, PINE, pineX, pineY, figureValue);
     this.stampCampfire(grid, W, H, fireX, fireY, t, moving);
-    this.stampRunner(grid, W, H, fireX, t, moving, lightRidge);
+    this.stampRunner(grid, W, H, fireX, t, moving, figureValue);
     this.stampQuest(grid, W, H, fireX, fireY, t, moving);
 
     blit(this.skyCtx, W, H, grid, palette);
@@ -408,7 +410,7 @@ class PixelHero extends HTMLElement {
     put(grid, W, H, fireX, fireY - 9, 4);
   }
 
-  stampRunner(grid, W, H, fireX, t, moving, lightRidge) {
+  stampRunner(grid, W, H, fireX, t, moving, figureValue) {
     const x = Math.round(this.runnerProgress * W);
     const y = this.ridgeNear[Math.max(0, Math.min(W - 1, x + 2))] - 7;
     const paused = !moving || t < this.runnerPauseUntil;
@@ -416,7 +418,7 @@ class PixelHero extends HTMLElement {
     let sprite = RUNNER_STAND;
     if (!paused && !nearFire) sprite = Math.floor(t * 8) % 2 ? RUNNER_B : RUNNER_A;
     const flip = this.runnerDir < 0;
-    stampSprite(grid, W, H, sprite, x, y, lightRidge ? 2 : 1, flip);
+    stampSprite(grid, W, H, sprite, x, y, figureValue, flip);
   }
 
   stampQuest(grid, W, H, fireX, fireY, t, moving) {
