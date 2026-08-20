@@ -9,7 +9,7 @@ function showToast() {
     toast.className = 'links-toast';
     toast.setAttribute('role', 'status');
     toast.setAttribute('aria-live', 'polite');
-    toast.innerHTML = `Challenge me on Lichess ♟ — <a href="${LICHESS_URL}" rel="noopener" target="_blank">Late2TheBoard</a>`;
+    toast.innerHTML = `Challenge me on Lichess ♟ — <a href="${LICHESS_URL}" rel="me">Late2TheBoard</a>`;
     document.body.appendChild(toast);
   }
 

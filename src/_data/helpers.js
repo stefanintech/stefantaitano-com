@@ -47,3 +47,11 @@ export function random() {
   };
   return `${segment()}-${segment()}-${segment()}`;
 }
+
+/** True when isoDate is missing or today is on/before it (YYYY-MM-DD). */
+export function isOnOrBefore(isoDate) {
+  if (!isoDate) return true;
+  const until =
+    isoDate instanceof Date ? isoDate.toISOString().slice(0, 10) : String(isoDate).slice(0, 10);
+  return new Date().toISOString().slice(0, 10) <= until;
+}

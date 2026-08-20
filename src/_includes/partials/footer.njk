@@ -30,6 +30,7 @@
         {% endfor %}
       </nav>
 
+      {% if not compactHeader %}
       <nav class="cluster" aria-label="{{ meta.navigation.ariaPlatforms }}">
         <!-- gets the first item from the feed loop set in meta -->
         <a
@@ -53,6 +54,7 @@
           {% endif %}
         {% endfor %}
       </nav>
+      {% endif %}
     </div>
 
     {% if not compactHeader %}

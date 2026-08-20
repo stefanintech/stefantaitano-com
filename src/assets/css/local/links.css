@@ -136,20 +136,19 @@
   color: var(--color-text-accent);
 }
 
-/* Input-aware hint: touch devices get the long-press wording,
-   pointer/keyboard devices get the typing wording. display:none also
-   removes the inactive variant from the accessibility tree. */
-.links-hint__touch {
+/* Default to the touch hint: this page's job is a phone scan.
+   Keyboard wording only when a fine pointer with hover is available. */
+.links-hint__keyboard {
   display: none;
 }
 
-@media (hover: none) and (pointer: coarse) {
+@media (hover: hover) and (pointer: fine) {
   .links-hint__touch {
-    display: inline;
+    display: none;
   }
 
   .links-hint__keyboard {
-    display: none;
+    display: inline;
   }
 }
 
