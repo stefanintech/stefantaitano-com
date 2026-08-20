@@ -21,11 +21,7 @@ This repository powers a personal site built with Eleventy. It mixes long-form w
 - Inner pages share a calm intro. Talks stay cinematic. The photo is on `/links/` as a rounded square.
 - Branding: slate + amber, Fraunces + Atkinson Hyperlegible + Caveat, ST monogram, favicons.
 - Writing lives here. Medium is a footer identity link, not a competing CTA.
-<<<<<<< HEAD
-- Remaining product work: homepage header after scroll, overlay menu access details. Analytics is backlog.
-=======
-- Remaining product work: overlay menu access details, then the résumé. Analytics is backlog.
->>>>>>> origin/main
+- Remaining product work: overlay menu access details. Analytics is backlog.
 
 ## Stack
 
