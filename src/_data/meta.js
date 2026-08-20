@@ -3,7 +3,7 @@ export const url = process.env.URL || 'https://www.stefantaitano.com';
 export const domain = new URL(url).hostname;
 export const siteName = 'Stefan Taitano';
 export const siteDescription =
-  'Army veteran, ServiceNow consultant, and Ruby learner writing about code, work, and life outside both.';
+  'Army veteran, ServiceNow developer, and Ruby learner writing about code, work, and life outside both.';
 export const siteType = 'Person'; // schema
 export const locale = 'en_EN';
 export const lang = 'en';
@@ -27,7 +27,7 @@ export const themeLight = '#fbf8f3'; // used for meta tag theme-color, if light 
 export const themeDark = '#322d25'; // used for meta tag theme-color, if dark colors are prefered. best use value set for dark bg
 export const opengraph_default = '/assets/og-images/default-preview.png'; // fallback/default meta image
 export const opengraph_default_alt =
-  'Default social preview card for Stefan Taitano.'; // alt text for default meta image"
+  'Stefan Taitano. I build systems for a living and escape plans for fun.';
 export const blog = {
   // RSS feed
   name: 'Stefan Taitano – Articles',
