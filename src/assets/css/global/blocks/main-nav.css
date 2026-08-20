@@ -73,6 +73,18 @@
   text-underline-offset: 0.28em;
 }
 
+.mainnav [data-drawer-toggle] [data-close] {
+  display: none;
+}
+
+.mainnav [data-drawer-toggle][aria-expanded='true'] [data-open] {
+  display: none;
+}
+
+.mainnav [data-drawer-toggle][aria-expanded='true'] [data-close] {
+  display: inline;
+}
+
 .mainnav [data-drawer-toggle]:hover,
 .mainnav [data-drawer-toggle]:focus-visible {
   text-decoration-color: currentColor;
