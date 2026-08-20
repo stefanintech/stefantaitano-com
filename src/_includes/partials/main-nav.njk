@@ -55,7 +55,8 @@
 
   <template id="burger-template">
     <button data-drawer-toggle class="cluster" type="button" aria-expanded="false" aria-controls="mainnav-list">
-      <span>{{ meta.navigation.navLabel }}</span>
+      <span data-open>{{ meta.navigation.navLabel }}</span>
+      <span data-close>{{ meta.navigation.closeLabel }}</span>
 
       <svg
         width="1em"
