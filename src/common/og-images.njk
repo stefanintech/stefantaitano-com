@@ -32,23 +32,20 @@ eleventyExcludeFromCollections: true
   {% endif %}
 
   <title id="title">{{ post.data.title }}</title>
-  <defs>
-    {% include "partials/og-fonts.njk" %}
-  </defs>
   {% include "partials/og-chrome.njk" %}
 
   <text
     fill="#686258"
-    font-family="Atkinson OG, system-ui, sans-serif"
+    font-family="Atkinson Hyperlegible, system-ui, sans-serif"
     font-size="22"
     letter-spacing="0.18em"
   >
-    <tspan x="88" y="128">ARTICLE · {{ post.date | formatDateUtc('MMMM D, YYYY') | upper }}</tspan>
+    <tspan x="88" y="128">ARTICLE · {{ post.date | formatDate('MMMM D, YYYY') | upper }}</tspan>
   </text>
 
   <text
     fill="#19150e"
-    font-family="Fraunces OG, Georgia, serif"
+    font-family="Fraunces 72pt, Georgia, serif"
     font-size="56"
     font-weight="900"
   >
@@ -63,7 +60,7 @@ eleventyExcludeFromCollections: true
     x="88"
     y="572"
     fill="#686258"
-    font-family="Atkinson OG, system-ui, sans-serif"
+    font-family="Atkinson Hyperlegible, system-ui, sans-serif"
     font-size="24"
   >stefantaitano.com</text>
 
@@ -72,7 +69,7 @@ eleventyExcludeFromCollections: true
     y="572"
     text-anchor="end"
     fill="#686258"
-    font-family="Atkinson OG, system-ui, sans-serif"
+    font-family="Atkinson Hyperlegible, system-ui, sans-serif"
     font-size="22"
     letter-spacing="0.12em"
   >STEFAN TAITANO</text>
