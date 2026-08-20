@@ -263,8 +263,9 @@ class PixelHero extends HTMLElement {
     const moonY = 44;
     const lightRidge = luminance(palette[1]) - luminance(palette[0]) < 48;
     const ridgeValue = lightRidge ? 2 : 1;
-    // Cream hills need ink figures; night hills keep cream silhouettes.
-    const figureValue = lightRidge ? 1 : 2;
+    // Figures must contrast the page: ink on cream, cream on night.
+    // Do not reuse lightRidge — dark themes keep cream hills but a dark page.
+    const figureValue = luminance(palette[0]) > 128 ? 1 : 2;
     const pineY = this.ridgeNear[Math.min(W - 1, pineX + 4)] - 10;
     const fireY = this.ridgeNear[Math.min(W - 1, fireX)] - 7;
 
