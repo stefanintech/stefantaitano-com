@@ -95,7 +95,20 @@ export const greenweb = {
 export const tests = {
   pa11y: {
     // keep customPaths empty if you want to test all pages
-    customPaths: ['/', '/now/', '/articles/', '/talks/', '/talks/rubyconf-2026/', '/talks/rubyconf-2026/slides/', '/resume/', '/links/'],
+    customPaths: [
+      '/',
+      '/now/',
+      '/articles/',
+      '/talks/',
+      '/talks/rubyconf-2026/',
+      '/talks/rubyconf-2026/slides/',
+      '/projects/',
+      '/bookshelf/',
+      '/resume/',
+      '/links/',
+      '/colophon/',
+      '/accessibility/'
+    ],
     globalIgnore: []
   }
 };
