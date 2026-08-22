@@ -21,7 +21,7 @@ This repository powers a personal site built with Eleventy. It mixes long-form w
 - Inner pages share a calm intro. Talks stay cinematic. The photo is on `/links/` as a rounded square.
 - Branding: slate + amber, Fraunces + Atkinson Hyperlegible + Caveat, ST monogram, favicons.
 - Writing lives here. Medium is a footer identity link, not a competing CTA.
-- Remaining product work: Analytics is backlog.
+- Product checklist is complete. Next work is content as it comes: articles, `/now`, and projects.
 
 ## Stack
 
@@ -146,7 +146,9 @@ related:
 
 ## What Is Still On The Checklist
 
-The next meaningful improvements are:
+The product checklist is complete. Content (articles, `/now`, projects) lands as it comes.
+
+Completed:
 
 - ~~Fix the legal/imprint data path~~ Done: rewritten as a lightweight legal notice with email contact
 - ~~Replace the default Open Graph image~~ Done: subtitle updated, 11ty logo replaced with ST monogram on per-post cards
@@ -161,7 +163,6 @@ The next meaningful improvements are:
 - ~~Keep the homepage header usable after you scroll past the sky~~ Done: it follows and switches to page colors past the hills
 - ~~Finish overlay menu access details (focus trap, restore focus, Close name)~~ Done
 - ~~Bring the résumé into 2026 last (talk, volunteering, Ruby; drop the consulting one-pager voice)~~ Done
-- Evaluate privacy-friendly analytics (backlog; currently no analytics by choice)
 
 ## To-do
 
@@ -177,7 +178,6 @@ The next meaningful improvements are:
 - [x] Homepage header after scroll
 - [x] Overlay menu access details
 - [x] Bring the résumé into 2026 (last)
-- [ ] Evaluate privacy-friendly analytics (backlog)
 
 ## Notes For Interested Folks
 

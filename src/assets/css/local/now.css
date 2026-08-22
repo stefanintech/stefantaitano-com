@@ -65,3 +65,37 @@
   font-weight: var(--font-regular);
   color: var(--color-text-accent);
 }
+
+.now-stats-wrap {
+  overflow-x: auto;
+}
+
+.now-stats {
+  display: inline-table;
+  inline-size: auto;
+  max-inline-size: none;
+  width: auto;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.now-stats caption {
+  caption-side: top;
+  text-align: start;
+  margin-block-end: var(--space-xs);
+}
+
+.now-stats :is(th, td) {
+  padding-block: 0 var(--space-xs);
+  padding-inline: 0 var(--space-l);
+  text-align: start;
+  vertical-align: top;
+}
+
+.now-stats :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.now-stats th {
+  font-weight: var(--font-bold);
+}
