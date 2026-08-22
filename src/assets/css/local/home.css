@@ -7,6 +7,13 @@ body.has-pixel-hero {
   --pixel-gold: var(--color-gold);
   position: relative;
   overflow-x: clip;
+  /* Opaque ancestor so cream header type meets contrast while the
+     header itself stays transparent over the sky. */
+  background-color: var(--pixel-ink);
+}
+
+body.has-pixel-hero :is(main, .site-footer) {
+  background-color: var(--color-bg);
 }
 
 body.has-pixel-hero main.flow {
