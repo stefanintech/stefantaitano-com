@@ -1,4 +1,4 @@
-export const url = process.env.URL || 'https://www.stefantaitano.com';
+export const url = process.env.URL || 'https://stefantaitano.com';
 // Extract domain from `url`
 export const domain = new URL(url).hostname;
 export const siteName = 'Stefan Taitano';
@@ -12,13 +12,13 @@ export const author = {
   name: 'Stefan Taitano', // i.e. Lene Saile - page / blog author's name. Must be set.
   avatar: '/icon-512x512.png', // path to the author's avatar. In this case just using a favicon.
   email: 'hello@stefantaitano.com', // i.e. hola@lenesaile.com - email of the author
-  website: 'https://www.stefantaitano.com', // i.e. https.://www.lenesaile.com - the personal site of the author
+  website: 'https://stefantaitano.com',
   // fediverse: '@lene@front-end.social' // used for highlighting journalism on the fediverse. Can be Mastodon, Flipboard, Threads, WordPress (with the ActivityPub plugin installed), PeerTube, Pixelfed, etc. https://blog.joinmastodon.org/2024/07/highlighting-journalism-on-mastodon/
 };
 export const creator = {
   name: 'Stefan Taitano', // i.e. Lene Saile - creator's (developer) name.
   email: 'hello@stefantaitano.com',
-  website: 'https://www.stefantaitano.com',
+  website: 'https://stefantaitano.com',
   // social: 'https://front-end.social/@lene'
 };
 export const pathToSvgLogo = 'src/assets/svg/misc/logo.svg'; // used for favicon generation

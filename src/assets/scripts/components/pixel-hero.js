@@ -49,7 +49,7 @@ class PixelHero extends HTMLElement {
     this.onReduceChange = () => {
       this.stopLoop();
       this.paint(performance.now());
-      if (!this.reduceMotion.matches) this.startLoop();
+      if (!this.reduceMotion.matches && this.isVisible !== false) this.startLoop();
     };
     this.onThemeChange = () => this.paint(performance.now());
     this.reduceMotion.addEventListener('change', this.onReduceChange);
@@ -67,6 +67,15 @@ class PixelHero extends HTMLElement {
     });
     this.resizeObserver.observe(this);
 
+    this.onVisible = ([entry]) => {
+      this.isVisible = entry.isIntersecting;
+      if (this.reduceMotion.matches) return;
+      if (this.isVisible) this.startLoop();
+      else this.stopLoop();
+    };
+    this.visibilityObserver = new IntersectionObserver(this.onVisible, {threshold: 0});
+    this.visibilityObserver.observe(this);
+
     this.rebuild();
     this.paint(performance.now());
     if (!this.reduceMotion.matches) this.startLoop();
@@ -75,6 +84,7 @@ class PixelHero extends HTMLElement {
   disconnectedCallback() {
     this.stopLoop();
     this.resizeObserver?.disconnect();
+    this.visibilityObserver?.disconnect();
     this.themeObserver?.disconnect();
     this.reduceMotion?.removeEventListener('change', this.onReduceChange);
     this.schemeQuery?.removeEventListener('change', this.onThemeChange);

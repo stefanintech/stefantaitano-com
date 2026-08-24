@@ -33,9 +33,9 @@ I learned quickly that it was difficult to learn on my own, and asking for help 
 
 A guy on the internet named [Leon Noel](https://leonnoel.com/100devs/) posted on the [r/learnprogramming](https://www.reddit.com/r/learnprogramming/?rdt=56292) subreddit about [running a second cohort for their 30-week full stack software engineering bootcamp](https://www.reddit.com/r/learnprogramming/comments/rlmulr/i_ran_a_100_free_full_stack_web_development/) called [100Devs](https://www.reddit.com/r/learnprogramming/comments/rlmulr/i_ran_a_100_free_full_stack_web_development/).
 
-![](https://cdn-images-1.medium.com/max/800/1*pzcl3aTSFe0t7LURGqTmmQ.jpeg)
+![Screenshot of Leon Noel’s Reddit post announcing a free 100Devs full stack cohort](/assets/images/blog/leon-noel-100devs-reddit.jpeg)
 
-Leon Noel’s post
+Leon Noel’s post
 
 It was at this moment I shared this post that I was going to participate.
 
@@ -63,6 +63,6 @@ I’m absolutely happy, excited, and nervous to be going through this training p
 
 I applaud you for making it this far! I will be posting my journey of breaking into tech, specifically ServiceNow, weekly with you folks! Thank you for taking the time to read and look forward to your thoughts and comments!
 
-![](https://cdn-images-1.medium.com/max/800/1*HmeRMse3Bq9-U9UQ0fT6tw.png)
+![A list of certification and career goals written out at the start of the ServiceNow training program](/assets/images/blog/skillbridge-goals.png)
 
 *Originally published on Medium in 2023.*

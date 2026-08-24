@@ -40,7 +40,7 @@ class customEasteregg extends HTMLElement {
 
   triggerEffect(keyword) {
     console.log(`Hooray ${keyword}!`);
-    import('https://esm.run/canvas-confetti').then(({default: confetti}) => {
+    import('/assets/scripts/components/canvas-confetti.js').then(({default: confetti}) => {
       const scalar = 4;
       const customShape = confetti.shapeFromText({text: this.shape, scalar});
 

@@ -13,6 +13,43 @@ package = "netlify-plugin-cache"
     X-XSS-Protection = "1; mode=block"
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "autoplay=(), camera=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=()"
+    Cache-Control = "public, max-age=0, must-revalidate, stale-while-revalidate=60"
+
+# Unhashed JS/CSS/images: cache for a month, then reuse while revalidating.
+# ETags still let Netlify 304 when the file has not changed.
+[[headers]]
+    for = "/assets/*"
+    [headers.values]
+    Cache-Control = "public, max-age=2592000, stale-while-revalidate=31536000"
+
+# Self-hosted fonts use family/weight/subset in the filename.
+[[headers]]
+    for = "/assets/fonts/*"
+    [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Access-Control-Allow-Origin = "*"
+
+# Content-hashed Eleventy outputs (image transform + JS bundles).
+# Filenames change when the bytes change, so they can be cached forever.
+[[headers]]
+    for = "/img/*"
+    [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+    for = "/bundle/*"
+    [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+    for = "/favicon.svg"
+    [headers.values]
+    Cache-Control = "public, max-age=2592000, stale-while-revalidate=31536000"
+
+[[headers]]
+    for = "/favicon.ico"
+    [headers.values]
+    Cache-Control = "public, max-age=2592000, stale-while-revalidate=31536000"
 
 
 [build]

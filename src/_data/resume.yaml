@@ -2,7 +2,7 @@ name: Stefan Taitano
 title: ServiceNow developer · learning Ruby
 location: Minneapolis, MN
 email: hello@stefantaitano.com
-website: https://www.stefantaitano.com
+website: https://stefantaitano.com
 github: https://github.com/stefanintech
 linkedin: https://www.linkedin.com/in/stefantaitano/
 lastUpdated: '2026-08-20'
@@ -68,7 +68,7 @@ community:
     date: Jul 2026
     title: Volunteering at RubyConf Before Becoming a Ruby Developer
     detail: First talk, and I closed out the night.
-    url: https://www.stefantaitano.com/talks/rubyconf-2026/
+    url: https://stefantaitano.com/talks/rubyconf-2026/
   - role: Volunteer
     org: RubyConf 2026
     location: Las Vegas
