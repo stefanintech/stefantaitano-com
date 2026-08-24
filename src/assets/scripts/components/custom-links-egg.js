@@ -78,7 +78,12 @@ function init() {
     egg.removeAttribute('hidden');
     chrome.forEach(el => el.setAttribute('inert', ''));
     (boardLink || getFocusable()[0])?.focus();
-    import('canvas-confetti').then(({default: confetti}) => celebrate(confetti));
+    import('canvas-confetti').then(({default: confetti}) => {
+      celebrate(confetti);
+      document.querySelectorAll('canvas').forEach(canvas => {
+        canvas.style.pointerEvents = 'none';
+      });
+    });
   };
 
   const closeEgg = () => {
