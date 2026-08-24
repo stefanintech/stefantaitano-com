@@ -8,7 +8,7 @@ compactHeader: true
 
 <div class="links-page wrapper region">
   <div class="links-profile flow">
-    <button type="button" class="links-avatar" id="links-avatar" aria-label="Stefan Taitano">
+    <button type="button" class="links-avatar" id="links-avatar" aria-label="Stefan Taitano" aria-haspopup="dialog" aria-controls="links-egg">
       <img
         src="/assets/images/stefan.png"
         alt=""
@@ -19,6 +19,11 @@ compactHeader: true
         eleventy:widths="288,576"
       >
     </button>
+
+    <p class="links-hint handwritten">
+      <span class="links-hint__touch">hold the photo</span>
+      <span class="links-hint__keyboard">type <kbd>stefan</kbd></span>
+    </p>
 
     <div class="links-identity flow">
       <h1 class="links-name">Stefan Taitano</h1>
@@ -47,11 +52,24 @@ compactHeader: true
         >{{ item.label }}</a>
       {%- endfor %}
     </nav>
+  </div>
+</div>
 
-    <p class="links-hint">
-      <span class="links-hint__touch">press and hold the photo ♟</span>
-      <span class="links-hint__keyboard">type <kbd>stefan</kbd> for a surprise</span>
-    </p>
+<div class="links-egg" id="links-egg" hidden>
+  <button type="button" class="links-egg__backdrop" data-close tabindex="-1" aria-label="Close"></button>
+  <div
+    class="links-egg__card flow"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="links-egg-title"
+  >
+    <p class="links-egg__pawn" aria-hidden="true">♟</p>
+    <h2 id="links-egg-title" class="links-egg__title">You found it.</h2>
+    <p class="links-egg__copy">Challenge me on Lichess. I'm Late2TheBoard.</p>
+    <div class="links-egg__actions cluster gutter-s">
+      <a class="button" data-button-variant="tertiary" href="{{ personal.platforms.lichess }}" rel="me">Open my board</a>
+      <button type="button" class="button" data-ghost-button data-close>Close</button>
+    </div>
   </div>
 </div>
 

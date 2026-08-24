@@ -1,46 +1,110 @@
-const LICHESS_URL = 'https://lichess.org/@/Late2TheBoard';
-const TOAST_DURATION = 3500;
-const LONG_PRESS_MS = 600;
+const LONG_PRESS_MS = 550;
+const KEYWORD = 'stefan';
+const CONFETTI_Z = 200;
+const COLORS = ['#b45309', '#fbbe25', '#fbf8f3', '#64748b'];
 
-function showToast() {
-  let toast = document.querySelector('.links-toast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.className = 'links-toast';
-    toast.setAttribute('role', 'status');
-    toast.setAttribute('aria-live', 'polite');
-    toast.innerHTML = `Challenge me on Lichess ♟ — <a href="${LICHESS_URL}" rel="me">Late2TheBoard</a>`;
-    document.body.appendChild(toast);
-  }
+const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // Force reflow so transition plays even on repeat triggers
-  toast.removeAttribute('data-visible');
-  void toast.offsetWidth;
-  toast.setAttribute('data-visible', '');
+const inertTargets = () => document.querySelectorAll('header, main, footer');
 
-  clearTimeout(toast._hideTimer);
-  toast._hideTimer = setTimeout(() => {
-    toast.removeAttribute('data-visible');
-  }, TOAST_DURATION);
+function celebrate(confetti) {
+  if (prefersReducedMotion()) return;
+
+  const pawn = confetti.shapeFromText({text: '♟', scalar: 4});
+
+  confetti({
+    particleCount: 90,
+    spread: 80,
+    startVelocity: 45,
+    origin: {y: 0.7},
+    colors: COLORS,
+    zIndex: CONFETTI_Z
+  });
+
+  confetti({
+    shapes: [pawn],
+    scalar: 4,
+    particleCount: 28,
+    spread: 100,
+    startVelocity: 32,
+    origin: {y: 0.55},
+    zIndex: CONFETTI_Z
+  });
+
+  const end = Date.now() + 1200;
+  const frame = () => {
+    confetti({
+      particleCount: 4,
+      angle: 60,
+      spread: 55,
+      origin: {x: 0, y: 0.7},
+      colors: COLORS,
+      zIndex: CONFETTI_Z
+    });
+    confetti({
+      particleCount: 4,
+      angle: 120,
+      spread: 55,
+      origin: {x: 1, y: 0.7},
+      colors: COLORS,
+      zIndex: CONFETTI_Z
+    });
+    if (Date.now() < end) requestAnimationFrame(frame);
+  };
+  frame();
 }
 
 function init() {
   const avatar = document.getElementById('links-avatar');
-  if (!avatar) return;
+  const egg = document.getElementById('links-egg');
+  if (!avatar || !egg) return;
 
-  // Double-click trigger
-  avatar.addEventListener('dblclick', showToast);
-
-  // Long-press trigger (touch + mouse)
+  const card = egg.querySelector('.links-egg__card');
+  const closeButtons = egg.querySelectorAll('[data-close]');
+  const boardLink = egg.querySelector('a[rel="me"]');
+  const chrome = inertTargets();
   let pressTimer = null;
+  let lastFocus = null;
+  let keywordIndex = 0;
 
-  function startPress() {
-    pressTimer = setTimeout(showToast, LONG_PRESS_MS);
-  }
+  const isOpen = () => !egg.hasAttribute('hidden');
 
-  function cancelPress() {
+  const getFocusable = () =>
+    [...card.querySelectorAll('a[href], button:not([disabled])')].filter(el => !el.hasAttribute('tabindex') || el.tabIndex >= 0);
+
+  const openEgg = () => {
+    if (isOpen()) return;
+    lastFocus = document.activeElement;
+    egg.removeAttribute('hidden');
+    chrome.forEach(el => el.setAttribute('inert', ''));
+    (boardLink || getFocusable()[0])?.focus();
+    import('canvas-confetti').then(({default: confetti}) => {
+      celebrate(confetti);
+      document.querySelectorAll('canvas').forEach(canvas => {
+        canvas.style.pointerEvents = 'none';
+      });
+    });
+  };
+
+  const closeEgg = () => {
+    if (!isOpen()) return;
+    egg.setAttribute('hidden', '');
+    chrome.forEach(el => el.removeAttribute('inert'));
+    (lastFocus || avatar).focus();
+  };
+
+  const startPress = () => {
+    avatar.setAttribute('data-holding', '');
+    pressTimer = setTimeout(() => {
+      avatar.removeAttribute('data-holding');
+      openEgg();
+    }, LONG_PRESS_MS);
+  };
+
+  const cancelPress = () => {
+    avatar.removeAttribute('data-holding');
     clearTimeout(pressTimer);
-  }
+  };
 
   avatar.addEventListener('mousedown', startPress);
   avatar.addEventListener('mouseup', cancelPress);
@@ -48,15 +112,53 @@ function init() {
   avatar.addEventListener('touchstart', startPress, {passive: true});
   avatar.addEventListener('touchend', cancelPress);
   avatar.addEventListener('touchcancel', cancelPress);
+  avatar.addEventListener('dblclick', event => {
+    event.preventDefault();
+    openEgg();
+  });
+  avatar.addEventListener('contextmenu', event => event.preventDefault());
+  avatar.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      openEgg();
+    }
+  });
 
-  // Long-press on touch shouldn't open the browser context menu
-  avatar.addEventListener('contextmenu', e => e.preventDefault());
+  closeButtons.forEach(button => button.addEventListener('click', closeEgg));
 
-  // Keyboard: Enter or Space on focused avatar
-  avatar.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      showToast();
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && isOpen()) {
+      event.preventDefault();
+      closeEgg();
+      return;
+    }
+
+    if (isOpen() && event.key === 'Tab') {
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+      return;
+    }
+
+    if (event.metaKey || event.ctrlKey || event.altKey) return;
+    if (event.key.length !== 1) return;
+    const key = event.key.toLowerCase();
+    if (key === KEYWORD[keywordIndex]) {
+      keywordIndex += 1;
+      if (keywordIndex === KEYWORD.length) {
+        keywordIndex = 0;
+        openEgg();
+      }
+    } else {
+      keywordIndex = key === KEYWORD[0] ? 1 : 0;
     }
   });
 }

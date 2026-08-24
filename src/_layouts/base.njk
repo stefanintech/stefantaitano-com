@@ -52,7 +52,7 @@
     <main id="main" class="flow">{{ content | safe }}</main>
 
     {% include "partials/footer.njk" %}
-    {%- if meta.easteregg -%}
+    {%- if meta.easteregg and not compactHeader -%}
       <custom-easteregg keyword="stefan" shape="♟" particle-count="40"></custom-easteregg>
       <script type="module">
         const loadEgg = () => import('/assets/scripts/components/custom-easteregg.js');
