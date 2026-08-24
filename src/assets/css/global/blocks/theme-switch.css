@@ -11,8 +11,3 @@
   --button-border-color: var(--_color-contrast);
   --focus-color: var(--_color-contrast);
 }
-
-/* Hide without JS */
-is-land:not(:defined) .theme-switch {
-  display: none;
-}

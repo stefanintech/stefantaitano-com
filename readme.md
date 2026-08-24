@@ -2,7 +2,7 @@
 
 Personal website and writing home for Stefan Taitano.
 
-Live site: [www.stefantaitano.com](https://www.stefantaitano.com)
+Live site: [stefantaitano.com](https://stefantaitano.com)
 
 This repository powers a personal site built with Eleventy. It mixes long-form writing, a `/now` page, platform links, generated feeds, and a homepage that is slowly turning into a clearer home for projects, articles, and ongoing work. Stefan is an Army veteran turned ServiceNow consultant, getting deeper into Ruby and slowly training for a 2027 marathon.
 
@@ -74,7 +74,7 @@ The site is configured for Netlify.
 The canonical site URL comes from `src/_data/meta.js` and defaults to:
 
 ```txt
-https://www.stefantaitano.com
+https://stefantaitano.com
 ```
 
 If needed, you can override it with the `URL` environment variable.

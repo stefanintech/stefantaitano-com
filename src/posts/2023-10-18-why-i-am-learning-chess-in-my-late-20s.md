@@ -11,7 +11,7 @@ related:
 
 I never cared about chess. I saw it as a hobby for grandpas in parks or gifted kids in school. Now I spend my nights studying pawn moves and knight strategies between changing diapers for my two children.
 
-![](https://miro.medium.com/v2/resize:fit:700/0*mK0UJ3JvZO6L8XoX)
+![A wooden chess board with pieces set up for a game](/assets/images/blog/chess-board.jpg)
 
 Photo by [Daniel Álvasd](https://unsplash.com/@danielalvasd?utm_source=medium&utm_medium=referral) on [Unsplash](https://unsplash.com/?utm_source=medium&utm_medium=referral)
 

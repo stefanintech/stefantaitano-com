@@ -1,1 +1,9 @@
-<script src="{% getBundleFileUrl "js", "defer" %}" type="module"></script>
+{%- set deferJs %}{% getBundle "js", "defer" %}{% endset -%}
+{%- if deferJs | trim %}
+<script type="module">{{ deferJs | safe }}</script>
+{%- endif %}
+<script type="module">
+  if (document.querySelector('is-land')) {
+    import('/assets/scripts/components/is-land.js');
+  }
+</script>

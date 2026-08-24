@@ -21,7 +21,7 @@ links:
     email: true
     variant: ghost
   - label: Website
-    url: https://www.stefantaitano.com
+    url: https://stefantaitano.com
     variant: ghost
   - label: Lichess
     url_key: lichess

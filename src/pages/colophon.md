@@ -18,7 +18,7 @@ Body text is set in [Atkinson Hyperlegible](https://fonts.google.com/specimen/At
 
 The little handwritten asides you will spot around the site are [Caveat](https://fonts.google.com/specimen/Caveat). They are the margin notes of this site, used sparingly and never for anything you actually need to read.
 
-All fonts are subsetted, self-hosted, and treated as an enhancement. If they have not loaded yet, or never load, the site falls back to system fonts and stays perfectly readable.
+All fonts are subsetted, self-hosted, and treated as an enhancement. If they have not loaded yet, or never load, the site falls back to system fonts and stays perfectly readable. The handwritten Caveat cut is decorative, so the browser is allowed to skip it on a slow first visit.
 
 ## Color
 
@@ -38,6 +38,8 @@ The homepage sky is the exception: that band is always night, even when the rest
 The site follows [progressive enhancement](https://piccalil.li/blog/its-about-time-i-tried-to-explain-what-progressive-enhancement-actually-is/): solid HTML first, CSS as a layer on top, JavaScript only where it genuinely improves the experience. Almost everything here works with JavaScript turned off.
 
 There are no analytics and no tracking scripts, by choice. I have no idea how many people read this site, and so far that has been fine.
+
+The site stays small on purpose: CSS is inlined, images are converted to AVIF and WebP at build time, and hashed assets are cached for a long time so repeat visits do not download the same files again.
 
 Accessibility gets checked with automated [pa11y](https://pa11y.org/) tests, though automation only catches so much. If something is hard to use, [tell me](/accessibility/).
 
