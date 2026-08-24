@@ -8,7 +8,7 @@ const COLORS = ['#b45309', '#fbbe25', '#fbf8f3', '#64748b'];
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const inertTargets = () => document.querySelectorAll('header, main, footer');
+const inertTargets = () => document.querySelectorAll('header, footer, .links-page');
 
 function celebrate(confetti) {
   if (prefersReducedMotion()) return;
