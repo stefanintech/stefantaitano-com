@@ -1,4 +1,7 @@
-const LONG_PRESS_MS = 550;
+const LONG_PRESS_MS = 500;
+// iOS often steals an image long-press a little before our timer fires.
+const STOLEN_PRESS_MS = 400;
+const MOVE_CANCEL_PX = 28;
 const KEYWORD = 'stefan';
 const CONFETTI_Z = 200;
 const COLORS = ['#b45309', '#fbbe25', '#fbf8f3', '#64748b'];
@@ -64,6 +67,10 @@ function init() {
   const boardLink = egg.querySelector('a[rel="me"]');
   const chrome = inertTargets();
   let pressTimer = null;
+  let pressPointerId = null;
+  let pressStartedAt = 0;
+  let pressStartX = 0;
+  let pressStartY = 0;
   let lastFocus = null;
   let keywordIndex = 0;
 
@@ -93,25 +100,96 @@ function init() {
     (lastFocus || avatar).focus();
   };
 
-  const startPress = () => {
+  const clearPress = () => {
+    avatar.removeAttribute('data-holding');
+    clearTimeout(pressTimer);
+    pressTimer = null;
+    pressPointerId = null;
+  };
+
+  const startPress = event => {
+    if (!event.isPrimary) return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if (pressPointerId !== null) return;
+
+    // Non-passive: stop iOS from turning this into Save Image / a callout.
+    event.preventDefault();
+
+    pressPointerId = event.pointerId;
+    pressStartedAt = Date.now();
+    pressStartX = event.clientX;
+    pressStartY = event.clientY;
     avatar.setAttribute('data-holding', '');
+
+    try {
+      avatar.setPointerCapture(event.pointerId);
+    } catch {
+      // Capture is best-effort; the timer still runs without it.
+    }
+
     pressTimer = setTimeout(() => {
+      pressTimer = null;
+      pressPointerId = null;
       avatar.removeAttribute('data-holding');
       openEgg();
     }, LONG_PRESS_MS);
   };
 
-  const cancelPress = () => {
-    avatar.removeAttribute('data-holding');
-    clearTimeout(pressTimer);
+  const endPress = event => {
+    if (pressPointerId === null) return;
+    if (event.pointerId !== pressPointerId) return;
+
+    const held = pressStartedAt ? Date.now() - pressStartedAt : 0;
+    const stolenByBrowser = event.type === 'pointercancel';
+    clearPress();
+
+    // Safari iOS fires pointercancel instead of contextmenu when it claims
+    // an image long-press. If they already held, that is the easter egg.
+    if (stolenByBrowser && held >= STOLEN_PRESS_MS) {
+      openEgg();
+    }
   };
 
-  avatar.addEventListener('mousedown', startPress);
-  avatar.addEventListener('mouseup', cancelPress);
-  avatar.addEventListener('mouseleave', cancelPress);
-  avatar.addEventListener('touchstart', startPress, {passive: true});
-  avatar.addEventListener('touchend', cancelPress);
-  avatar.addEventListener('touchcancel', cancelPress);
+  const onPointerMove = event => {
+    if (pressPointerId === null || event.pointerId !== pressPointerId) return;
+    const dx = event.clientX - pressStartX;
+    const dy = event.clientY - pressStartY;
+    if (dx * dx + dy * dy > MOVE_CANCEL_PX * MOVE_CANCEL_PX) {
+      clearPress();
+    }
+  };
+
+  avatar.addEventListener('pointerdown', startPress, {passive: false});
+  avatar.addEventListener('pointerup', endPress);
+  avatar.addEventListener('pointercancel', endPress);
+  avatar.addEventListener('pointermove', onPointerMove);
+  // iOS still uses touch for the image callout. preventDefault here is what
+  // actually keeps the hold from being cancelled around 500ms. Also start the
+  // timer from touch in case pointerdown is suppressed.
+  avatar.addEventListener(
+    'touchstart',
+    event => {
+      event.preventDefault();
+      const touch = event.changedTouches[0];
+      if (!touch) return;
+      startPress({
+        isPrimary: true,
+        pointerType: 'touch',
+        button: 0,
+        pointerId: touch.identifier,
+        clientX: touch.clientX,
+        clientY: touch.clientY,
+        preventDefault() {}
+      });
+    },
+    {passive: false}
+  );
+  avatar.addEventListener('touchend', () => {
+    if (pressPointerId !== null) endPress({pointerId: pressPointerId, type: 'pointerup'});
+  });
+  avatar.addEventListener('touchcancel', () => {
+    if (pressPointerId !== null) endPress({pointerId: pressPointerId, type: 'pointercancel'});
+  });
   avatar.addEventListener('dblclick', event => {
     event.preventDefault();
     openEgg();
