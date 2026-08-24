@@ -8,7 +8,7 @@ const COLORS = ['#b45309', '#fbbe25', '#fbf8f3', '#64748b'];
 
 const prefersReducedMotion = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-const inertTargets = () => document.querySelectorAll('header, footer, .links-page');
+const inertTargets = () => document.querySelectorAll('header, main, footer');
 
 function celebrate(confetti) {
   if (prefersReducedMotion()) return;
@@ -64,7 +64,6 @@ function init() {
 
   const card = egg.querySelector('.links-egg__card');
   const closeButtons = egg.querySelectorAll('[data-close]');
-  const boardLink = egg.querySelector('a[rel="me"]');
   const chrome = inertTargets();
   let pressTimer = null;
   let pressPointerId = null;
@@ -72,7 +71,10 @@ function init() {
   let pressStartX = 0;
   let pressStartY = 0;
   let lastFocus = null;
+  let savedScrollY = 0;
   let keywordIndex = 0;
+
+  document.body.append(egg);
 
   const isOpen = () => !egg.hasAttribute('hidden');
 
@@ -82,9 +84,14 @@ function init() {
   const openEgg = () => {
     if (isOpen()) return;
     lastFocus = document.activeElement;
+    savedScrollY = window.scrollY;
     egg.removeAttribute('hidden');
+    document.body.style.overflow = 'hidden';
     chrome.forEach(el => el.setAttribute('inert', ''));
-    (boardLink || getFocusable()[0])?.focus();
+    // Do not focus the Lichess link: iOS scrolls the page to it and shows
+    // the Safari toolbar / footer instead of the overlay.
+    card.focus({preventScroll: true});
+    window.scrollTo(0, savedScrollY);
     import('canvas-confetti').then(({default: confetti}) => {
       celebrate(confetti);
       document.querySelectorAll('canvas').forEach(canvas => {
@@ -96,8 +103,10 @@ function init() {
   const closeEgg = () => {
     if (!isOpen()) return;
     egg.setAttribute('hidden', '');
+    document.body.style.overflow = '';
     chrome.forEach(el => el.removeAttribute('inert'));
-    (lastFocus || avatar).focus();
+    (lastFocus || avatar).focus({preventScroll: true});
+    window.scrollTo(0, savedScrollY);
   };
 
   const clearPress = () => {
