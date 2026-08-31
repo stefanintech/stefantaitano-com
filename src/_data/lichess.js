@@ -96,8 +96,31 @@ function slimGame(game) {
   };
 }
 
-function parseNdjson(text) {
-  if (!text || typeof text !== 'string') {
+function asText(value) {
+  if (value == null) {
+    return '';
+  }
+
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  // @11ty/eleventy-fetch reads type: 'text' cache files with readFileSync,
+  // which returns a Buffer on the second build.
+  if (typeof Buffer !== 'undefined' && Buffer.isBuffer(value)) {
+    return value.toString('utf8');
+  }
+
+  if (value instanceof Uint8Array) {
+    return new TextDecoder('utf-8').decode(value);
+  }
+
+  return String(value);
+}
+
+function parseNdjson(value) {
+  const text = asText(value);
+  if (!text.trim()) {
     return [];
   }
 
@@ -205,7 +228,8 @@ export default async function () {
       since: String(since),
       until: String(until),
       perfType: 'rapid',
-      max: String(GAMES_MAX)
+      max: String(GAMES_MAX),
+      moves: 'false'
     });
     const ndjson = await fetchLichess(`/api/games/user/${USERNAME}?${query}`, {
       accept: 'application/x-ndjson',
