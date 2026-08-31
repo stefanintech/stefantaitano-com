@@ -9,8 +9,9 @@ alwaysApply: true
 2. **Run the curl in each phase before writing the parser.** Look at real JSON or real PGN, then write code against what you saw. Never against an assumed schema.
 3. **One phase per session.** Commit at the end. Don't start the next unprompted.
 4. **No tokens in client-side code or committed files.** Lichess's own docs are blunt about this: tokens can perform arbitrary actions within their scope, you remain responsible, and they must never reach a frontend bundle. Phases 0–5 run at build time or in a Netlify Function.
-5. **Check `package.json` for the Eleventy version first.** Module style and the data-file API differ between v2 and v3.
+5. **Check `package.json` for the Eleventy version first.** This repo is v3 ESM (`"type": "module"`). Module style and the data-file API differ between v2 and v3.
 6. **The spec moves.** It's at 2.0.165 and gets published on a near-daily cadence. If you pull in `@lichess-org/types`, pin the version.
+7. **Fit this repo. Do not invent a parallel layout.** Input is `src/`, data is `src/_data/`, pages are `src/pages/`, includes are `src/_includes/`, output is `dist/`. Extend files that already do the job. New files go in those same folders. Prefer existing tokens, layouts, CSS bundles, and the SVG OG pipeline over a new stack. Do not create a root `_data/` or `_site/`.
 
 ---
 
@@ -37,7 +38,7 @@ curl -s 'https://lichess.org/api/study/{studyId}/{chapterId}.pgn' | head -20
 
 A 404 or empty response means the ID is wrong or the study's Share & export setting changed. Report that and stop; do not write anything to disk.
 
-**3. Update `_data/study.json`.** Overwrite in full:
+**3. Update `src/_data/study.json`.** Overwrite in full:
 
 ```json
 {
@@ -58,9 +59,9 @@ A 404 or empty response means the ID is wrong or the study's Share & export sett
 - Caching the tags here keeps Phase 4a fully static — the lead-in line above the board renders with no build-time API call.
 - **Preserve the existing `blurb` unless Stefan supplied a new one in the same message.** If he pasted a sentence alongside the link, that's the blurb. If the field is empty and he gave nothing, leave it empty and mention it once; don't write a blurb on his behalf.
 
-**4. Report the change.** Show the before/after diff of `study.json` and the resulting embed URL. Don't commit unless asked.
+**4. Report the change.** Show the before/after diff of `src/_data/study.json` and the resulting embed URL. Don't commit unless asked.
 
 **Do not, ever:**
-- Paste the raw iframe HTML into a template. The template builds the URL from `study.json`. The only file this procedure touches is `study.json`.
+- Paste the raw iframe HTML into a template. The template builds the URL from `study.json`. The only file this procedure touches is `src/_data/study.json`.
 - Carry over `theme`, `pieceSet`, `bg`, or any other query params from the pasted iframe. The template owns styling.
 - Invent, autocomplete, or "correct" a chapter ID.
