@@ -323,14 +323,11 @@ function experimentScoreboard({currentRating, windowGames}) {
   };
 }
 
-function buildRapidChart(points) {
+function plotRatingCurve(points, {width, height, pad}) {
   if (!Array.isArray(points) || points.length === 0) {
     return null;
   }
 
-  const width = 720;
-  const height = 280;
-  const pad = {top: 28, right: 16, bottom: 40, left: 52};
   const innerW = width - pad.left - pad.right;
   const innerH = height - pad.top - pad.bottom;
   const ratings = points.map(point => point.rating);
@@ -378,6 +375,22 @@ function buildRapidChart(points) {
   };
 }
 
+function buildRapidChart(points) {
+  return plotRatingCurve(points, {
+    width: 720,
+    height: 280,
+    pad: {top: 28, right: 16, bottom: 40, left: 52}
+  });
+}
+
+function buildOgChart(points) {
+  return plotRatingCurve(points, {
+    width: 1200,
+    height: 630,
+    pad: {top: 150, right: 88, bottom: 130, left: 88}
+  });
+}
+
 function summarizeForLog(data) {
   return {
     username: data.username,
@@ -405,6 +418,9 @@ function summarizeForLog(data) {
     })),
     rapidChart: data.rapidChart
       ? {points: data.rapidChart.polyline.split(' ').length, last: data.rapidChart.last}
+      : null,
+    ogChart: data.ogChart
+      ? {points: data.ogChart.polyline.split(' ').length, last: data.ogChart.last}
       : null,
     scoreboard: data.scoreboard,
     errors: data.errors
@@ -498,6 +514,7 @@ export default async function () {
     experimentGames,
     lastFiveRatedRapid: lastFiveRatedRapid(recentGames, user?.id),
     rapidChart: buildRapidChart(rapidPoints),
+    ogChart: buildOgChart(rapidPoints),
     scoreboard,
     available: Boolean(user),
     errors

@@ -3,6 +3,10 @@ layout: base
 permalink: /chess/index.html
 title: Chess
 description: 'Stefan Taitano’s Lichess Rapid numbers, pulled at build time.'
+eleventyComputed:
+  discover:
+    image: '/assets/og-images/chess-preview.png{% if lichess.perfs.rapid.rating %}?v={{ lichess.perfs.rapid.rating }}{% endif %}'
+    imageAlt: '{% if lichess.perfs.rapid.rating %}Stefan Taitano’s Lichess Rapid rating is {{ lichess.perfs.rapid.rating }}. {{ lichess.scoreboard.statusLine }}{% else %}Stefan Taitano’s Lichess Rapid experiment.{% endif %}'
 ---
 
 <div class="wrapper flow chess">
