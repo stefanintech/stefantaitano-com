@@ -1,0 +1,74 @@
+.chess {
+  --flow-space: var(--space-xl);
+}
+
+.chess .page-intro {
+  --region-space-bottom: 0;
+}
+
+.chess-current,
+.chess-chart,
+.chess-games {
+  --flow-space: var(--space-s);
+}
+
+.chess-provisional {
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+  font-weight: var(--font-regular);
+}
+
+.chess-chart__figure {
+  margin: 0;
+}
+
+.chess-chart__svg {
+  display: block;
+  width: 100%;
+  max-inline-size: 45rem;
+  height: auto;
+}
+
+.chess-chart__baseline {
+  stroke: var(--color-bg-accent-2);
+  stroke-width: 1;
+}
+
+.chess-chart__line {
+  stroke: var(--color-primary);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chess-chart__now {
+  fill: var(--color-primary);
+}
+
+.chess-chart__axis {
+  fill: var(--color-text-accent);
+  font-family: var(--font-base);
+  font-size: 14px;
+}
+
+.chess-chart__figure figcaption {
+  margin-block-start: var(--space-xs);
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+}
+
+.chess-result {
+  font-weight: var(--font-bold);
+}
+
+.chess-result--win {
+  color: var(--color-primary);
+}
+
+.chess-result--draw {
+  color: var(--color-text-accent);
+}
+
+.chess-result--loss {
+  color: var(--color-secondary);
+}

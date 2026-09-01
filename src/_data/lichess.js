@@ -175,6 +175,110 @@ async function fetchLichess(path, {accept = 'application/json', type = 'json'} =
   }
 }
 
+function rapidHistoryPoints(ratingHistory) {
+  return ratingHistory.find(series => series.name === 'Rapid')?.points ?? [];
+}
+
+function lastFiveRatedRapid(games, userId) {
+  const id = userId ?? USERNAME.toLowerCase();
+  const out = [];
+
+  for (const game of games) {
+    if (!game.rated || game.perf !== 'rapid') {
+      continue;
+    }
+
+    const meWhite = game.players.white.id === id;
+    const meBlack = game.players.black.id === id;
+    if (meWhite === meBlack) {
+      continue;
+    }
+
+    const color = meWhite ? 'white' : 'black';
+    const opponent = meWhite ? game.players.black : game.players.white;
+    const me = meWhite ? game.players.white : game.players.black;
+    let result = 'draw';
+    if (game.winner === 'white' || game.winner === 'black') {
+      result = game.winner === color ? 'win' : 'loss';
+    }
+
+    out.push({
+      id: game.id,
+      url: `https://lichess.org/${game.id}`,
+      createdAt: game.createdAt,
+      result,
+      resultLabel: result === 'win' ? 'Win' : result === 'loss' ? 'Loss' : 'Draw',
+      status: game.status,
+      color,
+      opponent: opponent.name,
+      opponentRating: opponent.rating,
+      opponentProvisional: opponent.provisional,
+      ratingDiff: me.ratingDiff
+    });
+
+    if (out.length === 5) {
+      break;
+    }
+  }
+
+  return out;
+}
+
+function buildRapidChart(points) {
+  if (!Array.isArray(points) || points.length === 0) {
+    return null;
+  }
+
+  const width = 720;
+  const height = 280;
+  const pad = {top: 28, right: 16, bottom: 40, left: 52};
+  const innerW = width - pad.left - pad.right;
+  const innerH = height - pad.top - pad.bottom;
+  const ratings = points.map(point => point.rating);
+  const minRating = Math.min(...ratings);
+  const maxRating = Math.max(...ratings);
+  const yMin = Math.floor((minRating - 10) / 50) * 50;
+  const yMax = Math.ceil((maxRating + 10) / 50) * 50;
+  const ySpan = Math.max(yMax - yMin, 1);
+  const times = points.map(point => Date.UTC(point.year, point.month - 1, point.day));
+  const tMin = times[0];
+  const tMax = times[times.length - 1];
+  const tSpan = Math.max(tMax - tMin, 1);
+
+  const plotted = points.map((point, index) => {
+    const x = pad.left + ((times[index] - tMin) / tSpan) * innerW;
+    const y = pad.top + ((yMax - point.rating) / ySpan) * innerH;
+    return {
+      date: point.date,
+      rating: point.rating,
+      x: Math.round(x * 10) / 10,
+      y: Math.round(y * 10) / 10
+    };
+  });
+
+  const last = plotted.at(-1);
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const firstPoint = points[0];
+  const lastPoint = points.at(-1);
+
+  return {
+    width,
+    height,
+    pad,
+    minRating,
+    maxRating,
+    yMin,
+    yMax,
+    firstDate: plotted[0].date,
+    lastDate: last.date,
+    firstLabel: `${monthNames[firstPoint.month - 1]} ${firstPoint.year}`,
+    lastLabel: `${monthNames[lastPoint.month - 1]} ${lastPoint.year}`,
+    lastDisplay: `${lastPoint.day} ${monthNames[lastPoint.month - 1]} ${lastPoint.year}`,
+    polyline: plotted.map(point => `${point.x},${point.y}`).join(' '),
+    last
+  };
+}
+
 function summarizeForLog(data) {
   return {
     username: data.username,
@@ -195,6 +299,14 @@ function summarizeForLog(data) {
       status: game.status,
       winner: game.winner
     })),
+    lastFiveRatedRapid: data.lastFiveRatedRapid.map(game => ({
+      id: game.id,
+      result: game.result,
+      opponent: game.opponent
+    })),
+    rapidChart: data.rapidChart
+      ? {points: data.rapidChart.polyline.split(' ').length, last: data.rapidChart.last}
+      : null,
     errors: data.errors
   };
 }
@@ -246,6 +358,7 @@ export default async function () {
     console.error('[lichess]', message);
   }
 
+  const rapidPoints = rapidHistoryPoints(ratingHistory);
   const data = {
     ...(user && typeof user === 'object' ? user : {}),
     username: user?.username ?? USERNAME,
@@ -253,6 +366,8 @@ export default async function () {
     count: user?.count ?? emptyCount,
     ratingHistory,
     recentGames,
+    lastFiveRatedRapid: lastFiveRatedRapid(recentGames, user?.id),
+    rapidChart: buildRapidChart(rapidPoints),
     available: Boolean(user),
     errors
   };

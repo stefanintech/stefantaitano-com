@@ -98,6 +98,7 @@ export const tests = {
     customPaths: [
       '/',
       '/now/',
+      '/chess/',
       '/articles/',
       '/talks/',
       '/talks/rubyconf-2026/',
