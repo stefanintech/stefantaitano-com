@@ -562,18 +562,6 @@ export default async function () {
     lastFiveRatedRapid: lastFiveRatedRapid(recentGames, user?.id),
     rapidChart: buildRapidChart(rapidPoints),
     ogChart: buildOgChart(rapidPoints),
-    compareJson: JSON.stringify({
-      username: user?.username ?? USERNAME,
-      rating: typeof currentRating === 'number' ? currentRating : null,
-      games: user?.perfs?.rapid?.games ?? null,
-      points: rapidPoints.map(point => ({
-        year: point.year,
-        month: point.month,
-        day: point.day,
-        date: point.date,
-        rating: point.rating
-      }))
-    }),
     scoreboard,
     available: Boolean(user),
     errors

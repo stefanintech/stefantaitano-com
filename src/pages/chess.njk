@@ -102,16 +102,6 @@ eleventyComputed:
     </section>
   {% endif %}
 
-  <section class="chess-compare flow" aria-labelledby="chess-compare-title" data-lichess-compare>
-    <h2 id="chess-compare-title">Compare with me</h2>
-    <p>
-      Log in with Lichess to put your Rapid numbers next to mine. Nothing is stored on this
-      server. The token stays in this browser tab until you disconnect or close it.
-    </p>
-    <div data-lichess-compare-panel></div>
-  </section>
-  <script type="application/json" id="lichess-compare-data">{{ (lichess.compareJson or '{"username":"Late2TheBoard","rating":null,"games":null,"points":[]}') | safe }}</script>
-
   {% if not lichess.available %}
     <p>Lichess didn't return a profile this build. The numbers will come back on the next successful fetch.</p>
   {% else %}
@@ -263,7 +253,3 @@ eleventyComputed:
   {% include "css/now.css" %}
   {% include "css/chess.css" %}
 {% endcss %}
-
-{% js "defer" %}
-  {% include "scripts/lichess-compare.js" %}
-{% endjs %}
