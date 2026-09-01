@@ -6,10 +6,61 @@
   --region-space-bottom: 0;
 }
 
+.chess-scoreboard,
 .chess-current,
 .chess-chart,
 .chess-games {
   --flow-space: var(--space-s);
+}
+
+.chess-scoreboard__status {
+  font-weight: var(--font-bold);
+}
+
+.chess-scoreboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--space-s) var(--space-m);
+  margin: 0;
+}
+
+.chess-scoreboard__stats div {
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.chess-scoreboard__stats dt {
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+  font-weight: var(--font-bold);
+}
+
+.chess-scoreboard__stats dd {
+  margin: 0;
+  font-size: var(--size-step-2);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-fine);
+}
+
+.chess-progress__track {
+  height: 0.65rem;
+  overflow: hidden;
+  background: var(--color-bg-accent);
+}
+
+.chess-progress__fill {
+  height: 100%;
+  background: var(--color-primary);
+}
+
+.chess-progress__fill--below {
+  background: var(--color-secondary);
+}
+
+.chess-progress__caption {
+  margin-block-start: var(--space-xs);
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
 }
 
 .chess-provisional {

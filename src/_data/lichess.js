@@ -1,4 +1,12 @@
+import {readFileSync} from 'node:fs';
+import {dirname, join} from 'node:path';
+import {fileURLToPath} from 'node:url';
 import EleventyFetch from '@11ty/eleventy-fetch';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc.js';
+import yaml from 'js-yaml';
+
+dayjs.extend(utc);
 
 const USERNAME = 'Late2TheBoard';
 const API_ORIGIN = 'https://lichess.org';
@@ -8,6 +16,11 @@ const GAMES_MAX = 300;
 // Spec minimum for since/until on GET /api/games/user/{username}
 const GAMES_TIMESTAMP_MIN = 1356998400070;
 const RETRY_WAIT_MS = 60 * 1000;
+const MS_PER_DAY = 86_400_000;
+
+const experiment = yaml.load(
+  readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'experiment.yaml'), 'utf8')
+);
 
 const emptyPerfs = {
   rapid: {},
@@ -35,6 +48,25 @@ function httpStatus(error) {
 
 function cacheAlignedUntil(now = Date.now()) {
   return Math.floor(now / CACHE_MS) * CACHE_MS + (CACHE_MS - 1);
+}
+
+function experimentIsoDate(value) {
+  if (value instanceof Date) {
+    return dayjs.utc(value).format('YYYY-MM-DD');
+  }
+
+  return String(value);
+}
+
+const EXPERIMENT_START = dayjs.utc(experimentIsoDate(experiment.start)).startOf('day');
+const EXPERIMENT_END = dayjs.utc(experimentIsoDate(experiment.end)).startOf('day');
+const EXPERIMENT_START_MS = EXPERIMENT_START.valueOf();
+const EXPERIMENT_END_MS = EXPERIMENT_END.endOf('day').valueOf();
+const TARGET_RATING = Number(experiment.target);
+const START_RATING = Number(experiment.startRating);
+
+function experimentUntil(now = Date.now()) {
+  return Math.min(cacheAlignedUntil(now), EXPERIMENT_END_MS);
 }
 
 /**
@@ -224,6 +256,73 @@ function lastFiveRatedRapid(games, userId) {
   return out;
 }
 
+function gamesInExperimentWindow(games) {
+  return (games || []).filter(game => {
+    return (
+      game.rated &&
+      game.perf === 'rapid' &&
+      game.createdAt >= EXPERIMENT_START_MS &&
+      game.createdAt <= EXPERIMENT_END_MS
+    );
+  });
+}
+
+function utcDayDiff(later, earlier) {
+  return Math.round((later.valueOf() - earlier.valueOf()) / MS_PER_DAY);
+}
+
+function experimentScoreboard({currentRating, windowGames}) {
+  const today = dayjs.utc().startOf('day');
+  const totalDays = utcDayDiff(EXPERIMENT_END, EXPERIMENT_START);
+  const rawElapsed = utcDayDiff(today, EXPERIMENT_START);
+  const elapsedDays = Math.min(Math.max(rawElapsed, 0), totalDays);
+  const daysRemaining = Math.max(utcDayDiff(EXPERIMENT_END, today), 0);
+  const ratingGain = TARGET_RATING - START_RATING;
+  const expected = START_RATING + ratingGain * (elapsedDays / totalDays);
+  const hasCurrent = typeof currentRating === 'number';
+  const progressPercent = hasCurrent && ratingGain !== 0 ? ((currentRating - START_RATING) / ratingGain) * 100 : null;
+  const belowStart = hasCurrent ? currentRating < START_RATING : false;
+
+  let status = null;
+  let statusLine = 'Lichess didn’t return a Rapid rating this build.';
+
+  if (hasCurrent) {
+    if (currentRating >= TARGET_RATING) {
+      status = 'done';
+      statusLine = `Reached ${TARGET_RATING}. Experiment target met.`;
+    } else if (currentRating < expected) {
+      status = 'behind';
+      statusLine = `Behind the linear path to ${TARGET_RATING}.`;
+    } else {
+      status = 'on track';
+      statusLine = `On track for ${TARGET_RATING} by ${EXPERIMENT_END.format('D MMM YYYY')}.`;
+    }
+  }
+
+  return {
+    start: EXPERIMENT_START.format('YYYY-MM-DD'),
+    end: EXPERIMENT_END.format('YYYY-MM-DD'),
+    startRating: START_RATING,
+    currentRating: hasCurrent ? currentRating : null,
+    target: TARGET_RATING,
+    daysRemaining,
+    totalDays,
+    elapsedDays,
+    expected: Math.round(expected * 10) / 10,
+    games: windowGames.length,
+    progressPercent,
+    barPercent: progressPercent == null ? 0 : Math.min(Math.max(progressPercent, 0), 100),
+    belowBarPercent: progressPercent != null && progressPercent < 0 ? Math.min(Math.abs(progressPercent), 100) : 0,
+    belowStart,
+    status,
+    statusLine,
+    progressLabel:
+      progressPercent == null
+        ? null
+        : `${Number.isInteger(progressPercent) ? progressPercent : progressPercent.toFixed(1)}%`
+  };
+}
+
 function buildRapidChart(points) {
   if (!Array.isArray(points) || points.length === 0) {
     return null;
@@ -307,6 +406,7 @@ function summarizeForLog(data) {
     rapidChart: data.rapidChart
       ? {points: data.rapidChart.polyline.split(' ').length, last: data.rapidChart.last}
       : null,
+    scoreboard: data.scoreboard,
     errors: data.errors
   };
 }
@@ -358,7 +458,36 @@ export default async function () {
     console.error('[lichess]', message);
   }
 
+  let experimentGames = [];
+  try {
+    const since = Math.max(EXPERIMENT_START_MS, GAMES_TIMESTAMP_MIN);
+    const until = Math.max(experimentUntil(), since);
+    const query = new URLSearchParams({
+      since: String(since),
+      until: String(until),
+      perfType: 'rapid',
+      rated: 'true',
+      max: String(GAMES_MAX),
+      moves: 'false'
+    });
+    const ndjson = await fetchLichess(`/api/games/user/${USERNAME}?${query}`, {
+      accept: 'application/x-ndjson',
+      type: 'text'
+    });
+    experimentGames = gamesInExperimentWindow(parseNdjson(ndjson));
+  } catch (error) {
+    const message = `experiment-games: ${error.message}`;
+    errors.push(message);
+    console.error('[lichess]', message);
+    experimentGames = gamesInExperimentWindow(recentGames);
+  }
+
   const rapidPoints = rapidHistoryPoints(ratingHistory);
+  const currentRating = user?.perfs?.rapid?.rating;
+  const scoreboard = experimentScoreboard({
+    currentRating,
+    windowGames: experimentGames
+  });
   const data = {
     ...(user && typeof user === 'object' ? user : {}),
     username: user?.username ?? USERNAME,
@@ -366,8 +495,10 @@ export default async function () {
     count: user?.count ?? emptyCount,
     ratingHistory,
     recentGames,
+    experimentGames,
     lastFiveRatedRapid: lastFiveRatedRapid(recentGames, user?.id),
     rapidChart: buildRapidChart(rapidPoints),
+    scoreboard,
     available: Boolean(user),
     errors
   };

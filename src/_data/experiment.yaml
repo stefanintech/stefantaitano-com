@@ -1,0 +1,21 @@
+# Six-week Rapid experiment. /chess and /now both read this file.
+
+start: '2026-08-27'
+end: '2026-10-07'
+target: 1000
+
+# Rapid rating at the start of 27 Aug 2026 UTC. Last Lichess rating-history
+# point on or before that date (2026-04-09).
+startRating: 963
+
+# Status line — only these three, in this order. Evaluated at build time
+# in src/_data/lichess.js. Days are whole UTC days.
+#
+#   totalDays     = end − start
+#   elapsedDays   = today − start, not below 0, not above totalDays
+#   daysRemaining = end − today, not below 0
+#   expected      = startRating + (target − startRating) × (elapsedDays / totalDays)
+#
+# 1. done:     current >= target
+# 2. behind:   current < expected
+# 3. on track: otherwise

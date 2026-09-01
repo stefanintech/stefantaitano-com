@@ -65,6 +65,13 @@ layout: page
 
 <p>Record: <strong>{{ lichess.count.win }}W / {{ lichess.count.draw }}D / {{ lichess.count.loss }}L</strong></p>
 
+{% if lichess.scoreboard %}
+  <p class="now-experiment">
+    {{ lichess.scoreboard.statusLine }}
+    <a href="/chess/">Full Rapid scoreboard</a>
+  </p>
+{% endif %}
+
 <p><em>stats update on every site build</em></p>
 
 <p><a href="https://lichess.org/@/Late2TheBoard">Challenge me on Lichess</a></p>

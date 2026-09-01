@@ -2,13 +2,73 @@
 layout: base
 permalink: /chess/index.html
 title: Chess
-description: 'Stefan Taitano’s Lichess Rapid numbers, pulled at build time. Six weeks to get over 1000.'
+description: 'Stefan Taitano’s Lichess Rapid numbers, pulled at build time.'
 ---
 
 <div class="wrapper flow chess">
   {% set kicker = "Lichess Rapid" %}
-  {% set intro = "I'm trying to get my Rapid rating over 1000 between 27 August and 7 October. Every number on this page comes from Lichess when the site builds. I don't type them in." %}
+  {% set startLabel = experiment.start | formatDateUtc('D MMMM') %}
+  {% set endLabel = experiment.end | formatDateUtc('D MMMM') %}
+  {% set intro = "I'm trying to get my Rapid rating over " + experiment.target + " between " + startLabel + " and " + endLabel + ". Every number on this page comes from Lichess when the site builds. I don't type them in." %}
   {% include "partials/page-intro.njk" %}
+
+  {% set board = lichess.scoreboard %}
+  <section class="chess-scoreboard flow" aria-labelledby="chess-scoreboard-title">
+    <h2 id="chess-scoreboard-title">Scoreboard</h2>
+    <p class="chess-scoreboard__status">{{ board.statusLine }}</p>
+    <dl class="chess-scoreboard__stats">
+      <div>
+        <dt>Start ({{ experiment.start | formatDateUtc('D MMM') }})</dt>
+        <dd>{{ experiment.startRating }}</dd>
+      </div>
+      <div>
+        <dt>Current</dt>
+        <dd>
+          {% if board.currentRating != null %}
+            {{ board.currentRating }}
+          {% else %}
+            —
+          {% endif %}
+        </dd>
+      </div>
+      <div>
+        <dt>Target</dt>
+        <dd>{{ experiment.target }}</dd>
+      </div>
+      <div>
+        <dt>Days left (to {{ experiment.end | formatDateUtc('D MMM') }})</dt>
+        <dd>{{ board.daysRemaining }}</dd>
+      </div>
+      <div>
+        <dt>Games in the window</dt>
+        <dd>{{ board.games }}</dd>
+      </div>
+    </dl>
+    {% if board.progressPercent != null %}
+      <div
+        class="chess-progress{% if board.belowStart %} chess-progress--below{% endif %}"
+        role="img"
+        aria-label="Progress from {{ experiment.startRating }} toward {{ experiment.target }}. Current {{ board.currentRating }}, {{ board.progressLabel }}."
+      >
+        {% if board.belowStart %}
+          <div class="chess-progress__track chess-progress__track--below">
+            <div class="chess-progress__fill chess-progress__fill--below" style="width: {{ board.belowBarPercent }}%;"></div>
+          </div>
+          <p class="chess-progress__caption">
+            {{ board.currentRating }} is below the {{ experiment.startRating }} start ({{ board.progressLabel }}). That drop is shown, not hidden at zero.
+          </p>
+        {% else %}
+          <div class="chess-progress__track">
+            <div class="chess-progress__fill" style="width: {{ board.barPercent }}%;"></div>
+          </div>
+          <p class="chess-progress__caption">
+            {{ experiment.startRating }} → {{ experiment.target }}.
+            Now {{ board.currentRating }} ({{ board.progressLabel }}).
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </section>
 
   {% if not lichess.available %}
     <p>Lichess didn't return a profile this build. The numbers will come back on the next successful fetch.</p>
