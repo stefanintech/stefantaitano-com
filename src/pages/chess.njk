@@ -1,0 +1,255 @@
+---
+layout: base
+permalink: /chess/index.html
+title: Chess
+description: 'Stefan Taitano’s Lichess Rapid numbers, pulled at build time.'
+eleventyComputed:
+  discover:
+    image: '/assets/og-images/chess-preview.png{% if lichess.perfs.rapid.rating %}?v={{ lichess.perfs.rapid.rating }}{% endif %}'
+    imageAlt: '{% if lichess.perfs.rapid.rating %}Stefan Taitano’s Lichess Rapid rating is {{ lichess.perfs.rapid.rating }}. {{ lichess.scoreboard.statusLine }}{% else %}Stefan Taitano’s Lichess Rapid experiment.{% endif %}'
+---
+
+<div class="wrapper flow chess">
+  {% set kicker = "Lichess Rapid" %}
+  {% set startLabel = experiment.start | formatDateUtc('D MMMM') %}
+  {% set endLabel = experiment.end | formatDateUtc('D MMMM') %}
+  {% set intro = "I'm trying to get my Rapid rating over " + experiment.target + " between " + startLabel + " and " + endLabel + ". Every number on this page comes from Lichess when the site builds. I don't type them in." %}
+  {% include "partials/page-intro.njk" %}
+
+  {% set board = lichess.scoreboard %}
+  <section class="chess-scoreboard flow" aria-labelledby="chess-scoreboard-title">
+    <h2 id="chess-scoreboard-title">Scoreboard</h2>
+    <p class="chess-scoreboard__status">{{ board.statusLine }}</p>
+    <dl class="chess-scoreboard__stats">
+      <div>
+        <dt>Start ({{ experiment.start | formatDateUtc('D MMM') }})</dt>
+        <dd>{{ experiment.startRating }}</dd>
+      </div>
+      <div>
+        <dt>Current</dt>
+        <dd>
+          {% if board.currentRating != null %}
+            {{ board.currentRating }}
+          {% else %}
+            —
+          {% endif %}
+        </dd>
+      </div>
+      <div>
+        <dt>Target</dt>
+        <dd>{{ experiment.target }}</dd>
+      </div>
+      <div>
+        <dt>Days left (to {{ experiment.end | formatDateUtc('D MMM') }})</dt>
+        <dd>{{ board.daysRemaining }}</dd>
+      </div>
+      <div>
+        <dt>Games in the window</dt>
+        <dd>{{ board.games }}</dd>
+      </div>
+    </dl>
+    {% if board.progressPercent != null %}
+      <div
+        class="chess-progress{% if board.belowStart %} chess-progress--below{% endif %}"
+        role="img"
+        aria-label="Progress from {{ experiment.startRating }} toward {{ experiment.target }}. Current {{ board.currentRating }}, {{ board.progressLabel }}."
+      >
+        {% if board.belowStart %}
+          <div class="chess-progress__track chess-progress__track--below">
+            <div class="chess-progress__fill chess-progress__fill--below" style="width: {{ board.belowBarPercent }}%;"></div>
+          </div>
+          <p class="chess-progress__caption">
+            {{ board.currentRating }} is below the {{ experiment.startRating }} start ({{ board.progressLabel }}). That drop is shown, not hidden at zero.
+          </p>
+        {% else %}
+          <div class="chess-progress__track">
+            <div class="chess-progress__fill" style="width: {{ board.barPercent }}%;"></div>
+          </div>
+          <p class="chess-progress__caption">
+            {{ experiment.startRating }} → {{ experiment.target }}.
+            Now {{ board.currentRating }} ({{ board.progressLabel }}).
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+  </section>
+
+  {% if study.studyId and study.chapterId %}
+    <section class="chess-study flow" aria-labelledby="chess-study-title">
+      <h2 id="chess-study-title">Annotated game</h2>
+      <p class="chess-study__lede">
+        {{ study.white }}{% if study.whiteElo %} ({{ study.whiteElo }}){% endif %}
+        vs
+        {{ study.black }}{% if study.blackElo %} ({{ study.blackElo }}){% endif %}{% if study.playedOn %},
+          <time datetime="{{ study.playedOn }}">{{ study.playedOn | formatDateUtc('D MMM') }}</time>{% endif %}.
+        Annotated
+        <time datetime="{{ study.annotatedOn }}">{{ study.annotatedOn | formatDateUtc('D MMM') }}</time>.
+      </p>
+      {% if study.blurb %}
+        <p class="chess-study__blurb">{{ study.blurb }}</p>
+      {% endif %}
+      <div class="chess-study__frame">
+        <iframe
+          title="{{ study.white }} vs {{ study.black }}, annotated on Lichess"
+          src="https://lichess.org/study/embed/{{ study.studyId }}/{{ study.chapterId }}?bg=auto&amp;theme=auto"
+          loading="lazy"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <p class="chess-study__caption">
+        <a href="https://lichess.org/study/{{ study.studyId }}/{{ study.chapterId }}">Open this chapter on Lichess</a>
+      </p>
+    </section>
+  {% endif %}
+
+  {% if not lichess.available %}
+    <p>Lichess didn't return a profile this build. The numbers will come back on the next successful fetch.</p>
+  {% else %}
+    <section class="chess-current flow" aria-labelledby="chess-current-title">
+      <h2 id="chess-current-title">Right now</h2>
+      <div class="now-stats-wrap">
+        <table class="now-stats">
+          <caption>Rapid rating and games from Lichess</caption>
+          <thead>
+            <tr>
+              <th scope="col">Mode</th>
+              <th scope="col">Rating</th>
+              <th scope="col">Games</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Rapid</th>
+              <td>
+                {{ lichess.perfs.rapid.rating }}
+                {% if lichess.perfs.rapid.prov %}
+                  <span class="chess-provisional">provisional</span>
+                {% endif %}
+              </td>
+              <td>{{ lichess.perfs.rapid.games }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p>Record: <strong>{{ lichess.count.win }}W / {{ lichess.count.draw }}D / {{ lichess.count.loss }}L</strong></p>
+    </section>
+
+    {% if lichess.rapidChart %}
+      {% set chart = lichess.rapidChart %}
+      <section class="chess-chart flow" aria-labelledby="chess-chart-title">
+        <h2 id="chess-chart-title">Rapid rating</h2>
+        <figure class="chess-chart__figure">
+          <svg
+            class="chess-chart__svg"
+            viewBox="0 0 {{ chart.width }} {{ chart.height }}"
+            role="img"
+            aria-labelledby="chess-chart-svg-title chess-chart-svg-desc"
+          >
+            <title id="chess-chart-svg-title">Rapid rating curve</title>
+            <desc id="chess-chart-svg-desc">
+              Rapid rating from {{ chart.minRating }} to {{ chart.maxRating }}.
+              Latest point is {{ chart.last.rating }} on {{ chart.lastDate }}.
+            </desc>
+            <text class="chess-chart__axis" x="{{ chart.pad.left - 8 }}" y="{{ chart.pad.top + 4 }}" text-anchor="end">
+              {{ chart.yMax }}
+            </text>
+            <text
+              class="chess-chart__axis"
+              x="{{ chart.pad.left - 8 }}"
+              y="{{ chart.height - chart.pad.bottom }}"
+              text-anchor="end"
+            >
+              {{ chart.yMin }}
+            </text>
+            <line
+              class="chess-chart__baseline"
+              x1="{{ chart.pad.left }}"
+              y1="{{ chart.height - chart.pad.bottom }}"
+              x2="{{ chart.width - chart.pad.right }}"
+              y2="{{ chart.height - chart.pad.bottom }}"
+            />
+            <polyline class="chess-chart__line" fill="none" points="{{ chart.polyline }}" />
+            <circle class="chess-chart__now" cx="{{ chart.last.x }}" cy="{{ chart.last.y }}" r="4" />
+            <text
+              class="chess-chart__axis"
+              x="{{ chart.pad.left }}"
+              y="{{ chart.height - 12 }}"
+              text-anchor="start"
+            >
+              {{ chart.firstLabel }}
+            </text>
+            <text
+              class="chess-chart__axis"
+              x="{{ chart.width - chart.pad.right }}"
+              y="{{ chart.height - 12 }}"
+              text-anchor="end"
+            >
+              {{ chart.lastLabel }}
+            </text>
+          </svg>
+          <figcaption>
+            Latest Rapid rating: {{ chart.last.rating }} on
+            <time datetime="{{ chart.lastDate }}">{{ chart.lastDisplay }}</time>.
+          </figcaption>
+        </figure>
+      </section>
+    {% endif %}
+
+    <section class="chess-games flow" aria-labelledby="chess-games-title">
+      <h2 id="chess-games-title">Last five rated Rapid games</h2>
+      {% if lichess.lastFiveRatedRapid.length %}
+        <div class="now-stats-wrap">
+          <table class="now-stats chess-games__table">
+            <caption>Most recent rated Rapid games</caption>
+            <thead>
+              <tr>
+                <th scope="col">Result</th>
+                <th scope="col">Opponent</th>
+                <th scope="col">Rating</th>
+                <th scope="col">Date</th>
+                <th scope="col">Game</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for game in lichess.lastFiveRatedRapid %}
+                <tr>
+                  <td>
+                    <span class="chess-result chess-result--{{ game.result }}">
+                      {{ game.resultLabel }}
+                    </span>
+                  </td>
+                  <td>{{ game.opponent }}</td>
+                  <td>
+                    {{ game.opponentRating }}
+                    {% if game.opponentProvisional %}
+                      <span class="chess-provisional">prov</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <time datetime="{{ game.createdAt | formatDateUtc('YYYY-MM-DD') }}">
+                      {{ game.createdAt | formatDateUtc('MMM D, YYYY') }}
+                    </time>
+                  </td>
+                  <td>
+                    <a href="{{ game.url }}">{{ game.id }}</a>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p>No rated Rapid games came back this build.</p>
+      {% endif %}
+    </section>
+
+    <p>
+      <a href="{{ personal.platforms.lichess }}" rel="me">Challenge me on Lichess</a>
+    </p>
+  {% endif %}
+</div>
+
+{% css "local" %}
+  {% include "css/now.css" %}
+  {% include "css/chess.css" %}
+{% endcss %}

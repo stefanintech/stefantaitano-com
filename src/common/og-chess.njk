@@ -1,0 +1,103 @@
+---
+permalink: /assets/og-images/chess-preview.svg
+eleventyExcludeFromCollections: true
+excludeFromSitemap: true
+---
+{% set board = lichess.scoreboard %}
+{% set chart = lichess.ogChart %}
+{% set rating = board.currentRating %}
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">Stefan Taitano · Lichess Rapid</title>
+  <desc id="desc">
+    {%- if rating != null -%}
+      Rapid rating {{ rating }}. {{ board.statusLine }}
+    {%- else -%}
+      Lichess Rapid experiment, target {{ experiment.target }}.
+    {%- endif -%}
+  </desc>
+  {% include "partials/og-chrome.njk" %}
+
+  {% if chart %}
+    <polyline
+      fill="none"
+      stroke="#B45309"
+      stroke-opacity="0.4"
+      stroke-width="6"
+      stroke-linejoin="round"
+      stroke-linecap="round"
+      points="{{ chart.polyline }}"
+    />
+    <circle
+      cx="{{ chart.last.x }}"
+      cy="{{ chart.last.y }}"
+      r="9"
+      fill="#B45309"
+      fill-opacity="0.85"
+    />
+  {% endif %}
+
+  <text
+    x="88"
+    y="128"
+    fill="#686258"
+    font-family="Helvetica, Arial, Liberation Sans, sans-serif"
+    font-size="22"
+    letter-spacing="0.22em"
+  >LICHESS RAPID</text>
+
+  <text
+    x="88"
+    y="318"
+    fill="#19150e"
+    font-family="Fraunces 72pt, Georgia, serif"
+    font-size="168"
+    font-weight="900"
+  >{% if rating != null %}{{ rating }}{% else %}—{% endif %}</text>
+
+  <text
+    fill="#4d473b"
+    font-family="Atkinson Hyperlegible, system-ui, sans-serif"
+    font-size="32"
+    font-weight="400"
+  >
+    <tspan x="88" y="392">
+      {%- if board.status == 'done' -%}
+        Reached {{ experiment.target }}
+      {%- elif board.status == 'behind' -%}
+        Behind the path to {{ experiment.target }}
+      {%- elif board.status == 'on track' -%}
+        On track for {{ experiment.target }}
+      {%- else -%}
+        Target {{ experiment.target }}
+      {%- endif -%}
+    </tspan>
+    <tspan x="88" y="440">{{ board.daysRemaining }} days left</tspan>
+  </text>
+
+  <line x1="88" y1="524" x2="1112" y2="524" stroke="#e7e4de" stroke-width="2" />
+
+  <text
+    x="88"
+    y="572"
+    fill="#686258"
+    font-family="Atkinson Hyperlegible, system-ui, sans-serif"
+    font-size="24"
+  >stefantaitano.com</text>
+
+  <text
+    x="1112"
+    y="572"
+    text-anchor="end"
+    fill="#686258"
+    font-family="Atkinson Hyperlegible, system-ui, sans-serif"
+    font-size="22"
+    letter-spacing="0.12em"
+  >STEFAN TAITANO</text>
+</svg>

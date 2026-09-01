@@ -99,3 +99,7 @@
 .now-stats th {
   font-weight: var(--font-bold);
 }
+
+.now-experiment {
+  margin-block-start: var(--space-m);
+}

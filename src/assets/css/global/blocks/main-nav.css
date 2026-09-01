@@ -223,7 +223,8 @@ li:has(ul a[aria-current='page']) > [data-submenu-toggle] {
     column-gap: var(--space-m);
   }
 
-  header > .repel > .logo {
+  header > .repel > .logo,
+  header > .repel > .lichess-brand {
     flex-shrink: 0;
   }
 

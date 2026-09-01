@@ -1,0 +1,158 @@
+.chess {
+  --flow-space: var(--space-xl);
+}
+
+.chess .page-intro {
+  --region-space-bottom: 0;
+}
+
+.chess-scoreboard,
+.chess-study,
+.chess-current,
+.chess-chart,
+.chess-games {
+  --flow-space: var(--space-s);
+}
+
+.chess-scoreboard__status {
+  font-weight: var(--font-bold);
+}
+
+.chess-scoreboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: var(--space-s) var(--space-m);
+  margin: 0;
+}
+
+.chess-scoreboard__stats div {
+  display: grid;
+  gap: var(--space-3xs);
+}
+
+.chess-scoreboard__stats dt {
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+  font-weight: var(--font-bold);
+}
+
+.chess-scoreboard__stats dd {
+  margin: 0;
+  font-size: var(--size-step-2);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-fine);
+}
+
+.chess-progress__track {
+  height: 0.65rem;
+  overflow: hidden;
+  background: var(--color-bg-accent);
+}
+
+.chess-progress__fill {
+  height: 100%;
+  background: var(--color-primary);
+}
+
+.chess-progress__fill--below {
+  background: var(--color-secondary);
+}
+
+.chess-progress__caption {
+  margin-block-start: var(--space-xs);
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+}
+
+.chess-provisional {
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+  font-weight: var(--font-regular);
+}
+
+.chess-chart__figure {
+  margin: 0;
+}
+
+.chess-chart__svg {
+  display: block;
+  width: 100%;
+  max-inline-size: 45rem;
+  height: auto;
+}
+
+.chess-chart__baseline {
+  stroke: var(--color-bg-accent-2);
+  stroke-width: 1;
+}
+
+.chess-chart__line {
+  stroke: var(--color-primary);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chess-chart__now {
+  fill: var(--color-primary);
+}
+
+.chess-chart__axis {
+  fill: var(--color-text-accent);
+  font-family: var(--font-base);
+  font-size: 14px;
+}
+
+.chess-chart__figure figcaption {
+  margin-block-start: var(--space-xs);
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+}
+
+.chess-result {
+  font-weight: var(--font-bold);
+}
+
+.chess-result--win {
+  color: var(--color-primary);
+}
+
+.chess-result--draw {
+  color: var(--color-text-accent);
+}
+
+.chess-result--loss {
+  color: var(--color-secondary);
+}
+
+.chess-study__lede {
+  color: var(--color-text);
+}
+
+.chess-study__blurb {
+  color: var(--color-text);
+}
+
+.chess-study__frame {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-inline-size: 45rem;
+  aspect-ratio: 3 / 2;
+  background: var(--color-bg-accent);
+}
+
+.chess-study__frame iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.chess-study__caption {
+  margin-block-start: var(--space-xs);
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+}
