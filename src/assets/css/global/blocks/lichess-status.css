@@ -24,7 +24,7 @@
   color: var(--color-text);
   font-family: var(--font-base);
   font-size: var(--size-step-min-1);
-  font-weight: var(--font-regular);
+  font-weight: var(--font-bold);
   line-height: var(--leading-fine);
   letter-spacing: var(--tracking-wide);
   text-decoration: none;
@@ -37,7 +37,7 @@
 
 .lichess-status--playing {
   border-color: color-mix(in oklab, var(--color-primary) 55%, var(--color-bg-accent-2));
-  background: color-mix(in oklab, var(--color-primary) 22%, var(--color-bg-accent));
+  background: color-mix(in oklab, var(--color-primary) 14%, var(--color-bg-accent));
 }
 
 .lichess-status--online {
@@ -85,7 +85,7 @@ body.has-pixel-hero.is-header-docked > header .lichess-status {
 }
 
 body.has-pixel-hero.is-header-docked > header .lichess-status--playing {
-  background: color-mix(in oklab, var(--color-primary) 22%, var(--color-bg-accent));
+  background: color-mix(in oklab, var(--color-primary) 14%, var(--color-bg-accent));
   border-color: color-mix(in oklab, var(--color-primary) 55%, var(--color-bg-accent-2));
 }
 
