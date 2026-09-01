@@ -20,7 +20,7 @@ function label(text) {
 
 function renderPlaying(host, data) {
   const gameId = typeof data.gameId === 'string' && data.gameId ? data.gameId : null;
-  const visible = 'Playing on Lichess';
+  const visible = 'Playing Lichess';
   const full =
     typeof data.detail === 'string' && data.detail ? `${visible}: ${data.detail}` : visible;
   const link = document.createElement('a');
