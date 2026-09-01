@@ -108,7 +108,11 @@ eleventyComputed:
       Log in with Lichess to put your Rapid numbers next to mine. Nothing is stored on this
       server. The token stays in this browser tab until you disconnect or close it.
     </p>
-    <div data-lichess-compare-panel></div>
+    <div data-lichess-compare-panel>
+      <p class="chess-compare__actions">
+        <button type="button" class="button" data-lichess-compare-login>Log in with Lichess</button>
+      </p>
+    </div>
   </section>
   <script type="application/json" id="lichess-compare-data">{{ (lichess.compareJson or '{"username":"Late2TheBoard","rating":null,"games":null,"points":[]}') | safe }}</script>
 

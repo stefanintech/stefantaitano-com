@@ -273,10 +273,7 @@ function renderLoggedOut(panel, note) {
     panel.append(p);
   }
   const actions = el('p', {class: 'chess-compare__actions'});
-  const button = el('button', {type: 'button', class: 'button'}, 'Log in with Lichess');
-  button.addEventListener('click', () => startLogin().catch(() => {
-    renderLoggedOut(panel, 'Could not start login. Try again.');
-  }));
+  const button = el('button', {type: 'button', class: 'button', 'data-lichess-compare-login': ''}, 'Log in with Lichess');
   actions.append(button);
   panel.append(actions);
 }
@@ -306,11 +303,11 @@ function renderConnected(panel, host, visitor, crosstable, preview) {
   }
 
   const actions = el('p', {class: 'chess-compare__actions'});
-  const button = el('button', {type: 'button', class: 'button', 'data-button-variant': 'secondary'}, 'Disconnect');
-  button.addEventListener('click', () => disconnect().then(() => {
-    restoreChart(window.__lichessCompareSvg);
-    renderLoggedOut(panel);
-  }));
+  const button = el(
+    'button',
+    {type: 'button', class: 'button', 'data-button-variant': 'secondary', 'data-lichess-compare-disconnect': ''},
+    'Disconnect'
+  );
   actions.append(button);
   panel.append(actions);
 }
@@ -478,6 +475,21 @@ async function paint() {
   const svg = document.querySelector('.chess-chart__svg');
   window.__lichessCompareSvg = svg ? svg.innerHTML : '';
   panel.setAttribute('aria-live', 'polite');
+  root.addEventListener('click', event => {
+    if (event.target.closest('[data-lichess-compare-login]')) {
+      startLogin().catch(() => {
+        renderLoggedOut(panel, 'Could not start login. Try again.');
+      });
+      return;
+    }
+
+    if (event.target.closest('[data-lichess-compare-disconnect]')) {
+      disconnect().then(() => {
+        restoreChart(window.__lichessCompareSvg);
+        renderLoggedOut(panel);
+      });
+    }
+  });
 
   const host = hostData();
   const params = new URLSearchParams(window.location.search);
