@@ -11,7 +11,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-// add yaml support
+import {pathToFileURL} from 'node:url';
 import yaml from 'js-yaml';
 
 //  config import
@@ -128,6 +128,47 @@ export default async function (eleventyConfig) {
   if (process.env.ELEVENTY_ENV != 'test') {
     eleventyConfig.ignores.add('src/common/pa11y.njk');
   }
+
+  // Local --serve has no Netlify functions runtime. Proxy the status
+  // function so the header script can hit the same path as production.
+  eleventyConfig.setServerOptions({
+    middleware: [
+      async (req, res, next) => {
+        if (req.url.split('?')[0] !== '/.netlify/functions/lichess-status') {
+          next();
+          return;
+        }
+
+        const mocks = {
+          playing: {
+            online: true,
+            playing: true,
+            gameId: 'abcdefgh',
+            detail: '15+10 vs opponent (940)'
+          },
+          online: {online: true, playing: false, gameId: null}
+        };
+        const mock = mocks[process.env.LICHESS_STATUS_MOCK];
+        if (mock) {
+          res.writeHead(200, {'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store'});
+          res.end(JSON.stringify(mock));
+          return;
+        }
+
+        try {
+          const {handler} = await import(
+            pathToFileURL(new URL('./netlify/functions/lichess-status.js', import.meta.url)).href
+          );
+          const result = await handler();
+          res.writeHead(result.statusCode, result.headers);
+          res.end(result.body);
+        } catch {
+          res.writeHead(502, {'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store'});
+          res.end(JSON.stringify({online: false, playing: false, gameId: null}));
+        }
+      }
+    ]
+  });
 
   // --------------------- general config
   return {

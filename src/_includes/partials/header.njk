@@ -2,9 +2,12 @@
   <a href="#main" class="skip-link">{{ meta.skipContent }}</a>
 
   <div class="repel ontop gutter-s" data-nowrap>
-    <a href="/" class="logo | cluster" {{ indicateActiveHome }}>
-      <span class="font-display">{{ meta.siteName }}</span>
-    </a>
+    <div class="lichess-brand | cluster" data-nowrap>
+      <a href="/" class="logo | cluster" {{ indicateActiveHome }}>
+        <span class="font-display">{{ meta.siteName }}</span>
+      </a>
+      <span class="lichess-status" data-lichess-status hidden></span>
+    </div>
     {% include "partials/main-nav.njk" %}
   </div>
 </header>
