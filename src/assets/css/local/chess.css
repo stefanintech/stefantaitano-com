@@ -9,6 +9,7 @@
 .chess-scoreboard,
 .chess-study,
 .chess-current,
+.chess-compare,
 .chess-chart,
 .chess-games {
   --flow-space: var(--space-s);
@@ -93,8 +94,50 @@
   stroke-linecap: round;
 }
 
+.chess-chart__line--visitor {
+  stroke: var(--color-secondary);
+}
+
 .chess-chart__now {
   fill: var(--color-primary);
+}
+
+.chess-chart__now--visitor {
+  fill: var(--color-secondary);
+}
+
+.chess-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-m);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+}
+
+.chess-chart__swatch {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-inline-end: var(--space-3xs);
+  vertical-align: -0.1em;
+  background: var(--color-primary);
+}
+
+.chess-chart__swatch--visitor {
+  background: var(--color-secondary);
+}
+
+.chess-compare__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+}
+
+.chess-compare__note {
+  color: var(--color-text-accent);
 }
 
 .chess-chart__axis {
