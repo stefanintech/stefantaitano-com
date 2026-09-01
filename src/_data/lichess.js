@@ -211,6 +211,47 @@ function rapidHistoryPoints(ratingHistory) {
   return ratingHistory.find(series => series.name === 'Rapid')?.points ?? [];
 }
 
+function utcDateFromMs(ms) {
+  const date = dayjs.utc(ms);
+
+  return {
+    year: date.year(),
+    month: date.month() + 1,
+    day: date.date(),
+    date: date.format('YYYY-MM-DD')
+  };
+}
+
+function rapidPointsFromGames(games, userId) {
+  const id = (userId ?? USERNAME).toLowerCase();
+  const points = [];
+
+  for (const game of games) {
+    if (!game.rated || game.perf !== 'rapid') {
+      continue;
+    }
+
+    const meWhite = game.players?.white?.id === id;
+    const meBlack = game.players?.black?.id === id;
+    if (!meWhite && !meBlack) {
+      continue;
+    }
+
+    const me = meWhite ? game.players.white : game.players.black;
+    if (typeof me.rating !== 'number') {
+      continue;
+    }
+
+    const rating = typeof me.ratingDiff === 'number' ? me.rating + me.ratingDiff : me.rating;
+    points.push({
+      ...utcDateFromMs(game.createdAt),
+      rating
+    });
+  }
+
+  return points.reverse();
+}
+
 function lastFiveRatedRapid(games, userId) {
   const id = userId ?? USERNAME.toLowerCase();
   const out = [];
@@ -387,7 +428,7 @@ function buildOgChart(points) {
   return plotRatingCurve(points, {
     width: 1200,
     height: 630,
-    pad: {top: 150, right: 88, bottom: 130, left: 88}
+    pad: {top: 150, right: 88, bottom: 130, left: 500}
   });
 }
 
@@ -498,7 +539,13 @@ export default async function () {
     experimentGames = gamesInExperimentWindow(recentGames);
   }
 
-  const rapidPoints = rapidHistoryPoints(ratingHistory);
+  let rapidPoints = rapidHistoryPoints(ratingHistory);
+  if (rapidPoints.length === 0) {
+    rapidPoints = rapidPointsFromGames(recentGames, user?.id);
+    if (rapidPoints.length) {
+      console.warn('[lichess] rating-history was empty; plotting Rapid from fetched games');
+    }
+  }
   const currentRating = user?.perfs?.rapid?.rating;
   const scoreboard = experimentScoreboard({
     currentRating,
