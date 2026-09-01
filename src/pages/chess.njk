@@ -70,6 +70,34 @@ description: 'Stefan Taitano’s Lichess Rapid numbers, pulled at build time.'
     {% endif %}
   </section>
 
+  {% if study.studyId and study.chapterId %}
+    <section class="chess-study flow" aria-labelledby="chess-study-title">
+      <h2 id="chess-study-title">Annotated game</h2>
+      <p class="chess-study__lede">
+        {{ study.white }}{% if study.whiteElo %} ({{ study.whiteElo }}){% endif %}
+        vs
+        {{ study.black }}{% if study.blackElo %} ({{ study.blackElo }}){% endif %}{% if study.playedOn %},
+          <time datetime="{{ study.playedOn }}">{{ study.playedOn | formatDateUtc('D MMM') }}</time>{% endif %}.
+        Annotated
+        <time datetime="{{ study.annotatedOn }}">{{ study.annotatedOn | formatDateUtc('D MMM') }}</time>.
+      </p>
+      {% if study.blurb %}
+        <p class="chess-study__blurb">{{ study.blurb }}</p>
+      {% endif %}
+      <div class="chess-study__frame">
+        <iframe
+          title="{{ study.white }} vs {{ study.black }}, annotated on Lichess"
+          src="https://lichess.org/study/embed/{{ study.studyId }}/{{ study.chapterId }}?bg=auto&amp;theme=auto"
+          loading="lazy"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <p class="chess-study__caption">
+        <a href="https://lichess.org/study/{{ study.studyId }}/{{ study.chapterId }}">Open this chapter on Lichess</a>
+      </p>
+    </section>
+  {% endif %}
+
   {% if not lichess.available %}
     <p>Lichess didn't return a profile this build. The numbers will come back on the next successful fetch.</p>
   {% else %}
