@@ -1,9 +1,5 @@
 const STATUS_URL = '/.netlify/functions/lichess-status';
 
-const request = fetch(STATUS_URL, {headers: {Accept: 'application/json'}})
-  .then(response => (response.ok ? response.json() : null))
-  .catch(() => null);
-
 function flag(data, key) {
   return Boolean(data) && Object.hasOwn(data, key) && data[key] === true;
 }
@@ -38,12 +34,7 @@ function renderOnline(host) {
   host.replaceWith(mark);
 }
 
-function apply(data) {
-  const host = document.querySelector('[data-lichess-status]');
-  if (!host) {
-    return;
-  }
-
+function apply(host, data) {
   if (flag(data, 'playing')) {
     renderPlaying(host, data);
     return;
@@ -54,9 +45,17 @@ function apply(data) {
   }
 }
 
-const paint = () => {
-  request.then(apply);
-};
+function paint() {
+  const host = document.querySelector('[data-lichess-status]');
+  if (!host) {
+    return;
+  }
+
+  fetch(STATUS_URL, {headers: {Accept: 'application/json'}})
+    .then(response => (response.ok ? response.json() : null))
+    .then(data => apply(host, data))
+    .catch(() => {});
+}
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', paint, {once: true});

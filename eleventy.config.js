@@ -11,7 +11,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import {pathToFileURL} from 'node:url';
+// add yaml support
 import yaml from 'js-yaml';
 
 //  config import
@@ -143,7 +143,7 @@ export default async function (eleventyConfig) {
           playing: {
             online: true,
             playing: true,
-            gameId: 'abcdefgh',
+            gameId: 'lUktyqJt',
             detail: '15+10 vs opponent (940)'
           },
           online: {online: true, playing: false, gameId: null}
@@ -156,13 +156,12 @@ export default async function (eleventyConfig) {
         }
 
         try {
-          const {handler} = await import(
-            pathToFileURL(new URL('./netlify/functions/lichess-status.js', import.meta.url)).href
-          );
+          const {handler} = await import(new URL('./netlify/functions/lichess-status.js', import.meta.url).href);
           const result = await handler();
           res.writeHead(result.statusCode, result.headers);
           res.end(result.body);
-        } catch {
+        } catch (error) {
+          console.error('[lichess-status] local proxy failed', error);
           res.writeHead(502, {'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store'});
           res.end(JSON.stringify({online: false, playing: false, gameId: null}));
         }
