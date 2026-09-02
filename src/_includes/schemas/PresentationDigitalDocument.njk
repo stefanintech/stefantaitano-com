@@ -20,10 +20,20 @@
     "isPartOf": {
       "@id": "{{ meta.url }}#website"
     },
-    "associatedMedia": {
-      "@type": "MediaObject",
-      "name": "Interactive slides",
-      "contentUrl": "{{ meta.url }}{{ slidesUrl }}"
-    }
+    "associatedMedia": [
+      {%- if youtubeId %}
+      {
+        "@type": "VideoObject",
+        "name": "{{ title }}",
+        "description": "{{ description }}",
+        "contentUrl": "https://www.youtube.com/watch?v={{ youtubeId }}{%- if youtubeStart %}&t={{ youtubeStart }}s{%- endif %}"
+      },
+      {%- endif %}
+      {
+        "@type": "MediaObject",
+        "name": "Interactive slides",
+        "contentUrl": "{{ meta.url }}{{ slidesUrl }}"
+      }
+    ]
   }
 </script>

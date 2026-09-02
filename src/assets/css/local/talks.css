@@ -94,6 +94,19 @@
   animation: talk-rise 700ms 300ms ease-out both;
 }
 
+.talk-hero .button[data-ghost-button] {
+  --button-bg: transparent;
+  --button-border-color: var(--talk-cream);
+  --button-color: var(--talk-cream);
+  --button-hover-bg: var(--talk-cream);
+  --button-hover-color: var(--talk-ink);
+}
+
+.talk-hero .button[data-ghost-button]:hover {
+  background: var(--talk-cream);
+  color: var(--talk-ink);
+}
+
 .talk-hero__all {
   color: var(--talk-cream);
 }
@@ -124,6 +137,47 @@
   font-size: var(--size-step-4);
   line-height: 1.05;
   text-wrap: balance;
+}
+
+.talk-watch {
+  scroll-margin-block-start: var(--space-l);
+  color: var(--talk-cream);
+  background: var(--talk-ink);
+}
+
+.talk-watch__inner {
+  max-inline-size: 64rem;
+  padding-block: var(--space-xl-2xl);
+}
+
+.talk-watch .handwritten {
+  color: var(--talk-ruby);
+  font-size: var(--size-step-1);
+}
+
+.talk-watch h2 {
+  color: var(--talk-cream);
+  font-size: var(--size-step-4);
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.talk-watch p {
+  max-inline-size: 52ch;
+  color: var(--talk-mist);
+  font-size: var(--size-step-1);
+}
+
+.talk-watch custom-youtube {
+  max-inline-size: 100%;
+}
+
+.talk-watch custom-youtube-link {
+  color: var(--talk-mist);
+}
+
+.talk-watch custom-youtube-link a {
+  color: var(--talk-cream);
 }
 
 .talk-about {
