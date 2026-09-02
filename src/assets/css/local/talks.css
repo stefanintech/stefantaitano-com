@@ -172,6 +172,13 @@
   max-inline-size: 100%;
 }
 
+.talk-watch .video-wrapper,
+.talk-watch lite-youtube {
+  inline-size: 100%;
+  max-inline-size: none;
+  max-width: none;
+}
+
 .talk-watch custom-youtube-link {
   color: var(--talk-mist);
 }
