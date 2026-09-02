@@ -2,6 +2,10 @@
 
 A `/chess` page on stefantaitano.com driven by the Lichess API, plus a tighter summary on `/now`. Six phases, each shipping something visible on its own.
 
+**Status (1 Sep 2026):** Phases 0–6 are live on `main`. Phase 4b (auto-pick the latest study chapter) was skipped: the study JSON endpoints 404, so chapter swaps stay a `src/_data/study.json` edit. Blurb is still empty until Stefan supplies one.
+
+This plan is written for **this repo**, not a generic Eleventy layout. Keep the existing folders, data files, OG pipeline, and `/now` Chess block. Extend them. Do not invent a parallel `_data/` at the repo root, a `_site/` output, or a second fetch stack.
+
 This plan is written for **this repo**, not a generic Eleventy layout. Keep the existing folders, data files, OG pipeline, and `/now` Chess block. Extend them. Do not invent a parallel `_data/` at the repo root, a `_site/` output, or a second fetch stack.
 
 Every endpoint below was checked against the Lichess OpenAPI spec (version 2.0.165) rather than recalled from memory. Three endpoints in Phase 4b are flagged as unverified; they are the only ones.

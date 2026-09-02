@@ -1,0 +1,17 @@
+---
+description: Plan big website features in visible phases before coding
+alwaysApply: true
+---
+
+# Phased features
+
+For a **big** change — a new page, a new integration, or work that spans several templates — **plan with Stefan before writing code**. Chess is the reference: `docs/chess-project-plan.md`. The method is in `docs/phased-feature-plans.md`.
+
+Do this:
+
+1. Agree the outcome, what not to build, and which existing files to extend.
+2. Write `docs/<feature>-project-plan.md` (or update one that already exists). Each phase ships something visible, names **Done when**, lists gotchas, and lists any endpoints to verify with curl before parsing.
+3. Implement **one phase per session**. Commit at the end. Do not start the next phase unless Stefan says to.
+4. Fit this repo. Extend `src/pages/`, `src/_data/`, `src/_includes/`, and the existing CSS/OG/JS pipelines. Do not invent a parallel layout.
+
+Skip the plan for small work: copy, a one-line CSS fix, a study-embed update, or a bug in something already shipped.
