@@ -15,7 +15,12 @@ schema: PresentationDigitalDocument
         <h1>{{ title }}</h1>
         <p class="talk-hero__description">{{ description }}</p>
         <div class="talk-hero__actions cluster gutter-s">
-          <a class="button" data-button-variant="tertiary" href="{{ slidesUrl }}">Launch interactive slides</a>
+          {% if youtubeId %}
+            <a class="button" data-button-variant="tertiary" href="#watch">Watch the talk</a>
+            <a class="button" data-ghost-button href="{{ slidesUrl }}">Launch interactive slides</a>
+          {% else %}
+            <a class="button" data-button-variant="tertiary" href="{{ slidesUrl }}">Launch interactive slides</a>
+          {% endif %}
           <a class="talk-hero__all" href="/talks/">View all talks</a>
         </div>
         <p class="talk-hero__hint">Use arrow keys, click, scroll, or swipe. A landscape screen works best.</p>
@@ -32,11 +37,30 @@ schema: PresentationDigitalDocument
     </div>
   </section>
 
+  {% if youtubeId %}
+    <section class="talk-watch full | region" id="watch" aria-labelledby="talk-watch-title">
+      <div class="wrapper talk-watch__inner flow">
+        <p class="handwritten">The recording</p>
+        <h2 id="talk-watch-title">Watch the talk</h2>
+        <p>This is the RubyConf 2026 lightning talks session, queued to my talk.</p>
+        <custom-youtube
+          slug="{{ youtubeId }}"
+          start="{{ youtubeStart }}"
+          label="{{ title }}"
+          poster="https://i.ytimg.com/vi/{{ youtubeId }}/hqdefault.jpg"
+        ></custom-youtube>
+      </div>
+    </section>
+  {% endif %}
+
   <section class="talk-about full | region" aria-labelledby="talk-about-title">
     <div class="wrapper flow prose">
       <h2 id="talk-about-title">About this talk</h2>
       <p>{{ description }}</p>
-      <p>The slides are hosted here with the same animations and transitions I used at RubyConf.</p>
+      <p>
+        {%- if youtubeId %}The recording is above. {% endif -%}
+        The slides are hosted here with the same animations and transitions I used at RubyConf.
+      </p>
       <p><a href="{{ slidesUrl }}">Open the full presentation &rarr;</a></p>
     </div>
   </section>
