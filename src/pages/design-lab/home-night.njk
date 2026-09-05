@@ -1,0 +1,28 @@
+---
+layout: lab
+permalink: /design-lab/home-night/index.html
+title: 'Home B · Night Sky'
+labVariant: night
+labCompare: /
+eleventyExcludeFromCollections: true
+excludeFromSitemap: true
+---
+
+{# DESIGN LAB MOCK. Not for production. See docs/design-review-2026-09.md #}
+
+<section class="lab-night" aria-labelledby="lab-hero-title">
+  <div class="lab-wrap lab-night__copy">
+    <p class="lab-eyebrow">Minneapolis &middot; ServiceNow developer &middot; learning Ruby</p>
+    <h1 id="lab-hero-title" class="lab-hero__title">I build systems for a living and escape plans for fun.</h1>
+    <p class="lab-hero__bio">
+      I'm Stefan. I spent nine years in the Army, now work in ServiceNow, and am slowly getting better at Ruby.
+    </p>
+  </div>
+  {% include "partials/pixel-hero.njk" %}
+</section>
+
+<div class="lab-wrap">
+  {% include "partials/lab-doors.njk" %}
+</div>
+
+{% include "partials/lab-ledger.njk" %}

@@ -1,0 +1,194 @@
+---
+layout: lab
+permalink: /design-lab/chess/index.html
+title: 'Chess'
+labVariant: paper
+labCompare: /chess/
+eleventyExcludeFromCollections: true
+excludeFromSitemap: true
+---
+
+{# DESIGN LAB MOCK. Not for production. See docs/design-review-2026-09.md #}
+{# Same data as /chess/: src/_data/lichess.js, experiment.yaml, study.json. Nothing new is fetched. #}
+
+{% set board = lichess.scoreboard %}
+{% set start = experiment.startRating %}
+{% set target = experiment.target %}
+{% set current = board.currentRating %}
+
+<section class="lab-wrap lab-score" aria-labelledby="lab-score-title">
+  <p class="lab-eyebrow">
+    Lichess Rapid &middot; <a href="{{ personal.platforms.lichess }}" class="no-indicator" rel="me">Late2TheBoard</a>
+    &middot; {{ experiment.start | formatDateUtc('D MMM') }} to {{ experiment.end | formatDateUtc('D MMM YYYY') }}
+  </p>
+
+  <h1 id="lab-score-title" class="lab-score__title">
+    {% if current != null %}
+      <span class="lab-score__now">{{ current }}</span>
+      <span class="lab-score__goal"><span class="visually-hidden">Rapid rating, </span>aiming for {{ target }}</span>
+    {% else %}
+      Chess
+    {% endif %}
+  </h1>
+
+  <p class="lab-score__status">
+    {{ board.statusLine }}
+    {% if current != null %}
+      {{ board.daysRemaining }} days left, {{ board.games }} rated game{% if board.games != 1 %}s{% endif %} in the window.
+    {% endif %}
+  </p>
+
+  {% if current != null %}
+    {% set below = current < start %}
+    {% set lo = start if not below else current - 5 %}
+    {% set span = target - lo %}
+    {% set startPos = ((start - lo) / span) * 100 %}
+    {% set nowPos = ((current - lo) / span) * 100 %}
+    {% if nowPos > 100 %}{% set nowPos = 100 %}{% endif %}
+    <div
+      class="lab-rail{% if below %} lab-rail--below{% endif %}"
+      role="img"
+      aria-label="Progress from {{ start }} toward {{ target }}. Current {{ current }}, {{ board.progressLabel }}."
+    >
+      <div class="lab-rail__track">
+        <span
+          class="lab-rail__fill"
+          style="inset-inline-start: {{ [startPos, nowPos] | sort | first }}%; inline-size: {{ (nowPos - startPos) | abs }}%;"
+        ></span>
+        <span class="lab-rail__tick lab-rail__tick--start" style="inset-inline-start: {{ startPos }}%;"></span>
+        <span class="lab-rail__now" style="inset-inline-start: {{ nowPos }}%;"></span>
+      </div>
+      <div class="lab-rail__labels">
+        <span style="inset-inline-start: {{ startPos }}%;"><b>{{ start }}</b> start</span>
+        <span class="lab-rail__label-end"><b>{{ target }}</b> target</span>
+      </div>
+    </div>
+  {% endif %}
+
+  <p class="lab-fineprint">
+    Every number on this page comes from Lichess when the site builds. I don't type them in.
+    {% if lichess.count.all %}
+      Overall on Lichess: {{ lichess.count.win }}W&thinsp;/&thinsp;{{ lichess.count.draw }}D&thinsp;/&thinsp;{{ lichess.count.loss }}L across {{ lichess.count.all }} games.
+    {% endif %}
+  </p>
+</section>
+
+{% if lichess.rapidChart %}
+  {% set chart = lichess.rapidChart %}
+  {% set innerH = chart.height - chart.pad.top - chart.pad.bottom %}
+  {% set ySpan = chart.yMax - chart.yMin %}
+  <section class="lab-wrap lab-chart" aria-labelledby="lab-chart-title">
+    <h2 id="lab-chart-title" class="lab-label">Rapid rating, all time</h2>
+    <figure class="chess-chart__figure lab-chart__figure">
+      <svg
+        class="chess-chart__svg lab-chart__svg"
+        viewBox="0 0 {{ chart.width }} {{ chart.height }}"
+        role="img"
+        aria-labelledby="chess-chart-svg-title chess-chart-svg-desc"
+      >
+        <title id="chess-chart-svg-title">Rapid rating curve</title>
+        <desc id="chess-chart-svg-desc">
+          Rapid rating from {{ chart.minRating }} to {{ chart.maxRating }}.
+          Latest point is {{ chart.last.rating }} on {{ chart.lastDate }}. Target line at {{ target }}.
+        </desc>
+        <text class="chess-chart__axis" x="{{ chart.pad.left - 8 }}" y="{{ chart.pad.top + 4 }}" text-anchor="end">{{ chart.yMax }}</text>
+        <text class="chess-chart__axis" x="{{ chart.pad.left - 8 }}" y="{{ chart.height - chart.pad.bottom }}" text-anchor="end">{{ chart.yMin }}</text>
+        <line
+          class="chess-chart__baseline"
+          x1="{{ chart.pad.left }}" y1="{{ chart.height - chart.pad.bottom }}"
+          x2="{{ chart.width - chart.pad.right }}" y2="{{ chart.height - chart.pad.bottom }}"
+        />
+        {% if target >= chart.yMin and target <= chart.yMax %}
+          {% set targetY = chart.pad.top + ((chart.yMax - target) / ySpan) * innerH %}
+          <line
+            class="lab-chart__target"
+            x1="{{ chart.pad.left }}" y1="{{ targetY }}"
+            x2="{{ chart.width - chart.pad.right }}" y2="{{ targetY }}"
+          />
+          <text class="chess-chart__axis lab-chart__target-label" x="{{ chart.width - chart.pad.right }}" y="{{ targetY - 6 }}" text-anchor="end">{{ target }} target</text>
+        {% endif %}
+        <polyline class="chess-chart__line" fill="none" points="{{ chart.polyline }}" />
+        <circle class="chess-chart__now" cx="{{ chart.last.x }}" cy="{{ chart.last.y }}" r="4" />
+        <text class="chess-chart__axis" x="{{ chart.pad.left }}" y="{{ chart.height - 12 }}" text-anchor="start">{{ chart.firstLabel }}</text>
+        <text class="chess-chart__axis" x="{{ chart.width - chart.pad.right }}" y="{{ chart.height - 12 }}" text-anchor="end">{{ chart.lastLabel }}</text>
+      </svg>
+      <figcaption>
+        Latest: {{ chart.last.rating }} on <time datetime="{{ chart.lastDate }}">{{ chart.lastDisplay }}</time>.
+        {{ lichess.perfs.rapid.games }} rated Rapid games total{% if lichess.perfs.rapid.prov %}, still provisional{% endif %}.
+      </figcaption>
+    </figure>
+  </section>
+{% endif %}
+
+<section class="lab-wrap lab-games" aria-labelledby="lab-games-title">
+  <h2 id="lab-games-title" class="lab-label">Last five rated games</h2>
+  {% if lichess.lastFiveRatedRapid.length %}
+    <ol class="lab-games__list" role="list">
+      {% for game in lichess.lastFiveRatedRapid %}
+        <li class="lab-game">
+          <span class="lab-game__result lab-game__result--{{ game.result }}" aria-label="{{ game.resultLabel }}">{{ game.resultLabel | first }}</span>
+          <span class="lab-game__who">
+            <span class="lab-game__color" aria-hidden="true">{% if game.color == 'white' %}&#9817;{% else %}&#9823;{% endif %}</span>
+            <span class="visually-hidden">Playing {{ game.color }} against</span>
+            {{ game.opponent }} <span class="lab-game__rating">({{ game.opponentRating }}{% if game.opponentProvisional %}?{% endif %})</span>
+          </span>
+          <span class="lab-game__diff{% if game.ratingDiff > 0 %} is-up{% elif game.ratingDiff < 0 %} is-down{% endif %}">
+            {% if game.ratingDiff > 0 %}+{% endif %}{{ game.ratingDiff }}
+          </span>
+          <time class="lab-game__date" datetime="{{ game.createdAt | formatDateUtc('YYYY-MM-DD') }}">{{ game.createdAt | formatDateUtc('D MMM') }}</time>
+          <a class="lab-game__link no-indicator" href="{{ game.url }}"><span class="visually-hidden">Open game {{ game.id }} on Lichess</span><span aria-hidden="true">&rarr;</span></a>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p>No rated Rapid games came back this build.</p>
+  {% endif %}
+</section>
+
+{% if study.studyId and study.chapterId %}
+  <section class="lab-wrap lab-study" aria-labelledby="lab-study-title">
+    <h2 id="lab-study-title" class="lab-label">Annotated game</h2>
+    <p class="lab-study__lede">
+      {{ study.white }}{% if study.whiteElo %} ({{ study.whiteElo }}){% endif %}
+      vs {{ study.black }}{% if study.blackElo %} ({{ study.blackElo }}){% endif %}{% if study.playedOn %},
+      <time datetime="{{ study.playedOn }}">{{ study.playedOn | formatDateUtc('D MMM') }}</time>{% endif %}.
+      Annotated <time datetime="{{ study.annotatedOn }}">{{ study.annotatedOn | formatDateUtc('D MMM') }}</time>.
+      {% if study.blurb %}{{ study.blurb }}{% endif %}
+    </p>
+    <div class="lab-study__frame">
+      <iframe
+        title="{{ study.white }} vs {{ study.black }}, annotated on Lichess"
+        src="https://lichess.org/study/embed/{{ study.studyId }}/{{ study.chapterId }}?bg=auto&amp;theme=auto"
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
+    </div>
+    <a class="lab-more no-indicator" href="https://lichess.org/study/{{ study.studyId }}/{{ study.chapterId }}">Open this chapter on Lichess &rarr;</a>
+  </section>
+{% endif %}
+
+<section class="lab-wrap lab-compare chess-compare" aria-labelledby="lab-compare-title" data-lichess-compare>
+  <h2 id="lab-compare-title" class="lab-label">Compare with me</h2>
+  <p>
+    Log in with Lichess to draw your Rapid curve on the chart above. Nothing is stored on this server.
+    The token stays in this browser tab until you disconnect or close it.
+  </p>
+  <div data-lichess-compare-panel>
+    <p class="chess-compare__actions">
+      <button type="button" class="lab-button" data-lichess-compare-login>Log in with Lichess</button>
+    </p>
+  </div>
+</section>
+<script type="application/json" id="lichess-compare-data">{{ (lichess.compareJson or '{"username":"Late2TheBoard","rating":null,"games":null,"points":[]}') | safe }}</script>
+
+<p class="lab-wrap lab-fineprint lab-challenge">
+  <a href="{{ personal.platforms.lichess }}" class="no-indicator" rel="me">Challenge me on Lichess &rarr;</a>
+</p>
+
+{% css "local" %}
+  {% include "css/chess.css" %}
+{% endcss %}
+
+{% js "defer" %}
+  {% include "scripts/lichess-compare.js" %}
+{% endjs %}

@@ -1,0 +1,44 @@
+{# Design lab only. Three quiet columns: latest /now entry, recent writing, the talk. #}
+<div class="lab-wrap lab-ledger">
+  <section class="lab-ledger__col" aria-labelledby="lab-now-title">
+    <h2 id="lab-now-title" class="lab-label">Now</h2>
+    {% set latest = collections.nowEntries[0] %}
+    {% if latest %}
+      <p class="lab-ledger__date">
+        <time datetime="{{ latest.date | formatDateUtc('YYYY-MM-DD') }}">{{ latest.date | formatDateUtc('D MMMM YYYY') }}</time>
+      </p>
+      <div class="lab-ledger__body flow">{{ latest.templateContent | safe }}</div>
+    {% endif %}
+    <a class="lab-more" href="/now/">Everything I'm doing now &rarr;</a>
+  </section>
+
+  <section class="lab-ledger__col" aria-labelledby="lab-writing-title">
+    <h2 id="lab-writing-title" class="lab-label">Writing</h2>
+    <ol class="lab-list" role="list">
+      {% for post in collections.allPosts.slice(0, 4) %}
+        <li>
+          <a href="{{ post.url }}">{{ post.data.title }}</a>
+          <time datetime="{{ post.date | formatDateUtc('YYYY-MM-DD') }}">{{ post.date | formatDateUtc('MMM YYYY') }}</time>
+        </li>
+      {% endfor %}
+    </ol>
+    <a class="lab-more" href="/articles/">All articles &rarr;</a>
+  </section>
+
+  <section class="lab-ledger__col" aria-labelledby="lab-talk-title">
+    <h2 id="lab-talk-title" class="lab-label">First talk</h2>
+    {% set talk = collections.allTalks[0] %}
+    {% if talk %}
+      <p class="lab-ledger__date">{{ talk.data.event }} &middot; {{ talk.data.format }}</p>
+      <p class="lab-ledger__body"><a href="{{ talk.url }}">{{ talk.data.title }}</a></p>
+      <p class="lab-ledger__quote">&ldquo;{{ talk.data.message }}&rdquo;</p>
+    {% endif %}
+    <a class="lab-more" href="/talks/">Talks &rarr;</a>
+  </section>
+</div>
+
+<section class="lab-wrap lab-notes" aria-labelledby="lab-notes-title">
+  <h2 id="lab-notes-title" class="lab-label">Field Notes</h2>
+  <p>An occasional email about Ruby, work, and life outside the browser. No schedule, no tracking.</p>
+  <a class="lab-button" href="https://buttondown.com/stefantaitano">Subscribe on Buttondown</a>
+</section>
