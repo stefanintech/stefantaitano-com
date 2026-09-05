@@ -1,0 +1,84 @@
+---
+layout: lab
+permalink: /design-lab/index.html
+title: 'Design lab'
+labVariant: paper
+labCompare: /
+eleventyExcludeFromCollections: true
+excludeFromSitemap: true
+---
+
+{# DESIGN LAB INDEX. Not for production. Full review: docs/design-review-2026-09.md #}
+
+<section class="lab-wrap lab-hero" aria-labelledby="lab-index-title">
+  <p class="lab-eyebrow">Proof of concept &middot; September 2026 &middot; not for production</p>
+  <h1 id="lab-index-title" class="lab-hero__title">Two homes and one chess page, redrawn.</h1>
+  <p class="lab-hero__bio">
+    Same content, same data, same tokens. Fewer boxes, one display face per job, and a front door for each kind
+    of visitor. The full page-by-page review is in <code>docs/design-review-2026-09.md</code>.
+  </p>
+</section>
+
+<div class="lab-wrap">
+  <nav class="lab-doors" aria-label="Mockups">
+    <a class="lab-door" href="/design-lab/home/">
+      <span class="lab-door__who">Home A</span>
+      <span class="lab-door__title">Field Notes</span>
+      <span class="lab-door__line">Paper first. Doors up top, the pixel scene becomes a horizon line halfway down.</span>
+      <span class="lab-door__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <a class="lab-door" href="/design-lab/home-night/">
+      <span class="lab-door__who">Home B</span>
+      <span class="lab-door__title">Night Sky</span>
+      <span class="lab-door__line">Ink first. The intro sits on the night, the hills carry you down to paper.</span>
+      <span class="lab-door__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <a class="lab-door" href="/design-lab/chess/">
+      <span class="lab-door__who">Chess</span>
+      <span class="lab-door__title">One number, then the story</span>
+      <span class="lab-door__line">The rating is the headline. Six sections become four, no repeated numbers, target on the chart.</span>
+      <span class="lab-door__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    <a class="lab-door" href="/">
+      <span class="lab-door__who">Compare</span>
+      <span class="lab-door__title">Current site</span>
+      <span class="lab-door__line">The live pages, for a side-by-side. Every lab page also has a "current site" link in the bar.</span>
+      <span class="lab-door__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+  </nav>
+</div>
+
+<div class="lab-wrap lab-ledger">
+  <section class="lab-ledger__col">
+    <h2 class="lab-label">What changed</h2>
+    <ol class="lab-list" role="list">
+      <li><span>Body text 19&ndash;28px &rarr; 16&ndash;22px</span></li>
+      <li><span>Headings: one h1 per page, section labels in small caps</span></li>
+      <li><span>Boxes and cards &rarr; hairlines and whitespace</span></li>
+      <li><span>Column 85rem &rarr; 66rem, centered</span></li>
+      <li><span>Handwriting: one use per page at most</span></li>
+      <li><span>Nav names what people look for: Now, Chess, Writing, R&eacute;sum&eacute;</span></li>
+    </ol>
+  </section>
+  <section class="lab-ledger__col">
+    <h2 class="lab-label">What stayed</h2>
+    <ol class="lab-list" role="list">
+      <li><span>Cream, ink, amber, gold</span></li>
+      <li><span>Fraunces for the headline and the big number</span></li>
+      <li><span>Atkinson Hyperlegible for everything else</span></li>
+      <li><span>The pixel scene and its hover toys</span></li>
+      <li><span>Live Lichess status in the header</span></li>
+      <li><span>Dark mode through the same tokens</span></li>
+    </ol>
+  </section>
+  <section class="lab-ledger__col">
+    <h2 class="lab-label">Not built here</h2>
+    <ol class="lab-list" role="list">
+      <li><span>Articles, projects, bookshelf, r&eacute;sum&eacute;, links, talks</span></li>
+      <li><span>Post layout</span></li>
+      <li><span>OG images</span></li>
+      <li><span>A third, mono "status board" direction (described in the doc)</span></li>
+    </ol>
+    <p class="lab-fineprint">If a direction is picked, the next step is a phased plan in <code>docs/</code>, then one phase per session.</p>
+  </section>
+</div>

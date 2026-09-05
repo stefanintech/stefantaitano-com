@@ -1,0 +1,28 @@
+<footer class="lab-footer">
+  <div class="lab-footer__inner">
+    <nav class="lab-footer__links" aria-label="{{ meta.navigation.ariaExplore }}">
+      <a href="/projects/">Projects</a>
+      <a href="/talks/">Talks</a>
+      <a href="/bookshelf/">Bookshelf</a>
+      <a href="/links/">Links</a>
+      <a href="https://buttondown.com/stefantaitano" class="no-indicator">Field Notes</a>
+      <a href="/colophon/">Colophon</a>
+      <a href="/accessibility/">Accessibility</a>
+      <a href="/privacy/">Privacy</a>
+    </nav>
+
+    <nav class="lab-footer__platforms" aria-label="{{ meta.navigation.ariaPlatforms }}">
+      <a href="{{ personal.platforms.github }}" class="no-indicator" rel="me">GitHub</a>
+      <a href="{{ personal.platforms.bluesky }}" class="no-indicator" rel="me">Bluesky</a>
+      <a href="{{ personal.platforms.linkedin }}" class="no-indicator" rel="me">LinkedIn</a>
+      <a href="{{ personal.platforms.lichess }}" class="no-indicator" rel="me">Lichess</a>
+      <a href="mailto:{{ personal.email }}">Email</a>
+      <a href="{{ meta.blog.feedLinks[0].url }}" rel="alternate" type="{{ meta.blog.feedLinks[0].type }}">RSS</a>
+    </nav>
+
+    <div class="lab-footer__meta">
+      <span>&copy; {% year %} Stefan Taitano. Made with Eleventy in Minneapolis.</span>
+      {% include 'partials/theme-switch.njk' %}
+    </div>
+  </div>
+</footer>

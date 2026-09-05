@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="{{ meta.lang }}">
+  <!--
+    DESIGN LAB LAYOUT. Throwaway shell for /design-lab/ mockups only.
+    It exists so the mocks can show a different header and footer without
+    touching base.njk. Not for production. If a direction is picked, the
+    real work extends base.njk, header.njk, and footer.njk and this file goes.
+  -->
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ title }} · Design lab</title>
+    <meta name="robots" content="noindex,nofollow" />
+    <base href="{{ page.url }}" />
+    {% include "head/preloads.njk" %}
+    {% include "head/js-inline.njk" %}
+    {% include "head/css-inline.njk" %}
+    {% include "head/js-defer.njk" %}
+    <meta name="theme-color" content="{{ meta.themeDark }}" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="{{ meta.themeLight }}" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+
+  <body class="lab{% if labVariant %} lab--{{ labVariant }}{% endif %}">
+    {% include "partials/lab-header.njk" %}
+
+    <main id="main" class="lab-main">{{ content | safe }}</main>
+
+    {% include "partials/lab-footer.njk" %}
+  </body>
+</html>
+
+{% css "local" %}
+  {% include "css/design-lab.css" %}
+{% endcss %}

@@ -1,0 +1,22 @@
+<nav class="lab-bar" aria-label="Design lab pages">
+  <span class="lab-bar__tag">design lab</span>
+  <a href="/design-lab/" {% if page.url == '/design-lab/' %}aria-current="page"{% endif %}>index</a>
+  <a href="/design-lab/home/" {% if page.url == '/design-lab/home/' %}aria-current="page"{% endif %}>home A</a>
+  <a href="/design-lab/home-night/" {% if page.url == '/design-lab/home-night/' %}aria-current="page"{% endif %}>home B</a>
+  <a href="/design-lab/chess/" {% if page.url == '/design-lab/chess/' %}aria-current="page"{% endif %}>chess</a>
+  <a href="{{ labCompare or '/' }}" class="lab-bar__compare">current site</a>
+</nav>
+
+<header class="lab-header">
+  <a href="#main" class="skip-link">{{ meta.skipContent }}</a>
+  <div class="lab-header__inner">
+    <a href="/design-lab/home/" class="lab-header__name">Stefan Taitano</a>
+    <nav class="lab-nav" aria-label="{{ meta.navigation.ariaTop }}">
+      <a href="/now/">Now</a>
+      <a href="/design-lab/chess/" {% if page.url == '/design-lab/chess/' %}aria-current="page"{% endif %}>Chess</a>
+      <a href="/articles/">Writing</a>
+      <a href="/resume/">Résumé</a>
+      <span class="lab-status" data-lichess-status hidden></span>
+    </nav>
+  </div>
+</header>

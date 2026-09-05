@@ -1,0 +1,41 @@
+{#
+  Four doors, one per visitor type. Design lab only.
+  The chess door reads live build-time data from src/_data/lichess.js.
+#}
+{% set board = lichess.scoreboard %}
+<nav class="lab-doors" aria-label="Where to go next">
+  <a class="lab-door" href="/resume/">
+    <span class="lab-door__who">Hiring?</span>
+    <span class="lab-door__title">Résumé</span>
+    <span class="lab-door__line">Nine years in the Army, two on ServiceNow platforms. Web page or PDF.</span>
+    <span class="lab-door__arrow" aria-hidden="true">&rarr;</span>
+  </a>
+
+  <a class="lab-door" href="/articles/">
+    <span class="lab-door__who">Developer?</span>
+    <span class="lab-door__title">Writing and projects</span>
+    <span class="lab-door__line">Learning Ruby in public, an Eleventy site, and a sticker printer for my kids.</span>
+    <span class="lab-door__arrow" aria-hidden="true">&rarr;</span>
+  </a>
+
+  <a class="lab-door" href="/design-lab/chess/">
+    <span class="lab-door__who">Chess?</span>
+    <span class="lab-door__title">Rapid experiment</span>
+    <span class="lab-door__line">
+      {% if board.currentRating != null %}
+        Rapid <strong class="lab-door__num">{{ board.currentRating }}</strong>, aiming for {{ board.target }} by
+        {{ experiment.end | formatDateUtc('D MMM') }}. {{ board.daysRemaining }} days left.
+      {% else %}
+        An adult improver on Lichess, trying to get Rapid over {{ experiment.target }}.
+      {% endif %}
+    </span>
+    <span class="lab-door__arrow" aria-hidden="true">&rarr;</span>
+  </a>
+
+  <a class="lab-door" href="/now/">
+    <span class="lab-door__who">Just curious?</span>
+    <span class="lab-door__title">Now</span>
+    <span class="lab-door__line">What I'm doing this month, and what I was doing before that.</span>
+    <span class="lab-door__arrow" aria-hidden="true">&rarr;</span>
+  </a>
+</nav>
