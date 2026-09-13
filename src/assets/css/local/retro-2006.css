@@ -1,0 +1,190 @@
+/* 2006 homepage skin. Local bundle, homepage only. Every rule is under [data-era='2006']. */
+
+[data-era='2006'] {
+  --retro-bg: #d5dbee;
+  --retro-paper: #fff;
+  --retro-ink: #111;
+  --retro-orange: #ff7f00;
+  --retro-navy: #003399;
+  --retro-link: #0000cc;
+  --retro-border: #6699cc;
+  --retro-bar: #003399;
+}
+
+[data-era='2006'] body.home {
+  background: var(--retro-bg);
+  color: var(--retro-ink);
+}
+
+[data-era='2006'] body.home a {
+  color: var(--retro-link);
+}
+
+[data-era='2006'] body.home > header {
+  background: var(--retro-bar);
+  color: #fff;
+  border-block-end: 4px solid var(--retro-orange);
+}
+
+[data-era='2006'] body.home > header .logo,
+[data-era='2006'] body.home > header .logo span,
+[data-era='2006'] body.home > header .mainnav :is(a, [data-submenu-toggle]),
+[data-era='2006'] body.home > header .mainnav [data-drawer-toggle] {
+  color: #fff;
+  --nav-item-text-color: #fff;
+  --nav-item-decoration-color: var(--retro-orange);
+}
+
+[data-era='2006'] body.home > header .lichess-status {
+  background: color-mix(in oklab, #fff 14%, var(--retro-bar));
+  color: #fff;
+  border-color: color-mix(in oklab, #fff 35%, transparent);
+}
+
+[data-era='2006'] .retro-2006 {
+  display: block;
+}
+
+[data-era='2006'] .retro-2006__exit {
+  position: fixed;
+  inset-block-start: 0.6rem;
+  inset-inline-end: 0.6rem;
+  z-index: 6;
+  padding: 0.35rem 0.7rem;
+  border: 2px solid #fff;
+  background: var(--retro-orange);
+  color: #111;
+  font-family: Tahoma, Verdana, sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+[data-era='2006'] .retro-2006__exit:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 2px;
+}
+
+[data-era='2006'] .retro-2006__banner {
+  margin: 0;
+  padding: 0.45rem var(--home-gap, 1rem);
+  background: var(--retro-orange);
+  color: #111;
+  font-family: Tahoma, Verdana, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+[data-era='2006'] .retro-2006__top8 {
+  margin: var(--space-m) var(--home-gap, 1rem) 0;
+  padding: var(--space-s);
+  border: 2px solid var(--retro-border);
+  background: var(--retro-paper);
+}
+
+[data-era='2006'] .retro-2006__top8 h2 {
+  margin: 0 0 var(--space-s);
+  color: var(--retro-navy);
+  font-family: Tahoma, Verdana, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+[data-era='2006'] .retro-2006__friends {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-xs);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+[data-era='2006'] .retro-2006__friends a {
+  display: grid;
+  place-items: center;
+  min-block-size: 3.4rem;
+  padding: 0.35rem;
+  border: 1px solid var(--retro-border);
+  background: #eef4fb;
+  color: var(--retro-navy);
+  font-family: Tahoma, Verdana, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+
+[data-era='2006'] .retro-2006__friends a:hover {
+  background: #fff3d6;
+}
+
+[data-era='2006'] body.home .home-wordmark__name {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: var(--retro-navy);
+  text-transform: none;
+}
+
+[data-era='2006'] body.home .home-wordmark__verb {
+  color: var(--retro-orange);
+}
+
+[data-era='2006'] body.home .home-lede,
+[data-era='2006'] body.home .home-section__body {
+  color: var(--retro-ink);
+}
+
+[data-era='2006'] body.home .home-section__label {
+  color: var(--retro-navy);
+  font-family: Tahoma, Verdana, sans-serif;
+  font-weight: 700;
+}
+
+[data-era='2006'] body.home .home-section__body {
+  padding: var(--space-s);
+  border: 2px solid var(--retro-border);
+  background: var(--retro-paper);
+}
+
+[data-era='2006'] body.home .home-item__title,
+[data-era='2006'] body.home .home-item {
+  color: var(--retro-ink);
+}
+
+[data-era='2006'] body.home .home-more {
+  color: var(--retro-link);
+}
+
+[data-era='2006'] body.home .site-footer {
+  background: var(--retro-bar);
+  color: #fff;
+}
+
+[data-era='2006'] body.home .site-footer a {
+  color: #fff;
+}
+
+[data-era='2006'] body.home .hit-counter__digits {
+  background: #111;
+  border-color: var(--retro-orange);
+}
+
+[data-era='2006'] body.home .hit-counter__digit {
+  color: var(--retro-orange);
+}
+
+@media (max-width: 40em) {
+  [data-era='2006'] .retro-2006__friends {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  [data-era='2006'] .retro-2006__exit {
+    inset-block-start: auto;
+    inset-block-end: 0.6rem;
+  }
+}

@@ -9,6 +9,23 @@ description: 'Veteran, ServiceNow developer, slowly getting better at Ruby.'
 {% set talk = collections.allTalks[0] %}
 
 <div class="home">
+  <div class="retro-2006" hidden>
+    <button type="button" class="retro-2006__exit" data-era-exit>Leave 2006</button>
+    <p class="retro-2006__banner">Stefan Taitano's profile</p>
+    <section class="retro-2006__top8" aria-labelledby="retro-top8">
+      <h2 id="retro-top8">Stefan's Top 8</h2>
+      <ul class="retro-2006__friends">
+        <li><a href="/now/">Now</a></li>
+        <li><a href="/articles/">Articles</a></li>
+        <li><a href="/projects/">Projects</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/chess/">Chess</a></li>
+        <li><a href="/bookshelf/">Bookshelf</a></li>
+        <li><a href="/resume/">Résumé</a></li>
+        <li><a href="/links/">Links</a></li>
+      </ul>
+    </section>
+  </div>
   <div class="home-frame">
     <header class="home-intro">
       <div class="home-intro__copy">
@@ -132,8 +149,10 @@ description: 'Veteran, ServiceNow developer, slowly getting better at Ruby.'
 
 {% css "local" %}
   {% include "css/home.css" %}
+  {% include "css/retro-2006.css" %}
 {% endcss %}
 
 {% js "defer" %}
   {% include "scripts/stefan-is.js" %}
+  {% include "scripts/retro-2006.js" %}
 {% endjs %}
