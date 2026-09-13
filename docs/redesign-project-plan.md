@@ -123,10 +123,10 @@ Extend those. Do not add a second layout. `src/_layouts/lab.njk` is throwaway an
 
 ## After this project (not phases)
 
-1. Restyle articles, projects, bookshelf, talks (and maybe `/now`) to the same rows.
-2. Guest / postcard wall — safe, moderated, hard to flood.
-3. Retro MySpace / Facebook skin easter egg.
-4. Footer counter that shows Rapid games in the window (or the live rating), 90s-counter style. Stefan liked this.
+1. Articles, projects, bookshelf, talks — **keep as they are.** Stefan likes them. Do not restyle for consistency with the homepage.
+2. Guest / postcard wall — **hold.**
+3. Retro MySpace / Facebook skin easter egg — still parked.
+4. Footer Rapid counter — own plan: `docs/footer-counter-project-plan.md`.
 
 ---
 
