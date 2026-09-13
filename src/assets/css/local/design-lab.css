@@ -873,8 +873,8 @@
 
 .lab-c-intro {
   display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: stretch;
   gap: var(--space-m);
 }
 
@@ -884,10 +884,9 @@
 
 .lab-c-wordmark__visible {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  column-gap: 0.35em;
-  row-gap: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1em;
 }
 
 .lab-c-wordmark__name {
@@ -903,6 +902,7 @@
   color: var(--color-primary);
   font-size: var(--size-step-2);
   line-height: 1;
+  min-block-size: 1.1em;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -918,11 +918,9 @@
 .lab-c-portrait {
   position: relative;
   overflow: hidden;
-  inline-size: 5.5rem;
-  block-size: 5.5rem;
-  flex: none;
+  inline-size: 100%;
   border: 1px solid var(--lab-rule-color);
-  border-radius: 50%;
+  border-radius: 0.6rem;
   background: var(--pixel-ink);
 }
 
@@ -932,10 +930,6 @@
 }
 
 .lab-c-portrait .pixel-hero__ground {
-  display: none;
-}
-
-.lab-c-portrait .pixel-hero__hit--quest {
   display: none;
 }
 
@@ -1078,8 +1072,7 @@
   }
 
   .lab-c-portrait {
-    inline-size: 6.5rem;
-    block-size: 6.5rem;
+    inline-size: 9rem;
   }
 
   .lab-c__frame {
