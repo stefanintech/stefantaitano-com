@@ -16,7 +16,7 @@ body.home main.flow {
 }
 
 .home {
-  padding-block-end: var(--space-xl);
+  padding-block-end: 0;
 }
 
 .home-frame {
@@ -175,9 +175,15 @@ body.home main.flow {
   scroll-margin-block-start: calc(var(--home-label-top) + var(--space-s));
 }
 
+/* Night falls at the end of the page. The footer sits right under the ground. */
 .home-horizon {
-  margin-block: var(--space-xl);
+  margin-block-start: var(--space-2xl);
   background: var(--pixel-ink);
+}
+
+body.home .site-footer {
+  margin-block-start: 0;
+  padding-block-start: var(--space-m);
 }
 
 .pixel-hero {
