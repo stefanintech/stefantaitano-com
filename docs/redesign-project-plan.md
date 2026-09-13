@@ -125,7 +125,7 @@ Extend those. Do not add a second layout. `src/_layouts/lab.njk` is throwaway an
 
 1. Articles, projects, bookshelf, talks — **keep as they are.** Stefan likes them. Do not restyle for consistency with the homepage.
 2. Guest / postcard wall — **hold.**
-3. Retro MySpace / Facebook skin easter egg — still parked.
+3. Retro MySpace / Facebook skin easter egg — own plan: `docs/retro-skin-project-plan.md`. Homepage and `/links/` only. Not started.
 4. Footer Rapid counter — own plan: `docs/footer-counter-project-plan.md`.
 
 ---
