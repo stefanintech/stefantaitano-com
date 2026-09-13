@@ -120,7 +120,7 @@ class PixelHero extends HTMLElement {
     this.questHit = document.createElement('a');
     this.questHit.className = 'pixel-hero__hit pixel-hero__hit--quest';
     this.questHit.href = '#now-preview';
-    this.questHit.setAttribute('aria-label', 'Current quest: learning Ruby. Jump to what I am doing now.');
+    this.questHit.setAttribute('aria-label', 'Current quest: writing Ruby. Jump to what I am doing now.');
     this.questHit.addEventListener('pointerenter', () => {
       this.questUntil = Math.max(this.questUntil, performance.now() / 1000 + 2);
     });

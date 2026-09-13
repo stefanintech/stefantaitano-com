@@ -1,13 +1,13 @@
 /**
- * Design lab only. Cycles the "stefan is ___" verb on Home C.
+ * Cycles the "stefan is ___" verb on the homepage.
  * If the Lichess status pill says he's playing, that word goes first.
  */
-const WORDS = ['learning Ruby', 'running', 'playing chess', 'planning our next move'];
+const WORDS = ['writing Ruby', 'running', 'playing chess', 'planning our next move'];
 const HOLD_MS = 2600;
 const FADE_MS = 280;
 
 const start = () => {
-  const el = document.querySelector('[data-lab-cycle]');
+  const el = document.querySelector('[data-stefan-cycle]');
   if (!el) return;
 
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');

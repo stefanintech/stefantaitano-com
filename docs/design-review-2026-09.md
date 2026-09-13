@@ -1,8 +1,7 @@
 # Design review, September 2026
 
-**Status:** brainstorm only. Nothing here is for production. The mockups live at `/design-lab/` on the
-`cursor/design-lab-mockups-29f5` branch and run with `npm start`. Home C is the Palmer-style page. If a direction is picked, the next step is a
-phased plan (`docs/redesign-project-plan.md`, per `docs/phased-feature-plans.md`), then one phase per session.
+**Status:** archived. Home C shipped as `/` in Phase 1 of `docs/redesign-project-plan.md`.
+`/design-lab/` was deleted when that phase landed. Chess is still Phase 2.
 
 **The brief.** Minimal, simple, to the point, unique, cool. Four kinds of first-time visitor: a recruiter, a
 developer, someone curious about chess, someone who just wants to know a little more about Stefan.

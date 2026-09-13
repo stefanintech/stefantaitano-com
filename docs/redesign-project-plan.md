@@ -2,7 +2,7 @@
 
 Ship the margin-notes homepage (option C) and, in a later phase, a quieter chess page. One visible slice per session.
 
-**Status:** Phase 1 in progress. Chess is Phase 2. Articles, projects, bookshelf, talks, and `/now` are not in this project.
+**Status:** Phase 1 landed. Chess is Phase 2. Articles, projects, bookshelf, talks, and `/now` are not in this project.
 
 **Outcome:** The homepage reads like the Home C mock: a cycling “stefan is ___”, the systems line, a short bio, live Rapid on the page, and hairline rows. `/chess/` later gets the mocked scoreboard. Nav stays Now / Articles / Talks / Projects.
 
