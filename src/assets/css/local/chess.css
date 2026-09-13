@@ -1,9 +1,28 @@
 .chess {
-  --flow-space: var(--space-xl);
+  --flow-space: var(--space-l-xl);
 }
 
 .chess .page-intro {
   --region-space-bottom: 0;
+}
+
+/* One display face at one size. The rating is the point, not the headings. */
+.chess .page-intro__title {
+  font-size: var(--size-step-4);
+}
+
+.chess .page-intro__lede {
+  font-size: var(--size-step-0);
+}
+
+.chess h2 {
+  font-size: var(--size-step-1);
+  letter-spacing: 0;
+}
+
+.chess .now-stats caption {
+  font-size: var(--size-step-min-1);
+  color: var(--color-text-accent);
 }
 
 .chess-scoreboard,
@@ -39,7 +58,7 @@
 
 .chess-scoreboard__stats dd {
   margin: 0;
-  font-size: var(--size-step-2);
+  font-size: var(--size-step-1);
   font-weight: var(--font-bold);
   line-height: var(--leading-fine);
 }
@@ -198,4 +217,42 @@
   margin-block-start: var(--space-xs);
   color: var(--color-text-accent);
   font-size: var(--size-step-min-1);
+}
+
+/* On a phone the games table stacks into rows instead of scrolling sideways. */
+@media (max-width: 40em) {
+  .chess-games__table,
+  .chess-games__table tbody,
+  .chess-games__table tr,
+  .chess-games__table td {
+    display: block;
+    inline-size: 100%;
+  }
+
+  .chess-games__table caption {
+    display: block;
+    inline-size: 100%;
+  }
+
+  .chess-games__table thead {
+    display: none;
+  }
+
+  .chess-games__table tr {
+    padding-block: var(--space-s);
+    border-block-start: 1px solid var(--color-bg-accent);
+  }
+
+  .chess-games__table td {
+    padding: 0;
+  }
+
+  .chess-games__table td:nth-child(2) {
+    font-weight: var(--font-bold);
+  }
+
+  .chess-games__table td:nth-child(3)::before {
+    content: 'Rated ';
+    color: var(--color-text-accent);
+  }
 }

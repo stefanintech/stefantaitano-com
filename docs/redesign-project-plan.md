@@ -2,9 +2,9 @@
 
 Ship the margin-notes homepage (option C) and, in a later phase, a quieter chess page. One visible slice per session.
 
-**Status:** Phase 1 landed. Chess is Phase 2. Articles, projects, bookshelf, talks, and `/now` are not in this project.
+**Status:** Phase 1 and Phase 2 landed. This project is done. Articles, projects, bookshelf, talks, and `/now` were not in it; see “After this project.”
 
-**Outcome:** The homepage reads like the Home C mock: a cycling “stefan is ___”, the systems line, a short bio, live Rapid on the page, and hairline rows. `/chess/` later gets the mocked scoreboard. Nav stays Now / Articles / Talks / Projects.
+**Outcome:** The homepage reads like the Home C mock: a cycling “stefan is ___”, the systems line, a short bio, live Rapid on the page, and hairline rows. `/chess/` kept its sections and got smaller headings and a phone-friendly games table (option 3). Nav stays Now / Articles / Talks / Projects.
 
 **Cut**
 
@@ -38,13 +38,13 @@ Those last three are **after-action**, not phases here. Stefan liked the counter
 
 ---
 
-## Chess — options for Phase 2 (pick or keep the default)
+## Chess — options for Phase 2
 
-1. **Ship the mock (default).** Rating is the headline. One start-to-target rail. Target drawn on the chart. Games as a list. Study, then compare. Same data as today. This is what “keep the chess page” referred to.
-2. **Quiet C-style.** Same facts, 34rem column, margin labels, no giant number. Matches home. Less of a scoreboard.
-3. **Light restyle.** Keep today’s `/chess/` sections and order. Only shrink headings and stop the games table clipping on a phone.
+Stefan saw all three built on localhost (13 Sep 2026) and picked **3**.
 
-Say if you want 2 or 3 before Phase 2 starts. Otherwise Phase 2 is option 1.
+1. **Ship the mock.** Rating is the headline. One start-to-target rail. Target drawn on the chart. Games as a list. Study, then compare.
+2. **Quiet C-style.** Same facts, 34rem column, margin labels, no giant number. Matches home.
+3. **Light restyle (picked).** Keep today’s `/chess/` sections and order. Shrink headings, tighten spacing, and stack the games table on a phone instead of scrolling sideways.
 
 ---
 
@@ -111,13 +111,13 @@ Extend those. Do not add a second layout. `src/_layouts/lab.njk` is throwaway an
 
 ## Phase 2 — Chess
 
-**Build:** option 1 unless Stefan picks 2 or 3. Port the mock onto `src/pages/chess.njk` and `src/assets/css/local/chess.css`. Compare-with-me keeps the `chess-chart__*` hooks.
+**Build:** option 3. CSS only, in `src/assets/css/local/chess.css`. `src/pages/chess.njk` is untouched. Page title down one step, h2s down to step 1, scoreboard numbers down one step, section gap `--space-l-xl`, and under 40em the games table becomes stacked rows (thead hidden, opponent bold, “Rated” prefix on the rating cell).
 
 **Endpoints:** none new.
 
-**Gotchas:** do not change `lichess.js` unless a real schema mismatch shows up. Tokens stay out of the client.
+**Gotchas:** do not change `lichess.js` unless a real schema mismatch shows up. Tokens stay out of the client. Compare-with-me keeps the `chess-chart__*` hooks.
 
-**Done when:** `/chess/` matches the chosen option. Homepage chess row still points here.
+**Done when:** `/chess/` has the same sections in the same order, smaller headings, and no sideways scroll on the games table at 390. Homepage chess row still points here.
 
 ---
 
