@@ -184,7 +184,7 @@
   color: var(--retro-orange);
 }
 
-[data-era='2006']:has(.links-page) body {
+[data-era='2006'] body:has(.links-page) {
   background: var(--retro-bg);
   color: var(--retro-ink);
 }
