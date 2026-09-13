@@ -1,4 +1,4 @@
-/* 2006 homepage skin. Local bundle, homepage only. Every rule is under [data-era='2006']. */
+/* 2006 skin. Local bundle on / and /links/ only. Every rule is under [data-era='2006']. */
 
 [data-era='2006'] {
   --retro-bg: #d5dbee;
@@ -182,6 +182,54 @@
 
 [data-era='2006'] body.home .hit-counter__digit {
   color: var(--retro-orange);
+}
+
+[data-era='2006']:has(.links-page) body {
+  background: var(--retro-bg);
+  color: var(--retro-ink);
+}
+
+[data-era='2006'] .compact-header {
+  background: var(--retro-bar);
+  color: #fff;
+  border-block-end: 4px solid var(--retro-orange);
+}
+
+[data-era='2006'] .compact-header__inner {
+  border-block-end: 0;
+}
+
+[data-era='2006'] .compact-header__home,
+[data-era='2006'] .compact-header .theme-switch {
+  color: #fff;
+}
+
+[data-era='2006'] .compact-header a {
+  color: #fff;
+}
+
+[data-era='2006'] .links-page .links-nav {
+  display: none;
+}
+
+[data-era='2006'] .links-name,
+[data-era='2006'] .links-tagline,
+[data-era='2006'] .links-hint {
+  color: var(--retro-ink);
+}
+
+[data-era='2006'] .links-avatar {
+  border: 4px solid var(--retro-navy);
+  border-radius: 0.25rem;
+}
+
+[data-era='2006'] .site-footer {
+  background: var(--retro-bar);
+  color: #fff;
+}
+
+[data-era='2006'] .site-footer a {
+  color: #fff;
 }
 
 @media (max-width: 40em) {

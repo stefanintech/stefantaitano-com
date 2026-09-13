@@ -1,7 +1,8 @@
 /**
- * Homepage 2006 skin. Phase 1 only — included from index.njk.
- * Type 2006, or click the pixel moon three times in a short window.
- * Does not listen for "stefan". Escape or [data-era-exit] leaves.
+ * 2006 skin on / and /links/. Type 2006 to toggle.
+ * Homepage also: three clicks on the pixel moon.
+ * Does not listen for "stefan" or the links photo. Escape or [data-era-exit] leaves.
+ * If the Lichess dialog is open, Escape closes that first.
  */
 const STORAGE_KEY = 'retro-2006';
 const CODE = ['2', '0', '0', '6'];
@@ -35,6 +36,8 @@ const start = () => {
   let typed = 0;
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && isOn()) {
+      const lichessEgg = document.getElementById('links-egg');
+      if (lichessEgg && !lichessEgg.hasAttribute('hidden')) return;
       apply(false);
       return;
     }

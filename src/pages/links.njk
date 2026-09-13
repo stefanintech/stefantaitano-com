@@ -6,6 +6,28 @@ description: 'Links and contact for Stefan Taitano — ServiceNow developer, lea
 compactHeader: true
 ---
 
+<div class="retro-2006" hidden>
+  <div class="retro-2006__banner">
+    <p>Stefan Taitano's profile</p>
+    <button type="button" class="retro-2006__exit" data-era-exit>Leave 2006</button>
+  </div>
+  <section class="retro-2006__top8" aria-labelledby="retro-top8">
+    <h2 id="retro-top8">Stefan's Top 8</h2>
+    <ul class="retro-2006__friends">
+      {%- for item in links.links %}
+        {%- if item.url_key %}
+          {%- set href = personal.platforms[item.url_key] %}
+        {%- elif item.email %}
+          {%- set href = "mailto:" + personal.email %}
+        {%- else %}
+          {%- set href = item.url %}
+        {%- endif %}
+        <li><a href="{{ href }}"{% if item.url_key %} rel="me"{% endif %}>{{ item.label }}</a></li>
+      {%- endfor %}
+    </ul>
+  </section>
+</div>
+
 <div class="links-page wrapper region">
   <div class="links-profile flow">
     <button type="button" class="links-avatar" id="links-avatar" aria-label="Stefan Taitano" aria-haspopup="dialog" aria-controls="links-egg">
@@ -79,4 +101,9 @@ compactHeader: true
 
 {% css "local" %}
   {% include "css/links.css" %}
+  {% include "css/retro-2006.css" %}
 {% endcss %}
+
+{% js "defer" %}
+  {% include "scripts/retro-2006.js" %}
+{% endjs %}
