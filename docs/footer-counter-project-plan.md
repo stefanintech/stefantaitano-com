@@ -2,7 +2,7 @@
 
 A 90s-style hit counter in the site footer, driven by the Rapid experiment already on `/chess/`. One visible slice per session.
 
-**Status:** Plan only. Phase 1 has not started. Guest / postcard wall is parked. Articles, projects, bookshelf, and talks stay as they are.
+**Status:** Phase 1 landed. Guest / postcard wall is parked. Articles, projects, bookshelf, and talks stay as they are.
 
 **Outcome:** Every full footer shows a small odometer that reads like an old page-hit counter, except the number is rated Rapid games in the current experiment window. It links to `/chess/`. If Lichess missed this build, the counter is absent.
 
