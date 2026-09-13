@@ -45,29 +45,12 @@
   display: block;
 }
 
-[data-era='2006'] .retro-2006__exit {
-  position: fixed;
-  inset-block-start: 0.6rem;
-  inset-inline-end: 0.6rem;
-  z-index: 6;
-  padding: 0.35rem 0.7rem;
-  border: 2px solid #fff;
-  background: var(--retro-orange);
-  color: #111;
-  font-family: Tahoma, Verdana, sans-serif;
-  font-size: 0.8rem;
-  font-weight: 700;
-  line-height: 1.2;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-[data-era='2006'] .retro-2006__exit:focus-visible {
-  outline: 3px solid #fff;
-  outline-offset: 2px;
-}
-
 [data-era='2006'] .retro-2006__banner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
   margin: 0;
   padding: 0.45rem var(--home-gap, 1rem);
   background: var(--retro-orange);
@@ -77,6 +60,29 @@
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+[data-era='2006'] .retro-2006__banner p {
+  margin: 0;
+}
+
+[data-era='2006'] .retro-2006__exit {
+  padding: 0.3rem 0.65rem;
+  border: 2px solid #111;
+  background: #fff;
+  color: #111;
+  font-family: Tahoma, Verdana, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+  cursor: pointer;
+}
+
+[data-era='2006'] .retro-2006__exit:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 2px;
 }
 
 [data-era='2006'] .retro-2006__top8 {
@@ -181,10 +187,5 @@
 @media (max-width: 40em) {
   [data-era='2006'] .retro-2006__friends {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  [data-era='2006'] .retro-2006__exit {
-    inset-block-start: auto;
-    inset-block-end: 0.6rem;
   }
 }
