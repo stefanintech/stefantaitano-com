@@ -8,7 +8,7 @@
 }
 
 /* increase tab size */
-.site-footer a:not(.creator a) {
+.site-footer a:not(.creator a):not(.hit-counter) {
   padding: var(--space-xs);
 }
 .site-footer .creator a:hover {
@@ -21,4 +21,44 @@
 
 .site-footer .creator a:hover svg {
   color: var(--color-primary);
+}
+
+.hit-counter-wrap {
+  display: flex;
+  justify-content: center;
+  margin-block-start: var(--space-l);
+}
+
+.hit-counter {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.hit-counter:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+}
+
+.hit-counter__digits {
+  display: inline-flex;
+  border: 1px solid color-mix(in oklab, var(--color-text) 22%, transparent);
+  background: var(--color-dark);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--color-light) 12%, transparent);
+}
+
+.hit-counter__digit {
+  display: grid;
+  place-items: center;
+  inline-size: 1.15em;
+  min-block-size: 1.35em;
+  border-inline-end: 1px solid color-mix(in oklab, var(--color-light) 18%, transparent);
+  color: var(--color-tertiary);
+  font-family: var(--font-mono);
+  font-size: var(--size-step-min-1);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.hit-counter__digit:last-child {
+  border-inline-end: 0;
 }

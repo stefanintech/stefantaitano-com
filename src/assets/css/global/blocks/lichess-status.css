@@ -66,29 +66,3 @@
   display: block;
 }
 
-/* Over the homepage sky the page background tokens sit on a dark band.
-   Keep the pill opaque and use the sky’s cream type so the label reads. */
-body.has-pixel-hero > header .lichess-status {
-  background: color-mix(in oklab, var(--pixel-ink) 55%, var(--pixel-paper));
-  color: var(--pixel-paper);
-  border-color: color-mix(in oklab, var(--pixel-paper) 42%, transparent);
-}
-
-body.has-pixel-hero > header .lichess-status__dot {
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--pixel-paper) 35%, transparent);
-}
-
-body.has-pixel-hero.is-header-docked > header .lichess-status {
-  background: color-mix(in oklab, var(--color-tertiary) 18%, var(--color-bg-accent));
-  color: var(--color-text);
-  border-color: color-mix(in oklab, var(--color-tertiary) 55%, var(--color-bg-accent-2));
-}
-
-body.has-pixel-hero.is-header-docked > header .lichess-status--playing {
-  background: color-mix(in oklab, var(--color-primary) 14%, var(--color-bg-accent));
-  border-color: color-mix(in oklab, var(--color-primary) 55%, var(--color-bg-accent-2));
-}
-
-body.has-pixel-hero.is-header-docked > header .lichess-status__dot {
-  box-shadow: 0 0 0 1px color-mix(in oklab, var(--color-text) 18%, transparent);
-}

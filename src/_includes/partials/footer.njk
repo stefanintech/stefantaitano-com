@@ -61,6 +61,25 @@
       {% include 'partials/theme-switch.njk' %}
     {% endif %}
 
+    {# Three digits on purpose. This experiment will not hit 1000 games. #}
+    {% if not compactHeader and lichess.scoreboard and lichess.scoreboard.games != none %}
+      {% set games = lichess.scoreboard.games %}
+      {% set since = experiment.start | formatDateUtc('D MMM') %}
+      <p class="hit-counter-wrap">
+        <a
+          class="hit-counter no-indicator"
+          href="/chess/"
+          aria-label="{{ games }} rated Rapid game{% if games != 1 %}s{% endif %} since {{ since }}. Full Rapid scoreboard."
+        >
+          <span class="hit-counter__digits" aria-hidden="true">
+            <span class="hit-counter__digit">{{ ((games / 100) | round(0, 'floor')) % 10 }}</span>
+            <span class="hit-counter__digit">{{ ((games / 10) | round(0, 'floor')) % 10 }}</span>
+            <span class="hit-counter__digit">{{ games % 10 }}</span>
+          </span>
+        </a>
+      </p>
+    {% endif %}
+
     <aside class="creator | cluster gutter-2xs text-step-min-1 mt-xl">
       Made with <span class="visually-hidden">love</span> <span>{% svg "misc/heart" %}</span> and
       <a class="no-indicator" href="https://www.11ty.dev/">

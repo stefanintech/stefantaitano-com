@@ -2,72 +2,138 @@
 layout: base
 permalink: /index.html
 title: 'Stefan Taitano'
-description: 'Army veteran, ServiceNow developer, and Ruby learner writing about code, work, and life outside both.'
-articles:
-  title: 'Recent Articles'
-  intro: 'A few things I have written lately.'
+description: 'Veteran, ServiceNow developer, slowly getting better at Ruby.'
 ---
 
-{% include "partials/pixel-hero.njk" %}
+{% set board = lichess.scoreboard %}
+{% set talk = collections.allTalks[0] %}
 
-<div class="wrapper flow">
-  <section class="home-intro region">
-    <div class="home-intro__content flow">
-      <h1 class="home-intro__title">I build systems for a living and escape plans for fun.</h1>
-      <p class="handwritten">
-        (right now that means Ruby, running, and planning our next move)
-      </p>
-      <p class="home-intro__bio">
-        I'm Stefan. I spent nine years in the Army, now work in ServiceNow, and am slowly getting better at Ruby.
-      </p>
-      <div class="home-intro__actions cluster gutter-s">
-        <a href="/talks/rubyconf-2026/" class="button" data-button-variant="tertiary">Read my first talk</a>
-        <a href="/resume/" class="button" data-ghost-button>View my résumé</a>
+<div class="home">
+  <div class="home-frame">
+    <header class="home-intro">
+      <div class="home-intro__copy">
+        <h1 class="home-wordmark">
+          <span class="visually-hidden">Stefan is writing Ruby, running, playing chess, and planning our next move.</span>
+          <span class="home-wordmark__visible" aria-hidden="true">
+            <span class="home-wordmark__name">stefan is</span>
+            <span class="home-wordmark__verb handwritten" data-stefan-cycle>writing Ruby</span>
+          </span>
+        </h1>
+        <p class="home-lede">I build systems for a living and escape plans for fun.</p>
       </div>
-    </div>
-  </section>
+    </header>
 
-  <section id="now-preview" class="home-now region flow">
-    <p class="home-kicker handwritten">What I'm doing now</p>
-    <p>
-      I'm attending <a href="https://www.commityourcode.com/">Commit Your Code</a> (CYC26) in Plano,
-      and I'm open to connecting. If you're here too, come say hi.
-    </p>
-    <p>
-      I'm still working through <a href="https://www.theodinproject.com/">The Odin Project</a> Ruby path
-      after RubyConf.
-    </p>
-    <p><a href="/now/">See the full /now page</a></p>
-  </section>
-
-  <section class="home-articles region flow">
-    <h2>{{ articles.title }}</h2>
-    {% set itemList = collections.allPosts %}
-    {% if itemList.length > 0 %}
-      {% if articles.intro %}
-        <p>{{ articles.intro }}</p>
-      {% endif %}
-    {% else %}
-      <p>No articles published yet. When something is ready, it will show up here.</p>
-    {% endif %}
-    {% if itemList.length > 0 %}
-      <div class="home-articles__list">
-        <custom-masonry layout="50-50">
-          {% asyncEach item in itemList.slice(0, 3) %}
-            {% set headingLevel = "h3" %}
-            {% include "partials/card-blog.njk" %}
-          {% endeach %}
-        </custom-masonry>
+    <section class="home-section" aria-labelledby="home-background">
+      <h2 id="home-background" class="home-section__label">background</h2>
+      <div class="home-section__body">
+        <p>
+          I'm Stefan. I'm a veteran, I work in ServiceNow, and I'm slowly getting better at Ruby.
+          If you're hiring, the <a href="/resume/">résumé</a> is a page or a PDF.
+        </p>
       </div>
-    {% endif %}
-    <p><a href="/articles/">Browse all articles</a></p>
-  </section>
+    </section>
 
-  <section id="newsletter" class="home-newsletter region">
-    {% include "partials/newsletter-cta.njk" %}
-  </section>
+    <section class="home-section" id="now-preview" aria-labelledby="home-now">
+      <h2 id="home-now" class="home-section__label">now</h2>
+      <div class="home-section__body">
+        <p>
+          I'm still working through <a href="https://www.theodinproject.com/">The Odin Project</a> Ruby path.
+        </p>
+        <p><a class="home-more" href="/now/">everything I'm doing now <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </section>
+
+    <section class="home-section" aria-labelledby="home-writing">
+      <h2 id="home-writing" class="home-section__label">writing</h2>
+      <div class="home-section__body">
+        {% if collections.allPosts.length > 0 %}
+          <ul class="home-list" role="list">
+            {% for post in collections.allPosts.slice(0, 4) %}
+              <li>
+                <a class="home-item" href="{{ post.url }}">
+                  <span class="home-item__top">
+                    <span class="home-item__title">{{ post.data.title }}</span>
+                    <time class="home-item__when" datetime="{{ post.date | formatDateUtc('YYYY-MM-DD') }}">{{ post.date | formatDateUtc('YYYY') }}</time>
+                  </span>
+                  <span class="home-item__line">{{ post.data.description }}</span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+          <p><a class="home-more" href="/articles/">all posts <span aria-hidden="true">&rarr;</span></a></p>
+        {% else %}
+          <p>No articles published yet. When something is ready, it will show up here.</p>
+        {% endif %}
+      </div>
+    </section>
+
+    <section class="home-section" aria-labelledby="home-projects">
+      <h2 id="home-projects" class="home-section__label">projects</h2>
+      <div class="home-section__body">
+        <ul class="home-list" role="list">
+          {% for project in projects %}
+            {% if not project.draft %}
+              <li>
+                <a class="home-item" href="{{ project.article or project.url or project.repo }}">
+                  <span class="home-item__title">{{ project.title }}</span>
+                  <span class="home-item__line">{{ project.description }}</span>
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+        <p><a class="home-more" href="/projects/">all projects <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </section>
+
+    <section class="home-section" aria-labelledby="home-chess">
+      <h2 id="home-chess" class="home-section__label">chess</h2>
+      <div class="home-section__body">
+        <a class="home-item" href="/chess/">
+          <span class="home-item__title">
+            Rapid
+            {% if board.currentRating != null %}
+              <strong class="home-num">{{ board.currentRating }}</strong>
+            {% endif %}
+          </span>
+          <span class="home-item__line">
+            {% if board.currentRating != null %}
+              {{ board.statusLine }} {{ board.daysRemaining }} days left, {{ board.games }} rated game{% if board.games != 1 %}s{% endif %} in the window.
+            {% else %}
+              Adult improver, trying to get Rapid over {{ experiment.target }} by {{ experiment.end | formatDateUtc('D MMM') }}.
+            {% endif %}
+          </span>
+        </a>
+        <p><a class="home-more" href="/chess/">full Rapid scoreboard <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </section>
+
+    {% if talk %}
+      <section class="home-section" aria-labelledby="home-talks">
+        <h2 id="home-talks" class="home-section__label">talks</h2>
+        <div class="home-section__body">
+          <a class="home-item" href="{{ talk.url }}">
+            <span class="home-item__top">
+              <span class="home-item__title">{{ talk.data.title }}</span>
+              <span class="home-item__when">{{ talk.data.year }}</span>
+            </span>
+            <span class="home-item__line">{{ talk.data.event }} &middot; {{ talk.data.format }}. {{ talk.data.description }}</span>
+          </a>
+          <p><a class="home-more" href="/talks/">all talks <span aria-hidden="true">&rarr;</span></a></p>
+        </div>
+      </section>
+    {% endif %}
+  </div>
+
+  <div class="home-horizon">
+    {% include "partials/pixel-hero.njk" %}
+  </div>
 </div>
 
 {% css "local" %}
   {% include "css/home.css" %}
 {% endcss %}
+
+{% js "defer" %}
+  {% include "scripts/stefan-is.js" %}
+{% endjs %}

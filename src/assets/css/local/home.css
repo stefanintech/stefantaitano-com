@@ -1,31 +1,196 @@
-/* Homepage pixel hero + overlay header. Local bundle only. */
+/* Homepage C: margin labels, mid-page pixel horizon. Local bundle only. */
 
-body.has-pixel-hero {
+body.home {
+  --home-gap: clamp(1rem, 5vw, 2.5rem);
+  --home-muted: var(--color-text-accent);
+  --home-small: var(--size-step-min-2);
+  --home-label-top: 5.5rem;
   --pixel-ink: #241810;
   --pixel-paper: var(--color-light);
   --pixel-amber: var(--color-amber);
   --pixel-gold: var(--color-gold);
-  position: relative;
-  overflow-x: clip;
-  /* Opaque ancestor so cream header type meets contrast while the
-     header itself stays transparent over the sky. */
-  background-color: var(--pixel-ink);
 }
 
-body.has-pixel-hero :is(main, .site-footer) {
-  background-color: var(--color-bg);
-}
-
-body.has-pixel-hero main.flow {
+body.home main.flow {
   --flow-space: 0;
 }
 
-/* Full-bleed night band before JS paints the canvases. */
+.home {
+  padding-block-end: 0;
+}
+
+.home-frame {
+  display: grid;
+  gap: var(--space-xl) var(--space-l);
+  padding-inline: var(--home-gap);
+}
+
+.home-intro {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+  padding-block-start: var(--space-l);
+}
+
+.home-wordmark {
+  margin: 0;
+}
+
+.home-wordmark__visible {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.1em;
+}
+
+.home-wordmark__name {
+  font-family: var(--font-display);
+  font-weight: var(--font-extra-bold);
+  font-size: var(--size-step-3);
+  line-height: 1;
+  letter-spacing: var(--tracking-s);
+  text-transform: lowercase;
+}
+
+.home-wordmark__verb {
+  color: var(--color-primary);
+  font-size: var(--size-step-2);
+  line-height: 1;
+  min-block-size: 1.1em;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .home-wordmark__verb {
+    transition: opacity 0.28s ease;
+  }
+}
+
+.home-wordmark__verb.is-out {
+  opacity: 0;
+}
+
+.home-lede {
+  margin-block-start: var(--space-m);
+  max-inline-size: 34rem;
+  font-size: var(--size-step-0);
+  line-height: var(--leading-standard);
+}
+
+.home-section {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.home-section__label {
+  font-family: var(--font-base);
+  font-size: var(--size-step-0);
+  font-weight: var(--font-regular);
+  line-height: var(--leading-standard);
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--home-muted);
+}
+
+.home-section__body {
+  max-inline-size: 34rem;
+  font-size: var(--size-step-min-1);
+  line-height: var(--leading-standard);
+  color: var(--color-text);
+}
+
+.home-section__body > * + * {
+  margin-block-start: var(--space-s);
+}
+
+.home-section__body > p a:not(.home-more):not(.home-item) {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.home-section__body > p a:not(.home-more):not(.home-item):hover {
+  text-decoration: underline;
+}
+
+.home-list {
+  display: grid;
+  gap: var(--space-m);
+}
+
+.home-item {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.home-item__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-m);
+}
+
+.home-item__title {
+  font-size: var(--size-step-0);
+  line-height: var(--leading-standard);
+  color: var(--color-text);
+}
+
+.home-item:hover .home-item__title {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: var(--color-primary);
+}
+
+.home-item__when {
+  flex: none;
+  font-size: var(--home-small);
+  color: var(--home-muted);
+}
+
+.home-item__line {
+  display: block;
+  margin-block-start: var(--space-3xs);
+  color: var(--home-muted);
+  line-height: var(--leading-standard);
+}
+
+.home-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: var(--font-bold);
+}
+
+.home-more {
+  font-size: var(--home-small);
+  color: var(--home-muted);
+  text-decoration: none;
+}
+
+.home-more:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+}
+
+#now-preview {
+  scroll-margin-block-start: calc(var(--home-label-top) + var(--space-s));
+}
+
+/* Night falls at the end of the page. The footer sits right under the ground. */
+.home-horizon {
+  margin-block-start: var(--space-2xl);
+  background: var(--pixel-ink);
+}
+
+body.home .site-footer {
+  margin-block-start: 0;
+  padding-block-start: var(--space-m);
+}
+
 .pixel-hero {
   position: relative;
   display: block;
   width: 100%;
-  min-block-size: 16rem;
+  min-block-size: 9rem;
   background: var(--pixel-ink);
   line-height: 0;
 }
@@ -39,56 +204,6 @@ body.has-pixel-hero main.flow {
 
 .pixel-hero__ground {
   margin-block-end: -1px;
-}
-
-/* Logo and nav sit on the sky. With JS they stay put after the
-   hills scroll away; without JS they leave with the sky. */
-body.has-pixel-hero > header {
-  position: absolute;
-  inset-inline: 0;
-  inset-block-start: 0;
-  z-index: 2;
-  background: transparent;
-  color: var(--pixel-paper);
-  --gap: clamp(1.5rem, 10vw, 4rem);
-  padding-block-start: var(--space-m);
-  padding-block-end: var(--space-xs);
-}
-
-body.has-pixel-hero.header-follows > header {
-  position: fixed;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  body.has-pixel-hero.header-follows > header {
-    transition:
-      background-color 0.2s ease,
-      color 0.2s ease,
-      box-shadow 0.2s ease,
-      backdrop-filter 0.2s ease;
-  }
-}
-
-/* Flow spaces homepage sections. Keep main flow at 0 so the pixel hero
-   does not pick up a gap. Set the sibling gap on the children directly so
-   a section's own --flow-space cannot shrink the space between sections. */
-body.has-pixel-hero main > .wrapper.flow {
-  --gap: clamp(1.5rem, 10vw, 4rem);
-}
-
-body.has-pixel-hero main > .wrapper.flow > * + * {
-  margin-block-start: var(--space-2xl);
-}
-
-body.has-pixel-hero > header::before {
-  position: absolute;
-  z-index: -1;
-  inset-inline: 0;
-  inset-block-start: 0;
-  block-size: 4.5rem;
-  background: linear-gradient(to bottom, rgb(36 24 16 / 40%), transparent);
-  pointer-events: none;
-  content: '';
 }
 
 .pixel-hero__hit {
@@ -109,237 +224,52 @@ body.has-pixel-hero > header::before {
   outline-offset: 3px;
 }
 
-body.has-pixel-hero > header .logo {
-  color: var(--pixel-paper);
-}
-
-body.has-pixel-hero .mainnav [data-drawer-toggle] {
-  background: transparent;
-  color: var(--pixel-paper);
-  text-decoration-color: color-mix(in oklab, var(--pixel-paper) 45%, transparent);
-}
-
-body.has-pixel-hero .mainnav [data-drawer-toggle] svg {
-  color: var(--pixel-paper);
-}
-
-body.has-pixel-hero .mainnav [data-drawer-toggle][aria-expanded='true'] {
-  background: transparent;
-  color: var(--pixel-paper);
-  text-decoration-color: var(--pixel-paper);
-}
-
-body.has-pixel-hero .mainnav [data-drawer-toggle][aria-expanded='true'] svg {
-  color: var(--pixel-paper);
-}
-
-/* Open menu is a full-screen overlay, not a side panel. */
-body.has-pixel-hero:has([data-drawer-toggle][aria-expanded='true'])::before {
-  background: rgb(36 24 16 / 0.55);
-}
-
-body.has-pixel-hero .mainnav > ul {
-  color: var(--pixel-paper);
-}
-
-@media screen(ltnavigation) {
-  body.has-pixel-hero .mainnav > ul :is(a, [data-submenu-toggle]) {
-    --nav-item-text-color: var(--pixel-paper);
+@media (min-width: 64em) {
+  .home-wordmark__name {
+    font-size: var(--size-step-4);
   }
 
-  body.has-pixel-hero .mainnav > ul :is(a, [data-submenu-toggle]):hover {
-    --nav-item-text-color: var(--pixel-paper);
-    --nav-item-decoration-color: color-mix(in oklab, var(--pixel-paper) 55%, transparent);
+  .home-wordmark__verb {
+    font-size: var(--size-step-3);
   }
 
-  body.has-pixel-hero .mainnav > ul [aria-current='page'],
-  body.has-pixel-hero .mainnav > ul [data-state='active'] {
-    --nav-item-background: transparent;
-    --nav-item-text-color: var(--pixel-gold);
-    --nav-item-decoration-color: var(--pixel-gold);
-  }
-}
-
-@media screen(navigation) {
-  body.has-pixel-hero .mainnav svg {
-    color: var(--pixel-paper);
-  }
-
-  body.has-pixel-hero .mainnav :is(a, [data-submenu-toggle]) {
-    --nav-item-text-color: var(--pixel-paper);
-  }
-
-  body.has-pixel-hero .mainnav :is(a, [data-submenu-toggle]):hover {
-    --nav-item-text-color: var(--pixel-paper);
-    --nav-item-decoration-color: color-mix(in oklab, var(--pixel-paper) 55%, transparent);
-  }
-
-  body.has-pixel-hero .mainnav [aria-current='page'],
-  body.has-pixel-hero .mainnav [data-state='active'] {
-    --nav-item-background: transparent;
-    --nav-item-text-color: var(--pixel-gold);
-    --nav-item-decoration-color: var(--pixel-gold);
-  }
-}
-
-/* After the sky: page colors so logo and links stay readable. */
-body.has-pixel-hero.is-header-docked > header {
-  background: color-mix(in oklab, var(--color-bg) 88%, transparent);
-  backdrop-filter: blur(12px);
-  color: var(--color-text);
-  box-shadow: 0 1px 0 color-mix(in oklab, var(--color-text) 14%, transparent);
-}
-
-body.has-pixel-hero.is-header-docked > header::before {
-  opacity: 0;
-}
-
-body.has-pixel-hero.is-header-docked > header .logo {
-  color: var(--color-text);
-}
-
-body.has-pixel-hero.is-header-docked .mainnav [data-drawer-toggle] {
-  color: var(--color-text);
-  text-decoration-color: color-mix(in oklab, var(--color-text) 35%, transparent);
-}
-
-body.has-pixel-hero.is-header-docked .mainnav [data-drawer-toggle] svg {
-  color: var(--color-text);
-}
-
-@media screen(navigation) {
-  body.has-pixel-hero.is-header-docked .mainnav svg {
-    color: var(--color-text);
-  }
-
-  body.has-pixel-hero.is-header-docked .mainnav :is(a, [data-submenu-toggle]) {
-    --nav-item-text-color: var(--color-text);
-  }
-
-  body.has-pixel-hero.is-header-docked .mainnav :is(a, [data-submenu-toggle]):hover {
-    --nav-item-text-color: var(--color-text);
-    --nav-item-decoration-color: var(--color-primary);
-  }
-
-  body.has-pixel-hero.is-header-docked .mainnav [aria-current='page'],
-  body.has-pixel-hero.is-header-docked .mainnav [data-state='active'] {
-    --nav-item-background: transparent;
-    --nav-item-text-color: var(--color-primary);
-    --nav-item-decoration-color: var(--color-primary);
-  }
-}
-
-/* Open overlay is still night, so undo the docked bar while it is up. */
-body.has-pixel-hero.is-header-docked:has([data-drawer-toggle][aria-expanded='true']) > header {
-  background: transparent;
-  box-shadow: none;
-  backdrop-filter: none;
-  color: var(--pixel-paper);
-}
-
-body.has-pixel-hero.is-header-docked:has([data-drawer-toggle][aria-expanded='true']) > header .logo {
-  color: var(--pixel-paper);
-}
-
-/* Intro sits on the themed page below the hills. Only top padding —
-   the wrapper flow owns the gap to the next section. */
-.home-intro {
-  --region-space-top: var(--space-2xl);
-  --region-space-bottom: 0;
-}
-
-.home-intro__content {
-  --flow-space: var(--space-l);
-  max-inline-size: 62ch;
-}
-
-.home-intro__title {
-  line-height: 1.45;
-  letter-spacing: var(--tracking);
-  text-wrap: balance;
-}
-
-.home-intro__content > .handwritten {
-  line-height: var(--leading-standard);
-  margin-block-start: var(--space-xl);
-}
-
-.home-intro__bio {
-  font-size: var(--size-step-1);
-  line-height: var(--leading-standard);
-  max-inline-size: 48ch;
-}
-
-.home-intro__actions {
-  margin-block-start: var(--space-l);
-}
-
-.home-intro__actions .button {
-  --button-padding: var(--space-s) var(--space-m);
-}
-
-#now-preview.region,
-.home-articles.region,
-.home-newsletter.region {
-  --region-space-top: 0;
-  --region-space-bottom: 0;
-}
-
-.home-newsletter.region {
-  --region-space-bottom: var(--space-xl);
-}
-
-.home-kicker {
-  font-size: var(--size-step-1);
-  color: var(--color-primary);
-}
-
-.home-now {
-  --flow-space: var(--space-s-m);
-  max-inline-size: 48ch;
-}
-
-.home-now .home-kicker + p {
-  --flow-space: var(--space-m);
-}
-
-.home-articles {
-  --flow-space: var(--space-m);
-}
-
-.home-articles__list {
-  --flow-space: var(--space-l);
-}
-
-.home-newsletter .newsletter-cta {
-  --flow-space: var(--space-s-m);
-  max-inline-size: 48ch;
-}
-
-@media (max-width: 47.99em) {
-  .pixel-hero {
-    min-block-size: 9rem;
-  }
-
-  body.has-pixel-hero > header {
-    padding-block-start: var(--space-m);
+  .home-frame {
+    grid-template-columns: minmax(0, 1fr) 9rem minmax(0, 34rem) 9rem minmax(0, 1fr);
+    column-gap: 2rem;
+    row-gap: var(--space-xl);
   }
 
   .home-intro {
-    --region-space-top: var(--space-xl);
-    --region-space-bottom: 0;
+    display: contents;
   }
 
-  .home-intro__title {
-    font-size: var(--size-step-4);
-    line-height: 1.45;
+  .home-intro__copy {
+    grid-column: 3;
+    padding-block-start: var(--space-xl);
   }
 
-  .home-intro__actions {
-    margin-block-start: var(--space-m);
+  .home-section {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: start;
+    gap: 0 2rem;
   }
 
-  body.has-pixel-hero main > .wrapper.flow > * + * {
-    margin-block-start: var(--space-xl-2xl);
+  .home-section__label {
+    grid-column: 2;
+    position: sticky;
+    top: var(--home-label-top);
+    justify-self: end;
+    text-align: end;
+  }
+
+  .home-section__body {
+    grid-column: 3;
+    max-inline-size: none;
+  }
+
+  .pixel-hero {
+    min-block-size: 16rem;
   }
 }
