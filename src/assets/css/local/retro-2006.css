@@ -212,6 +212,19 @@
   display: none;
 }
 
+[data-era='2006'] .links-profile .retro-2006 {
+  width: 100%;
+}
+
+[data-era='2006'] .links-profile .retro-2006__top8 {
+  margin-inline: 0;
+  text-align: start;
+}
+
+[data-era='2006'] .links-profile .retro-2006__friends {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
 [data-era='2006'] .links-name,
 [data-era='2006'] .links-tagline,
 [data-era='2006'] .links-hint {

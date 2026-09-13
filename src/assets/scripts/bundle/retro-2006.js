@@ -14,18 +14,22 @@ const root = document.documentElement;
 const isOn = () => root.getAttribute('data-era') === '2006';
 
 const apply = (on, {focusExit = false} = {}) => {
-  const panel = document.querySelector('.retro-2006');
+  const panels = document.querySelectorAll('.retro-2006');
   if (on) {
     root.setAttribute('data-era', '2006');
     sessionStorage.setItem(STORAGE_KEY, '1');
-    if (panel) panel.hidden = false;
+    panels.forEach(panel => {
+      panel.hidden = false;
+    });
     const exit = document.querySelector('[data-era-exit]');
     if (focusExit && exit) exit.focus();
     return;
   }
   root.removeAttribute('data-era');
   sessionStorage.removeItem(STORAGE_KEY);
-  if (panel) panel.hidden = true;
+  panels.forEach(panel => {
+    panel.hidden = true;
+  });
 };
 
 const toggle = () => apply(!isOn(), {focusExit: !isOn()});
