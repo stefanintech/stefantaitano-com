@@ -1,0 +1,154 @@
+---
+layout: lab
+permalink: /design-lab/home-c/index.html
+title: 'Home C · Margin notes'
+labVariant: book
+labCompare: /
+eleventyExcludeFromCollections: true
+excludeFromSitemap: true
+---
+
+{# DESIGN LAB MOCK. Not for production. Palmer-style margin labels. See docs/design-review-2026-09.md #}
+
+{% set board = lichess.scoreboard %}
+{% set latest = collections.nowEntries[0] %}
+{% set talk = collections.allTalks[0] %}
+
+<div class="lab-c">
+  <div class="lab-c__frame">
+    <header class="lab-c-intro">
+      <div class="lab-c-intro__copy">
+        <h1 class="lab-c-wordmark">
+          <span class="visually-hidden">Stefan is learning Ruby, running, playing chess, and planning our next move.</span>
+          <span class="lab-c-wordmark__visible" aria-hidden="true">
+            <span class="lab-c-wordmark__name">stefan is</span>
+            <span class="lab-c-wordmark__verb handwritten" data-lab-cycle>learning Ruby</span>
+          </span>
+        </h1>
+      </div>
+      <div class="lab-c-intro__portrait">
+        <div class="lab-c-portrait">
+          {% include "partials/pixel-hero.njk" %}
+        </div>
+      </div>
+    </header>
+
+    <section class="lab-c-section" aria-labelledby="lab-c-background">
+      <h2 id="lab-c-background" class="lab-c-section__label">background</h2>
+      <div class="lab-c-section__body">
+        <p>
+          I spent nine years in the Army, now work in ServiceNow, and am slowly getting better at Ruby.
+          If you're hiring, the <a href="/resume/">résumé</a> is a page or a PDF.
+        </p>
+      </div>
+    </section>
+
+    <section class="lab-c-section" id="now-preview" aria-labelledby="lab-c-now">
+      <h2 id="lab-c-now" class="lab-c-section__label">now</h2>
+      <div class="lab-c-section__body">
+        {% if latest %}
+          <p class="lab-c-meta">
+            <time datetime="{{ latest.date | formatDateUtc('YYYY-MM-DD') }}">{{ latest.date | formatDateUtc('D MMMM YYYY') }}</time>
+          </p>
+          <div class="lab-c-prose flow">{{ latest.templateContent | safe }}</div>
+        {% endif %}
+        <p><a class="lab-c-more" href="/now/">everything I'm doing now <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </section>
+
+    <section class="lab-c-section" aria-labelledby="lab-c-writing">
+      <h2 id="lab-c-writing" class="lab-c-section__label">writing</h2>
+      <div class="lab-c-section__body">
+        <ul class="lab-c-list" role="list">
+          {% for post in collections.allPosts.slice(0, 4) %}
+            <li>
+              <a class="lab-c-item" href="{{ post.url }}">
+                <span class="lab-c-item__top">
+                  <span class="lab-c-item__title">{{ post.data.title }}</span>
+                  <time class="lab-c-item__when" datetime="{{ post.date | formatDateUtc('YYYY-MM-DD') }}">{{ post.date | formatDateUtc('YYYY') }}</time>
+                </span>
+                <span class="lab-c-item__line">{{ post.data.description }}</span>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+        <p><a class="lab-c-more" href="/articles/">all posts <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </section>
+
+    <section class="lab-c-section" aria-labelledby="lab-c-projects">
+      <h2 id="lab-c-projects" class="lab-c-section__label">projects</h2>
+      <div class="lab-c-section__body">
+        <ul class="lab-c-list" role="list">
+          {% for project in projects %}
+            {% if not project.draft %}
+              <li>
+                <a class="lab-c-item" href="{{ project.article or project.url or project.repo }}">
+                  <span class="lab-c-item__title">{{ project.title }}</span>
+                  <span class="lab-c-item__line">{{ project.description }}</span>
+                </a>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+        <p><a class="lab-c-more" href="/projects/">all projects <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </section>
+
+    <section class="lab-c-section" aria-labelledby="lab-c-chess">
+      <h2 id="lab-c-chess" class="lab-c-section__label">chess</h2>
+      <div class="lab-c-section__body">
+        <a class="lab-c-item" href="/design-lab/chess/">
+          <span class="lab-c-item__title">
+            Rapid
+            {% if board.currentRating != null %}
+              <strong class="lab-c-num">{{ board.currentRating }}</strong>
+            {% endif %}
+          </span>
+          <span class="lab-c-item__line">
+            {% if board.currentRating != null %}
+              {{ board.statusLine }} {{ board.daysRemaining }} days left, {{ board.games }} rated game{% if board.games != 1 %}s{% endif %} in the window.
+            {% else %}
+              Adult improver, trying to get Rapid over {{ experiment.target }} by {{ experiment.end | formatDateUtc('D MMM') }}.
+            {% endif %}
+          </span>
+        </a>
+        <p><a class="lab-c-more" href="/design-lab/chess/">full Rapid scoreboard <span aria-hidden="true">&rarr;</span></a></p>
+      </div>
+    </section>
+
+    {% if talk %}
+      <section class="lab-c-section" aria-labelledby="lab-c-talks">
+        <h2 id="lab-c-talks" class="lab-c-section__label">talks</h2>
+        <div class="lab-c-section__body">
+          <a class="lab-c-item" href="{{ talk.url }}">
+            <span class="lab-c-item__top">
+              <span class="lab-c-item__title">{{ talk.data.title }}</span>
+              <span class="lab-c-item__when">{{ talk.data.year }}</span>
+            </span>
+            <span class="lab-c-item__line">{{ talk.data.event }} &middot; {{ talk.data.format }}. {{ talk.data.description }}</span>
+          </a>
+        </div>
+      </section>
+    {% endif %}
+
+    <section class="lab-c-section" aria-labelledby="lab-c-elsewhere">
+      <h2 id="lab-c-elsewhere" class="lab-c-section__label">elsewhere</h2>
+      <div class="lab-c-section__body">
+        <nav class="lab-c-else" aria-label="Other places">
+          <a href="/resume/">résumé</a>
+          <a href="{{ personal.platforms.github }}" class="no-indicator" rel="me">github</a>
+          <a href="{{ personal.platforms.lichess }}" class="no-indicator" rel="me">lichess</a>
+          <a href="{{ personal.platforms.bluesky }}" class="no-indicator" rel="me">bluesky</a>
+          <a href="{{ personal.platforms.linkedin }}" class="no-indicator" rel="me">linkedin</a>
+          <a href="https://buttondown.com/stefantaitano" class="no-indicator">field notes</a>
+          <a href="mailto:{{ personal.email }}">email</a>
+        </nav>
+      </div>
+    </section>
+  </div>
+</div>
+
+{% js "defer" %}
+  {% include "scripts/lab-stefan-is.js" %}
+{% endjs %}

@@ -1,7 +1,7 @@
 # Design review, September 2026
 
 **Status:** brainstorm only. Nothing here is for production. The mockups live at `/design-lab/` on the
-`cursor/design-lab-mockups-29f5` branch and run with `npm start`. If a direction is picked, the next step is a
+`cursor/design-lab-mockups-29f5` branch and run with `npm start`. Home C is the Palmer-style page. If a direction is picked, the next step is a
 phased plan (`docs/redesign-project-plan.md`, per `docs/phased-feature-plans.md`), then one phase per session.
 
 **The brief.** Minimal, simple, to the point, unique, cool. Four kinds of first-time visitor: a recruiter, a
@@ -201,7 +201,26 @@ components as A in a different order, one body class.
 *Risk:* dark-first pages photograph well and read worse. The header is a second color scheme to maintain.
 The scene needs to look intentional at every width; today the strip is 128 rows tall and does not grow.
 
-### C. Status board (not mocked)
+### C. Margin notes (mocked: `/design-lab/home-c/`)
+
+The [mattpalmer.io](https://mattpalmer.io) layout, in this site's tokens. A five-column grid:
+`1fr / 9rem / 34rem / 9rem / 1fr`. Body copy sits in the 34rem column. Section labels hang in the
+left gutter and stick while you scroll. The pixel scene is cropped to a circle in the right gutter,
+also sticky. The headline is "stefan is ___", with the blank cycling through *learning Ruby*,
+*running*, *playing chess*, *planning our next move* in Caveat. If the Lichess pill says he's
+playing, that word goes first. Lists are rows: title, one line, a year. One accent link in the bio
+(the résumé). Same live Rapid number as `/chess/`.
+
+*Why it fits:* it is Direction A taken a step further. The sticky labels are the distinctive move.
+The cycling word is the one flourish, and it can be real ("playing on Lichess") in a way Palmer's
+handwriting cannot.
+
+*Risk:* a 34rem column plus gutters needs a wide window before it looks like the reference. On a
+phone the labels stack above the content and the circle sits next to the wordmark, which is fine
+but less special. The circular crop of the pixel scene is a compromise; the full landscape is
+more itself.
+
+### D. Status board (not mocked)
 
 Lean all the way into the live data. The homepage is a monospace board: `now`, `rapid`, `reading`,
 `last shipped`, `next`. One display headline, everything else in `--font-mono`. Chess becomes the model for
@@ -214,8 +233,9 @@ makes the recruiter and the curious visitor work harder. Listed so the option is
 
 ### Recommendation
 
-A, with B's first screen as a possible follow-up once A is on every page. The doors are the UX fix; the rest
-is discipline. Chess as mocked works under either.
+C if the Palmer structure is the one that feels right; A if you want the four visitor doors more
+explicit. B is a first-screen variant of A. Chess as mocked works under any of them. The status
+board stays on the table and unbuilt.
 
 ---
 
@@ -230,7 +250,8 @@ Everything is on the branch under `src/`. It is all throwaway.
 | `src/_includes/partials/lab-doors.njk` | The four doors. Chess door reads `lichess.scoreboard`. |
 | `src/_includes/partials/lab-ledger.njk` | Now, Writing, First talk columns + the newsletter line. |
 | `src/_includes/partials/lab-footer.njk` | Text-only footer, theme switch kept. |
-| `src/pages/design-lab/*.njk` | Index, Home A, Home B, Chess. All `eleventyExcludeFromCollections`, `noindex`. |
+| `src/pages/design-lab/*.njk` | Index, Home A, Home B, Home C, Chess. All `eleventyExcludeFromCollections`, `noindex`. |
+| `src/assets/scripts/bundle/lab-stefan-is.js` | Cycles the Home C verb. Design lab only. |
 | `src/assets/css/local/design-lab.css` | The whole system. Reads existing tokens only. |
 
 Data is untouched. The chess mock reads the same `lichess.js`, `experiment.yaml`, and `study.json` as `/chess/`,
@@ -245,7 +266,7 @@ Rough phase shape, to be written up properly as `docs/redesign-project-plan.md`:
 0. Type and spacing pass in `global-styles.css` and the tokens: body size, heading scale, one column width.
    Every page gets quieter without changing a template.
 1. Header and footer (`header.njk`, `footer.njk`, `main-nav.css`): new nav order, text footer.
-2. Home: doors, ledger, scene placement (A or B).
+2. Home: A (doors), B (night first screen), or C (margin labels + cycling word).
 3. Chess: scoreboard hero, chart with target, games list, section order.
 4. Lists: articles, projects, bookshelf, talks become label-and-row pages. Post layout untouched.
 5. Now and résumé: heading sizes only.
