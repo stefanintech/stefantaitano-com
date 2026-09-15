@@ -2,7 +2,7 @@
 
 A 2006-ish profile skin on the homepage and `/links/` only. One visible slice per session.
 
-**Status:** Plan only. Phase 1 has not started. Guest / postcard wall stays parked.
+**Status:** Phases 1–3 landed. Guest / postcard wall stays parked.
 
 **Outcome:** On `/` and `/links/`, a visitor can turn the page into a late-MySpace / early-Facebook profile for a moment, then leave it. Every other page stays as it is. The existing `stefan` / Lichess eggs stay theirs.
 
@@ -10,7 +10,7 @@ A 2006-ish profile skin on the homepage and `/links/` only. One visible slice pe
 
 - Whole-site skin (articles, projects, bookshelf, talks, chess, `/now`, résumé, legal)
 - Guest / postcard wall
-- A second social network as Phase 1 (no Facebook-blue theme until Phase 2, if ever)
+- A second social network as Phase 1 (Facebook 2005 is Phase 3, not a second homepage)
 - Stealing the `stefan` keyword or the links photo long-press (those open Lichess)
 - Autoplay audio, glitter cursors, or anything that fights `prefers-reduced-motion`
 - A new layout. This is a class plus local CSS on two pages.
@@ -30,10 +30,10 @@ It does **not** belong on articles, projects, bookshelf, talks, or chess. Stefan
 | Question | Call (13 Sep 2026) |
 | --- | --- |
 | Where | **`/` and `/links/` only** |
-| Skin | One look in Phase 1: late-MySpace profile (about me, a “top 8” of doors that already exist, chunky chrome). Not a second Facebook theme yet. |
-| Trigger | Type **`2006`**. Does not steal `stefan`. Homepage also: three clicks on the pixel moon (already a hit target). `/links/` has no second gesture in Phase 1 — keyboard only there — so the photo long-press stays Lichess. |
-| Exit | Always obvious. **Escape** and a visible **“Leave 2006”** control in the retro chrome. Never trap focus without a way out. |
-| Persist | `sessionStorage` key `retro-2006`. Refresh in this tab keeps it. A new tab is normal until they type `2006` again. |
+| Skin | Phase 1–2: late-MySpace profile. Phase 3: Facebook 2005 (blue bar, a Wall of Stefan’s own copy, a Poke). Not both at once. |
+| Trigger | Type **`2006`** for MySpace, **`2005`** for Facebook. They share the `200` prefix. Does not steal `stefan`. Homepage moon triple-click is still MySpace only. `/links/` photo long-press stays Lichess. |
+| Exit | Always obvious. **Escape** and **Leave 2006** / **Leave 2005** in that skin’s banner. Never trap focus without a way out. |
+| Persist | `sessionStorage` key `retro-era` (`2005` or `2006`). Honor the old `retro-2006=1` key if a tab still has it. A new tab is normal until they type a year again. |
 | Reduced motion | Skin still applies. No sparkle, no scroll-jacking, no autoplay. |
 | Existing eggs | `stefan` on the homepage still throws pawn confetti. Hold-photo / `stefan` on `/links/` still opens the Lichess dialog. |
 
@@ -65,7 +65,7 @@ New files go next to those: `src/assets/css/local/retro-2006.css` and `src/asset
 - Do not change `navigation.js`. Do not restyle articles, projects, bookshelf, talks, or chess.
 - Do not invent Lichess endpoints. This feature does not talk to Lichess.
 - Copy: `docs/site-voice.md`. The retro chrome can be a little funnier than the rest of the site. The exit control must be plain English.
-- Prefer existing tokens. A 2006 skin will need a few extra colors (profile blue, table border). Keep them scoped under `[data-era='2006']`. Do not rewrite `variables.css`.
+- Prefer existing tokens. Retro palettes stay scoped under `[data-era='2006']` and `[data-era='2005']`. Do not rewrite `variables.css`.
 - No tokens in client-side code.
 
 ---
@@ -114,9 +114,38 @@ New files go next to those: `src/assets/css/local/retro-2006.css` and `src/asset
 
 ---
 
+## Phase 3 — Facebook 2005
+
+**Build**
+
+- Same JS file. Type `2005` sets `data-era="2005"`. Type `2006` still sets `2006`. Typing the year you are already in turns the skin off. The moon stays a 2006 toggle.
+- Facebook chrome on `/` and `/links/`: blue bar, **Leave 2005**, Information, a **Wall** of Stefan’s existing copy (lede / now / a latest post — not a guestbook), a **Poke Stefan** control that keeps score in `sessionStorage` for this tab only.
+- Restyle the page that is already there (header, footer, home sections, links card). Do not hide the cycling wordmark. Do not add a wall form.
+
+**Endpoints:** none.
+
+**Verify first:** none.
+
+**Gotchas**
+
+- `2005` and `2006` share `2,0,0`. One buffer. The fourth key picks the skin.
+- `stefan` still does confetti / Lichess. Photo long-press still opens Lichess. Escape still closes that dialog first.
+- Two exit buttons in the DOM (one per skin). Focus and click the one that is not inside `[hidden]`.
+- The Wall is not the guest / postcard wall. No textarea. No visitor posts.
+- One retro palette while 2005 is on. Do not try to theme-switch Facebook blue.
+- 1440 and 390 both usable. Wall and friends stack.
+
+**Done when**
+
+- `/` and `/links/` look like today until you type `2005` or `2006`.
+- `2005` is obviously early Facebook, obviously reversible, and not MySpace.
+- Poke updates a line of status text. Refresh in that tab keeps the skin. `/articles/` is untouched.
+- Guest / postcard wall still does not exist.
+
+---
+
 ## Later (not phases here)
 
-- A Facebook 2005 variant (blue bar, wall, poke).
 - Guest / postcard wall.
 - Offering the skin on `/now`.
 
