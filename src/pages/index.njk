@@ -28,6 +28,53 @@ description: 'Veteran, ServiceNow developer, slowly getting better at Ruby.'
       </ul>
     </section>
   </div>
+  <div class="retro-2005" hidden>
+    {% include "partials/retro-2005-banner.njk" %}
+    <div class="retro-2005__layout">
+      <div class="retro-2005__side">
+        <section class="retro-2005__box" aria-labelledby="retro-fb-info">
+          <h2 id="retro-fb-info">Information</h2>
+          <p>Veteran · ServiceNow · Ruby</p>
+          <p><a href="/resume/">Résumé</a> · <a href="{{ personal.platforms.lichess }}" rel="me">Lichess</a></p>
+        </section>
+        {% include "partials/retro-2005-poke.njk" %}
+      </div>
+      <section class="retro-2005__box retro-2005__wall" aria-labelledby="retro-fb-wall">
+        <h2 id="retro-fb-wall">The Wall</h2>
+        <ol class="retro-2005__posts">
+          <li>
+            <p class="retro-2005__who">Stefan Taitano wrote</p>
+            <p>I build systems for a living and escape plans for fun.</p>
+          </li>
+          <li>
+            <p class="retro-2005__who">Stefan Taitano wrote</p>
+            <p>I'm still working through <a href="https://www.theodinproject.com/">The Odin Project</a> Ruby path.</p>
+          </li>
+          {% if collections.allPosts[0] %}
+            <li>
+              <p class="retro-2005__who">Stefan Taitano wrote</p>
+              <p>
+                <a href="{{ collections.allPosts[0].url }}">{{ collections.allPosts[0].data.title }}</a>
+              </p>
+            </li>
+          {% endif %}
+        </ol>
+      </section>
+    </div>
+    <section class="retro-2005__box retro-2005__friends-box" aria-labelledby="retro-fb-friends">
+      <h2 id="retro-fb-friends">Friends</h2>
+      <ul class="retro-2005__friends">
+        <li><a href="/now/">Now</a></li>
+        <li><a href="/articles/">Articles</a></li>
+        <li><a href="/projects/">Projects</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/chess/">Chess</a></li>
+        <li><a href="/bookshelf/">Bookshelf</a></li>
+        <li><a href="/resume/">Résumé</a></li>
+        <li><a href="/links/">Links</a></li>
+      </ul>
+    </section>
+  </div>
   <div class="home-frame">
     <header class="home-intro">
       <div class="home-intro__copy">

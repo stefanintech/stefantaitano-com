@@ -2,7 +2,7 @@
 
 A 2006-ish profile skin on the homepage and `/links/` only. One visible slice per session.
 
-**Status:** Phase 1 and Phase 2 landed. Phase 3 is the Facebook 2005 look. Guest / postcard wall stays parked.
+**Status:** Phases 1–3 landed. Guest / postcard wall stays parked.
 
 **Outcome:** On `/` and `/links/`, a visitor can turn the page into a late-MySpace / early-Facebook profile for a moment, then leave it. Every other page stays as it is. The existing `stefan` / Lichess eggs stay theirs.
 
@@ -10,7 +10,7 @@ A 2006-ish profile skin on the homepage and `/links/` only. One visible slice pe
 
 - Whole-site skin (articles, projects, bookshelf, talks, chess, `/now`, résumé, legal)
 - Guest / postcard wall
-- A second social network as Phase 1 (no Facebook-blue theme until Phase 2, if ever)
+- A second social network as Phase 1 (Facebook 2005 is Phase 3, not a second homepage)
 - Stealing the `stefan` keyword or the links photo long-press (those open Lichess)
 - Autoplay audio, glitter cursors, or anything that fights `prefers-reduced-motion`
 - A new layout. This is a class plus local CSS on two pages.

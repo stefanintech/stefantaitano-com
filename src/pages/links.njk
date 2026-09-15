@@ -13,6 +13,10 @@ compactHeader: true
   </div>
 </div>
 
+<div class="retro-2005" hidden>
+  {% include "partials/retro-2005-banner.njk" %}
+</div>
+
 <div class="links-page wrapper region">
   <div class="links-profile flow">
     <button type="button" class="links-avatar" id="links-avatar" aria-label="Stefan Taitano" aria-haspopup="dialog" aria-controls="links-egg">
@@ -60,6 +64,38 @@ compactHeader: true
         </ul>
       </div>
     </section>
+
+    <div class="retro-2005" hidden>
+      {% include "partials/retro-2005-poke.njk" %}
+      <section class="retro-2005__box retro-2005__wall" aria-labelledby="retro-fb-wall">
+        <h2 id="retro-fb-wall">The Wall</h2>
+        <ol class="retro-2005__posts">
+          <li>
+            <p class="retro-2005__who">Stefan Taitano wrote</p>
+            <p>{{ links.tagline }}</p>
+          </li>
+          <li>
+            <p class="retro-2005__who">Stefan Taitano wrote</p>
+            <p>I'm Late2TheBoard on <a href="{{ personal.platforms.lichess }}" rel="me">Lichess</a>.</p>
+          </li>
+        </ol>
+      </section>
+      <section class="retro-2005__box retro-2005__friends-box" aria-labelledby="retro-fb-friends">
+        <h2 id="retro-fb-friends">Friends</h2>
+        <ul class="retro-2005__friends">
+          {%- for item in links.links %}
+            {%- if item.url_key %}
+              {%- set href = personal.platforms[item.url_key] %}
+            {%- elif item.email %}
+              {%- set href = "mailto:" + personal.email %}
+            {%- else %}
+              {%- set href = item.url %}
+            {%- endif %}
+            <li><a href="{{ href }}"{% if item.url_key %} rel="me"{% endif %}>{{ item.label }}</a></li>
+          {%- endfor %}
+        </ul>
+      </section>
+    </div>
 
     <nav class="links-nav flow" aria-label="Stefan's links">
       {%- for item in links.links %}
