@@ -1,7 +1,8 @@
 /**
- * 2006 profile skin on the homepage.
- * Keyword buffer is separate from the `stefan` confetti egg.
+ * 2006 profile skin on / and /links/.
+ * Keyword buffer is separate from the `stefan` eggs.
  * Moon clicks still spawn airplanes; the third quick click also toggles this.
+ * The links photo long-press is not a trigger.
  */
 const STORAGE_KEY = 'retro-2006';
 const ERA = '2006';
@@ -61,6 +62,8 @@ const onKeydown = event => {
     seqIndex = 0;
     const drawerOpen = document.querySelector('[data-drawer-toggle][aria-expanded="true"]');
     if (drawerOpen) return;
+    const eggOpen = document.querySelector('.links-egg:not([hidden])');
+    if (eggOpen) return;
     if (isOn()) applyEra(false);
     return;
   }

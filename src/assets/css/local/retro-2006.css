@@ -1,4 +1,4 @@
-/* Homepage 2006 profile skin. Local bundle on / only. Extra colors stay here. */
+/* 2006 profile skin. Local bundle on / and /links/ only. Extra colors stay here. */
 
 .retro-chrome[hidden],
 .retro-top8[hidden] {
@@ -279,6 +279,145 @@
 
   [data-era='2006'] .retro-top8 {
     grid-column: 2;
+  }
+}
+
+/* /links/ — same chrome, friends grid from the existing buttons. */
+.links-button .retro-top8__face,
+.links-top8-label {
+  display: none;
+}
+
+[data-era='2006'] body:has(.links-page) {
+  background: var(--color-gray-200);
+  color: var(--color-gray-900);
+}
+
+[data-era='2006'] .compact-header {
+  background: var(--retro-blue);
+  color: var(--color-gray-100);
+  border-block-end: 4px solid var(--color-gold);
+  box-shadow: inset 0 -2px 0 var(--color-gray-900);
+}
+
+[data-era='2006'] .compact-header__inner {
+  border-block-end: 0;
+}
+
+[data-era='2006'] .compact-header__home {
+  color: var(--color-gray-100);
+}
+
+[data-era='2006'] .compact-header .theme-switch .button {
+  --button-bg: transparent;
+  --button-border-color: var(--color-gold);
+  --button-color: var(--color-gray-100);
+}
+
+[data-era='2006'] .compact-header .theme-switch .button[aria-pressed='true'] {
+  --button-bg: var(--color-gold);
+  --button-color: var(--color-gray-900);
+  --button-border-color: var(--color-gold);
+}
+
+[data-era='2006'] .links-page {
+  --region-space-top: var(--space-m);
+}
+
+[data-era='2006'] .links-profile {
+  width: min(36rem, 100%);
+  padding: var(--space-m);
+  border: 2px solid var(--retro-table);
+  background: var(--color-gray-100);
+}
+
+[data-era='2006'] .links-avatar {
+  inline-size: min(8.5rem, 42vw);
+  border-radius: 0;
+  border: 2px solid var(--color-gray-900);
+  box-shadow: 3px 3px 0 var(--retro-table);
+}
+
+[data-era='2006'] .links-name {
+  color: var(--retro-blue);
+  font-size: var(--size-step-2);
+  letter-spacing: 0;
+}
+
+[data-era='2006'] .links-hint {
+  color: var(--color-amber);
+}
+
+[data-era='2006'] .links-nav {
+  --flow-space: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-s);
+  width: 100%;
+  margin-block-start: var(--space-m);
+  padding: var(--space-s);
+  border: 2px solid var(--retro-table);
+  background: var(--color-gray-100);
+}
+
+[data-era='2006'] .links-top8-label {
+  display: block;
+  grid-column: 1 / -1;
+  margin: calc(var(--space-s) * -1) calc(var(--space-s) * -1) 0;
+  padding: var(--space-2xs) var(--space-s);
+  background: var(--retro-blue);
+  color: var(--color-gray-100);
+  font-family: var(--font-base);
+  font-size: var(--size-step-min-1);
+  font-weight: var(--font-bold);
+  letter-spacing: 0;
+  text-align: start;
+  text-transform: none;
+}
+
+[data-era='2006'] .links-button.button {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3xs);
+  width: auto;
+  min-block-size: 0;
+  padding: var(--space-2xs);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  color: var(--retro-blue);
+  font-size: var(--size-step-min-1);
+  font-weight: var(--font-regular);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  transform: none;
+}
+
+[data-era='2006'] .links-button.button[data-ghost-button],
+[data-era='2006'] .links-button.button[data-button-variant='primary'] {
+  --button-bg: transparent;
+  --button-border-color: transparent;
+  --button-color: var(--retro-blue);
+  --button-hover-bg: transparent;
+  --button-hover-color: var(--color-amber);
+}
+
+[data-era='2006'] .links-button .retro-top8__face {
+  display: grid;
+}
+
+[data-era='2006'] body:has(.links-page) .site-footer {
+  background: var(--retro-blue);
+  color: var(--color-gray-100);
+}
+
+[data-era='2006'] body:has(.links-page) .site-footer a {
+  color: var(--color-gray-100);
+}
+
+@media (min-width: 40em) {
+  [data-era='2006'] .links-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 

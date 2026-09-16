@@ -6,6 +6,11 @@ description: 'Links and contact for Stefan Taitano — ServiceNow developer, lea
 compactHeader: true
 ---
 
+<div class="retro-chrome" data-era-chrome hidden>
+  <p class="retro-chrome__tag">stefantaitano.com, circa 2006</p>
+  <button type="button" class="retro-leave" data-era-exit>Leave 2006</button>
+</div>
+
 <div class="links-page wrapper region">
   <div class="links-profile flow">
     <button type="button" class="links-avatar" id="links-avatar" aria-label="Stefan Taitano" aria-haspopup="dialog" aria-controls="links-egg">
@@ -37,6 +42,7 @@ compactHeader: true
     </div>
 
     <nav class="links-nav flow" aria-label="Stefan's links">
+      <h2 class="links-top8-label" data-era-chrome hidden>Stefan's Top 8</h2>
       {%- for item in links.links %}
         {%- if item.url_key %}
           {%- set href = personal.platforms[item.url_key] %}
@@ -50,7 +56,7 @@ compactHeader: true
           class="button links-button"
           {%- if item.variant == "ghost" %} data-ghost-button{% else %} data-button-variant="primary"{% endif %}
           {%- if item.url_key %} rel="me"{% endif %}
-        >{{ item.label }}</a>
+        ><span class="retro-top8__face" aria-hidden="true">{{ item.label[0] }}</span><span class="links-button__label">{{ item.label }}</span></a>
       {%- endfor %}
     </nav>
   </div>
@@ -79,4 +85,9 @@ compactHeader: true
 
 {% css "local" %}
   {% include "css/links.css" %}
+  {% include "css/retro-2006.css" %}
 {% endcss %}
+
+{% js "defer" %}
+  {% include "scripts/retro-2006.js" %}
+{% endjs %}
