@@ -1,7 +1,8 @@
 /* 2006 profile skin. Local bundle on / and /links/ only. Extra colors stay here. */
 
 .retro-chrome[hidden],
-.retro-top8[hidden] {
+.retro-top8[hidden],
+.links-top8-label[hidden] {
   display: none !important;
 }
 
@@ -388,9 +389,13 @@
   color: var(--retro-blue);
   font-size: var(--size-step-min-1);
   font-weight: var(--font-regular);
+  text-decoration: none;
+  transform: none;
+}
+
+[data-era='2006'] .links-button__label {
   text-decoration: underline;
   text-underline-offset: 0.15em;
-  transform: none;
 }
 
 [data-era='2006'] .links-button.button[data-ghost-button],
