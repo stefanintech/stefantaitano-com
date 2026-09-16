@@ -2,7 +2,7 @@
 
 A 2006-ish profile skin on the homepage and `/links/` only. One visible slice per session.
 
-**Status:** Plan only. Phase 1 has not started. Guest / postcard wall stays parked.
+**Status:** Phase 1 and Phase 2 landed. Guest / postcard wall stays parked.
 
 **Outcome:** On `/` and `/links/`, a visitor can turn the page into a late-MySpace / early-Facebook profile for a moment, then leave it. Every other page stays as it is. The existing `stefan` / Lichess eggs stay theirs.
 
