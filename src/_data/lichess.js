@@ -16,7 +16,6 @@ const GAMES_MAX = 300;
 // Spec minimum for since/until on GET /api/games/user/{username}
 const GAMES_TIMESTAMP_MIN = 1356998400070;
 const RETRY_WAIT_MS = 60 * 1000;
-const MS_PER_DAY = 86_400_000;
 
 const experiment = yaml.load(
   readFileSync(join(dirname(fileURLToPath(import.meta.url)), 'experiment.yaml'), 'utf8')
@@ -59,14 +58,12 @@ function experimentIsoDate(value) {
 }
 
 const EXPERIMENT_START = dayjs.utc(experimentIsoDate(experiment.start)).startOf('day');
-const EXPERIMENT_END = dayjs.utc(experimentIsoDate(experiment.end)).startOf('day');
 const EXPERIMENT_START_MS = EXPERIMENT_START.valueOf();
-const EXPERIMENT_END_MS = EXPERIMENT_END.endOf('day').valueOf();
 const TARGET_RATING = Number(experiment.target);
 const START_RATING = Number(experiment.startRating);
 
 function experimentUntil(now = Date.now()) {
-  return Math.min(cacheAlignedUntil(now), EXPERIMENT_END_MS);
+  return cacheAlignedUntil(now);
 }
 
 /**
@@ -299,27 +296,12 @@ function lastFiveRatedRapid(games, userId) {
 
 function gamesInExperimentWindow(games) {
   return (games || []).filter(game => {
-    return (
-      game.rated &&
-      game.perf === 'rapid' &&
-      game.createdAt >= EXPERIMENT_START_MS &&
-      game.createdAt <= EXPERIMENT_END_MS
-    );
+    return game.rated && game.perf === 'rapid' && game.createdAt >= EXPERIMENT_START_MS;
   });
 }
 
-function utcDayDiff(later, earlier) {
-  return Math.round((later.valueOf() - earlier.valueOf()) / MS_PER_DAY);
-}
-
 function experimentScoreboard({currentRating, windowGames}) {
-  const today = dayjs.utc().startOf('day');
-  const totalDays = utcDayDiff(EXPERIMENT_END, EXPERIMENT_START);
-  const rawElapsed = utcDayDiff(today, EXPERIMENT_START);
-  const elapsedDays = Math.min(Math.max(rawElapsed, 0), totalDays);
-  const daysRemaining = Math.max(utcDayDiff(EXPERIMENT_END, today), 0);
   const ratingGain = TARGET_RATING - START_RATING;
-  const expected = START_RATING + ratingGain * (elapsedDays / totalDays);
   const hasCurrent = typeof currentRating === 'number';
   const progressPercent = hasCurrent && ratingGain !== 0 ? ((currentRating - START_RATING) / ratingGain) * 100 : null;
   const belowStart = hasCurrent ? currentRating < START_RATING : false;
@@ -330,26 +312,19 @@ function experimentScoreboard({currentRating, windowGames}) {
   if (hasCurrent) {
     if (currentRating >= TARGET_RATING) {
       status = 'done';
-      statusLine = `Reached ${TARGET_RATING}. Experiment target met.`;
-    } else if (currentRating < expected) {
-      status = 'behind';
-      statusLine = `Behind the linear path to ${TARGET_RATING}.`;
+      statusLine = `Reached ${TARGET_RATING}.`;
     } else {
-      status = 'on track';
-      statusLine = `On track for ${TARGET_RATING} by ${EXPERIMENT_END.format('D MMM YYYY')}.`;
+      status = 'climbing';
+      const pointsToGo = TARGET_RATING - currentRating;
+      statusLine = `${pointsToGo} point${pointsToGo === 1 ? '' : 's'} to ${TARGET_RATING}. No deadline.`;
     }
   }
 
   return {
     start: EXPERIMENT_START.format('YYYY-MM-DD'),
-    end: EXPERIMENT_END.format('YYYY-MM-DD'),
     startRating: START_RATING,
     currentRating: hasCurrent ? currentRating : null,
     target: TARGET_RATING,
-    daysRemaining,
-    totalDays,
-    elapsedDays,
-    expected: Math.round(expected * 10) / 10,
     games: windowGames.length,
     progressPercent,
     barPercent: progressPercent == null ? 0 : Math.min(Math.max(progressPercent, 0), 100),
