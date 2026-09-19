@@ -11,9 +11,7 @@ eleventyComputed:
 
 <div class="wrapper flow chess">
   {% set kicker = "Lichess Rapid" %}
-  {% set startLabel = experiment.start | formatDateUtc('D MMMM') %}
-  {% set endLabel = experiment.end | formatDateUtc('D MMMM') %}
-  {% set intro = "I'm trying to get my Rapid rating over " + experiment.target + " between " + startLabel + " and " + endLabel + ". Every number on this page comes from Lichess when the site builds. I don't type them in." %}
+  {% set intro = "I'm trying to get my Rapid rating over " + experiment.target + ", without a deadline. Every number on this page comes from Lichess when the site builds. I don't type them in." %}
   {% include "partials/page-intro.njk" %}
 
   {% set board = lichess.scoreboard %}
@@ -40,11 +38,7 @@ eleventyComputed:
         <dd>{{ experiment.target }}</dd>
       </div>
       <div>
-        <dt>Days left (to {{ experiment.end | formatDateUtc('D MMM') }})</dt>
-        <dd>{{ board.daysRemaining }}</dd>
-      </div>
-      <div>
-        <dt>Games in the window</dt>
+        <dt>Games since {{ experiment.start | formatDateUtc('D MMM') }}</dt>
         <dd>{{ board.games }}</dd>
       </div>
     </dl>

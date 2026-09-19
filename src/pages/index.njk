@@ -164,9 +164,9 @@ description: 'Veteran, ServiceNow developer, slowly getting better at Ruby.'
           </span>
           <span class="home-item__line">
             {% if board.currentRating != null %}
-              {{ board.statusLine }} {{ board.daysRemaining }} days left, {{ board.games }} rated game{% if board.games != 1 %}s{% endif %} in the window.
+              {{ board.statusLine }} {{ board.games }} rated game{% if board.games != 1 %}s{% endif %} since {{ experiment.start | formatDateUtc('D MMM') }}.
             {% else %}
-              Adult improver, trying to get Rapid over {{ experiment.target }} by {{ experiment.end | formatDateUtc('D MMM') }}.
+              Adult improver, trying to get Rapid over {{ experiment.target }} without a deadline.
             {% endif %}
           </span>
         </a>

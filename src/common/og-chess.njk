@@ -70,15 +70,13 @@ excludeFromSitemap: true
     <tspan x="88" y="392">
       {%- if board.status == 'done' -%}
         Reached {{ experiment.target }}
-      {%- elif board.status == 'behind' -%}
-        Behind the path to {{ experiment.target }}
-      {%- elif board.status == 'on track' -%}
-        On track for {{ experiment.target }}
+      {%- elif board.status == 'climbing' -%}
+        Aiming for {{ experiment.target }}
       {%- else -%}
         Target {{ experiment.target }}
       {%- endif -%}
     </tspan>
-    <tspan x="88" y="440">{{ board.daysRemaining }} days left</tspan>
+    <tspan x="88" y="440">No deadline</tspan>
   </text>
 
   <line x1="88" y1="524" x2="1112" y2="524" stroke="#e7e4de" stroke-width="2" />
