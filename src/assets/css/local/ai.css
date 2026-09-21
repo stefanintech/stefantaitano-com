@@ -222,41 +222,37 @@
 
 .ai-artifact__frame {
   overflow-x: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x;
   max-inline-size: 100%;
   background: var(--color-bg-accent);
 }
 
-.ai-artifact__open {
-  all: unset;
-  box-sizing: border-box;
+.ai-artifact__page {
   display: block;
   min-inline-size: 100%;
-  cursor: zoom-in;
 }
 
-.ai-artifact__open:focus-visible {
-  outline: 3px solid var(--focus-color, currentColor);
-  outline-offset: var(--focus-offset, 0.3ch);
-}
-
-.ai-artifact__open picture,
-.ai-artifact__open img,
+.ai-artifact__page picture,
+.ai-artifact__page img,
 .ai-artifact__dialog picture,
 .ai-artifact__dialog img {
   display: block;
   width: 100%;
   max-inline-size: none;
   height: auto;
+  pointer-events: none;
 }
 
 @media (max-width: 40em) {
-  .ai-artifact__open {
+  .ai-artifact__page {
     inline-size: 48rem;
   }
 }
 
-.ai-artifact__hint {
+.ai-artifact__open {
   display: block;
   margin: 0;
   padding: var(--space-xs) 0;
@@ -265,15 +261,36 @@
   font-weight: var(--font-bold);
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  cursor: pointer;
+}
+
+.ai-artifact__open:hover,
+.ai-artifact__open:focus-visible {
+  color: var(--color-primary);
+}
+
+.ai-artifact__open:focus-visible {
+  outline: 3px solid var(--focus-color, currentColor);
+  outline-offset: var(--focus-offset, 0.3ch);
 }
 
 .ai-artifact__dialog {
   max-inline-size: min(92vw, 72rem);
   max-block-size: 95vh;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   padding: var(--space-s);
   background: var(--color-bg);
   color: var(--color-text);
+}
+
+.ai-artifact__dialog .cluster {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background: var(--color-bg);
+  padding-block-end: var(--space-xs);
 }
 
 .ai-artifact__dialog::backdrop {

@@ -103,7 +103,7 @@ lastUpdated: '2026-09-21'
                     } %}
                   </dialog>
                   <div class="ai-artifact__frame">
-                    <button type="button" class="ai-artifact__open" data-index="{{ loop.index }}" aria-haspopup="dialog">
+                    <div class="ai-artifact__page">
                       {% imageKeys {
                         "src": artifact.image,
                         "alt": artifact.alt | trim,
@@ -112,10 +112,11 @@ lastUpdated: '2026-09-21'
                         "widths": [800, 1200, 1800, 2550],
                         "sizes": "(min-width: 64em) 58rem, 48rem"
                       } %}
-                      <span class="visually-hidden">View larger</span>
-                    </button>
+                    </div>
                   </div>
-                  <p class="ai-artifact__hint" aria-hidden="true">View larger</p>
+                  <button type="button" class="ai-artifact__open" data-index="{{ loop.index }}" aria-haspopup="dialog">
+                    View larger
+                  </button>
                   <figcaption id="{{ workflow.slug }}-artifact-caption">{{ artifact.caption | trim }}</figcaption>
                 </figure>
               {% elif artifact.image %}
