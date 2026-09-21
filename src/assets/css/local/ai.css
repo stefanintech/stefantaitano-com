@@ -5,6 +5,13 @@
   --flow-space: var(--space-xl);
 }
 
+.ai-page.wrapper > *,
+.ai-artifacts,
+.ai-workflow,
+.ai-artifact--page {
+  min-inline-size: 0;
+}
+
 .ai-page .page-intro {
   --region-space-bottom: 0;
 }
@@ -216,6 +223,7 @@
 .ai-artifact__frame {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  max-inline-size: 100%;
   background: var(--color-bg-accent);
 }
 
