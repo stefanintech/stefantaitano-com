@@ -1,0 +1,299 @@
+updated: '2026-09-21'
+updatedLabel: September 2026
+
+workflows:
+  - slug: morning-family-briefing
+    title: The Morning Family Briefing
+    artifactName: The Taitano Times
+    status:
+      - Active
+    category: Family operations
+    tools:
+      - Muse
+      - Gmail
+      - Google Calendar
+      - Apple Reminders
+    summary: >
+      A morning view that pulls the week together: who has what, school and
+      after-school stuff, family events, and what still needs to get done.
+    question: What does our family need to know and get done this week?
+    flow:
+      - Calendar
+      - Email
+      - Reminders
+      - Family context
+      - Muse
+      - Morning briefing
+    sections:
+      - heading: The problem
+        paragraphs:
+          - >
+            The information wasn't stuck in one bad tool. It lived in Google
+            Calendar, Apple Reminders, a paper calendar, regular email, and
+            school email. I was the one putting it together.
+      - heading: How I use it
+        paragraphs:
+          - >
+            Muse generates it around 6:00 AM. I read it on a screen and pass
+            along anything my partner needs. I call the artifact the Taitano
+            Times, but I don't print it. Printing might happen later. It isn't
+            part of this yet.
+          - >
+            There is no giant master prompt. I'm playing it by ear and
+            correcting it as we go, so it can learn our routines, what to
+            skip, and how dense the morning view should be.
+      - heading: What's being tuned
+        paragraphs:
+          - >
+            Formatting is sometimes wrong. It includes too much. It makes
+            wrong assumptions. Prioritization still needs work. It improves
+            when I correct it, not because I wrote one perfect prompt.
+      - heading: If it disappeared
+        paragraphs:
+          - >
+            I would go back to Google Calendar, Apple Reminders, a paper
+            calendar, and sorting email myself.
+    extra:
+      summary: What it has to answer
+      items:
+        - Who has what going on this week?
+        - What school and after-school activities are happening?
+        - What family events matter?
+        - What do the parents need to finish?
+        - What forms, due dates, or action items need attention before the week is over?
+    artifacts:
+      - placeholder: Redacted morning briefing
+        alt: Placeholder for a redacted screenshot of the Taitano Times morning briefing.
+        caption: >
+          A digital morning view. I will add a redacted screenshot here once I
+          have one that doesn't show family names, schools, or private
+          details.
+
+  - slug: ruby-reboot
+    title: Getting Back Into Ruby Without Starting Over
+    status:
+      - Active
+      - Evolving
+    category: Learning
+    tools:
+      - Muse
+      - Notion
+      - The Odin Project
+    summary: >
+      A lightweight reboot so I can pick Ruby back up after a summer break
+      without restarting The Odin Project from zero.
+    flow:
+      - Ruby practice
+      - Hints and code review
+      - Completed exercises
+      - Session summary
+      - Notion update
+      - Next stopping point
+    sections:
+      - heading: The problem
+        paragraphs:
+          - >
+            I finished The Odin Project Foundations and moved into the
+            Full-Stack Ruby on Rails path. I got into the Ruby course around
+            nested collections and Enumerable, then mostly stopped over the
+            summer, especially after July. Coming back in September, I didn't
+            want to restart from the beginning or jump into the exact
+            lesson where I left off.
+      - heading: How I use it
+        paragraphs:
+          - >
+            I attempt the problem before Muse solves it. It should act more
+            like a tutor than a code generator: give me a small problem, let
+            me try, review the code, explain the mistakes, and give stronger
+            hints only when I need them. No instant starter code or full
+            solutions. At the end it summarizes the session and keeps the
+            stopping point, which later lands in a Notion tracker.
+          - >
+            What it helps preserve is ordinary: what I practiced, what I
+            finished, what was hard, where I stopped, and what likely comes
+            next.
+      - heading: What's being tuned
+        paragraphs:
+          - >
+            This isn't a polished curriculum, and it isn't a rigid weekly
+            accountability system. I learn when time allows. AI doesn't
+            make me study every day. It lowers the cost of coming back after
+            a break.
+      - heading: Where this is going
+        paragraphs:
+          - >
+            Finish the reboot and return to The Odin Project's Ruby path
+            without restarting the course.
+    extra:
+      summary: What I have already practiced
+      intro: A record of use, not a Ruby tutorial.
+      items:
+        - variables
+        - arrays
+        - each
+        - map
+        - select
+        - hashes
+        - nested collections
+        - filter
+        - find
+        - debugging
+        - p vs puts
+        - reject
+        - any?
+        - all?
+        - count
+        - sum
+        - max_by
+        - min_by
+        - sort_by
+        - group_by
+    artifacts:
+      - placeholder: Ruby exercise I attempted
+        alt: Placeholder for a screenshot of a Ruby exercise I attempted myself.
+        caption: The problem I tried before asking for help.
+      - placeholder: Hint or review, not the answer
+        alt: Placeholder for a screenshot of Muse giving a hint or code review rather than a full solution.
+        caption: Tutor mode, not a paste-in solution.
+      - placeholder: Cropped Notion tracker
+        alt: Placeholder for a cropped Notion screenshot of the Ruby Reboot session summary.
+        caption: Where I stopped, with unrelated Notion content cropped out.
+
+  - slug: delegating-attention
+    title: Delegating Attention
+    status:
+      - Active
+      - Evolving
+    category: Monitoring
+    tools:
+      - Muse
+      - Email
+      - Push notifications
+    summary: >
+      Muse watches carrier, flight, school, and similar email, then pings me
+      only when something actually needs attention.
+    flow:
+      - Carrier, airline, or school system
+      - Email
+      - Muse
+      - Useful push notification
+    sections:
+      - heading: The problem
+        paragraphs:
+          - >
+            I ship a lot of packages to my dad in Guam. My wife ships a lot
+            through Depop. The household uses USPS Informed Delivery. We're
+            flying more. School notices are another stream. I don't want to
+            check all of those places by hand, and I don't need a dashboard
+            that says everything is fine.
+      - heading: How I use it
+        paragraphs:
+          - >
+            Email from carriers, airlines, and school systems goes into Muse.
+            If something meaningful changed, I get a Muse push notification.
+            If nothing changed, it stays silent. Muse isn't the source of
+            truth. It's a consolidation and filtering layer over systems
+            that already exist.
+          - >
+            Carriers and airlines already have their own notifications. The
+            value is not better tracking data. It is one attention layer, and
+            a rule about what is worth waking me up for.
+          - >
+            Weather monitoring is newer and still experimental. Appointments
+            stay in Google Calendar. Prices are not part of this.
+      - heading: What's being tuned
+        paragraphs:
+          - >
+            New information is not automatically important information. A
+            distribution-center scan is not the same as out for delivery. A
+            generic school announcement is not the same as a teacher email
+            that needs a form. Teacher praise is worth surfacing because I
+            may want to open the email and reply myself. This workflow doesn't
+            auto-reply.
+    extra:
+      summary: What counts as a meaningful change
+      groups:
+        - heading: Packages
+          items:
+            - shipped
+            - delayed
+            - out for delivery
+            - delivery problems
+            - cancellations
+            - delivered
+          note: I don't need every intermediate scan. I need to know the package actually gets there.
+        - heading: Flights
+          items:
+            - gate changes
+            - delays
+            - cancellations
+            - boarding
+        - heading: School notices
+          items:
+            - teacher emails
+            - events
+            - deadlines
+            - school closures
+            - upcoming activities
+            - forms
+            - anything that needs an action from me
+          note: "The useful question is whether this requires an action. Praise is the exception: surface it so I can reply in person."
+    artifacts:
+      - placeholder: Watch starts
+        alt: Placeholder for a redacted screenshot of a package or flight watch starting.
+        caption: A watch begins.
+      - placeholder: Meaningful change
+        alt: Placeholder for a redacted screenshot of a meaningful status change.
+        caption: Something actually changed.
+      - placeholder: Muse push notification
+        alt: Placeholder for a redacted Muse push notification.
+        caption: The ping, with tracking numbers and addresses removed.
+      - placeholder: Watch ends
+        alt: Placeholder for a redacted screenshot of a completed watch.
+        caption: The watch ends after delivery or arrival.
+
+learning:
+  intro: >
+    The useful systems so far started with something I already did by hand.
+    I'm usually trying to figure out:
+  questions:
+    - what part requires repetitive attention
+    - what context I keep having to explain
+    - what information already exists in tools I use
+    - what should happen automatically
+    - when the system should stay silent
+    - where I still want to make the decision myself
+
+experiments:
+  intro: >
+    I experimented pretty heavily with Grok Bot before shifting more of my
+    personal AI use toward Muse. I'm keeping some of those projects here
+    because they shaped what I now want from personal AI.
+  items:
+    - name: Ms. Frizzle / Mr. Frizzle
+      note: Family and school assistant
+    - name: Marketplace / Resell Boss
+      note: Marketplace listing assistant
+    - name: SLP Weather
+      note: Local weather bot
+  closing: >
+    That work is paused. A fuller archive can wait until there is more to
+    say than a list of names.
+
+tools:
+  - name: Muse
+    role: Current primary personal AI
+  - name: ChatGPT
+    role: Research, writing, coding, and project work
+  - name: Notion
+    role: Structured notes and learning trackers
+  - name: Gmail
+    role: Email input for the briefing and the attention layer
+  - name: Google Calendar
+    role: Schedule input for the morning briefing
+  - name: Apple Reminders
+    role: Task input for the morning briefing
+  - name: The Odin Project
+    role: The Ruby path I am returning to
+  - name: Email
+    role: The input layer for package, flight, and school watches

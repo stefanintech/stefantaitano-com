@@ -104,6 +104,7 @@ export const tests = {
       '/talks/rubyconf-2026/',
       '/talks/rubyconf-2026/slides/',
       '/projects/',
+      '/ai/',
       '/bookshelf/',
       '/resume/',
       '/links/',
