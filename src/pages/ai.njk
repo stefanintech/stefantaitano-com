@@ -109,7 +109,7 @@ lastUpdated: '2026-09-21'
               <p>{{ workflow.extra.intro }}</p>
             {% endif %}
             {% if workflow.extra.items %}
-              <ul class="ai-topics" role="list">
+              <ul{% if workflow.extra.layout == 'cluster' %} class="ai-topics" role="list"{% endif %}>
                 {% for item in workflow.extra.items %}
                   <li>{{ item }}</li>
                 {% endfor %}

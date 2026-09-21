@@ -320,7 +320,7 @@
 
 .ai-tools div {
   display: grid;
-  grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr);
+  grid-template-columns: max-content minmax(0, 1fr);
   gap: var(--space-xs) var(--space-m);
   padding-block: var(--space-xs);
   border-block-end: 1px solid var(--color-bg-accent);
@@ -328,6 +328,7 @@
 
 .ai-tools dt {
   font-weight: var(--font-bold);
+  white-space: nowrap;
 }
 
 .ai-tools dd {

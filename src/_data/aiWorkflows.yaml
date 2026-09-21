@@ -127,6 +127,7 @@ workflows:
     extra:
       summary: What I have already practiced
       intro: A record of use, not a Ruby tutorial.
+      layout: cluster
       items:
         - variables
         - arrays
@@ -294,6 +295,6 @@ tools:
   - name: Apple Reminders
     role: Task input for the morning briefing
   - name: The Odin Project
-    role: The Ruby path I am returning to
+    role: The Ruby path I'm returning to
   - name: Email
     role: The input layer for package, flight, and school watches
