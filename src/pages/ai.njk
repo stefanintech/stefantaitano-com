@@ -85,7 +85,40 @@ lastUpdated: '2026-09-21'
         {% if workflow.artifacts %}
           <div class="ai-artifacts">
             {% for artifact in workflow.artifacts %}
-              {% if artifact.image %}
+              {% if artifact.image and artifact.enlarge %}
+                <figure class="ai-artifact ai-artifact--page">
+                  <dialog class="ai-artifact__dialog" aria-labelledby="{{ workflow.slug }}-artifact-caption">
+                    <div class="cluster gutter-s">
+                      <button type="button" data-close class="button" autofocus data-button-variant="primary">
+                        {{ meta.dialog.close }}
+                      </button>
+                    </div>
+                    {% imageKeys {
+                      "src": artifact.image,
+                      "alt": artifact.alt | trim,
+                      "loading": "lazy",
+                      "imageClass": "ai-artifact__full",
+                      "widths": [800, 1200, 1800, 2550],
+                      "sizes": "64rem"
+                    } %}
+                  </dialog>
+                  <div class="ai-artifact__frame">
+                    <button type="button" class="ai-artifact__open" data-index="{{ loop.index }}" aria-haspopup="dialog">
+                      {% imageKeys {
+                        "src": artifact.image,
+                        "alt": artifact.alt | trim,
+                        "loading": "lazy",
+                        "imageClass": "ai-artifact__img",
+                        "widths": [800, 1200, 1800, 2550],
+                        "sizes": "(min-width: 64em) 58rem, 48rem"
+                      } %}
+                      <span class="visually-hidden">View larger</span>
+                    </button>
+                  </div>
+                  <p class="ai-artifact__hint" aria-hidden="true">View larger</p>
+                  <figcaption id="{{ workflow.slug }}-artifact-caption">{{ artifact.caption | trim }}</figcaption>
+                </figure>
+              {% elif artifact.image %}
                 {% image artifact.image, artifact.alt | trim, artifact.caption | trim, "lazy", "ai-artifact" %}
               {% else %}
                 <figure class="ai-artifact">
@@ -181,3 +214,7 @@ lastUpdated: '2026-09-21'
 {% css "local" %}
   {% include "css/ai.css" %}
 {% endcss %}
+
+{% js "defer" %}
+  {% include "scripts/dialog.js" %}
+{% endjs %}

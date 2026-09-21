@@ -62,12 +62,13 @@ workflows:
         - What do the parents need to finish?
         - What forms, due dates, or action items need attention before the week is over?
     artifacts:
-      - placeholder: Redacted morning briefing
-        alt: Placeholder for a redacted screenshot of the Taitano Times morning briefing.
-        caption: >
-          A digital morning view. I will add a redacted screenshot here once I
-          have one that doesn't show family names, schools, or private
-          details.
+      - image: /assets/images/ai/taitano-times-2026-09-20-public.png
+        enlarge: true
+        alt: >-
+          Public-safe edition of the Taitano Times morning briefing with
+          sections for Today, This Week, Kids & School, Parents, Out & About,
+          news, and a family conversation prompt.
+        caption: A real morning briefing with private family details generalized or removed.
 
   - slug: ruby-reboot
     title: Getting Back Into Ruby Without Starting Over

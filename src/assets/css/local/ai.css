@@ -209,6 +209,73 @@
   margin: 0;
 }
 
+.ai-artifact--page {
+  grid-column: 1 / -1;
+}
+
+.ai-artifact__frame {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--color-bg-accent);
+}
+
+.ai-artifact__open {
+  all: unset;
+  box-sizing: border-box;
+  display: block;
+  min-inline-size: 100%;
+  cursor: zoom-in;
+}
+
+.ai-artifact__open:focus-visible {
+  outline: 3px solid var(--focus-color, currentColor);
+  outline-offset: var(--focus-offset, 0.3ch);
+}
+
+.ai-artifact__open picture,
+.ai-artifact__open img,
+.ai-artifact__dialog picture,
+.ai-artifact__dialog img {
+  display: block;
+  width: 100%;
+  max-inline-size: none;
+  height: auto;
+}
+
+@media (max-width: 40em) {
+  .ai-artifact__open {
+    inline-size: 48rem;
+  }
+}
+
+.ai-artifact__hint {
+  display: block;
+  margin: 0;
+  padding: var(--space-xs) 0;
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-2);
+  font-weight: var(--font-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.ai-artifact__dialog {
+  max-inline-size: min(92vw, 72rem);
+  max-block-size: 95vh;
+  overflow: auto;
+  padding: var(--space-s);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.ai-artifact__dialog::backdrop {
+  background: color-mix(in oklab, var(--color-dark) 72%, transparent);
+}
+
+.ai-artifact__dialog img.ai-artifact__full {
+  width: 64rem;
+}
+
 .ai-artifact__slot {
   display: grid;
   align-content: center;
