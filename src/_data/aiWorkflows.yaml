@@ -237,19 +237,6 @@ workflows:
             - forms
             - anything that needs an action from me
           note: "The useful question is whether this requires an action. Praise is the exception: surface it so I can reply in person."
-    artifacts:
-      - placeholder: Watch starts
-        alt: Placeholder for a redacted screenshot of a package or flight watch starting.
-        caption: A watch begins.
-      - placeholder: Meaningful change
-        alt: Placeholder for a redacted screenshot of a meaningful status change.
-        caption: Something actually changed.
-      - placeholder: Muse push notification
-        alt: Placeholder for a redacted Muse push notification.
-        caption: The ping, with tracking numbers and addresses removed.
-      - placeholder: Watch ends
-        alt: Placeholder for a redacted screenshot of a completed watch.
-        caption: The watch ends after delivery or arrival.
 
 learning:
   intro: >
