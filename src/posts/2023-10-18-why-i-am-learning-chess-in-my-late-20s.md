@@ -21,6 +21,6 @@ I don't play to become a grandmaster. I play for the challenge. I enjoy predicti
 
 The game offers a rare zen moment. I sit with the board and a ticking clock. This focus provides relief from constant phone notifications, even when players half my age checkmate me.
 
-Life in my late 20s mirrors the board. I feel like I am coasting until a curveball arrives. Just as I think I have figured out a plan, life shouts, "Checkmate!"
+Life in my late 20s mirrors the board. I feel like I'm coasting until a curveball arrives. Just as I think I have figured out a plan, life shouts, "Checkmate!"
 
-Starting chess is messy. You will lose often. But the game proves it is never too late to learn something new and find joy in a challenge.
+Starting chess is messy. You will lose often. But the game proves it's never too late to learn something new and find joy in a challenge.
