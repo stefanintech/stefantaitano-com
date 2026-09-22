@@ -1,0 +1,20 @@
+extends: existence
+message: "This may sound generic or overly polished: '%s'. Would you actually say this?"
+level: suggestion
+ignorecase: true
+tokens:
+  - "it's important to note"
+  - "it's worth noting"
+  - "in today's fast-paced"
+  - "in today's ever-changing"
+  - "ever-evolving"
+  - "delve into"
+  - "a testament to"
+  - "serves as a testament"
+  - "in the realm of"
+  - "at its core"
+  - "this underscores"
+  - "this highlights the importance"
+  - "it is important to remember"
+  - "in conclusion"
+  - "to summarize"

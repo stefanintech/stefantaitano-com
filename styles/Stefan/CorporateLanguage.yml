@@ -1,0 +1,12 @@
+extends: substitution
+message: "This sounds more formal/corporate than your usual voice. Consider '%s' instead of '%s'."
+level: suggestion
+ignorecase: true
+swap:
+  utilize: use
+  facilitate: help
+  commence: start
+  endeavor: try
+  optimal: best
+  robust: strong
+  seamless: simple

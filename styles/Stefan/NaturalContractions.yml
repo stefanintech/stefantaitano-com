@@ -1,0 +1,15 @@
+extends: substitution
+message: "Your natural writing often uses contractions. Consider '%s' instead of '%s'."
+level: suggestion
+ignorecase: false
+swap:
+  "I am": "I'm"
+  "I did not": "I didn't"
+  "I do not": "I don't"
+  "I was not": "I wasn't"
+  "I would not": "I wouldn't"
+  "I cannot": "I can't"
+  "it is": "it's"
+  "that is": "that's"
+  "there is": "there's"
+  "we are": "we're"
