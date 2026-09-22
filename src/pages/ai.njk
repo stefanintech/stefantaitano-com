@@ -1,0 +1,230 @@
+---
+layout: base
+permalink: /ai/index.html
+title: How I Use AI
+description: A living collection of the small AI systems Stefan Taitano uses for learning, family logistics, and monitoring things that change.
+lastUpdated: '2026-09-21'
+---
+
+<div class="wrapper flow ai-page">
+  {% set kicker = "Personal AI" %}
+  {% set intro = "I'm experimenting with small AI systems for things I already do: keeping up with family schedules, getting back into Ruby, and watching for changes I don't want to check by hand." %}
+  {% set introNote = "Muse runs the morning briefing and the attention layer. ChatGPT is the pair partner for the Ruby reboot. The workflows are still changing as I use them and figure out what is actually useful." %}
+  {% include "partials/page-intro.njk" %}
+
+  <section class="ai-section flow" aria-labelledby="current-workflows">
+    <h2 id="current-workflows" class="ai-section__title">Systems I'm using right now</h2>
+
+    <nav class="ai-index" aria-label="Jump to a system">
+      <ol class="ai-index__list" role="list">
+        {% for workflow in aiWorkflows.workflows %}
+          <li>
+            <a href="#{{ workflow.slug }}">
+              <span class="ai-index__title">{{ workflow.title }}</span>
+              <span class="ai-index__meta">
+                <span class="visually-hidden">Status: </span>
+                {{ workflow.status | join(', ') }}
+              </span>
+            </a>
+          </li>
+        {% endfor %}
+      </ol>
+    </nav>
+
+    {% for workflow in aiWorkflows.workflows %}
+      <article class="ai-workflow flow" id="{{ workflow.slug }}">
+        <header class="ai-workflow__header flow">
+          <h3 class="ai-workflow__title">{{ workflow.title }}</h3>
+          <p class="ai-workflow__meta">
+            <span>
+              <span class="visually-hidden">Status: </span>
+              <span class="ai-status">{{ workflow.status | join(' · ') }}</span>
+            </span>
+            <span class="ai-workflow__category">{{ workflow.category }}</span>
+          </p>
+          <p class="ai-workflow__tools">
+            <span class="visually-hidden">Tools: </span>
+            {{ workflow.tools | join(', ') }}
+          </p>
+        </header>
+
+        <p class="ai-workflow__summary">{{ workflow.summary }}</p>
+
+        {% if workflow.question %}
+          <p class="ai-workflow__question">{{ workflow.question }}</p>
+        {% endif %}
+
+        {% if workflow.flow %}
+          <ol class="ai-flow" role="list" aria-label="How {{ workflow.title }} flows">
+            {% for step in workflow.flow %}
+              <li>
+                <span class="ai-flow__step">{{ step }}</span>
+                {% if not loop.last %}
+                  <span class="ai-flow__arrow" aria-hidden="true">→</span>
+                {% endif %}
+              </li>
+            {% endfor %}
+          </ol>
+        {% endif %}
+
+        {% if workflow.sections %}
+          <dl class="ai-facts">
+            {% for section in workflow.sections %}
+              <div>
+                <dt>{{ section.heading }}</dt>
+                <dd>
+                  {% for paragraph in section.paragraphs %}
+                    <p>{{ paragraph }}</p>
+                  {% endfor %}
+                </dd>
+              </div>
+            {% endfor %}
+          </dl>
+        {% endif %}
+
+        {% if workflow.artifacts %}
+          <div class="ai-artifacts">
+            {% for artifact in workflow.artifacts %}
+              {% if artifact.image and artifact.enlarge %}
+                {% if artifact.fit %}
+                  {% set shotWidths = [800, 1200, 1800] %}
+                  {% set shotSizes = "(min-width: 64em) 64rem, 100vw" %}
+                  {% set fullSizes = "1800px" %}
+                {% else %}
+                  {% set shotWidths = [800, 1200, 1800, 2550] %}
+                  {% set shotSizes = "(min-width: 64em) 58rem, 48rem" %}
+                  {% set fullSizes = "64rem" %}
+                {% endif %}
+                <figure class="ai-artifact ai-artifact--page{% if artifact.fit %} ai-artifact--fit{% endif %}">
+                  <dialog class="ai-artifact__dialog" aria-labelledby="{{ workflow.slug }}-artifact-caption">
+                    <div class="cluster gutter-s">
+                      <button type="button" data-close class="button" autofocus data-button-variant="primary">
+                        {{ meta.dialog.close }}
+                      </button>
+                    </div>
+                    {% imageKeys {
+                      "src": artifact.image,
+                      "alt": artifact.alt | trim,
+                      "loading": "lazy",
+                      "imageClass": "ai-artifact__full",
+                      "widths": shotWidths,
+                      "sizes": fullSizes
+                    } %}
+                  </dialog>
+                  <div class="ai-artifact__frame">
+                    <div class="ai-artifact__page">
+                      {% imageKeys {
+                        "src": artifact.image,
+                        "alt": artifact.alt | trim,
+                        "loading": "lazy",
+                        "imageClass": "ai-artifact__img",
+                        "widths": shotWidths,
+                        "sizes": shotSizes
+                      } %}
+                    </div>
+                  </div>
+                  <button type="button" class="ai-artifact__open" data-index="{{ loop.index }}" aria-haspopup="dialog">
+                    View larger
+                  </button>
+                  <figcaption id="{{ workflow.slug }}-artifact-caption">{{ artifact.caption | trim }}</figcaption>
+                </figure>
+              {% elif artifact.image %}
+                {% image artifact.image, artifact.alt | trim, artifact.caption | trim, "lazy", "ai-artifact" %}
+              {% else %}
+                <figure class="ai-artifact">
+                  <div class="ai-artifact__slot">
+                    <p class="ai-artifact__kicker">Screenshot coming</p>
+                    <p>{{ artifact.placeholder }}</p>
+                  </div>
+                  {% if artifact.caption %}
+                    <figcaption>{{ artifact.caption | trim }}</figcaption>
+                  {% endif %}
+                </figure>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {% if workflow.extra %}
+          <details class="ai-extra">
+            <summary>{{ workflow.extra.summary }}</summary>
+            {% if workflow.extra.intro %}
+              <p>{{ workflow.extra.intro }}</p>
+            {% endif %}
+            {% if workflow.extra.items %}
+              <ul{% if workflow.extra.layout == 'cluster' %} class="ai-topics" role="list"{% endif %}>
+                {% for item in workflow.extra.items %}
+                  <li>{{ item }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+            {% if workflow.extra.groups %}
+              {% for group in workflow.extra.groups %}
+                <div class="ai-extra__group flow">
+                  <h4>{{ group.heading }}</h4>
+                  <ul>
+                    {% for item in group.items %}
+                      <li>{{ item }}</li>
+                    {% endfor %}
+                  </ul>
+                  {% if group.note %}
+                    <p>{{ group.note }}</p>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% endif %}
+          </details>
+        {% endif %}
+      </article>
+    {% endfor %}
+  </section>
+
+  <section class="ai-section flow" aria-labelledby="ai-learning">
+    <h2 id="ai-learning" class="ai-section__title">What I'm learning</h2>
+    <p>{{ aiWorkflows.learning.intro }}</p>
+    <ul>
+      {% for question in aiWorkflows.learning.questions %}
+        <li>{{ question }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="ai-section flow" aria-labelledby="ai-experiments">
+    <h2 id="ai-experiments" class="ai-section__title">Experiments</h2>
+    <p>{{ aiWorkflows.experiments.intro }}</p>
+    <ul class="ai-experiments" role="list">
+      {% for item in aiWorkflows.experiments.items %}
+        <li>
+          <span class="ai-experiments__name">{{ item.name }}</span>
+          <span class="ai-experiments__note">{{ item.note }}</span>
+        </li>
+      {% endfor %}
+    </ul>
+    <p>{{ aiWorkflows.experiments.closing }}</p>
+  </section>
+
+  <section class="ai-section flow" aria-labelledby="ai-tools">
+    <h2 id="ai-tools" class="ai-section__title">Current tools</h2>
+    <dl class="ai-tools">
+      {% for tool in aiWorkflows.tools %}
+        <div>
+          <dt>{{ tool.name }}</dt>
+          <dd>{{ tool.role }}</dd>
+        </div>
+      {% endfor %}
+    </dl>
+  </section>
+
+  <p class="ai-updated">
+    Last updated
+    <time datetime="{{ aiWorkflows.updated }}">{{ aiWorkflows.updatedLabel }}</time>
+  </p>
+</div>
+
+{% css "local" %}
+  {% include "css/ai.css" %}
+{% endcss %}
+
+{% js "defer" %}
+  {% include "scripts/dialog.js" %}
+{% endjs %}
