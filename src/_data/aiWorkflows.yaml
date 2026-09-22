@@ -77,18 +77,20 @@ workflows:
       - Evolving
     category: Learning
     tools:
-      - Muse
+      - ChatGPT
       - Notion
       - The Odin Project
     summary: >
       A lightweight reboot so I can pick Ruby back up after a summer break
       without restarting The Odin Project from zero.
     flow:
-      - Ruby practice
-      - Hints and code review
-      - Completed exercises
+      - The Odin Project
+      - Ruby exercise
+      - My attempt
+      - ChatGPT pair partner
+      - Hints, review, debugging
       - Session summary
-      - Notion update
+      - Notion
       - Next stopping point
     sections:
       - heading: The problem
@@ -103,14 +105,13 @@ workflows:
       - heading: How I use it
         paragraphs:
           - >
-            I attempt the problem before Muse solves it. It should act more
-            like a tutor than a code generator: give me a small problem, let
-            me try, review the code, explain the mistakes, and give stronger
-            hints only when I need them. No instant starter code or full
-            solutions. At the end it summarizes the session and keeps the
-            stopping point, which later lands in a Notion tracker.
+            I use ChatGPT as a pair-programming partner. I try the problem
+            first, then use ChatGPT for hints, code review, debugging, and
+            explanations. No instant starter code or the full solution. At
+            the end of a session I use the conversation to write down where
+            I stopped, so I can pick it back up later.
           - >
-            What it helps preserve is ordinary: what I practiced, what I
+            What that note keeps is ordinary: what I practiced, what I
             finished, what was hard, where I stopped, and what likely comes
             next.
       - heading: What's being tuned
@@ -154,8 +155,8 @@ workflows:
       - placeholder: Ruby exercise I attempted
         alt: Placeholder for a screenshot of a Ruby exercise I attempted myself.
         caption: The problem I tried before asking for help.
-      - placeholder: Hint or review, not the answer
-        alt: Placeholder for a screenshot of Muse giving a hint or code review rather than a full solution.
+      - placeholder: ChatGPT hint or review, not the answer
+        alt: Placeholder for a screenshot of ChatGPT giving a hint or code review rather than a full solution.
         caption: Tutor mode, not a paste-in solution.
       - placeholder: Cropped Notion tracker
         alt: Placeholder for a cropped Notion screenshot of the Ruby Reboot session summary.
