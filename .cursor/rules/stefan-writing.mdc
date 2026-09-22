@@ -1,0 +1,174 @@
+---
+description: Preserve Stefan's personal writing voice and validate prose with Vale.
+globs:
+  - "src/posts/**/*.md"
+  - "src/now-entries/**/*.md"
+  - "src/talks/**/*.md"
+alwaysApply: false
+---
+
+# Stefan writing voice
+
+When creating, rewriting, proofreading, or substantially editing prose in a matched file, preserve Stefan's established voice. The goal is writing that sounds like him, not generic AI-generated or overly polished prose. This is not about fooling an AI detector.
+
+Preserve:
+
+- first-person writing
+- contractions
+- rhetorical questions
+- occasional sentence fragments
+- casual transitions
+- humor
+- direct reader address
+- personal uncertainty
+- self-deprecating observations
+- specific personal details
+- imperfect conversational rhythm when it sounds natural
+
+Words and phrases that are allowed because they occur naturally in his writing include:
+
+- honestly
+- actually
+- pretty
+- journey
+- believe it or not
+- why not
+
+Do not remove these simply because some generic AI-writing checklist considers them suspicious.
+
+Prefer writing that sounds like someone explaining something they personally experienced to another person.
+
+Do not make every paragraph perfectly symmetrical.
+
+Do not turn every personal experience into a lesson.
+
+Do not add generic motivational conclusions.
+
+Do not make prose more formal merely for grammatical neatness.
+
+Do not invent:
+
+- personal experiences
+- stories
+- opinions
+- emotions
+- quotes
+- technical results
+- facts
+- accomplishments
+
+If a specific personal detail is already present, prefer preserving that detail over replacing it with an abstract summary.
+
+# Vale workflow
+
+Vale is the writing linter. Cursor is the editor that resolves appropriate findings.
+
+Whenever you create or substantially edit one of the matched Markdown files, run Vale on that file before considering the writing task finished:
+
+```bash
+vale <edited-file>
+```
+
+Inspect every `Stefan.*` finding. Resolve the ones that fit the rules below. Then run:
+
+```bash
+vale <edited-file>
+```
+
+again. Repeat when a rewrite introduces new findings.
+
+Do this as part of completing the writing task. Do not wait for a separate "Run Vale" instruction.
+
+A remaining suggestion is acceptable. A clean Vale report is not more important than preserving the author's voice.
+
+Do not weaken, delete, disable, or downgrade a Vale rule to make a file appear clean.
+
+# How to resolve each rule
+
+## Stefan.AIPhrases
+
+When Vale flags an AI or generic phrase, rewrite that spot in the surrounding context. Prefer direct language.
+
+```text
+It's important to note that I struggled with Ruby.
+```
+
+Prefer:
+
+```text
+I struggled with Ruby.
+```
+
+Do not swap the flagged phrase for another generic transition. Do not invent details to make the replacement sound more human.
+
+## Stefan.CorporateLanguage
+
+Simplify unnecessary corporate language when the meaning stays intact.
+
+```text
+utilize → use
+facilitate → help
+commence → start
+endeavor → try
+optimal → best
+robust → strong
+seamless → simple
+```
+
+Keep the original term when it has a specific technical meaning.
+
+## Stefan.NaturalContractions
+
+Prefer conversational contractions when they match the surrounding voice.
+
+```text
+I am → I'm
+I did not → I didn't
+I do not → I don't
+I was not → I wasn't
+I would not → I wouldn't
+I cannot → I can't
+it is → it's
+that is → that's
+there is → there's
+we are → we're
+```
+
+Do not replace every instance. Keep the uncontracted wording when it creates intentional emphasis or rhythm. These are valid and should stay uncontracted:
+
+```text
+I did not want the conference to end.
+
+I did not do any gambling.
+
+I still know how much I do not know.
+```
+
+Judge that from the sentence, not from the suggestion alone.
+
+# Safeguards
+
+Never change these just to satisfy Vale:
+
+- YAML frontmatter values
+- dates
+- URLs
+- Markdown links
+- image paths
+- file paths
+- filenames
+- code blocks
+- inline code
+- commands
+- technical identifiers
+- quotations
+- names
+- numbers
+- factual claims
+
+Leave a Vale suggestion in place when changing the sentence would:
+
+- weaken intentional emphasis
+- change meaning
+- remove personality
+- make the prose sound less natural

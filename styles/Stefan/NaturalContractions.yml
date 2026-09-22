@@ -1,5 +1,5 @@
 extends: substitution
-message: "Your natural writing often uses contractions. Consider '%s' instead of '%s'."
+message: "More formal than your usual conversational voice. Intentional? Consider '%s' instead of '%s'."
 level: suggestion
 ignorecase: false
 swap:
