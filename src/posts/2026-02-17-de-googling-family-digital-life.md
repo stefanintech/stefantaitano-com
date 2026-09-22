@@ -1,6 +1,6 @@
 ---
 title: I’m De-Googling My Family’s Digital Life
-description: Protecting our digital lives one tool at a time
+description: I spent 29 days moving my family off Google. A lot of it's still unfinished.
 date: 2026-02-17
 related:
   - title: Creating my new website in 2026
@@ -9,75 +9,73 @@ related:
     url: /articles/why-i-am-learning-chess-in-my-late-20s/
 ---
 
-I spent 29 days moving my family off Google. I carry lessons.
+I spent 29 days moving my family off Google.
 
 My wife kept her Gmail account for 15 years. It stores school projects, job applications, her first apartment lease, and sensitive files. Google reads that mail and sells her attention. I knew this for years and ignored it.
 
-We plan to move our family overseas in 2027 and sell most of our belongings. Our files, photos, contacts, and passwords live on servers we do not own. That bothered me.
+We're planning to move overseas in 2027 and sell most of our belongings. Files, photos, contacts, and passwords live on servers we don't own. That bothered me.
 
-A month ago, I started moving our data to private alternatives. I hit walls. I want to share the process.
+A month ago I started moving our data to private alternatives. I hit walls. Here's where it stands, including the parts that aren't done.
 
-### Why I Chose to Move
+### Why I started
 
-I raise two kids with my wife. I want to own our data. Google scans vacation photos, kids' faces, and front doors to train AI models. 
+My wife and I have two kids, and I want us to own our data. Google scans vacation photos, kids' faces, and front doors to train AI models.
 
-Google shuts down products without warning. Our family needs reliable infrastructure when we settle in a new country. I already pay for Google One and other subscriptions.
+Google shuts products down without warning. When we settle in a new country, I want the family archive on something that stays up. I already pay for Google One and other subscriptions anyway.
 
-I needed a system for my wife. She wants to open an app, find a file, and close it. This constraint shaped my decisions.
+I also needed this to work for my wife. She wants to open an app, find a file, and close it. That decided a lot of the choices.
 
-### What I Finished
+### Where things stand
 
-**Email (In Progress).** I set up Proton Mail using my domain, stefantaitano.com. I route it through SimpleLogin for email aliases. Retailers receive a disposable alias. Financial accounts receive a dedicated alias. My wife uses a new proton.me address. Gmail still stores 15 years of unarchived emails. We still receive mail there.
+**Email (In Progress).** I set up Proton Mail on my domain, stefantaitano.com, and route it through SimpleLogin for aliases. Retailers get a disposable alias. Financial accounts get their own. My wife uses a new proton.me address. Gmail still has 15 years of mail we haven't archived, and we still get mail there.
 
 **VPN (Done).** I installed Proton VPN on every device. It runs in the background. My wife never asks about it.
 
-**Password Manager (Done).** I moved us to Proton Pass. Reviewing 15 years of saved passwords took time. We found forgotten accounts with weak passwords. We deleted many of them. I keep Bitwarden as a backup.
+**Password Manager (Done).** I moved us to Proton Pass. Reviewing 15 years of saved passwords took time. We found forgotten accounts with weak passwords and deleted a lot of them. I keep Bitwarden as a backup.
 
-**Calendar (Done).** We use Proton Calendar for family scheduling, appointments, and kids' activities. It lacks seamless integration with third-party apps.
+**Calendar (Done).** We use Proton Calendar for family scheduling, appointments, and kids' activities. It doesn't connect cleanly with other apps.
 
-**Photos (In Progress).** We store 50GB of photos in Google and Apple Photos. We chose Ente Photos. It features end-to-end encryption and a clean interface. I download photos year by year using Google Takeout. I organize them on a local drive before uploading. 
+**Photos (In Progress).** We store 50GB of photos in Google and Apple Photos. We chose Ente Photos. It's end-to-end encrypted, and the interface is clean. I download photos year by year with Google Takeout, organize them on a local drive, then upload.
 
-**Drive and Files (In Progress).** I move files from Google Drive to Proton Drive. I organize everything first. Financial documents, legal documents, kids' records, and travel documents earn a folder before they move. I finished a third of the files.
+**Drive and Files (In Progress).** I'm moving files from Google Drive to Proton Drive, but I sort them first. Financial documents, legal documents, kids' records, and travel documents each get a folder before they move. I've finished a third of the files.
 
-### The Mental Load
+### Two systems at once
 
-Running two systems simultaneously exhausts me. I keep passwords in Proton Pass and Bitwarden. Files live in Proton Drive and Google Drive. Photos sit in Ente and Google Photos. Finding anything requires remembering which system holds it. 
+Running both at the same time wears me out. Passwords are in Proton Pass and Bitwarden. Files are in Proton Drive and Google Drive. Photos are in Ente and Google Photos. If I need something, I have to remember which one has it.
 
-Migrating services creates decision fatigue. I choose replacements. I manage the overlap period. I ensure apps keep working for my wife. The small choices accumulate.
+The move is a pile of small decisions. I pick the replacement, live with both for a while, and make sure the apps still work for my wife. Those choices pile up.
 
-Migrating forces a life audit. I review old accounts, untouched files, and forgotten photos. The process feels heavy.
+It also turns into a life audit. Old accounts, files nobody has touched, photos I'd forgotten. That part feels heavy.
 
-### Migrating With a Partner
+### Doing this with my wife
 
-I told my wife we planned to switch to Proton. The transition created friction in her daily routine. Her calendar changed. Her email app changed. Passwords failed to auto-fill. Small issues destroy buy-in.
+I told her we were switching to Proton. Then her calendar changed, her email app changed, and passwords stopped filling in. Small breakage is enough to make the whole switch feel like a bad idea.
 
-Now, I change one tool at a time. I migrate her account and all existing events to Proton Calendar. Then I tell her. She opens the app and it works.
+So now I change one tool at a time. I move her account and the existing events over to Proton Calendar. Then I tell her. She opens the app and it works.
 
-I present changes as finished tasks. I say, "I moved our passwords to Proton Pass. Your logins are there." She needs the apps to work.
+I hand her the finished version. I say, "I moved our passwords to Proton Pass. Your logins are there." She needs the apps to work.
 
-### Tools and Costs
+### What it costs
 
-* **Proton Duo Plan ($20/month):** Includes Proton Mail, Calendar, Drive, Pass, VPN, Wallet, and the Lumo AI assistant.
-* **Ente Photos Family Plan ($5.99/month):** Provides 200GB of encrypted photo storage for five people.
-* **SimpleLogin (Included):** Manages email aliases.
-* **stefantaitano.com Domain ($12/year):** Routes aliases through SimpleLogin.
+* **Proton Duo Plan ($20/month):** Mail, Calendar, Drive, Pass, VPN, Wallet, and the Lumo AI assistant.
+* **Ente Photos Family Plan ($5.99/month):** 200GB of encrypted photo storage for five people.
+* **SimpleLogin (included):** Email aliases.
+* **stefantaitano.com domain ($12/year):** The aliases go through SimpleLogin.
 
-The total cost reaches $27 a month. We previously paid $20 a month for Google One and $10 a month for iCloud. This new setup costs money instead of data.
+It comes to $27 a month. We were paying $20 a month for Google One and $10 a month for iCloud. This one costs money instead of the data.
 
-### Lessons Learned
+### What I'd do differently
 
-**Migrate passwords first.** I started with email and spent weeks hunting for credentials. Moving to Proton Pass first makes finding logins instant.
+**Passwords first.** I started with email and spent weeks hunting for logins. Moving to Proton Pass first would have made finding them instant.
 
-**Plan for 90 days.** Videos claim this takes a weekend. A family builds digital history for years. Ninety days feels optimistic.
+**Give it 90 days.** The videos say this takes a weekend. A family builds this history for years. Ninety days still feels optimistic.
 
-**Organize before moving.** Delete unused files. Organize the rest. Move only the files that matter.
+**Sort before you move.** Delete the files you don't use. Organize the rest. Move only what matters.
 
-**Keep old apps installed.** Open them occasionally. Deleting your Google account creates complications.
+**Leave the old apps installed.** Open them once in a while. Deleting the Google account creates complications.
 
-### Next Steps
+### What's left
 
-Next month, I finish the Proton Drive migration and the photo transfer to Ente. We rely on Gmail forwarding as we abandon the inbox.
+Next month I finish the Proton Drive migration and the photo transfer to Ente. We're still using Gmail forwarding while we let that inbox go.
 
-Start simple. Pick one tool. Migrate it completely. Ensure it works for your household. Move to the next tool.
-
-The goal remains building a comfortable system we own. It must travel well.
+I want a system we own, and one we can take with us.
