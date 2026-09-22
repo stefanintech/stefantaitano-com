@@ -250,6 +250,14 @@
   .ai-artifact__page {
     inline-size: 48rem;
   }
+
+  .ai-artifact--fit .ai-artifact__page {
+    inline-size: 100%;
+  }
+}
+
+.ai-artifact--fit .ai-artifact__dialog img.ai-artifact__full {
+  width: 1800px;
 }
 
 .ai-artifact__open {

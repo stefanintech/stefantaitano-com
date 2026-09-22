@@ -86,7 +86,16 @@ lastUpdated: '2026-09-21'
           <div class="ai-artifacts">
             {% for artifact in workflow.artifacts %}
               {% if artifact.image and artifact.enlarge %}
-                <figure class="ai-artifact ai-artifact--page">
+                {% if artifact.fit %}
+                  {% set shotWidths = [800, 1200, 1800] %}
+                  {% set shotSizes = "(min-width: 64em) 64rem, 100vw" %}
+                  {% set fullSizes = "1800px" %}
+                {% else %}
+                  {% set shotWidths = [800, 1200, 1800, 2550] %}
+                  {% set shotSizes = "(min-width: 64em) 58rem, 48rem" %}
+                  {% set fullSizes = "64rem" %}
+                {% endif %}
+                <figure class="ai-artifact ai-artifact--page{% if artifact.fit %} ai-artifact--fit{% endif %}">
                   <dialog class="ai-artifact__dialog" aria-labelledby="{{ workflow.slug }}-artifact-caption">
                     <div class="cluster gutter-s">
                       <button type="button" data-close class="button" autofocus data-button-variant="primary">
@@ -98,8 +107,8 @@ lastUpdated: '2026-09-21'
                       "alt": artifact.alt | trim,
                       "loading": "lazy",
                       "imageClass": "ai-artifact__full",
-                      "widths": [800, 1200, 1800, 2550],
-                      "sizes": "64rem"
+                      "widths": shotWidths,
+                      "sizes": fullSizes
                     } %}
                   </dialog>
                   <div class="ai-artifact__frame">
@@ -109,8 +118,8 @@ lastUpdated: '2026-09-21'
                         "alt": artifact.alt | trim,
                         "loading": "lazy",
                         "imageClass": "ai-artifact__img",
-                        "widths": [800, 1200, 1800, 2550],
-                        "sizes": "(min-width: 64em) 58rem, 48rem"
+                        "widths": shotWidths,
+                        "sizes": shotSizes
                       } %}
                     </div>
                   </div>

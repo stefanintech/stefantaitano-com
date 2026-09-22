@@ -152,15 +152,11 @@ workflows:
         - sort_by
         - group_by
     artifacts:
-      - placeholder: Ruby exercise I attempted
-        alt: Placeholder for a screenshot of a Ruby exercise I attempted myself.
-        caption: The problem I tried before asking for help.
-      - placeholder: ChatGPT hint or review, not the answer
-        alt: Placeholder for a screenshot of ChatGPT giving a hint or code review rather than a full solution.
-        caption: Tutor mode, not a paste-in solution.
-      - placeholder: Cropped Notion tracker
-        alt: Placeholder for a cropped Notion screenshot of the Ruby Reboot session summary.
-        caption: Where I stopped, with unrelated Notion content cropped out.
+      - image: /assets/images/ai/ruby-reboot-artifacts.png
+        enlarge: true
+        fit: true
+        alt: Ruby Reboot workflow showing Stefan’s Ruby attempt, a ChatGPT pair-programming hint, and the resulting Notion session summary.
+        caption: "A real Ruby Reboot session: my attempt, ChatGPT as a pair-programming partner, and the Notion note that preserves where I stopped."
 
   - slug: delegating-attention
     title: Delegating Attention
