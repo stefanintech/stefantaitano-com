@@ -39,7 +39,7 @@ workflows:
             Times, but I don't print it. Printing might happen later. It isn't
             part of this yet.
           - >
-            There is no giant master prompt. I'm playing it by ear and
+            There's no giant master prompt. I'm playing it by ear and
             correcting it as we go, so it can learn our routines, what to
             skip, and how dense the morning view should be.
       - heading: What's being tuned
@@ -117,9 +117,8 @@ workflows:
       - heading: What's being tuned
         paragraphs:
           - >
-            This isn't a polished curriculum, and it isn't a rigid weekly
-            accountability system. I learn when time allows. AI doesn't
-            make me study every day. It lowers the cost of coming back after
+            There's no curriculum here and no weekly schedule. I learn when
+            time allows. What AI does is lower the cost of coming back after
             a break.
       - heading: Where this is going
         paragraphs:
@@ -190,13 +189,13 @@ workflows:
           - >
             Email from carriers, airlines, and school systems goes into Muse.
             If something meaningful changed, I get a Muse push notification.
-            If nothing changed, it stays silent. Muse isn't the source of
-            truth. It's a consolidation and filtering layer over systems
-            that already exist.
+            If nothing changed, it stays silent. The carrier, airline, and
+            school systems are still the source of truth. Muse sits on top of
+            them and filters.
           - >
-            Carriers and airlines already have their own notifications. The
-            value is not better tracking data. It is one attention layer, and
-            a rule about what is worth waking me up for.
+            Carriers and airlines already have their own notifications. What
+            Muse adds is one attention layer, and a rule about what's worth
+            waking me up for.
           - >
             Weather monitoring is newer and still experimental. Appointments
             stay in Google Calendar. Prices are not part of this.
@@ -263,7 +262,7 @@ experiments:
     - name: SLP Weather
       note: Local weather bot
   closing: >
-    That work is paused. A fuller archive can wait until there is more to
+    That work is paused. A fuller archive can wait until there's more to
     say than a list of names.
 
 tools:

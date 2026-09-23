@@ -14,7 +14,7 @@ In the back of older books you would sometimes find a colophon: a short note abo
 
 Headings are set in [Fraunces](https://fonts.google.com/specimen/Fraunces), a warm editorial serif by Undercase Type. I wanted headings that felt more like a personal publication than a product landing page, and the heavy 72pt display cut has just enough character without shouting.
 
-Body text is set in [Atkinson Hyperlegible](https://fonts.google.com/specimen/Atkinson+Hyperlegible), designed by the Braille Institute to increase legibility for readers with low vision. It came with the starter this site is built on, and keeping it was a deliberate choice: a site should be easy to read before it is anything else.
+Body text is set in [Atkinson Hyperlegible](https://fonts.google.com/specimen/Atkinson+Hyperlegible), designed by the Braille Institute to increase legibility for readers with low vision. It came with the starter this site is built on, and keeping it was a deliberate choice: a site should be easy to read before it's anything else.
 
 The little handwritten asides you will spot around the site are [Caveat](https://fonts.google.com/specimen/Caveat). They are the margin notes of this site, used sparingly and never for anything you actually need to read.
 
@@ -22,7 +22,7 @@ All fonts are subsetted, self-hosted, and treated as an enhancement. If they hav
 
 ## Color
 
-The palette is slate and amber on warm cream. The background started life as a neutral gray and was deliberately warmed up, because cream reads like paper and gray reads like a settings menu. There is a dark theme too, built on warm charcoal rather than cold black, which follows your system preference or the toggle in the header.
+The palette is slate and amber on warm cream. The background started life as a neutral gray and was deliberately warmed up, because cream reads like paper and gray reads like a settings menu. There's a dark theme too, built on warm charcoal rather than cold black, which follows your system preference or the toggle in the header.
 
 The homepage sky is the exception: that band is always night, even when the rest of the page is in light mode. The hills fade into whatever the current page background is.
 
@@ -45,7 +45,7 @@ Accessibility gets checked with automated [pa11y](https://pa11y.org/) tests, tho
 
 ## Small details
 
-- The homepage night sky is original pixel canvas, not a stock illustration: a moon, a knight of stars, a runner, a campfire, and an airplane. It is JavaScript on top of a static fallback, and it freezes if you prefer reduced motion.
+- The homepage night sky is original pixel canvas, not a stock illustration: a moon, a knight of stars, a runner, a campfire, and an airplane. It's JavaScript on top of a static fallback, and it freezes if you prefer reduced motion.
 - My photo lives on the [links page](/links/), as a rounded square. The homepage intro under the hills is just type.
 - [Talks](/talks/) keep a more cinematic treatment on purpose. The rest of the inner pages use a shared quiet intro: a handwritten kicker, a Fraunces title, and one sentence.
 - [Field Notes](https://buttondown.com/stefantaitano) is an occasional email, hosted on Buttondown.
