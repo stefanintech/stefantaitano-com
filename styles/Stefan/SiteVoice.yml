@@ -1,0 +1,12 @@
+extends: existence
+message: "docs/site-voice.md lists '%s' as a phrase to question. Is there a more specific way to say it?"
+level: suggestion
+ignorecase: true
+tokens:
+  - "intentional life design"
+  - "along the way"
+  - "learning in public"
+  - "cross-domain thinking"
+  - "things worth sharing"
+  - "operate in ambiguity"
+  - "automate and streamline"

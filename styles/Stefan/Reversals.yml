@@ -1,0 +1,7 @@
+extends: existence
+message: "Possible 'not this, it's that' reversal: '%s'. Fine once. Read it again if the page keeps doing it."
+level: suggestion
+ignorecase: false
+nonword: true
+tokens:
+  - '\b(?:is|are|was|were)(?:n[’'']t| not)\b[^.!?]{1,80}[.!?]\s+(?:It|That|This|They)(?:[’'']s|[’'']re| is| are| was| were)\b'

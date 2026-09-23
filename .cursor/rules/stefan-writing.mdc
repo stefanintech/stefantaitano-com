@@ -4,6 +4,9 @@ globs:
   - "src/posts/**/*.md"
   - "src/now-entries/**/*.md"
   - "src/talks/**/*.md"
+  - "src/pages/**/*.md"
+  - "src/pages/**/*.njk"
+  - "src/_data/*.yaml"
 alwaysApply: false
 ---
 
@@ -63,7 +66,7 @@ If a specific personal detail is already present, prefer preserving that detail 
 
 Vale is the writing linter. Cursor is the editor that resolves appropriate findings.
 
-Whenever you create or substantially edit one of the matched Markdown files, run Vale on that file before considering the writing task finished:
+Whenever you create or substantially edit one of the matched files, run Vale on that file before considering the writing task finished:
 
 ```bash
 vale <edited-file>
@@ -142,9 +145,29 @@ I did not want the conference to end.
 I did not do any gambling.
 
 I still know how much I do not know.
+
+We are all human.
 ```
 
 Judge that from the sentence, not from the suggestion alone.
+
+On `src/pages/privacy.md`, `src/pages/legal.md`, and `src/pages/accessibility.md`, uncontracted forms such as "I do not" may stay when they read as plain, careful statements.
+
+## Stefan.SiteVoice
+
+These are the phrases `docs/site-voice.md` asks to question. Replace them with the specific thing they stand for, using details already in the file. If the file doesn't say what the specific thing is, leave the phrase and mention it rather than inventing one.
+
+## Stefan.Reversals
+
+This flags "X is not Y. It is Z." One reversal on a page is fine. When a page stacks several, rewrite most of them to say the positive thing directly and keep the one that carries the most weight.
+
+# Pages and data files
+
+The short copy around the site lives in `src/pages/` and `src/_data/*.yaml`. Follow `docs/site-voice.md` there. Dated `/now` entries and published articles keep the voice they were written in.
+
+In `.njk` files, change only visible text and the string values of `{% set %}` copy. Never change template tags, filters, variables, class names, or attributes.
+
+In YAML files, change only prose values such as `summary`, `paragraphs`, `note`, `intro`, `closing`, and `description`. Never change keys, slugs, `status`, `category`, tool names, flow steps, image paths, URLs, or dates.
 
 # Safeguards
 
