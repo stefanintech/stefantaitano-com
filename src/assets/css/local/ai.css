@@ -276,6 +276,11 @@
   --flow-space: var(--space-3xs);
 }
 
+.ai-workflow > .ai-note:has(> h3),
+.ai-workflow > .ai-rules {
+  margin-block-start: var(--space-m);
+}
+
 .ai-note p + p {
   --flow-space: var(--space-xs);
 }
@@ -307,11 +312,10 @@
 
 .ai-rules__group ul {
   margin: 0;
-  padding: 0;
-  list-style: none;
+  padding-inline-start: 1.3ch;
 }
 
-.ai-rules__group li::before {
+.ai-rules__group li::marker {
   content: '– ';
   color: var(--color-primary);
 }
