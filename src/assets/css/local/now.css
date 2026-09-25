@@ -3,6 +3,18 @@
   margin-block-end: var(--space-xs);
 }
 
+.prose .image-centered {
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+.prose picture:has(.image-centered) {
+  display: block;
+  max-inline-size: 420px;
+  inline-size: 100%;
+  margin-inline: auto;
+}
+
 .now-entries {
   list-style: none;
   padding: 0;
