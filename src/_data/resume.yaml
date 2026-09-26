@@ -1,5 +1,5 @@
 name: Stefan Taitano
-title: ServiceNow developer · learning Ruby
+title: ServiceNow developer
 location: Minneapolis, MN
 email: hello@stefantaitano.com
 website: https://stefantaitano.com
@@ -10,10 +10,9 @@ lastUpdated: '2026-08-20'
 summary: >
   I spent nine years in the Army and now work on ServiceNow platforms at
   Thirdera-Cognizant in Minneapolis: upgrades, security, and Software Asset
-  Management. This year I started learning Ruby through The Odin Project. In July
-  I volunteered at RubyConf 2026, gave a lightning talk there, and got my first
-  Ruby-related pull request merged. In September I am volunteering at Commit Your
-  Code in Plano.
+  Management. Outside of work, I volunteered at RubyConf 2026 and Commit Your
+  Code this year, gave a lightning talk at RubyConf, and got a pull request merged
+  on RubyEvents at the conference hack space.
 
 skills:
   - group: Coding

@@ -120,7 +120,7 @@ class PixelHero extends HTMLElement {
     this.questHit = document.createElement('a');
     this.questHit.className = 'pixel-hero__hit pixel-hero__hit--quest';
     this.questHit.href = '#now-preview';
-    this.questHit.setAttribute('aria-label', 'Current quest: writing Ruby. Jump to what I am doing now.');
+    this.questHit.setAttribute('aria-label', 'Current quest. Jump to what I am doing now.');
     this.questHit.addEventListener('pointerenter', () => {
       this.questUntil = Math.max(this.questUntil, performance.now() / 1000 + 2);
     });
@@ -434,7 +434,7 @@ class PixelHero extends HTMLElement {
 
   stampQuest(grid, W, H, fireX, fireY, t, moving) {
     if (moving && t > this.questUntil) return;
-    const text = 'QUEST: RUBY';
+    const text = 'QUEST';
     const width = textWidth(text);
     const x = clamp(2, W - width - 2, fireX - Math.floor(width / 2));
     const y = Math.max(2, fireY - 22);
@@ -546,11 +546,7 @@ const FONT = {
   U: ['#.#', '#.#', '#.#', '#.#', '###'],
   E: ['###', '#..', '##.', '#..', '###'],
   S: ['.##', '#..', '.##', '..#', '##.'],
-  T: ['###', '.#.', '.#.', '.#.', '.#.'],
-  R: ['##.', '#.#', '##.', '#.#', '#.#'],
-  B: ['##.', '#.#', '##.', '#.#', '##.'],
-  Y: ['#.#', '#.#', '.#.', '.#.', '.#.'],
-  ':': ['.', '#', '.', '#', '.']
+  T: ['###', '.#.', '.#.', '.#.', '.#.']
 };
 
 const BAYER8 = (() => {

@@ -2,7 +2,14 @@
  * Cycles the "stefan is ___" verb on the homepage.
  * If the Lichess status pill says he's playing, that word goes first.
  */
-const WORDS = ['writing Ruby', 'running', 'playing chess', 'planning our next move'];
+const WORDS = [
+  'planning our next move',
+  'running',
+  'writing Ruby',
+  'playing chess',
+  'back in school',
+  'debugging something'
+];
 const HOLD_MS = 2600;
 const FADE_MS = 280;
 
