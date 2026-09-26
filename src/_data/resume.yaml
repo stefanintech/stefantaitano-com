@@ -5,7 +5,7 @@ email: hello@stefantaitano.com
 website: https://stefantaitano.com
 github: https://github.com/stefanintech
 linkedin: https://www.linkedin.com/in/stefantaitano/
-lastUpdated: '2026-08-20'
+lastUpdated: '2026-09-26'
 
 summary: >
   I spent nine years in the Army and now work on ServiceNow platforms at
@@ -91,6 +91,10 @@ certifications:
   - 15x Micro-Certifications
 
 education:
+  - institution: Golden Gate University
+    field: Bachelor's in Management
+    start: '2026'
+    end: Present
   - institution: Southern New Hampshire University
     field: Computer Science
     start: Jun 2023
