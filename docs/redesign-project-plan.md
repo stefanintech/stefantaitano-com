@@ -28,13 +28,13 @@ Those last three are **after-action**, not phases here. Stefan liked the counter
 | --- | --- |
 | Scope | Homepage + chess only |
 | Headline | `stefan is ___` as the h1. First sentence under it: “I build systems for a living and escape plans for fun.” Stefan will pass on the line after he sees it. |
-| Verb | Cycle. Learning slot is **writing Ruby** (not “learning Ruby”). Keep running, playing chess, planning our next move. If the header pill says he’s playing, **playing on Lichess** goes first. |
+| Verb | Cycle. A snapshot of things he's actually doing, not a job title. Leads with planning our next move, then running, writing Ruby, playing chess, back in school, debugging something (updated 26 Sep 2026). No single language leads. If the header pill says he’s playing, **playing on Lichess** goes first. |
 | Nav | Unchanged: Now, Articles, Talks, Projects |
 | Pixel scene | **Full-width horizon at the bottom of the page**, after the talk row and right above the footer. Night falls at the end. Mid-page it read as a full stop between the bio and the lists. Not a gutter stamp either; a 9rem crop hides the landscape. Header stays the normal cream bar (`has-pixel-hero` goes away). |
 | Field Notes | **Footer only.** Already in the footer. A homepage subscribe block is a second door. |
 | Chess | Phase 2. Default is the mock (see options below). |
 | Design lab | Delete `/design-lab/` and the lab layout when Phase 1 lands |
-| Bio | Veteran, ServiceNow, Ruby. Do not say Army. Do not put CYC on the homepage. |
+| Bio | Veteran, ServiceNow, and what the site is for. No language in the bio (updated 26 Sep 2026). Do not say Army. Do not put CYC on the homepage. |
 
 ---
 
