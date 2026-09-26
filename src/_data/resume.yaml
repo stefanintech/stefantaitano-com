@@ -10,9 +10,9 @@ lastUpdated: '2026-08-20'
 summary: >
   I spent nine years in the Army and now work on ServiceNow platforms at
   Thirdera-Cognizant in Minneapolis: upgrades, security, and Software Asset
-  Management. Outside of work, I volunteered at RubyConf 2026 and Commit Your
-  Code this year, gave a lightning talk at RubyConf, and got a pull request merged
-  on RubyEvents at the conference hack space.
+  Management. Outside of work, I volunteered at RubyConf 2026, gave a lightning
+  talk there, and got a pull request merged on RubyEvents at the conference hack
+  space.
 
 skills:
   - group: Coding
@@ -75,13 +75,11 @@ community:
     detail: >
       Helped throughout the conference and at the hack space. First Ruby-related
       pull request merged on RubyEvents.
-  - role: Volunteer
+  - role: Attendee
     org: Commit Your Code
     location: Plano, TX
     date: Sep 2026
-    detail: >
-      Community conference in Plano, September 2–4. Another chance to help out
-      after RubyConf.
+    detail: Community conference in Plano, September 2–4.
 
 certifications:
   - Architecture Excellence (ArchX)
