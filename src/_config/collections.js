@@ -1,3 +1,5 @@
+import {CHECKINS_DIR, isPublished, validateCheckins} from './utils/checkins.js';
+
 /** All blog posts as a collection. */
 export const getAllPosts = collection => {
   return collection.getFilteredByGlob('./src/posts/**/*.md').reverse();
@@ -8,6 +10,16 @@ export const getNowEntries = collection => {
   return collection.getFilteredByGlob('./src/now-entries/**/*.md').reverse();
 };
 
+/** Published check-ins, newest first. Fails the build on invalid front matter. */
+export const getCheckins = collection => {
+  const publishAfterByPath = validateCheckins();
+  const now = Date.now();
+  return collection
+    .getFilteredByGlob(`${CHECKINS_DIR}/**/*.md`)
+    .filter(item => isPublished(publishAfterByPath, item.inputPath, now))
+    .reverse();
+};
+
 /** All talks, newest first. */
 export const getAllTalks = collection => {
   return collection.getFilteredByGlob('./src/talks/**/*.md').reverse();
@@ -15,7 +27,9 @@ export const getAllTalks = collection => {
 
 /** All relevant pages as a collection for sitemap.xml */
 export const showInSitemap = collection => {
-  return collection.getFilteredByGlob('./src/**/*.{md,njk}');
+  return collection
+    .getFilteredByGlob('./src/**/*.{md,njk}')
+    .filter(item => !item.inputPath.startsWith(`${CHECKINS_DIR}/`));
 };
 
 /** All tags from all posts as a collection - excluding custom collections */

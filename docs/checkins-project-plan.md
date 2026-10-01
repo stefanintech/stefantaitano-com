@@ -2,7 +2,7 @@
 
 A "last seen" line on the homepage and a `/checkins/` timeline of public places I've been. Text first; the day/night clay dioramas come later with the check-in bot. One visible slice per session.
 
-**Status (1 Oct 2026):** Plan only. Nothing built yet. Stefan answered the open questions on 1 Oct; the calls are in the Decisions table. Phase 0 starts when he says go.
+**Status (1 Oct 2026):** Phase 0 landed: `src/checkins/`, the `checkins` collection with front-matter validation and the `publishAfter` filter, the Skull Hollow Nature Trail seed, one draft test entry, and `.cursor/rules/checkins.mdc`. Nothing visible yet. Phase 1 starts when Stefan says next phase.
 
 **Outcome:** The homepage shows `Last seen at Skull Hollow Nature Trail · Oologah · 3 days ago` (or the date, once a check-in is more than 60 days old) right after the "now" blurb. It links to `/checkins/`, a reverse-chronological list of check-ins. Nothing about a check-in reaches GitHub or the site until at least 24 hours after I was there. No people, no home, no school, no coordinates, no third-party scripts.
 
