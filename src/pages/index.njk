@@ -109,6 +109,18 @@ description: 'Veteran and ServiceNow developer in Minneapolis. I build systems f
       </div>
     </section>
 
+    {% if collections.checkins.length %}
+      <section class="home-section" id="last-seen" aria-labelledby="home-last-seen">
+        <h2 id="home-last-seen" class="home-section__label">last seen</h2>
+        <div class="home-section__body">
+          {% set checkin = collections.checkins[0] %}
+          {% set lastSeen = true %}
+          {% include "partials/checkin-line.njk" %}
+          <p><a class="home-more" href="/checkins/">every check-in <span aria-hidden="true">&rarr;</span></a></p>
+        </div>
+      </section>
+    {% endif %}
+
     <section class="home-section" aria-labelledby="home-writing">
       <h2 id="home-writing" class="home-section__label">writing</h2>
       <div class="home-section__body">
@@ -217,4 +229,5 @@ description: 'Veteran and ServiceNow developer in Minneapolis. I build systems f
 {% js "defer" %}
   {% include "scripts/stefan-is.js" %}
   {% include "scripts/retro-2006.js" %}
+  {% include "scripts/checkin-ago.js" %}
 {% endjs %}

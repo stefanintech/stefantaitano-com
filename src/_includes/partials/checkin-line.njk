@@ -1,0 +1,13 @@
+{#- One check-in as a line. Set `checkin`; set `lastSeen = true` for the "Last seen at/in" lead. -#}
+{%- set c = checkin.data -%}
+<p class="checkin-line">
+  {%- if c.precision == 'city' -%}
+    {% if lastSeen %}Last seen in {% endif %}{{ c.city }}
+  {%- else -%}
+    {% if lastSeen %}Last seen at {% endif %}{{ c.place }}&nbsp;· {{ c.city }}
+  {%- endif %}&nbsp;· <time datetime="{{ checkin.date | formatDateUtc('YYYY-MM-DD') }}" data-ago>{{ checkin.date | formatDateUtc('D MMM YYYY') }}</time>
+</p>
+{%- set note = checkin.templateContent | trim %}
+{%- if note %}
+<div class="checkin-note">{{ note | safe }}</div>
+{%- endif %}

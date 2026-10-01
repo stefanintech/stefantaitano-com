@@ -108,6 +108,7 @@ export const tests = {
       '/bookshelf/',
       '/resume/',
       '/links/',
+      '/checkins/',
       '/colophon/',
       '/accessibility/'
     ],

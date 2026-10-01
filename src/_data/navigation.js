@@ -30,6 +30,10 @@ export default {
     {
       text: 'Links',
       url: '/links/'
+    },
+    {
+      text: 'Check-ins',
+      url: '/checkins/'
     }
   ],
   legal: [
