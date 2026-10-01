@@ -1,0 +1,73 @@
+---
+description: Standing rules for check-ins (src/checkins/) and the "here's a check-in" procedure
+alwaysApply: true
+---
+
+## Rules for the agent
+
+Plan: `docs/checkins-project-plan.md`. This file is the part that applies in every session.
+
+1. **Places only. No people, ever.** No companions, "with family," names, or faces. Not in front matter, not in the note. If Stefan's message mentions people, leave them out and say you did.
+2. **Nothing reaches GitHub until 24 hours after the visit.** No branch, PR, or commit before `publishAfter` has passed. Check the clock before `git push`. The repo is public, so pushing early publishes the check-in on GitHub even though the site filters it.
+3. **Nothing private is stored.** Not here, not as `draft: true`, not anywhere else. Git history is public and deleting a file doesn't un-publish it.
+4. **No home, kids' schools, daycare, or relatives' homes.** Those get no check-in. If a place is close enough to home that it narrows things down, use `precision: city`. Never write a list of those places into this repo.
+5. **No coordinates, trailheads, parking, addresses, or directions.** The schema has no field for them, and the note shouldn't carry them either.
+6. **No images yet.** `image` isn't an allowed key until the bot phase. Never commit an original photo.
+7. **Fit this repo.** Entries live in `src/checkins/`. Validation and the publish filter live in `src/_config/utils/checkins.js`, and the collection is `getCheckins` in `src/_config/collections.js`. Templates read check-ins only through `collections.checkins`, never by looping `collections.all`.
+
+---
+
+## Standing instruction: "here's a check-in"
+
+This applies at any time, in any session. When Stefan says he checked in somewhere, or gives a place with a visit time and asks for a check-in, run this procedure.
+
+**1. Get the facts.** You need: the place (or "city only"), city, region, country, the visit date and time with its time zone, and an optional one-line note. If the visit date or time is missing, ask. Don't guess, and don't use "now." If the place could be home, a school, or a relative's home, stop and ask.
+
+**2. Work out `publishAfter`.** Round the visit time **up** to the next hour, then add 24 hours. Keep the visit's local offset. Central time is `-05:00` during daylight saving time (second Sunday of March to first Sunday of November) and `-06:00` otherwise.
+
+```
+Visit:         2024-03-31 2:13 PM CDT
+Rounded up:    2024-03-31 3:00 PM CDT
+publishAfter:  2024-04-01T15:00:00-05:00
+```
+
+A visit exactly on the hour stays on that hour. `publishAfter` always lands on the hour and on a later calendar day than `date`.
+
+**3. Write the file.** `src/checkins/YYYY-MM-DD-slug.md`, where the date is the local visit day and the slug comes from the place (or city).
+
+```yaml
+---
+date: 2024-03-31
+publishAfter: 2024-04-01T15:00:00-05:00
+place: Skull Hollow Nature Trail
+city: Oologah
+region: OK
+country: US
+precision: place
+kind: trail
+source: hand
+draft: false
+---
+A quiet trail through the woods outside town.
+```
+
+- **Required:** `date`, `publishAfter`, `city`, `country` (two uppercase letters), `precision` (`place` or `city`), plus `place` when `precision: place`.
+- **Optional:** `region`, `kind`, `source` (`hand` or `bot`), `draft`.
+- **No other keys.** The build fails on anything else, including `with`, `people`, `coords`, and `image`.
+- `precision: city` means no `place` line at all.
+- The note is optional. Use Stefan's words if he gave any. If he didn't, leave the body empty; don't write one for him.
+
+**4. Build.** Run `npm run build`. It must pass. A validation failure names the file and the reason; fix the entry, not the validator.
+
+**5. Push only after `publishAfter`.** Compare `publishAfter` to the current time.
+
+- **Not passed yet:** don't create a branch, commit, or push. Tell Stefan the exact time it can go out, and stop. The file can wait locally.
+- **Passed:** create a new branch, commit only the new entry, push, and open a PR. Don't merge. Merging triggers the deploy.
+
+**6. Report.** Show the file, the `publishAfter` math, and the PR link (or the time it can be pushed).
+
+**Do not, ever:**
+- Push, branch, or open a PR before `publishAfter`.
+- Add a key to get past the validator, or loosen the validator to fit an entry.
+- Store a private or family-only entry, even as a draft.
+- Add coordinates, an address, or directions, or describe people in the note.
