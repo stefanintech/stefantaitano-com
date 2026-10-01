@@ -4,7 +4,7 @@ A "last seen" line on the homepage and a `/checkins/` timeline of public places 
 
 **Status (1 Oct 2026):** Plan only. Nothing built yet. Stefan answered the open questions on 1 Oct; the calls are in the Decisions table. Phase 0 starts when he says go.
 
-**Outcome:** The homepage shows `Last seen at Minnehaha Falls · Minneapolis · 3 days ago` right after the "now" blurb. It links to `/checkins/`, a reverse-chronological list of check-ins. Nothing about a check-in reaches GitHub or the site until at least 24 hours after I was there. No people, no home, no school, no coordinates, no third-party scripts.
+**Outcome:** The homepage shows `Last seen at Skull Hollow Nature Trail · Oologah · 3 days ago` (or the date, once a check-in is more than 60 days old) right after the "now" blurb. It links to `/checkins/`, a reverse-chronological list of check-ins. Nothing about a check-in reaches GitHub or the site until at least 24 hours after I was there. No people, no home, no school, no coordinates, no third-party scripts.
 
 **Cut**
 
@@ -39,11 +39,11 @@ A "last seen" line on the homepage and a `/checkins/` timeline of public places 
 | Note | **Optional.** The Markdown body. Empty is fine. |
 | Private entries | **Not stored anywhere** for now. |
 | Format | **One Markdown file per entry** in `src/checkins/`, the same pattern as `src/now-entries/`. Collection `checkins`. |
-| Names | URL `/checkins/`. Homepage label `last seen` (lowercase, like every other home label), with the line reading "Last seen at …". Footer link `Check-ins`. |
+| Names | URL `/checkins/`. Homepage label **`last seen`**, lowercase like every other home label (confirmed by Stefan 1 Oct). The line itself reads "Last seen at …". Footer link `Check-ins`. |
 | Homepage placement | New `home-section` directly after `#now-preview`. Absent when there are no published check-ins. |
 | Footer | `/checkins/` in the footer `bottom` nav. Top nav stays at four items. |
 | "N days ago" | Up to 60 days: "N days ago." After 60 days: the date. The date is rendered at build; the browser swaps in "N days ago" only inside the 60-day window. No JS: the date. |
-| Seed entries | **One real seed: Minnehaha Falls** (Minneapolis, MN, US). Any other seeds are `draft: true` and never reach production. |
+| Seed entries | **One real seed: Skull Hollow Nature Trail** (Oologah, OK, US), visited Sunday 31 Mar 2024 at 2:13 PM CT. `publishAfter` is 3:00 PM CT on 1 Apr 2024, so it can be pushed right away. City-level location only. It gets a one-line placeholder note Stefan can edit. Any other seeds are `draft: true` and never reach production. |
 
 ---
 
@@ -90,21 +90,27 @@ Extend these. Do not add a second collection system, a root `_data/`, a JSON che
 
 One file per check-in: `src/checkins/YYYY-MM-DD-slug.md`. The filename date sorts it, like posts. The body is the optional one-line note.
 
+The example is the real Phase 0 seed, `src/checkins/2024-03-31-skull-hollow-nature-trail.md`. Visit: Sunday, 31 Mar 2024, 2:13 PM Central (CDT, UTC−5). Rounded up to 3:00 PM, plus 24 hours: 3:00 PM CDT on 1 Apr 2024.
+
 ```yaml
 ---
-date: 2026-10-01                          # local (CT) calendar day of the visit. Display with formatDateUtc.
-publishAfter: 2026-10-02T15:00:00-05:00   # visit time rounded up to the hour, plus 24h. Offset required.
-place: Minnehaha Falls                    # omit when precision is city
-city: Minneapolis
-region: MN                                # optional
+date: 2024-03-31                          # local (CT) calendar day of the visit. Display with formatDateUtc.
+publishAfter: 2024-04-01T15:00:00-05:00   # visit time rounded up to the hour, plus 24h. Offset required.
+place: Skull Hollow Nature Trail          # omit when precision is city
+city: Oologah
+region: OK                                # optional
 country: US                               # required, ISO 3166-1 alpha-2
 precision: place                          # place | city
-kind: park                                # optional: park, trail, cafe, venue, airport, city…
+kind: trail                               # optional: park, trail, cafe, venue, airport, city…
 source: hand                              # optional: hand | bot. Lets the future bot find its own entries.
 draft: false                              # existing drafts plugin
 ---
-First real fall walk. The falls were louder than I expected.
+A quiet trail through the woods outside town.
 ```
+
+The note is a **placeholder**. Stefan can rewrite or delete it before Phase 0 merges; if he doesn't, it ships as written. Location stays at city level: place name, `Oologah, OK`, `US`. No coordinates, trailhead, parking, or directions, in the front matter or the note.
+
+Central time is `-05:00` during daylight saving time (March to early November) and `-06:00` the rest of the year. Use the offset in effect on the visit date.
 
 `src/checkins/checkins.json` (directory data, same as `now-entries.json`):
 
@@ -149,7 +155,7 @@ Invisible. Nothing on the live site changes.
 - `getCheckins` in `src/_config/collections.js`, next to `getNowEntries`: glob `./src/checkins/**/*.md`, validate, drop entries whose `publishAfter` is in the future, newest first.
 - Validation and the publish filter in one small helper, `src/_config/utils/checkins.js`.
 - Register `addCollection('checkins', getCheckins)` in `eleventy.config.js`.
-- The real seed: `src/checkins/YYYY-MM-DD-minnehaha-falls.md`, with `place: Minnehaha Falls`, `city: Minneapolis`, `region: MN`, `country: US`, `precision: place`, `kind: park`, `source: hand`. No note unless Stefan gives one. The visit date is still needed (see Unresolved).
+- The real seed: `src/checkins/2024-03-31-skull-hollow-nature-trail.md`, exactly as in [Data schema](#data-schema), placeholder note included unless Stefan has edited it.
 - If a second entry is useful for testing (for example a `precision: city` one), it gets `draft: true`. Drafts never reach production or deploy previews.
 - `.cursor/rules/checkins.mdc`: the standing instruction "here's a check-in," modeled on the study-embed procedure in `chess-page.mdc`. It covers the schema, file naming, the privacy rules, the 24-hour push rule ("don't push until `publishAfter` has passed; if it hasn't, say when it will and stop"), and "open a PR, don't merge." Public-safe content only.
 
@@ -160,15 +166,15 @@ Invisible. Nothing on the live site changes.
 **Gotchas**
 
 - `item.data` is front matter merged with global data (`collections`, `page`, `meta`, …), so the allowlist check can't use it. Read the entry's own front matter: split the file at the `---` fences and parse it with `js-yaml`, which is already a direct dependency (`gray-matter` is only transitive; don't import it).
-- `js-yaml` turns `2026-10-02T15:00:00-05:00` into a `Date`, and a timestamp without an offset is read as UTC. Check for the offset in the raw text before parsing.
-- `date: 2026-10-01` becomes UTC midnight. Use `formatDateUtc` everywhere, like `/now`.
+- `js-yaml` turns `2024-04-01T15:00:00-05:00` into a `Date`, and a timestamp without an offset is read as UTC. Check for the offset in the raw text before parsing.
+- `date: 2024-03-31` becomes UTC midnight. Use `formatDateUtc` everywhere, like `/now`.
 - The drafts plugin excludes `draft: true` from collections in `npm run build` but not in `serve`. Don't confuse a draft showing locally with the publish filter failing.
 - The publish filter lives in `getCheckins`, so a pending entry is still in `collections.all` and `collections.showInSitemap` (with no URL, because `permalink: false`). Templates read check-ins only through `collections.checkins`, never by looping `collections.all`.
 - The seed is a past visit, so its `publishAfter` is already in the past and it can be pushed straight away.
 
 **Done when**
 
-- `npm run build` passes, and `collections.checkins` has exactly the Minnehaha Falls seed (log the length once, then remove the log).
+- `npm run build` passes, and `collections.checkins` has exactly the Skull Hollow Nature Trail seed (log the length once, then remove the log).
 - A local entry with `publishAfter` tomorrow isn't in the collection, and `grep -r "<its place name>" dist/` finds nothing. Don't commit it.
 - A local entry with a `with:` key, a `coords:` key, a missing `country`, a `publishAfter` without an offset, or `precision: city` plus `place` each fails the build with a message naming the file.
 - No new page in `dist/` (no `/checkins/` yet), and the live pages look the same.
@@ -192,7 +198,7 @@ The MVP. Visible. No images.
 
 **Days ago**
 
-- Build output: `<time datetime="2026-10-01" data-ago>1 Oct 2026</time>`. That's what no-JS visitors see, it never goes stale, and it's also the after-60-days display, so that case needs no JS.
+- Build output: `<time datetime="2024-03-31" data-ago>31 Mar 2024</time>`. That's what no-JS visitors see, it never goes stale, and it's also the after-60-days display, so that case needs no JS.
 - Client: parse `datetime` as a local calendar day (`new Date(y, m - 1, d)`), diff against today's local midnight, `Math.round` the day count (so DST doesn't produce 2.96). If the result is 1–60, replace the text with `Intl.RelativeTimeFormat('en', {numeric: 'always'})` ("1 day ago," "60 days ago"). Otherwise leave the date.
 - Keep `datetime` and the visible date in the same format everywhere so the two pages agree.
 
@@ -209,7 +215,7 @@ The MVP. Visible. No images.
 
 **Done when**
 
-- `/` shows "last seen" right after "now" with the Minnehaha Falls line, and the link goes to `/checkins/`.
+- `/` shows "last seen" right after "now" with `Last seen at Skull Hollow Nature Trail · Oologah · 31 Mar 2024` (more than 60 days old, so the date shows, not "N days ago"), and the link goes to `/checkins/`.
 - With zero published check-ins, the section isn't there and nothing errors.
 - `/checkins/` lists every published check-in, newest first, grouped by month. The footer link works on every full page.
 - With JS off, both pages show the date. With JS on, an entry within 60 days shows "N days ago" and an older one shows the date (test by backdating locally).
@@ -236,5 +242,4 @@ Out of scope for this plan. Each gets planned when Stefan picks it up.
 
 ## Unresolved
 
-- **Minnehaha Falls visit date.** Phase 0 needs the day (and roughly the time, for `publishAfter`) of the real visit. If Stefan doesn't remember the time, use the visit date at 23:00 local, plus 24 hours. It's a past visit either way, so the delay has long passed.
-- **Seed note.** Optional. Use one only if Stefan writes it.
+- **Seed note wording.** The Skull Hollow note is a placeholder. Stefan can edit it before Phase 0 merges, or leave it.
