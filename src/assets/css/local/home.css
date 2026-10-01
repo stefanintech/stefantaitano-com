@@ -175,6 +175,10 @@ body.home main.flow {
   scroll-margin-block-start: calc(var(--home-label-top) + var(--space-s));
 }
 
+#last-seen .checkin-line time {
+  white-space: nowrap;
+}
+
 /* Night falls at the end of the page. The footer sits right under the ground. */
 .home-horizon {
   margin-block-start: var(--space-2xl);

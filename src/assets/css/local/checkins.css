@@ -24,6 +24,10 @@
   overflow-wrap: anywhere;
 }
 
+.checkins-entry .checkin-line time {
+  white-space: nowrap;
+}
+
 .checkins-entry .checkin-note {
   margin-block-start: var(--space-3xs);
   color: var(--color-text-accent);

@@ -4,8 +4,8 @@
   {%- if c.precision == 'city' -%}
     {% if lastSeen %}Last seen in {% endif %}{{ c.city }}
   {%- else -%}
-    {% if lastSeen %}Last seen at {% endif %}{{ c.place }} · {{ c.city }}
-  {%- endif %} · <time datetime="{{ checkin.date | formatDateUtc('YYYY-MM-DD') }}" data-ago>{{ checkin.date | formatDateUtc('D MMM YYYY') }}</time>
+    {% if lastSeen %}Last seen at {% endif %}{{ c.place }}&nbsp;· {{ c.city }}
+  {%- endif %}&nbsp;· <time datetime="{{ checkin.date | formatDateUtc('YYYY-MM-DD') }}" data-ago>{{ checkin.date | formatDateUtc('D MMM YYYY') }}</time>
 </p>
 {%- set note = checkin.templateContent | trim %}
 {%- if note %}
