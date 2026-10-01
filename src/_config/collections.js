@@ -27,7 +27,9 @@ export const getAllTalks = collection => {
 
 /** All relevant pages as a collection for sitemap.xml */
 export const showInSitemap = collection => {
-  return collection.getFilteredByGlob('./src/**/*.{md,njk}');
+  return collection
+    .getFilteredByGlob('./src/**/*.{md,njk}')
+    .filter(item => !item.inputPath.startsWith(`${CHECKINS_DIR}/`));
 };
 
 /** All tags from all posts as a collection - excluding custom collections */
