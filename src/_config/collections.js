@@ -1,3 +1,5 @@
+import {CHECKINS_DIR, isPublished, validateCheckins} from './utils/checkins.js';
+
 /** All blog posts as a collection. */
 export const getAllPosts = collection => {
   return collection.getFilteredByGlob('./src/posts/**/*.md').reverse();
@@ -6,6 +8,16 @@ export const getAllPosts = collection => {
 /** All Now journal entries, newest first. */
 export const getNowEntries = collection => {
   return collection.getFilteredByGlob('./src/now-entries/**/*.md').reverse();
+};
+
+/** Published check-ins, newest first. Fails the build on invalid front matter. */
+export const getCheckins = collection => {
+  const publishAfterByPath = validateCheckins();
+  const now = Date.now();
+  return collection
+    .getFilteredByGlob(`${CHECKINS_DIR}/**/*.md`)
+    .filter(item => isPublished(publishAfterByPath, item.inputPath, now))
+    .reverse();
 };
 
 /** All talks, newest first. */
