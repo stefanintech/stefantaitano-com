@@ -1,0 +1,52 @@
+---
+layout: base
+permalink: /checkins/index.html
+title: 'Check-ins'
+description: 'Public places Stefan Taitano has been, newest first. Places only, posted at least a day later.'
+---
+
+{% set checkins = collections.checkins %}
+
+<div class="wrapper flow checkins">
+  {% set kicker = "Places" %}
+  {% set intro = "Places I've been, newest first. Places only, never people, and each one goes up at least a day after I was there." %}
+  {% include "partials/page-intro.njk" %}
+
+  {% if checkins.length %}
+    {% set months = [] %}
+    {% set monthKeys = [] %}
+    {% for checkin in checkins %}
+      {% set key = checkin.date | formatDateUtc('YYYY-MM') %}
+      {% if not (key in monthKeys) %}
+        {% set monthKeys = (monthKeys.push(key), monthKeys) %}
+        {% set months = (months.push({key: key, label: checkin.date | formatDateUtc('MMMM YYYY')}), months) %}
+      {% endif %}
+    {% endfor %}
+
+    {% for month in months %}
+      <section class="checkins-month" aria-labelledby="checkins-{{ month.key }}">
+        <h2 id="checkins-{{ month.key }}" class="checkins-month__label">{{ month.label }}</h2>
+        <ol class="checkins-list" role="list">
+          {% for checkin in checkins %}
+            {% if (checkin.date | formatDateUtc('YYYY-MM')) == month.key %}
+              <li class="checkins-entry">
+                {% set lastSeen = false %}
+                {% include "partials/checkin-line.njk" %}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ol>
+      </section>
+    {% endfor %}
+  {% else %}
+    <p>No check-ins yet.</p>
+  {% endif %}
+</div>
+
+{% css "local" %}
+  {% include "css/checkins.css" %}
+{% endcss %}
+
+{% js "defer" %}
+  {% include "scripts/checkin-ago.js" %}
+{% endjs %}

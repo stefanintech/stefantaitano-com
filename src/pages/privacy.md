@@ -14,6 +14,10 @@ This site does not use third-party advertising or analytics scripts in the pages
 
 The site is **hosted on Netlify** (and delivered over HTTPS). Like any hosting provider, Netlify may process technical data needed to operate the service (for example request metadata or server logs under their own policies). I do not use that data to profile visitors or to sell personal information.
 
+**Check-ins**
+
+The [check-ins](/checkins/) page lists public places I've been, or just the city. It never shows people, and each check-in goes up at least a day after I was there. There are no map scripts or map tiles on it.
+
 **How do I use data you send me?**
 
 If you email me directly, I use your message only to respond or follow up as you would expect. I do not add you to marketing lists unless you explicitly ask to be included.

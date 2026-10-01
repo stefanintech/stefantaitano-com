@@ -1,0 +1,31 @@
+/* /checkins/ timeline. Local bundle only. */
+
+.checkins-month {
+  margin-block-start: var(--space-xl);
+}
+
+.checkins-month__label {
+  font-size: var(--size-step-1);
+  color: var(--color-text-accent);
+}
+
+.checkins-list {
+  list-style: none;
+  padding: 0;
+  margin-block-start: var(--space-s);
+}
+
+.checkins-entry {
+  border-block-start: var(--stroke);
+  padding-block: var(--space-s);
+}
+
+.checkins-entry .checkin-line {
+  overflow-wrap: anywhere;
+}
+
+.checkins-entry .checkin-note {
+  margin-block-start: var(--space-3xs);
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+}
