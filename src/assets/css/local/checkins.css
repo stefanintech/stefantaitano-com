@@ -20,6 +20,10 @@
   padding-block: var(--space-s);
 }
 
+.checkins-entry .checkin-figure {
+  margin-block-end: var(--space-xs);
+}
+
 .checkins-entry .checkin-line {
   overflow-wrap: anywhere;
 }
