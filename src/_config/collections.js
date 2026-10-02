@@ -1,4 +1,4 @@
-import {CHECKINS_DIR, isPublished, validateCheckins} from './utils/checkins.js';
+import {CHECKINS_DIR, isPublished, validateCheckinImages, validateCheckins} from './utils/checkins.js';
 
 /** All blog posts as a collection. */
 export const getAllPosts = collection => {
@@ -10,9 +10,10 @@ export const getNowEntries = collection => {
   return collection.getFilteredByGlob('./src/now-entries/**/*.md').reverse();
 };
 
-/** Published check-ins, newest first. Fails the build on invalid front matter. */
-export const getCheckins = collection => {
+/** Published check-ins, newest first. Fails the build on invalid front matter or images. */
+export const getCheckins = async collection => {
   const publishAfterByPath = validateCheckins();
+  await validateCheckinImages();
   const now = Date.now();
   return collection
     .getFilteredByGlob(`${CHECKINS_DIR}/**/*.md`)
