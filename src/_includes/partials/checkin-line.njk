@@ -1,5 +1,6 @@
-{#- One check-in as a line. Set `checkin`; set `lastSeen = true` for the "Last seen at/in" lead. -#}
+{#- One check-in: images if it has them, then the line. Set `checkin`; set `lastSeen = true` for the "Last seen at/in" lead. -#}
 {%- set c = checkin.data -%}
+{% include "partials/checkin-figure.njk" %}
 <p class="checkin-line">
   {%- if c.precision == 'city' -%}
     {% if lastSeen %}Last seen in {% endif %}{{ c.city }}

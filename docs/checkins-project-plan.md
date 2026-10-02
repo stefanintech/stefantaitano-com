@@ -2,9 +2,9 @@
 
 A "last seen" line on the homepage and a `/checkins/` timeline of public places I've been. Text first; the day/night clay dioramas come later with the check-in bot. One visible slice per session.
 
-**Status (1 Oct 2026):** Phases 0 and 1 landed. Phase 0: `src/checkins/`, the `checkins` collection with front-matter validation and the `publishAfter` filter, the Skull Hollow Nature Trail seed, one draft test entry, and `.cursor/rules/checkins.mdc`. Phase 1 (text-only): "last seen" on the homepage, `/checkins/` grouped by month, client-side "N days ago" for 1–60 days, the footer link, and the privacy paragraph. Everything after this is future work.
+**Status (2 Oct 2026):** Phases 0 and 1 landed. Phase 0: `src/checkins/`, the `checkins` collection with front-matter validation and the `publishAfter` filter, and `.cursor/rules/checkins.mdc`. Phase 1 (text-only): "last seen" on the homepage, `/checkins/` grouped by month, client-side "N days ago" for 1–60 days, the footer link, and the privacy paragraph. Phase 2 (site side of images) is in review: the optional `image: {day, night, alt}` key, the day/night swap on both pages, `npm run checkins:images`, and the build-time image checks. The 2024 seeds were removed before Phase 2 merges: Skull Hollow Nature Trail, the city-precision draft, Minnehaha Falls and its images, and the draft image test entry. Nothing in the test suite depended on those files. The site ships with no published check-ins until a real visit is written. The bot and everything after it are future work.
 
-**Outcome:** The homepage shows `Last seen at Skull Hollow Nature Trail · Oologah · 3 days ago` (or the date, once a check-in is more than 60 days old) right after the "now" blurb. It links to `/checkins/`, a reverse-chronological list of check-ins. Nothing about a check-in reaches GitHub or the site until at least 24 hours after I was there. No people, no home, no school, no coordinates, no third-party scripts.
+**Outcome:** When a check-in is published, the homepage shows `Last seen at {place} · {city} · 3 days ago` (or the date, once a check-in is more than 60 days old) right after the "now" blurb. It links to `/checkins/`, a reverse-chronological list of check-ins. With none published, that section is absent and `/checkins/` says "No check-ins yet." Nothing about a check-in reaches GitHub or the site until at least 24 hours after I was there. No people, no home, no school, no coordinates, no third-party scripts.
 
 **Cut**
 
@@ -13,7 +13,7 @@ A "last seen" line on the homepage and a `/checkins/` timeline of public places 
 - Coordinates, home, kids' schools, daycare, relatives' homes
 - Live location, or anything that says where I am right now
 - Third-party maps, tiles, or map scripts (Leaflet, Mapbox, Google Maps)
-- Images in Phase 0–1. The day/night dioramas and the theme swap ship with the bot.
+- Images in Phase 0–1. Phase 2 adds them on the site side; generating them is the bot's job.
 - A scheduled rebuild. Pushes wait 24 hours, so merge deploys are enough.
 - Per-check-in pages, OG images, and a check-ins feed (later, maybe)
 - The check-in bot, stats, map, "on this day," monthly recaps (future only)
@@ -32,7 +32,7 @@ A "last seen" line on the homepage and a `/checkins/` timeline of public places 
 | How it reaches the site | The merge deploy, which runs after the push and so after the delay. `publishAfter` is also filtered at build as a backstop in case something gets pushed early. |
 | Scheduled rebuild | **None.** Pushes wait, so a merge deploy always happens after the delay. See the future note at the end. |
 | Deploy previews | **On.** Checked 1 Oct: PR #39 has a passing `netlify/stefantaitano/deploy-preview` check (`deploy-preview-39--stefantaitano.netlify.app`). `netlify.toml` has no `[context.deploy-preview]` overrides, so previews run the same `npm run build` as production: drafts hidden, `publishAfter` filter on. Preview URLs are public, which is fine because the PR only exists after the delay. |
-| Images | **None in Phase 1.** Ships text-only. The day/night dioramas and the `data-theme` swap move to the bot phase. No placeholder CSS hook now: with no images there's nothing for it to target, and the text already follows the theme through the existing tokens. |
+| Images | **None in Phase 1.** Ships text-only. **Phase 2 adds the site side** (schema key, day/night swap, encoder script, build checks) before the bot, so the bot only has to produce two files and three lines of front matter. Contract: `src/assets/images/checkins/<slug>-day.webp` and `-night.webp`, WebP q≈80, exactly 1600×1067, ≤250 KB each, no EXIF/XMP/GPS. Alt describes the scene, never people. |
 | Precision | `precision: place` (public place name + city) or `precision: city` (city only, no place name). |
 | Coordinates | **Not in the schema.** Added only when a map is planned, at 2 decimals (~1 km) at most. |
 | Country | **Required from day one** (ISO 3166-1 alpha-2, e.g. `US`), ahead of moving overseas in 2027. |
@@ -43,7 +43,7 @@ A "last seen" line on the homepage and a `/checkins/` timeline of public places 
 | Homepage placement | New `home-section` directly after `#now-preview`. Absent when there are no published check-ins. |
 | Footer | `/checkins/` in the footer `bottom` nav. Top nav stays at four items. |
 | "N days ago" | Up to 60 days: "N days ago." After 60 days: the date. The date is rendered at build; the browser swaps in "N days ago" only inside the 60-day window. No JS: the date. |
-| Seed entries | **One real seed: Skull Hollow Nature Trail** (Oologah, OK, US), visited Sunday 31 Mar 2024 at 2:13 PM CT. `publishAfter` is 3:00 PM CT on 1 Apr 2024, so it can be pushed right away. City-level location only. It gets a one-line placeholder note Stefan can edit. Any other seeds are `draft: true` and never reach production. |
+| Seed entries | The Phase 0 seed was Skull Hollow Nature Trail (Oologah, OK, US), visited Sunday 31 Mar 2024 at 2:13 PM CT, with `publishAfter` at 3:00 PM CT on 1 Apr 2024. It and the other 2024 entries were removed before Phase 2 merges. The schema example below is the shape of an entry, not a file in the repo. |
 
 ---
 
@@ -90,7 +90,7 @@ Extend these. Do not add a second collection system, a root `_data/`, a JSON che
 
 One file per check-in: `src/checkins/YYYY-MM-DD-slug.md`. The filename date sorts it, like posts. The body is the optional one-line note.
 
-The example is the real Phase 0 seed, `src/checkins/2024-03-31-skull-hollow-nature-trail.md`. Visit: Sunday, 31 Mar 2024, 2:13 PM Central (CDT, UTC−5). Rounded up to 3:00 PM, plus 24 hours: 3:00 PM CDT on 1 Apr 2024.
+The block below is the shape of an entry. It was the Phase 0 Skull Hollow seed (visit Sunday, 31 Mar 2024, 2:13 PM Central, CDT, UTC−5; rounded up to 3:00 PM, plus 24 hours: 3:00 PM CDT on 1 Apr 2024). That file and the other 2024 entries were removed before Phase 2 merges.
 
 ```yaml
 ---
@@ -120,7 +120,9 @@ Central time is `-05:00` during daylight saving time (March to early November) a
 
 **Required:** `date`, `publishAfter`, `city`, `country`, `precision`, plus `place` when `precision: place`.
 
-**Allowed keys, and nothing else:** `date`, `publishAfter`, `place`, `city`, `region`, `country`, `precision`, `kind`, `source`, `draft`. Anything else fails the build. An allowlist is stricter than a list of banned words like `with` or `people`, and it's what makes "the schema has no field for people" true in practice. `image` and `coords` aren't on it. They get added in the phase that needs them.
+**Allowed keys, and nothing else:** `date`, `publishAfter`, `place`, `city`, `region`, `country`, `precision`, `kind`, `source`, `draft`, and (from Phase 2) `image`. Anything else fails the build. An allowlist is stricter than a list of banned words like `with` or `people`, and it's what makes "the schema has no field for people" true in practice. `coords` isn't on it; it gets added in the phase that needs it.
+
+**`image` (optional, Phase 2):** `{day, night, alt}`, all three or none. See [Phase 2](#phase-2--images-site-side).
 
 **Validation (fails the build, not soft):**
 
@@ -155,7 +157,7 @@ Invisible. Nothing on the live site changes.
 - `getCheckins` in `src/_config/collections.js`, next to `getNowEntries`: glob `./src/checkins/**/*.md`, validate, drop entries whose `publishAfter` is in the future, newest first.
 - Validation and the publish filter in one small helper, `src/_config/utils/checkins.js`.
 - Register `addCollection('checkins', getCheckins)` in `eleventy.config.js`.
-- The real seed: `src/checkins/2024-03-31-skull-hollow-nature-trail.md`, exactly as in [Data schema](#data-schema), placeholder note included unless Stefan has edited it.
+- The real seed was `src/checkins/2024-03-31-skull-hollow-nature-trail.md`, exactly as in [Data schema](#data-schema). Removed, with the other 2024 entries, before Phase 2 merges.
 - If a second entry is useful for testing (for example a `precision: city` one), it gets `draft: true`. Drafts never reach production or deploy previews.
 - `.cursor/rules/checkins.mdc`: the standing instruction "here's a check-in," modeled on the study-embed procedure in `chess-page.mdc`. It covers the schema, file naming, the privacy rules, the 24-hour push rule ("don't push until `publishAfter` has passed; if it hasn't, say when it will and stop"), and "open a PR, don't merge." Public-safe content only.
 
@@ -225,15 +227,56 @@ The MVP. Visible. No images.
 
 ---
 
+## Phase 2 — Images (site side)
+
+Optional day and night images on a check-in, shown to match the theme. This phase is the site only: the schema, the templates, the encoder script, and the build checks. How the bot writes files and opens PRs is out of scope; it gets planned on its own. No real check-in gets an image in this phase.
+
+**Image contract**
+
+- Files: `src/assets/images/checkins/<slug>-day.webp` and `<slug>-night.webp`. The slug is the entry's filename without `.md`, e.g. `2026-04-02-place-name`.
+- WebP, q≈80, landscape 3:2, exactly 1600×1067. Day and night are the same size. ≤250 KB each (checked as 250,000 bytes). No EXIF, XMP, or GPS.
+- Front matter: `image: { day: <slug>-day.webp, night: <slug>-night.webp, alt: "…" }`. Alt describes the scene, never people.
+
+**Build**
+
+- `src/_config/utils/checkins.js`: `image` joins the allowlist. `day`, `night`, and `alt` are required together, no other subkeys, file names must match the slug, and both files must exist. A partial `image` fails the build. Entries without `image` are unchanged.
+- Same file: `validateCheckinImages()` checks every file in `src/assets/images/checkins/`. It fails on non-WebP files, anything over 250,000 bytes, any size other than 1600×1067, or EXIF/XMP in the file (sharp `metadata()`, so it runs on Netlify). Where `exiftool` is installed, it also runs `exiftool -json -a -gps:all` and fails on any GPS tag. `getCheckins` runs it, so `npm run build` enforces it.
+- `src/_config/setup/checkin-images.js` + `npm run checkins:images -- <slug> <day-source> <night-source>`: sharp, `rotate()` to apply orientation, then 1600×1067 WebP q80 (q75, then q70 only if needed to fit), no metadata. Sources with transparent padding are trimmed on alpha to one shared crop (day and night stay registered), given a small even margin, and fit to 3:2. Opaque sources are cover-cropped. `-- --check` runs the folder check on its own.
+- `src/_includes/partials/checkin-figure.njk`: two `<img data-variant="day|night">` with `width="1600" height="1067" loading="lazy" decoding="async"`. Included by `checkin-line.njk`, so the homepage "last seen" and `/checkins/` both get it.
+- `src/assets/css/local/checkin-figure.css`: night hidden by default. `:root[data-theme='light']` shows day, `:root[data-theme='dark']` shows night. With JS off, `@media (prefers-color-scheme: dark)` on `:root:not([data-theme])` shows night. Included in the local CSS block on both pages.
+- `src/pages/privacy.md` and `.cursor/rules/checkins.mdc`: where images go, naming, the spec, and the GPS rule.
+- A `draft: true` test entry with generated placeholder DAY/NIGHT images was used to check the swap. It was removed with the other 2024 entries before Phase 2 merges. Nothing in the test suite read it.
+
+**Endpoints:** none.
+
+**Verify first:** none. No external data.
+
+**Gotchas**
+
+- The eleventy-img transform wraps each `<img>` in a `<picture>` and re-encodes it into `/img/`. It keeps `data-variant`, `width`, `height`, and `loading` on the `<img>`. `.checkin-figure picture { display: contents }` keeps the CSS swap targeting the `<img>`.
+- JPEG can't hold alpha, and sharp's default composite is black. The transform's JPEG hook flattens transparency onto the light page background (`themeLight`, `#fbf8f3`, Gray 100) before encoding. AVIF and WebP keep their alpha, so dark mode still shows the page background through the transparent areas. The JPEG fallback is the one that sits on cream, including in dark mode.
+- `src/assets/images/checkins/` isn't passthrough-copied. Only files referenced by a published entry reach `dist/` (as `/img/…`), but every committed file is public in the repo, so the build checks the whole folder, not just referenced files.
+- Chrome doesn't fetch a `loading="lazy"` image that's `display: none`, so with JS on only the visible variant downloads. With JS off, browsers turn off lazy loading (a tracking guard), so both variants download. The right one still shows.
+- With several files, `exiftool -a -gps:all` prints headers and "N image files read" even with no GPS. Parse `-json` output instead.
+- Netlify has no exiftool. The sharp check alone fails on any EXIF block, which is where GPS lives.
+
+**Done when**
+
+- An entry without `image` renders exactly as before.
+- A partial `image`, a wrong file name, a missing file, a non-WebP file, a file over 250,000 bytes, a file that isn't 1600×1067, or a file with EXIF/GPS each fails `npm run build` with a message naming the file.
+- With the test entry un-drafted locally: `/` and `/checkins/` show the day image in light and the night image in dark, at 390 and 1440, with no overflow and CLS 0. With JS off, the image follows `prefers-color-scheme`.
+- With JS on, only the visible variant is requested. Toggling the theme fetches the other one then.
+- With the test entry as a draft, `npm run build` passes and `grep -r "Image Test Placeholder" dist/` finds nothing.
+- `npm run checkins:images` makes files that pass the check, from a source with GPS. `npm run test:a11y` passes.
+
+---
+
 ## Future (not phases yet)
 
 Out of scope for this plan. Each gets planned when Stefan picks it up.
 
-- **Phase 2: check-in bot, with images.** Photo + a short note in chat → place lookup → check against a private denylist (home, schools, relatives) → day and night dioramas generated from the place, not the photo, with no people in them → preview in chat → wait until `publishAfter` → branch and PR in this repo → deploy preview → Stefan merges. The original photo and the denylist stay out of this repo. Write path is undecided: a Cursor cloud agent following `.cursor/rules/checkins.mdc` (how PRs land today), or a scoped token. Never auto-merge. This phase also brings in what Phase 1 deferred:
-  - **Schema:** add `image: {day, night, alt}` to the allowlist (both variants and `alt` required together).
-  - **Day/night swap:** two `<img>`s with `data-variant="day|night"`, swapped in CSS on `:root[data-theme='dark']`. `theme-toggle.js` always sets `data-theme` when JS runs, so `prefers-color-scheme` is only the no-JS fallback (`:root:not([data-theme])`). A `<picture><source media="(prefers-color-scheme: dark)">` alone would ignore the toggle. Both lazy, so only the visible one downloads.
-  - **Image privacy:** re-encode with sharp before committing (metadata drops unless `withMetadata()` is called) and check with `exiftool -a -gps:all`. Sources live in `src/assets/images/checkins/`, which isn't passthrough-copied, but the repo is public, so the source files have to be clean too.
-  - **Size:** 1600px long edge, WebP q≈80, ≤250 KB per variant. About 50 MB a year at two check-ins a week. Revisit at ~150 MB.
+- **Check-in bot.** Photo + a short note in chat → place lookup → check against a private denylist (home, schools, relatives) → day and night dioramas generated from the place, not the photo, with no people in them → preview in chat → wait until `publishAfter` → branch and PR in this repo → deploy preview → Stefan merges. The original photo and the denylist stay out of this repo. Write path is undecided: a Cursor cloud agent following `.cursor/rules/checkins.mdc` (how PRs land today), or a scoped token. Never auto-merge. It writes images through `npm run checkins:images` to the [Phase 2](#phase-2--images-site-side) contract.
+  - **Size:** about 50 MB a year at two check-ins a week and ≤250 KB per variant. Revisit at ~150 MB.
 - **Phase 3: extras.** A stats line ("14 places, 5 cities in 2026"). A static SVG map generated at build through the existing `{% svg %}`/OG pipeline, with no tiles or scripts. That's when `coords` gets added, at 2 decimals at most. "On this day." A monthly recap. A Wall post in the retro-2005 skin.
 - **Scheduled rebuild, only if the push rule ever changes.** If entries ever land on `main` before `publishAfter`, the cheapest pickup is a Netlify scheduled function that POSTs to a build hook. Keep the hook URL in a Netlify env var and the schedule in `netlify.toml`, which beats a GitHub Actions cron: GitHub cron runs can lag, and GitHub disables them in public repos after 60 days without commits. Not needed while pushes wait.
 - **Maybe later:** per-entry pages and OG images, a check-ins feed, external image storage.
@@ -242,4 +285,4 @@ Out of scope for this plan. Each gets planned when Stefan picks it up.
 
 ## Unresolved
 
-- **Seed note wording.** The Skull Hollow note is a placeholder. Stefan can edit it before Phase 0 merges, or leave it.
+- **Seed note wording.** Closed. The Skull Hollow seed and the other 2024 entries were removed before Phase 2 merges.

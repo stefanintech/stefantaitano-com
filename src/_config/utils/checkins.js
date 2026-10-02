@@ -1,8 +1,14 @@
+import {spawnSync} from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import yaml from 'js-yaml';
+import sharp from 'sharp';
 
 export const CHECKINS_DIR = './src/checkins';
+export const IMAGES_DIR = './src/assets/images/checkins';
+
+/** The check-in image contract. 250 KB is read as 250,000 bytes. */
+export const IMAGE_SPEC = {format: 'webp', width: 1600, height: 1067, maxBytes: 250_000};
 
 const ALLOWED_KEYS = [
   'date',
@@ -14,8 +20,10 @@ const ALLOWED_KEYS = [
   'precision',
   'kind',
   'source',
+  'image',
   'draft'
 ];
+const IMAGE_KEYS = ['day', 'night', 'alt'];
 const REQUIRED_KEYS = ['date', 'publishAfter', 'city', 'country', 'precision'];
 const STRING_KEYS = ['place', 'city', 'region', 'kind'];
 
@@ -34,7 +42,35 @@ const readFrontMatter = filePath => {
   return yaml.load(match[1], {schema: yaml.JSON_SCHEMA}) ?? {};
 };
 
-const problemsFor = data => {
+const imageProblemsFor = (image, slug) => {
+  if (typeof image !== 'object' || image === null || Array.isArray(image)) {
+    return ['"image" must have day, night, and alt'];
+  }
+
+  const problems = [];
+  for (const key of Object.keys(image)) {
+    if (!IMAGE_KEYS.includes(key)) problems.push(`"image.${key}" is not an allowed key`);
+  }
+  for (const key of IMAGE_KEYS) {
+    if (typeof image[key] !== 'string' || image[key].trim() === '') {
+      problems.push(`"image.${key}" is required (day, night, and alt go together)`);
+    }
+  }
+
+  for (const variant of ['day', 'night']) {
+    if (typeof image[variant] !== 'string' || image[variant].trim() === '') continue;
+    const expected = `${slug}-${variant}.webp`;
+    if (image[variant] !== expected) {
+      problems.push(`"image.${variant}" must be "${expected}"`);
+    } else if (!fs.existsSync(path.join(IMAGES_DIR, expected))) {
+      problems.push(`"image.${variant}" file is missing: ${path.join(IMAGES_DIR, expected)}`);
+    }
+  }
+
+  return problems;
+};
+
+const problemsFor = (data, slug) => {
   if (data === null) return ['no front matter'];
   if (typeof data !== 'object' || Array.isArray(data)) return ['front matter is not a key/value map'];
 
@@ -82,6 +118,7 @@ const problemsFor = data => {
     problems.push('"source" must be "hand" or "bot"');
   if (data.draft !== undefined && typeof data.draft !== 'boolean')
     problems.push('"draft" must be true or false');
+  if (data.image !== undefined) problems.push(...imageProblemsFor(data.image, slug));
 
   return problems;
 };
@@ -103,7 +140,7 @@ export const validateCheckins = (dir = CHECKINS_DIR) => {
 
   for (const file of files) {
     const data = readFrontMatter(file);
-    const problems = problemsFor(data);
+    const problems = problemsFor(data, path.basename(file, '.md'));
     if (problems.length) {
       errors.push(`${file}\n  - ${problems.join('\n  - ')}`);
       continue;
@@ -116,6 +153,71 @@ export const validateCheckins = (dir = CHECKINS_DIR) => {
   }
 
   return publishAfterByPath;
+};
+
+const exiftoolAvailable = () => spawnSync('exiftool', ['-ver'], {encoding: 'utf8'}).status === 0;
+
+/**
+ * Problems with one image file against IMAGE_SPEC. EXIF covers GPS: WebP keeps
+ * GPS inside its EXIF chunk, so "no EXIF" also means "no GPS".
+ */
+export const imageFileProblems = async filePath => {
+  if (path.extname(filePath).toLowerCase() !== '.webp') {
+    return ['only .webp files belong here (originals are never committed)'];
+  }
+
+  const problems = [];
+  const bytes = fs.statSync(filePath).size;
+  if (bytes > IMAGE_SPEC.maxBytes)
+    problems.push(`${bytes} bytes is over the ${IMAGE_SPEC.maxBytes}-byte limit`);
+
+  let meta;
+  try {
+    meta = await sharp(filePath).metadata();
+  } catch (error) {
+    return [...problems, `can't be read as an image (${error.message})`];
+  }
+
+  if (meta.format !== IMAGE_SPEC.format) problems.push(`format is ${meta.format}, not ${IMAGE_SPEC.format}`);
+  if (meta.width !== IMAGE_SPEC.width || meta.height !== IMAGE_SPEC.height) {
+    problems.push(`is ${meta.width}×${meta.height}, must be ${IMAGE_SPEC.width}×${IMAGE_SPEC.height}`);
+  }
+  if (meta.exif) problems.push('has EXIF data (which can carry GPS)');
+  if (meta.xmp) problems.push('has XMP data');
+
+  return problems;
+};
+
+/**
+ * Checks every file in `src/assets/images/checkins/`, referenced or not, and
+ * throws one error listing every bad file. Uses exiftool for GPS too when it's
+ * installed; the sharp check alone is what CI relies on.
+ */
+export const validateCheckinImages = async (dir = IMAGES_DIR) => {
+  if (!fs.existsSync(dir)) return;
+
+  const files = fs
+    .readdirSync(dir, {recursive: true})
+    .map(file => path.join(dir, file))
+    .filter(file => fs.statSync(file).isFile() && path.basename(file) !== '.gitkeep');
+
+  const errors = [];
+  for (const file of files) {
+    const problems = await imageFileProblems(file);
+    if (problems.length) errors.push(`${file}\n  - ${problems.join('\n  - ')}`);
+  }
+
+  if (files.length && exiftoolAvailable()) {
+    const result = spawnSync('exiftool', ['-json', '-a', '-gps:all', ...files], {encoding: 'utf8'});
+    const tagged = JSON.parse(result.stdout || '[]').filter(entry => Object.keys(entry).length > 1);
+    for (const {SourceFile, ...gps} of tagged) {
+      errors.push(`${SourceFile}\n  - exiftool -a -gps:all found ${Object.keys(gps).join(', ')}`);
+    }
+  }
+
+  if (errors.length) {
+    throw new Error(`[checkins] invalid check-in images:\n${errors.join('\n')}`);
+  }
 };
 
 /** True once the entry's publishAfter has passed at build time. */

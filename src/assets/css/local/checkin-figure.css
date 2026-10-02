@@ -1,0 +1,40 @@
+/* Check-in day/night images, on the homepage and /checkins/. Local bundle only. */
+
+.checkin-figure {
+  margin: 0;
+  max-inline-size: 34rem;
+}
+
+/* The image transform wraps each <img> in <picture>; only the <img> should make a box. */
+.checkin-figure picture {
+  display: contents;
+}
+
+.checkin-figure__img {
+  display: block;
+  inline-size: 100%;
+  block-size: auto;
+  border-radius: var(--border-radius-medium);
+}
+
+/* Hidden variants are display: none, so lazy loading never fetches them. */
+.checkin-figure__img[data-variant='night'],
+:root[data-theme='light'] .checkin-figure__img[data-variant='night'],
+:root[data-theme='dark'] .checkin-figure__img[data-variant='day'] {
+  display: none;
+}
+
+:root[data-theme='light'] .checkin-figure__img[data-variant='day'],
+:root[data-theme='dark'] .checkin-figure__img[data-variant='night'] {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) .checkin-figure__img[data-variant='day'] {
+    display: none;
+  }
+
+  :root:not([data-theme]) .checkin-figure__img[data-variant='night'] {
+    display: block;
+  }
+}

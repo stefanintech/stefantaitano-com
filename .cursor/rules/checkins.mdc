@@ -12,8 +12,30 @@ Plan: `docs/checkins-project-plan.md`. This file is the part that applies in eve
 3. **Nothing private is stored.** Not here, not as `draft: true`, not anywhere else. Git history is public and deleting a file doesn't un-publish it.
 4. **No home, kids' schools, daycare, or relatives' homes.** Those get no check-in. If a place is close enough to home that it narrows things down, use `precision: city`. Never write a list of those places into this repo.
 5. **No coordinates, trailheads, parking, addresses, or directions.** The schema has no field for them, and the note shouldn't carry them either.
-6. **No images yet.** `image` isn't an allowed key until the bot phase. Never commit an original photo.
-7. **Fit this repo.** Entries live in `src/checkins/`. Validation and the publish filter live in `src/_config/utils/checkins.js`, and the collection is `getCheckins` in `src/_config/collections.js`. Templates read check-ins only through `collections.checkins`, never by looping `collections.all`.
+6. **Images are optional, and clean or not at all.** See "Images" below. Never commit an original photo, and never commit a file with EXIF, XMP, or GPS data.
+7. **Fit this repo.** Entries live in `src/checkins/`, images in `src/assets/images/checkins/`. Validation and the publish filter live in `src/_config/utils/checkins.js`, and the collection is `getCheckins` in `src/_config/collections.js`. Templates read check-ins only through `collections.checkins`, never by looping `collections.all`.
+
+---
+
+## Images
+
+A check-in can have a day image and a night image. The page shows the one that matches the theme.
+
+- **Where:** `src/assets/images/checkins/`. Only `.webp` files go there; the build fails on anything else.
+- **Naming:** `<slug>-day.webp` and `<slug>-night.webp`, where `<slug>` is the entry's filename without `.md` (e.g. `2026-04-02-place-name-day.webp`).
+- **Spec:** WebP, q≈80, landscape 3:2, exactly 1600×1067, day and night the same size. At most 250,000 bytes each. No EXIF, XMP, or GPS.
+- **Front matter:** all three keys together, or no `image` at all.
+
+```yaml
+image:
+  day: 2026-04-02-place-name-day.webp
+  night: 2026-04-02-place-name-night.webp
+  alt: Waterfall over a limestone ledge, with bare trees on both banks
+```
+
+- **Alt describes the scene, never people.** If there's a person in the picture, it doesn't get used.
+- **Make the files with the script**, not by hand: `npm run checkins:images -- <slug> <day-source> <night-source>`. It re-encodes with sharp (rotated upright, transparent padding trimmed to one shared crop for day and night, a small even margin, fit to 3:2, 1600×1067, WebP q80, stepping down to q70 only if needed to fit 250,000 bytes) and writes no metadata. Opaque sources are cover-cropped. Source files stay outside the repo.
+- **Check before committing:** `npm run checkins:images -- --check`, and `exiftool -a -gps:all src/assets/images/checkins/` where exiftool is installed; it must print no GPS tags. The build runs the same checks (exiftool only where it's available; the sharp check runs everywhere, including Netlify).
 
 ---
 
@@ -51,9 +73,11 @@ draft: false
 A quiet trail through the woods outside town.
 ```
 
+The Skull Hollow file and the other 2024 entries were removed before Phase 2 merges. The block above is the shape of an entry, not a file in the repo.
+
 - **Required:** `date`, `publishAfter`, `city`, `country` (two uppercase letters), `precision` (`place` or `city`), plus `place` when `precision: place`.
-- **Optional:** `region`, `kind`, `source` (`hand` or `bot`), `draft`.
-- **No other keys.** The build fails on anything else, including `with`, `people`, `coords`, and `image`.
+- **Optional:** `region`, `kind`, `source` (`hand` or `bot`), `draft`, `image` (see "Images").
+- **No other keys.** The build fails on anything else, including `with`, `people`, and `coords`.
 - `precision: city` means no `place` line at all.
 - The note is optional. Use Stefan's words if he gave any. If he didn't, leave the body empty; don't write one for him.
 
