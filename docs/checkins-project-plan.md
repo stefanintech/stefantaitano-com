@@ -2,9 +2,9 @@
 
 A "last seen" line on the homepage and a `/checkins/` timeline of public places I've been. Text first; the day/night clay dioramas come later with the check-in bot. One visible slice per session.
 
-**Status (1 Oct 2026):** Phases 0 and 1 landed. Phase 0: `src/checkins/`, the `checkins` collection with front-matter validation and the `publishAfter` filter, the Skull Hollow Nature Trail seed, one draft test entry, and `.cursor/rules/checkins.mdc`. Phase 1 (text-only): "last seen" on the homepage, `/checkins/` grouped by month, client-side "N days ago" for 1–60 days, the footer link, and the privacy paragraph. Phase 2 (site side of images) is in review: the optional `image: {day, night, alt}` key, the day/night swap on both pages, `npm run checkins:images`, and the build-time image checks. The bot and everything after it are future work.
+**Status (2 Oct 2026):** Phases 0 and 1 landed. Phase 0: `src/checkins/`, the `checkins` collection with front-matter validation and the `publishAfter` filter, and `.cursor/rules/checkins.mdc`. Phase 1 (text-only): "last seen" on the homepage, `/checkins/` grouped by month, client-side "N days ago" for 1–60 days, the footer link, and the privacy paragraph. Phase 2 (site side of images) is in review: the optional `image: {day, night, alt}` key, the day/night swap on both pages, `npm run checkins:images`, and the build-time image checks. The 2024 seeds were removed before Phase 2 merges: Skull Hollow Nature Trail, the city-precision draft, Minnehaha Falls and its images, and the draft image test entry. Nothing in the test suite depended on those files. The site ships with no published check-ins until a real visit is written. The bot and everything after it are future work.
 
-**Outcome:** The homepage shows `Last seen at Skull Hollow Nature Trail · Oologah · 3 days ago` (or the date, once a check-in is more than 60 days old) right after the "now" blurb. It links to `/checkins/`, a reverse-chronological list of check-ins. Nothing about a check-in reaches GitHub or the site until at least 24 hours after I was there. No people, no home, no school, no coordinates, no third-party scripts.
+**Outcome:** When a check-in is published, the homepage shows `Last seen at {place} · {city} · 3 days ago` (or the date, once a check-in is more than 60 days old) right after the "now" blurb. It links to `/checkins/`, a reverse-chronological list of check-ins. With none published, that section is absent and `/checkins/` says "No check-ins yet." Nothing about a check-in reaches GitHub or the site until at least 24 hours after I was there. No people, no home, no school, no coordinates, no third-party scripts.
 
 **Cut**
 
@@ -43,7 +43,7 @@ A "last seen" line on the homepage and a `/checkins/` timeline of public places 
 | Homepage placement | New `home-section` directly after `#now-preview`. Absent when there are no published check-ins. |
 | Footer | `/checkins/` in the footer `bottom` nav. Top nav stays at four items. |
 | "N days ago" | Up to 60 days: "N days ago." After 60 days: the date. The date is rendered at build; the browser swaps in "N days ago" only inside the 60-day window. No JS: the date. |
-| Seed entries | **One real seed: Skull Hollow Nature Trail** (Oologah, OK, US), visited Sunday 31 Mar 2024 at 2:13 PM CT. `publishAfter` is 3:00 PM CT on 1 Apr 2024, so it can be pushed right away. City-level location only. It gets a one-line placeholder note Stefan can edit. Any other seeds are `draft: true` and never reach production. |
+| Seed entries | The Phase 0 seed was Skull Hollow Nature Trail (Oologah, OK, US), visited Sunday 31 Mar 2024 at 2:13 PM CT, with `publishAfter` at 3:00 PM CT on 1 Apr 2024. It and the other 2024 entries were removed before Phase 2 merges. The schema example below is the shape of an entry, not a file in the repo. |
 
 ---
 
@@ -90,7 +90,7 @@ Extend these. Do not add a second collection system, a root `_data/`, a JSON che
 
 One file per check-in: `src/checkins/YYYY-MM-DD-slug.md`. The filename date sorts it, like posts. The body is the optional one-line note.
 
-The example is the real Phase 0 seed, `src/checkins/2024-03-31-skull-hollow-nature-trail.md`. Visit: Sunday, 31 Mar 2024, 2:13 PM Central (CDT, UTC−5). Rounded up to 3:00 PM, plus 24 hours: 3:00 PM CDT on 1 Apr 2024.
+The block below is the shape of an entry. It was the Phase 0 Skull Hollow seed (visit Sunday, 31 Mar 2024, 2:13 PM Central, CDT, UTC−5; rounded up to 3:00 PM, plus 24 hours: 3:00 PM CDT on 1 Apr 2024). That file and the other 2024 entries were removed before Phase 2 merges.
 
 ```yaml
 ---
@@ -157,7 +157,7 @@ Invisible. Nothing on the live site changes.
 - `getCheckins` in `src/_config/collections.js`, next to `getNowEntries`: glob `./src/checkins/**/*.md`, validate, drop entries whose `publishAfter` is in the future, newest first.
 - Validation and the publish filter in one small helper, `src/_config/utils/checkins.js`.
 - Register `addCollection('checkins', getCheckins)` in `eleventy.config.js`.
-- The real seed: `src/checkins/2024-03-31-skull-hollow-nature-trail.md`, exactly as in [Data schema](#data-schema), placeholder note included unless Stefan has edited it.
+- The real seed was `src/checkins/2024-03-31-skull-hollow-nature-trail.md`, exactly as in [Data schema](#data-schema). Removed, with the other 2024 entries, before Phase 2 merges.
 - If a second entry is useful for testing (for example a `precision: city` one), it gets `draft: true`. Drafts never reach production or deploy previews.
 - `.cursor/rules/checkins.mdc`: the standing instruction "here's a check-in," modeled on the study-embed procedure in `chess-page.mdc`. It covers the schema, file naming, the privacy rules, the 24-hour push rule ("don't push until `publishAfter` has passed; if it hasn't, say when it will and stop"), and "open a PR, don't merge." Public-safe content only.
 
@@ -233,7 +233,7 @@ Optional day and night images on a check-in, shown to match the theme. This phas
 
 **Image contract**
 
-- Files: `src/assets/images/checkins/<slug>-day.webp` and `<slug>-night.webp`. The slug is the entry's filename without `.md`, e.g. `2024-11-29-minnehaha-falls`.
+- Files: `src/assets/images/checkins/<slug>-day.webp` and `<slug>-night.webp`. The slug is the entry's filename without `.md`, e.g. `2026-04-02-place-name`.
 - WebP, q≈80, landscape 3:2, exactly 1600×1067. Day and night are the same size. ≤250 KB each (checked as 250,000 bytes). No EXIF, XMP, or GPS.
 - Front matter: `image: { day: <slug>-day.webp, night: <slug>-night.webp, alt: "…" }`. Alt describes the scene, never people.
 
@@ -241,11 +241,11 @@ Optional day and night images on a check-in, shown to match the theme. This phas
 
 - `src/_config/utils/checkins.js`: `image` joins the allowlist. `day`, `night`, and `alt` are required together, no other subkeys, file names must match the slug, and both files must exist. A partial `image` fails the build. Entries without `image` are unchanged.
 - Same file: `validateCheckinImages()` checks every file in `src/assets/images/checkins/`. It fails on non-WebP files, anything over 250,000 bytes, any size other than 1600×1067, or EXIF/XMP in the file (sharp `metadata()`, so it runs on Netlify). Where `exiftool` is installed, it also runs `exiftool -json -a -gps:all` and fails on any GPS tag. `getCheckins` runs it, so `npm run build` enforces it.
-- `src/_config/setup/checkin-images.js` + `npm run checkins:images -- <slug> <day-source> <night-source>`: sharp, `rotate()` to apply orientation, cover-crop to 1600×1067, WebP q80 (q75, then q70 only if needed to fit), no metadata. `-- --check` runs the folder check on its own.
+- `src/_config/setup/checkin-images.js` + `npm run checkins:images -- <slug> <day-source> <night-source>`: sharp, `rotate()` to apply orientation, then 1600×1067 WebP q80 (q75, then q70 only if needed to fit), no metadata. Sources with transparent padding are trimmed on alpha to one shared crop (day and night stay registered), given a small even margin, and fit to 3:2. Opaque sources are cover-cropped. `-- --check` runs the folder check on its own.
 - `src/_includes/partials/checkin-figure.njk`: two `<img data-variant="day|night">` with `width="1600" height="1067" loading="lazy" decoding="async"`. Included by `checkin-line.njk`, so the homepage "last seen" and `/checkins/` both get it.
 - `src/assets/css/local/checkin-figure.css`: night hidden by default. `:root[data-theme='light']` shows day, `:root[data-theme='dark']` shows night. With JS off, `@media (prefers-color-scheme: dark)` on `:root:not([data-theme])` shows night. Included in the local CSS block on both pages.
 - `src/pages/privacy.md` and `.cursor/rules/checkins.mdc`: where images go, naming, the spec, and the GPS rule.
-- A `draft: true` test entry with generated placeholder DAY/NIGHT images. It never reaches production or `dist/`.
+- A `draft: true` test entry with generated placeholder DAY/NIGHT images was used to check the swap. It was removed with the other 2024 entries before Phase 2 merges. Nothing in the test suite read it.
 
 **Endpoints:** none.
 
@@ -254,6 +254,7 @@ Optional day and night images on a check-in, shown to match the theme. This phas
 **Gotchas**
 
 - The eleventy-img transform wraps each `<img>` in a `<picture>` and re-encodes it into `/img/`. It keeps `data-variant`, `width`, `height`, and `loading` on the `<img>`. `.checkin-figure picture { display: contents }` keeps the CSS swap targeting the `<img>`.
+- JPEG can't hold alpha, and sharp's default composite is black. The transform's JPEG hook flattens transparency onto the light page background (`themeLight`, `#fbf8f3`, Gray 100) before encoding. AVIF and WebP keep their alpha, so dark mode still shows the page background through the transparent areas. The JPEG fallback is the one that sits on cream, including in dark mode.
 - `src/assets/images/checkins/` isn't passthrough-copied. Only files referenced by a published entry reach `dist/` (as `/img/…`), but every committed file is public in the repo, so the build checks the whole folder, not just referenced files.
 - Chrome doesn't fetch a `loading="lazy"` image that's `display: none`, so with JS on only the visible variant downloads. With JS off, browsers turn off lazy loading (a tracking guard), so both variants download. The right one still shows.
 - With several files, `exiftool -a -gps:all` prints headers and "N image files read" even with no GPS. Parse `-json` output instead.
@@ -284,4 +285,4 @@ Out of scope for this plan. Each gets planned when Stefan picks it up.
 
 ## Unresolved
 
-- **Seed note wording.** The Skull Hollow note is a placeholder. Stefan can edit it before Phase 0 merges, or leave it.
+- **Seed note wording.** Closed. The Skull Hollow seed and the other 2024 entries were removed before Phase 2 merges.

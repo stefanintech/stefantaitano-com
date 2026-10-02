@@ -15,11 +15,24 @@ dotenv.config();
 import yaml from 'js-yaml';
 
 //  config import
+import {createRequire} from 'node:module';
 import {getAllPosts, getAllTalks, getCheckins, getNowEntries, showInSitemap, tagList} from './src/_config/collections.js';
 import events from './src/_config/events.js';
 import filters from './src/_config/filters.js';
 import plugins from './src/_config/plugins.js';
 import shortcodes from './src/_config/shortcodes.js';
+import {themeLight} from './src/_data/meta.js';
+
+const require = createRequire(import.meta.url);
+const defaultFormatHooks = require('@11ty/eleventy-img/src/global-options.js').defaults.formatHooks;
+
+// JPEG has no alpha. Sharp otherwise composites transparency on black.
+// Future check-in images go through this transform, so the fallback stays on the light page background.
+const jpegOnLight = async sharpInstance => {
+  const meta = await sharpInstance.metadata();
+  if (meta.hasAlpha) sharpInstance.flatten({background: themeLight});
+  return sharpInstance.jpeg({quality: 80}).toBuffer();
+};
 
 export default async function (eleventyConfig) {
   // --------------------- Events: before build
@@ -63,6 +76,12 @@ export default async function (eleventyConfig) {
     formats: ['avif', 'webp', 'jpeg'],
     widths: [400, 800, 1200, 'auto'],
     svgShortCircuit: true,
+    // Included in the output hash so a background change doesn't reuse a cached JPEG.
+    sharpJpegOptions: {quality: 80},
+    formatHooks: {
+      ...defaultFormatHooks,
+      jpeg: jpegOnLight
+    },
     urlPath: '/img/',
     outputDir: './dist/img/',
     htmlOptions: {

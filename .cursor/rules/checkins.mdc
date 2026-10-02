@@ -22,19 +22,19 @@ Plan: `docs/checkins-project-plan.md`. This file is the part that applies in eve
 A check-in can have a day image and a night image. The page shows the one that matches the theme.
 
 - **Where:** `src/assets/images/checkins/`. Only `.webp` files go there; the build fails on anything else.
-- **Naming:** `<slug>-day.webp` and `<slug>-night.webp`, where `<slug>` is the entry's filename without `.md` (e.g. `2024-11-29-minnehaha-falls-day.webp`).
+- **Naming:** `<slug>-day.webp` and `<slug>-night.webp`, where `<slug>` is the entry's filename without `.md` (e.g. `2026-04-02-place-name-day.webp`).
 - **Spec:** WebP, q≈80, landscape 3:2, exactly 1600×1067, day and night the same size. At most 250,000 bytes each. No EXIF, XMP, or GPS.
 - **Front matter:** all three keys together, or no `image` at all.
 
 ```yaml
 image:
-  day: 2024-11-29-minnehaha-falls-day.webp
-  night: 2024-11-29-minnehaha-falls-night.webp
+  day: 2026-04-02-place-name-day.webp
+  night: 2026-04-02-place-name-night.webp
   alt: Waterfall over a limestone ledge, with bare trees on both banks
 ```
 
 - **Alt describes the scene, never people.** If there's a person in the picture, it doesn't get used.
-- **Make the files with the script**, not by hand: `npm run checkins:images -- <slug> <day-source> <night-source>`. It re-encodes with sharp (rotated upright, cropped to 3:2, 1600×1067, WebP q80, stepping down to q70 only if needed to fit 250,000 bytes) and writes no metadata. Source files stay outside the repo.
+- **Make the files with the script**, not by hand: `npm run checkins:images -- <slug> <day-source> <night-source>`. It re-encodes with sharp (rotated upright, transparent padding trimmed to one shared crop for day and night, a small even margin, fit to 3:2, 1600×1067, WebP q80, stepping down to q70 only if needed to fit 250,000 bytes) and writes no metadata. Opaque sources are cover-cropped. Source files stay outside the repo.
 - **Check before committing:** `npm run checkins:images -- --check`, and `exiftool -a -gps:all src/assets/images/checkins/` where exiftool is installed; it must print no GPS tags. The build runs the same checks (exiftool only where it's available; the sharp check runs everywhere, including Netlify).
 
 ---
@@ -72,6 +72,8 @@ draft: false
 ---
 A quiet trail through the woods outside town.
 ```
+
+The Skull Hollow file and the other 2024 entries were removed before Phase 2 merges. The block above is the shape of an entry, not a file in the repo.
 
 - **Required:** `date`, `publishAfter`, `city`, `country` (two uppercase letters), `precision` (`place` or `city`), plus `place` when `precision: place`.
 - **Optional:** `region`, `kind`, `source` (`hand` or `bot`), `draft`, `image` (see "Images").
