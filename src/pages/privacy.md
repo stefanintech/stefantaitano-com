@@ -16,7 +16,7 @@ The site is **hosted on Netlify** (and delivered over HTTPS). Like any hosting p
 
 **Check-ins**
 
-The [check-ins](/checkins/) page lists public places I've been, or just the city. It never shows people, and each check-in goes up at least a day after I was there. There are no map scripts or map tiles on it.
+The [check-ins](/checkins/) page lists public places I've been, or just the city. It never shows people, and each check-in goes up at least a day after I was there. There are no map scripts or map tiles on it. Some check-ins have a picture of the place, one for day and one for night, with no people in it. Every picture is stripped of location and camera data before it's committed.
 
 **How do I use data you send me?**
 
