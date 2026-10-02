@@ -10,6 +10,6 @@ image:
   day: 2024-12-01-draft-image-test-day.webp
   night: 2024-12-01-draft-image-test-night.webp
   alt: Placeholder panel with a soft gradient, labeled with the time of day
-draft: false
+draft: true
 ---
 Draft test entry for day and night images. Not a real visit and never published.
