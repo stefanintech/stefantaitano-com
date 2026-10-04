@@ -14,7 +14,7 @@ A "last seen" line on the homepage and a `/checkins/` timeline of public places 
 - Live location, or anything that says where I am right now
 - Third-party maps, tiles, or map scripts (Leaflet, Mapbox, Google Maps)
 - Images in Phase 0–1. Phase 2 adds them on the site side; generating them is the bot's job.
-- A scheduled rebuild. Pushes wait 24 hours, so merge deploys are enough.
+- A scheduled rebuild as a substitute for the 24-hour push rule. The hourly function only picks up an entry already on `main` once `publishAfter` has passed.
 - Per-check-in pages, OG images, and a check-ins feed (later, maybe)
 - The check-in bot, stats, map, "on this day," monthly recaps (future only)
 - Changing the hand-written homepage "now" blurb or `/now` itself
@@ -30,7 +30,7 @@ A "last seen" line on the homepage and a `/checkins/` timeline of public places 
 | When it reaches GitHub | **Nothing is pushed until 24 hours after the visit.** No branch, no PR, no commit to `main` before then. This is the rule, not a default. The repo is public, so pushing early would publish the check-in on GitHub even if the site waited. |
 | When the 24 hours starts | **At the visit, rounded up to the hour.** A 2:20 PM visit gets `publishAfter` 3:00 PM the next day. |
 | How it reaches the site | The merge deploy, which runs after the push and so after the delay. `publishAfter` is also filtered at build as a backstop in case something gets pushed early. |
-| Scheduled rebuild | **None.** Pushes wait, so a merge deploy always happens after the delay. See the future note at the end. |
+| Scheduled rebuild | **Hourly, as a backstop.** `netlify/functions/checkin-rebuild.js` POSTs to the build hook in `CHECKIN_REBUILD_HOOK_URL` on the `@hourly` schedule in `netlify.toml`. Entries are still pushed only after `publishAfter`. See the map plan. |
 | Deploy previews | **On.** Checked 1 Oct: PR #39 has a passing `netlify/stefantaitano/deploy-preview` check (`deploy-preview-39--stefantaitano.netlify.app`). `netlify.toml` has no `[context.deploy-preview]` overrides, so previews run the same `npm run build` as production: drafts hidden, `publishAfter` filter on. Preview URLs are public, which is fine because the PR only exists after the delay. |
 | Images | **None in Phase 1.** Ships text-only. **Phase 2 adds the site side** (schema key, day/night swap, encoder script, build checks) before the bot, so the bot only has to produce two files and three lines of front matter. Contract: `src/assets/images/checkins/<slug>-day.webp` and `-night.webp`, WebP q≈80, exactly 1600×1067, ≤250 KB each, no EXIF/XMP/GPS. Alt describes the scene, never people. |
 | Precision | `precision: place` (public place name + city) or `precision: city` (city only, no place name). |
@@ -141,7 +141,7 @@ Two places can leak a check-in early: the **repo** and the **site**.
 
 **The repo (the rule).** Nothing is pushed until `publishAfter` has passed: visit time rounded up to the hour, plus 24 hours. Write the file whenever, push it later. Then PR, deploy preview, merge. The merge deploy publishes it right away, because merges to `main` already trigger a Netlify build. This is the real protection. Deploy previews are public URLs too, and they only exist once a PR does.
 
-**The site (the backstop).** `getCheckins` in `src/_config/collections.js` keeps an entry only if `publishAfter <= build time`. If something is pushed early by mistake, the site and its deploy preview still leave it out, but GitHub has already shown it. Treat that as a broken rule, not a working delay. Without a scheduled rebuild, an entry merged before its `publishAfter` appears on the next deploy, whenever that is.
+**The site (the backstop).** `getCheckins` in `src/_config/collections.js` keeps an entry only if `publishAfter <= build time`. If something is pushed early by mistake, the site and its deploy preview still leave it out, but GitHub has already shown it. Treat that as a broken rule, not a working delay. The hourly `checkin-rebuild` function rebuilds production so an entry that reached `main` early appears once `publishAfter` has passed, without another commit. The push rule still holds.
 
 `serve`/`watch` uses the same filter. To see a pending entry locally, temporarily backdate `publishAfter` and don't commit that.
 
@@ -278,7 +278,7 @@ Out of scope for this plan. Each gets planned when Stefan picks it up.
 - **Check-in bot.** Photo + a short note in chat → place lookup → check against a private denylist (home, schools, relatives) → day and night dioramas generated from the place, not the photo, with no people in them → preview in chat → wait until `publishAfter` → branch and PR in this repo → deploy preview → Stefan merges. The original photo and the denylist stay out of this repo. Write path is undecided: a Cursor cloud agent following `.cursor/rules/checkins.mdc` (how PRs land today), or a scoped token. Never auto-merge. It writes images through `npm run checkins:images` to the [Phase 2](#phase-2--images-site-side) contract.
   - **Size:** about 50 MB a year at two check-ins a week and ≤250 KB per variant. Revisit at ~150 MB.
 - **Phase 3: extras.** A stats line ("14 places, 5 cities in 2026"). A static SVG map generated at build through the existing `{% svg %}`/OG pipeline, with no tiles or scripts. That's when `coords` gets added, at 2 decimals at most. "On this day." A monthly recap. A Wall post in the retro-2005 skin.
-- **Scheduled rebuild, only if the push rule ever changes.** If entries ever land on `main` before `publishAfter`, the cheapest pickup is a Netlify scheduled function that POSTs to a build hook. Keep the hook URL in a Netlify env var and the schedule in `netlify.toml`, which beats a GitHub Actions cron: GitHub cron runs can lag, and GitHub disables them in public repos after 60 days without commits. Not needed while pushes wait.
+- **Scheduled rebuild.** Shipped with the city map. `netlify/functions/checkin-rebuild.js` POSTs to `CHECKIN_REBUILD_HOOK_URL` on the `@hourly` schedule in `netlify.toml`. It does not replace the 24-hour push rule. The hook URL stays in Netlify (Functions scope, Production) and is never committed or logged. A GitHub Actions cron was skipped: those runs can lag, and GitHub disables them in public repos after 60 days without commits.
 - **Maybe later:** per-entry pages and OG images, a check-ins feed, external image storage.
 
 ---

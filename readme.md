@@ -82,6 +82,8 @@ If needed, you can override it with the `URL` environment variable.
 
 `CHECKIN_MAP_EXCLUDE` lists the home-area cities and places that the check-ins city list leaves out. It's set in Netlify only, never in the repo. Production builds fail without it. Other builds warn and leave out the city list. The format is in `docs/checkins-map-project-plan.md`.
 
+`CHECKIN_REBUILD_HOOK_URL` is the Netlify build hook the hourly `checkin-rebuild` function POSTs to. Create the hook under Site configuration → Build & deploy → Continuous deployment → Build hooks, then set the variable in Netlify with Functions scope (or All) for Production. The schedule is `@hourly` in `netlify.toml` (minute 0 UTC) and runs on published production deploys. If the variable is missing, the function warns and skips the POST. The value never goes in the repo. Details are in `docs/checkins-map-project-plan.md`.
+
 ### Run tests
 
 ```bash
