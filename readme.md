@@ -80,6 +80,14 @@ https://stefantaitano.com
 
 If needed, you can override it with the `URL` environment variable.
 
+`CHECKIN_MAP_EXCLUDE` lists the home-area cities and places that the check-ins city list leaves out. It's set in Netlify only, never in the repo. Production builds fail without it. Other builds warn and leave out the city list. The format is in `docs/checkins-map-project-plan.md`.
+
+### Run tests
+
+```bash
+npm test
+```
+
 ## Project Structure
 
 ```txt

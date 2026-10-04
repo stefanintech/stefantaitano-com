@@ -14,6 +14,7 @@ Plan: `docs/checkins-project-plan.md`. This file is the part that applies in eve
 5. **No coordinates, trailheads, parking, addresses, or directions.** The schema has no field for them, and the note shouldn't carry them either.
 6. **Images are optional, and clean or not at all.** See "Images" below. Never commit an original photo, and never commit a file with EXIF, XMP, or GPS data.
 7. **Fit this repo.** Entries live in `src/checkins/`, images in `src/assets/images/checkins/`. Validation and the publish filter live in `src/_config/utils/checkins.js`, and the collection is `getCheckins` in `src/_config/collections.js`. Templates read check-ins only through `collections.checkins`, never by looping `collections.all`.
+8. **City map data stays coarse, and exclusions stay out of the repo.** Home-area cities and places are listed only in the `CHECKIN_MAP_EXCLUDE` Netlify variable (format in `docs/checkins-map-project-plan.md`). Never commit, log, or echo its value, not even in tests, PRs, or reports. `src/_data/cityCentroids.json` has one entry per published, non-excluded city: a well-known public centroid rounded to 0.1°, plus `tier`. Excluded cities never get a centroid. Never geocode.
 
 ---
 
@@ -80,13 +81,14 @@ The Skull Hollow file and the other 2024 entries were removed before Phase 2 mer
 - **No other keys.** The build fails on anything else, including `with`, `people`, and `coords`.
 - `precision: city` means no `place` line at all.
 - The note is optional. Use Stefan's words if he gave any. If he didn't, leave the body empty; don't write one for him.
+- **New city?** If `src/_data/cityCentroids.json` has no entry for `City|Region|Country`, add one: the city's well-known public centroid (its Wikipedia coordinates) rounded to 0.1°, and `tier: metro` or `town`. If the city might be home-area, stop and ask; it gets no entry. Without a centroid, builds with `CHECKIN_MAP_EXCLUDE` set fail.
 
 **4. Build.** Run `npm run build`. It must pass. A validation failure names the file and the reason; fix the entry, not the validator.
 
 **5. Push only after `publishAfter`.** Compare `publishAfter` to the current time.
 
 - **Not passed yet:** don't create a branch, commit, or push. Tell Stefan the exact time it can go out, and stop. The file can wait locally.
-- **Passed:** create a new branch, commit only the new entry, push, and open a PR. Don't merge. Merging triggers the deploy.
+- **Passed:** create a new branch, commit only the new entry (and its `cityCentroids.json` line, if it's a new city), push, and open a PR. Don't merge. Merging triggers the deploy.
 
 **6. Report.** Show the file, the `publishAfter` math, and the PR link (or the time it can be pushed).
 

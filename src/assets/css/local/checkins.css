@@ -1,4 +1,47 @@
-/* /checkins/ timeline. Local bundle only. */
+/* /checkins/ timeline and city list. Local bundle only. */
+
+.checkins-cities {
+  margin-block-start: var(--space-l);
+}
+
+.checkins-cities__title {
+  font-size: var(--size-step-1);
+  color: var(--color-text-accent);
+}
+
+.checkins-cities__list {
+  display: grid;
+  gap: var(--space-s);
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  list-style: none;
+  padding: 0;
+  margin-block-start: var(--space-s);
+}
+
+.checkins-city {
+  border-block-start: var(--stroke);
+  padding-block-start: var(--space-xs);
+}
+
+.checkins-city__name {
+  font-size: var(--size-step-0);
+}
+
+.checkins-city__count {
+  color: var(--color-text-accent);
+  font-size: var(--size-step-min-1);
+}
+
+.checkins-city__links {
+  list-style: none;
+  padding: 0;
+  margin-block-start: var(--space-3xs);
+}
+
+.checkins-city__links a {
+  display: inline-block;
+  padding-block: var(--space-3xs);
+}
 
 .checkins-month {
   margin-block-start: var(--space-xl);
