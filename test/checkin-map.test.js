@@ -8,12 +8,14 @@ import {createCheckinsCollection} from '../src/_config/collections.js';
 import {drafts} from '../src/_config/plugins/drafts.js';
 import {
   buildCheckinCities,
+  buildCheckinMap,
   indexCentroids,
   isExcluded,
   loadExclusions,
   normalizeName,
   parseExclusions
 } from '../src/_config/utils/checkin-map.js';
+import {projector} from '../src/_config/utils/map-projection.js';
 
 const FIXTURE = './test/fixtures/checkin-map';
 
@@ -24,6 +26,16 @@ const CENTROIDS = {
 };
 
 const EXCLUDE = 'Testville|ZZ|ZZ; Saint Testville|ZZ|ZZ; Fakeburg|ZZ|ZZ|EXAMPLE  school.';
+
+// Covers the fixture centroids. Not a real place, and not the site outline.
+const OUTLINE = {
+  country: 'ZZ',
+  width: 400,
+  height: 200,
+  extent: {west: 0, east: 90, south: 0, north: 80},
+  projection: {type: 'albers', parallels: [29.5, 45.5], origin: [-96, 37.5], scale: 200, translate: [200, 100]},
+  states: [{postal: 'ZZ', name: 'Zedland', d: 'M0 0L10 0L10 10Z'}]
+};
 
 const quietLog = {warn: () => {}};
 
@@ -36,6 +48,7 @@ const build = async ({centroids = CENTROIDS, exclude = EXCLUDE} = {}) => {
       eleventyConfig.setIncludesDirectory('../../../src/_includes');
       eleventyConfig.addPlugin(drafts);
       eleventyConfig.addGlobalData('centroids', centroids);
+      eleventyConfig.addGlobalData('outline', OUTLINE);
       eleventyConfig.addCollection(
         'fixtureCheckins',
         createCheckinsCollection({dir: `${FIXTURE}/checkins`, imagesDir: `${FIXTURE}/no-images`})
@@ -43,6 +56,7 @@ const build = async ({centroids = CENTROIDS, exclude = EXCLUDE} = {}) => {
       eleventyConfig.addFilter('checkinCities', (checkins, data) =>
         buildCheckinCities(checkins, {centroids: data, exclusions})
       );
+      eleventyConfig.addFilter('checkinMap', (cities, data, outline) => buildCheckinMap(cities, {centroids: data, outline}));
     }
   });
   // Keeps the expected failures out of the build log, where they'd look real.
@@ -50,7 +64,7 @@ const build = async ({centroids = CENTROIDS, exclude = EXCLUDE} = {}) => {
   elev.errorHandler.logger = elev.logger;
   const pages = await elev.toJSON();
   const page = url => pages.find(entry => entry.url === url)?.content ?? '';
-  return {cities: page('/cities/'), collection: page('/collection/')};
+  return {cities: page('/cities/'), collection: page('/collection/'), map: page('/map/')};
 };
 
 // Eleventy wraps errors thrown from filters, so collect the whole cause chain.
@@ -100,6 +114,21 @@ describe('fixture build (collection → exclusions → city list)', () => {
     assert.doesNotMatch(cities, /<time|datetime|\b(19|20)\d{2}\b/);
     assert.doesNotMatch(cities, /\b(January|February|March|April|May|June|July|August|September|October|November|December)\b/);
     assert.doesNotMatch(cities, /latest|last seen/i);
+  });
+
+  it('draws the map as links to the city list, with no coordinates or dates', async () => {
+    const {map} = await build();
+    assert.match(map, /aria-label="Map of cities with check-ins"/);
+    assert.match(map, /href="#city-fakeburg-zz-zz"/);
+    assert.match(map, /aria-label="Fakeburg, ZZ: 2 check-ins"/);
+    assert.match(map, /<path class="checkins-map__state" d="M0 0L10 0L10 10Z"/);
+    assert.doesNotMatch(map, /Near /);
+    assert.doesNotMatch(map, /Draftville|Futureville|Testville|Example School/i);
+    for (const {lat, lon} of Object.values(CENTROIDS)) {
+      assert.ok(!map.includes(String(lat)) && !map.includes(String(lon)));
+    }
+    assert.doesNotMatch(map, /\b(lat|lon|latitude|longitude)\b/i);
+    assert.doesNotMatch(map, /<time|datetime|\b(19|20)\d{2}\b/);
   });
 
   it('fails the build on a missing centroid', async () => {
@@ -211,5 +240,88 @@ describe('centroid lookup', () => {
   it('keeps src/_data/cityCentroids.json valid', () => {
     const centroids = JSON.parse(fs.readFileSync('./src/_data/cityCentroids.json', 'utf8'));
     assert.ok(indexCentroids(centroids).size > 0);
+  });
+});
+
+describe('clay map', () => {
+  const exclusions = parseExclusions('Nopeville|ZZ|ZZ');
+  const centroids = {
+    'Metroburg|ZZ|ZZ': {lat: 40.0, lon: 10.0, tier: 'metro'},
+    'Otherburg|ZZ|ZZ': {lat: 48.0, lon: 30.0, tier: 'metro'},
+    'Tinyton|ZZ|ZZ': {lat: 40.4, lon: 10.2, tier: 'town'},
+    'Twinburg|ZZ|ZZ': {lat: 42.0, lon: 12.0, tier: 'town'},
+    'Farville|ZZ|ZZ': {lat: 10.0, lon: 10.0, tier: 'metro'}
+  };
+  const outline = {
+    country: 'ZZ',
+    width: 960,
+    height: 600,
+    extent: {west: 0, east: 40, south: 30, north: 50},
+    projection: OUTLINE.projection,
+    states: OUTLINE.states
+  };
+  const citiesFor = () =>
+    buildCheckinCities(
+      [
+        item('metro', {city: 'Metroburg', kind: 'cafe'}),
+        item('tiny', {city: 'Tinyton', kind: 'park'}),
+        item('twin-a', {city: 'Twinburg', kind: 'trail'}),
+        item('twin-b', {city: 'Twinburg', kind: 'cafe'}),
+        item('far', {city: 'Farville', kind: 'park'}),
+        item('nope', {city: 'Nopeville', kind: 'park'})
+      ],
+      {centroids, exclusions}
+    );
+
+  it('snaps a single-check-in town onto the nearest metro and leaves the town named in the list', () => {
+    const cities = citiesFor();
+    assert.ok(cities.some(city => city.label === 'Tinyton, ZZ'));
+    assert.ok(!cities.some(city => city.label.startsWith('Nopeville')));
+
+    const map = buildCheckinMap(cities, {centroids, outline});
+    const near = map.spots.find(spot => spot.href === '#city-metroburg-zz-zz');
+    const twin = map.spots.find(spot => spot.label.startsWith('Twinburg'));
+    assert.equal(near.label, 'Near Metroburg, ZZ: 2 check-ins in Metroburg, ZZ and Tinyton, ZZ');
+    assert.equal(near.name, 'near Metroburg');
+    assert.equal(near.count, 2);
+    assert.equal(twin.label, 'Twinburg, ZZ: 2 check-ins');
+    assert.ok(!map.spots.some(spot => /Farville|Nopeville|Tinyton/.test(spot.href)));
+    assert.ok(map.spots.every(spot => !('lat' in spot) && !('lon' in spot) && Number.isInteger(spot.x) && Number.isInteger(spot.y)));
+    assert.ok(map.spots.every(spot => spot.target >= 22));
+  });
+
+  it('draws nothing when no city falls inside the outline', () => {
+    const cities = buildCheckinCities([item('far', {city: 'Farville'})], {centroids, exclusions});
+    assert.equal(cities.length, 1);
+    assert.equal(buildCheckinMap(cities, {centroids, outline}), null);
+  });
+
+  it('projects the published cities onto the committed outline', () => {
+    const liveCentroids = JSON.parse(fs.readFileSync('./src/_data/cityCentroids.json', 'utf8'));
+    const liveOutline = JSON.parse(fs.readFileSync('./src/_data/checkinMapOutline.json', 'utf8'));
+    assert.equal(liveOutline.source.sha256, '8e048ee20587e124e74de5c6bfeea8132ab2313a8f7f4f97e043617f8f37f7f6');
+    assert.equal(liveOutline.states.length, 49);
+    assert.ok(liveOutline.states.every(state => state.postal !== 'AK' && state.postal !== 'HI' && !/[.-]\d/.test(state.d)));
+
+    const project = projector(liveOutline.projection);
+    const cities = Object.keys(liveCentroids).map(key => ({
+      key,
+      slug: 'city-example',
+      label: key.split('|')[0],
+      count: 1,
+      checkins: []
+    }));
+    const map = buildCheckinMap(cities, {centroids: liveCentroids, outline: liveOutline});
+    assert.equal(map.spots.length, cities.length);
+    for (const [key, centroid] of Object.entries(liveCentroids)) {
+      const [x, y] = project(centroid.lon, centroid.lat);
+      const spot = map.spots.find(entry => entry.label.startsWith(key.split('|')[0]));
+      assert.equal(spot.x, x);
+      assert.equal(spot.y, y);
+      assert.ok(x > 0 && x < liveOutline.width && y > 0 && y < liveOutline.height);
+      assert.ok(!('lat' in spot) && !('lon' in spot));
+      assert.ok(!JSON.stringify(spot).includes(centroid.lat.toFixed(1)));
+      assert.ok(!JSON.stringify(spot).includes(centroid.lon.toFixed(1)));
+    }
   });
 });

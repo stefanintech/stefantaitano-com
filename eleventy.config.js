@@ -21,7 +21,7 @@ import events from './src/_config/events.js';
 import filters from './src/_config/filters.js';
 import plugins from './src/_config/plugins.js';
 import shortcodes from './src/_config/shortcodes.js';
-import {buildCheckinCities, checkinAnchor, loadExclusions} from './src/_config/utils/checkin-map.js';
+import {buildCheckinCities, buildCheckinMap, checkinAnchor, loadExclusions} from './src/_config/utils/checkin-map.js';
 import {themeLight} from './src/_data/meta.js';
 
 const require = createRequire(import.meta.url);
@@ -117,6 +117,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter('checkinCities', (checkins, centroids) =>
     buildCheckinCities(checkins, {centroids, exclusions: loadExclusions()})
   );
+  eleventyConfig.addFilter('checkinMap', (cities, centroids, outline) => buildCheckinMap(cities, {centroids, outline}));
 
   // --------------------- Shortcodes
   eleventyConfig.addShortcode('svg', shortcodes.svgShortcode);

@@ -9,6 +9,7 @@
 import crypto from 'node:crypto';
 import path from 'node:path';
 import {slugifyString} from '../filters/slugify.js';
+import {inExtent, projector} from './map-projection.js';
 
 export const EXCLUDE_ENV = 'CHECKIN_MAP_EXCLUDE';
 export const TIERS = ['metro', 'town'];
@@ -251,6 +252,7 @@ export const buildCheckinCities = (items, {centroids, exclusions, now = Date.now
     const centroid = matches[0];
     if (!groups.has(centroid.key)) {
       groups.set(centroid.key, {
+        key: centroid.key,
         slug: citySlug(centroid),
         label: centroid.region ? `${centroid.city}, ${centroid.region}` : centroid.city,
         tier: centroid.tier,
@@ -271,8 +273,101 @@ export const buildCheckinCities = (items, {centroids, exclusions, now = Date.now
     return {
       ...group,
       count,
-      countLabel: `${count} check-in${count === 1 ? '' : 's'}`,
+      countLabel: countLabel(count),
       checkins: group.checkins.sort(byLabel)
     };
   });
+};
+
+const countLabel = count => `${count} check-in${count === 1 ? '' : 's'}`;
+
+/** A `town` with fewer check-ins than this is drawn on the nearest metro's bead. */
+export const TOWN_MIN_CHECKINS = 2;
+
+const BEAD_RADIUS = {base: 7, perCheckin: 3, max: 18};
+const TARGET_RADIUS = 22;
+const LABEL_GAP = 6;
+const LABEL_ROOM = 160;
+
+const distanceKm = (a, b) => {
+  const rad = Math.PI / 180;
+  const dLat = (b.lat - a.lat) * rad;
+  const dLon = (b.lon - a.lon) * rad;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLon / 2) ** 2;
+  return 2 * 6371 * Math.asin(Math.sqrt(h));
+};
+
+const nearest = (candidates, point) =>
+  candidates.reduce(
+    (best, candidate) => {
+      const distance = distanceKm(point, candidate);
+      return distance < best.distance ? {candidate, distance} : best;
+    },
+    {candidate: null, distance: Infinity}
+  ).candidate;
+
+const listFormat = new Intl.ListFormat('en', {type: 'conjunction'});
+const placeLabel = ({city, region}) => (region ? `${city}, ${region}` : city);
+
+/**
+ * Clay-bead spots for the SVG map, from `buildCheckinCities` output (already
+ * filtered and excluded). Each spot carries projected x/y, a radius, its
+ * accessible label, and a link to a city anchor. Cities outside the outline
+ * stay in the list only. Returns null when nothing can be drawn.
+ */
+export const buildCheckinMap = (cities, {centroids, outline}) => {
+  if (!cities?.length) return null;
+
+  const byKey = new Map([...indexCentroids(centroids).values()].map(entry => [entry.key, entry]));
+  const project = projector(outline.projection);
+  const drawable = entry => entry.country === outline.country && inExtent(outline.extent, entry.lon, entry.lat);
+  const metros = [...byKey.values()].filter(entry => entry.tier === 'metro' && drawable(entry));
+  const spots = new Map();
+
+  for (const city of cities) {
+    const centroid = byKey.get(city.key);
+    if (!centroid) throw new Error(`[checkins:map] no centroid for "${city.key}"`);
+    if (!drawable(centroid)) continue;
+
+    const anchor = centroid.tier === 'town' && city.count < TOWN_MIN_CHECKINS ? nearest(metros, centroid) : centroid;
+    if (!anchor) continue;
+
+    if (!spots.has(anchor.key)) spots.set(anchor.key, {anchor, cities: []});
+    spots.get(anchor.key).cities.push(city);
+  }
+
+  if (!spots.size) return null;
+
+  const drawn = [...spots.values()].map(({anchor, cities: members}) => {
+    const [x, y] = project(anchor.lon, anchor.lat);
+    const count = members.reduce((sum, city) => sum + city.count, 0);
+    const own = members.find(city => city.key === anchor.key);
+    const near = !own || members.length > 1;
+    const anchorLabel = placeLabel(anchor);
+    const r = Math.round(Math.min(BEAD_RADIUS.max, BEAD_RADIUS.base + BEAD_RADIUS.perCheckin * Math.sqrt(count)));
+    const labelEnd = x > outline.width - LABEL_ROOM;
+    return {
+      place: anchorLabel,
+      href: `#${(own ?? members[0]).slug}`,
+      x,
+      y,
+      r,
+      target: Math.max(TARGET_RADIUS, r + LABEL_GAP),
+      count,
+      label: near
+        ? `Near ${anchorLabel}: ${countLabel(count)} in ${listFormat.format(members.map(city => city.label))}`
+        : `${anchorLabel}: ${countLabel(count)}`,
+      name: near ? `near ${anchor.city}` : anchor.city,
+      labelAnchor: labelEnd ? 'end' : 'start',
+      left: `${((x / outline.width) * 100).toFixed(1)}%`,
+      top: `${((y / outline.height) * 100).toFixed(1)}%`
+    };
+  });
+
+  return {
+    width: outline.width,
+    height: outline.height,
+    states: outline.states,
+    spots: drawn.sort((a, b) => a.place.localeCompare(b.place, 'en'))
+  };
 };
