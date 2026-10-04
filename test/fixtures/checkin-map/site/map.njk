@@ -1,0 +1,6 @@
+---
+permalink: /map/index.html
+---
+{%- set cities = collections.fixtureCheckins | checkinCities(centroids) -%}
+{%- set checkinMap = cities | checkinMap(centroids, outline) -%}
+{%- include "partials/checkin-map.njk" -%}

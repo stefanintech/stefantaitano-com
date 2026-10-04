@@ -2,7 +2,7 @@
 
 A clay relief map on `/checkins/` with one marker per city I've checked in from, plus a plain city list that works without the map. Design option A (clay relief) is approved. It ships as four PRs, one per session.
 
-**Status (4 Oct 2026):** PR 1 (data pipeline and city list) is in review. PRs 2–4 are future work.
+**Status (4 Oct 2026):** PR 1 (data pipeline and city list) is merged. PR 2 (SVG clay map) is in review. PRs 3 and 4 are future work.
 
 **Outcome:** `/checkins/` lists every city with published check-ins, each with a `#city-…` anchor, a count, and links down to its check-ins in the timeline. Later PRs draw the same cities on a clay relief map. Home-area cities never appear in the list, on the map, or in the repo's data.
 
@@ -55,7 +55,7 @@ Testville|ZZ|ZZ; Saint Testville|ZZ|ZZ; Fakeburg|ZZ|ZZ|Example Pier
 ```
 
 - `lat` and `lon` come from a well-known public city centroid (the city's Wikipedia coordinates), rounded to 0.1° (about 11 km). Only `lat`, `lon`, and `tier` are allowed.
-- `tier` is `metro` or `town`. PR 2 uses it to snap small towns to a coarser grid.
+- `tier` is `metro` or `town`. A town with fewer than 2 published check-ins is drawn on the nearest metro bead (see PR 2).
 - Only cities with published, non-excluded check-ins get an entry. **Excluded cities never get a centroid**, and the build fails if one matches `CHECKIN_MAP_EXCLUDE`. That error doesn't say which entry matched.
 - A published, non-excluded check-in whose city has no centroid fails the build and names the file. So does an ambiguous match: a check-in without a region whose city exists in two regions, or two keys that normalize to the same city.
 
@@ -67,7 +67,18 @@ Testville|ZZ|ZZ; Saint Testville|ZZ|ZZ; Fakeburg|ZZ|ZZ|Example Pier
 
 ---
 
+## SVG map (PR 2)
+
+`src/_includes/partials/checkin-map.njk` draws the same grouped cities as an inline SVG above the list. The list stays the text alternative, and every bead is an `<a>` to that city's `#city-…` anchor, so the map works with no JavaScript.
+
+- **Outline:** `src/_data/checkinMapOutline.json`, the contiguous US plus DC, from Natural Earth 1:110m (public domain, release v5.1.2). `npm run checkins:map-outline` rebuilds it from that pinned file and checks the sha256. The site build never downloads it. Alaska, Hawaii, and check-ins outside this outline stay in the list only.
+- **Projection:** Albers, shared by `src/_config/utils/map-projection.js`, so beads land on the shapes. The HTML gets whole-number SVG x/y. It does not get latitudes, longitudes, dates, or routes.
+- **Small towns:** a `town` with fewer than 2 published check-ins is drawn on the nearest `metro` bead. The bead's name says "near" that metro, and its label names every city on it. The list below still names the town itself. A town with 2 or more check-ins gets its own bead.
+- **Beads:** radius grows with the count, capped, and the hit target is at least 44 units in the 960-wide viewBox. The accessible name is "City, Region: N check-ins".
+
+**Done when:** the map is usable from the keyboard and with JavaScript off, axe reports no violations on `/checkins/`, and the page makes no third-party requests.
+
 ## Later PRs
 
-- **PR 2:** the clay relief map as a build-time SVG, with markers projected from centroids. Small towns snap to a coarser grid by `tier`.
-- **PR 3 and PR 4:** finish the map's styling and interaction, following the approved design. Plan each one with Stefan before it starts.
+- **PR 3:** light and dark polish, focus, reduced motion, mobile hit targets, and optional diorama thumbnails.
+- **PR 4:** a scheduled rebuild. Plan it with Stefan before starting.

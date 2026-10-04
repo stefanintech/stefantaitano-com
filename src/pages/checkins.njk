@@ -3,6 +3,7 @@ layout: base
 permalink: /checkins/index.html
 title: 'Check-ins'
 description: 'Public places Stefan Taitano has been, newest first. Places only, posted at least a day later.'
+pa11yRunners: ['htmlcs', 'axe']
 ---
 
 {% set checkins = collections.checkins %}
@@ -13,6 +14,8 @@ description: 'Public places Stefan Taitano has been, newest first. Places only, 
 
   {% if checkins.length %}
     {% set cities = checkins | checkinCities(cityCentroids) %}
+    {% set checkinMap = cities | checkinMap(cityCentroids, checkinMapOutline) %}
+    {% include "partials/checkin-map.njk" %}
     {% include "partials/checkin-cities.njk" %}
 
     {% set months = [] %}
@@ -47,6 +50,7 @@ description: 'Public places Stefan Taitano has been, newest first. Places only, 
 
 {% css "local" %}
   {% include "css/checkins.css" %}
+  {% include "css/checkin-map.css" %}
   {% include "css/checkin-figure.css" %}
 {% endcss %}
 

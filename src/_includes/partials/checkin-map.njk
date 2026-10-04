@@ -1,0 +1,53 @@
+{#- Clay relief map of check-in cities. Set `checkinMap` from the `checkinMap` filter. Projected positions only: no coordinates, dates, or routes. Every bead links to its city in the list, which is the text alternative. -#}
+{%- if checkinMap and checkinMap.spots.length %}
+<figure class="checkins-map">
+  <div class="checkins-map__frame" style="aspect-ratio: {{ checkinMap.width }} / {{ checkinMap.height }}" role="group" aria-label="Map of cities with check-ins">
+    <svg class="checkins-map__svg" viewBox="0 0 {{ checkinMap.width }} {{ checkinMap.height }}" aria-hidden="true" focusable="false">
+      <defs>
+        <filter id="checkins-map-slab" x="-5%" y="-5%" width="110%" height="110%">
+          <feComponentTransfer in="SourceAlpha" result="inverse">
+            <feFuncA type="table" tableValues="1 0" />
+          </feComponentTransfer>
+          <feGaussianBlur in="inverse" stdDeviation="2.5" />
+          <feOffset dx="-1.5" dy="-2.5" result="blurred" />
+          <feFlood class="checkins-map__shade" />
+          <feComposite in2="blurred" operator="in" />
+          <feComposite in2="SourceAlpha" operator="in" result="inner" />
+          <feMerge>
+            <feMergeNode in="SourceGraphic" />
+            <feMergeNode in="inner" />
+          </feMerge>
+        </filter>
+        <filter id="checkins-map-lift" x="-10%" y="-10%" width="120%" height="125%">
+          <feDropShadow class="checkins-map__drop" dx="0" dy="3" stdDeviation="3" />
+        </filter>
+        <radialGradient id="checkins-map-bead" cx="35%" cy="30%" r="75%">
+          <stop offset="0" class="checkins-map__bead-light" />
+          <stop offset="0.55" class="checkins-map__bead-mid" />
+          <stop offset="1" class="checkins-map__bead-deep" />
+        </radialGradient>
+      </defs>
+      <g class="checkins-map__land">
+        {%- for state in checkinMap.states %}
+        <path class="checkins-map__state" d="{{ state.d }}" />
+        {%- endfor %}
+      </g>
+      <g class="checkins-map__beads">
+        {%- for spot in checkinMap.spots %}
+        <circle class="checkins-map__bead" cx="{{ spot.x }}" cy="{{ spot.y }}" r="{{ spot.r }}" />
+        {%- endfor %}
+      </g>
+    </svg>
+    <ul class="checkins-map__spots" role="list">
+      {%- for spot in checkinMap.spots %}
+      <li>
+        <a class="checkins-map__spot" href="{{ spot.href }}" aria-label="{{ spot.label }}" style="inset-inline-start: {{ spot.left }}; inset-block-start: {{ spot.top }}" data-anchor="{{ spot.labelAnchor }}">
+          <span class="checkins-map__name" aria-hidden="true">{{ spot.name }}</span>
+        </a>
+      </li>
+      {%- endfor %}
+    </ul>
+  </div>
+  <figcaption class="checkins-map__caption">Dots mark the middle of each city, never the exact spot. A small town I've only been to once shows up at the nearest big city. Every city is in the list below.</figcaption>
+</figure>
+{%- endif %}

@@ -20,10 +20,18 @@ permalink: "pa11y.json"
         {%- set pageData = page.data -%}
       {%- endif -%}
     {%- endfor -%}
-    {%- set urls = (urls.push({
-      url: url,
-      ignore: pageData.pa11yIgnore or []
-    }), urls) -%}
+    {%- if pageData.pa11yRunners -%}
+      {%- set urls = (urls.push({
+        url: url,
+        ignore: pageData.pa11yIgnore or [],
+        runners: pageData.pa11yRunners
+      }), urls) -%}
+    {%- else -%}
+      {%- set urls = (urls.push({
+        url: url,
+        ignore: pageData.pa11yIgnore or []
+      }), urls) -%}
+    {%- endif -%}
   {%- endfor -%}
 {%- else -%}
   {%- set urls = [] -%}
