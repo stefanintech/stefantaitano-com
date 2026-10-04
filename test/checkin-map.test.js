@@ -325,3 +325,45 @@ describe('clay map', () => {
     }
   });
 });
+
+describe('map theme and polish', () => {
+  const css = fs.readFileSync('./src/assets/css/local/checkin-map.css', 'utf8');
+  const colors = Object.fromEntries(
+    JSON.parse(fs.readFileSync('./src/_data/designTokens/colors.json', 'utf8')).items.map(item => [item.name, item.value])
+  );
+  const lin = channel => {
+    const value = channel / 255;
+    return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+  };
+  const luminance = hex => {
+    const number = parseInt(hex.slice(1), 16);
+    return 0.2126 * lin(number >> 16) + 0.7152 * lin((number >> 8) & 255) + 0.0722 * lin(number & 255);
+  };
+  const contrast = (a, b) => {
+    const [lighter, darker] = [luminance(a), luminance(b)].sort((left, right) => right - left);
+    return (lighter + 0.05) / (darker + 0.05);
+  };
+
+  it('keeps label text and bead rims at WCAG AA in both themes', () => {
+    // Labels use --color-text on --color-bg. Beads use amber on the light land
+    // and gold on the dark land, which are the rims declared in checkin-map.css.
+    assert.ok(contrast(colors['Gray 800'], colors['Gray 100']) >= 4.5);
+    assert.ok(contrast(colors['Gray 100'], colors['Gray 800']) >= 4.5);
+    assert.ok(contrast(colors['Amber'], colors['Gray 200']) >= 3);
+    assert.ok(contrast(colors['Gold Subdued'], colors['Gray 700']) >= 3);
+    assert.match(css, /--map-bead-edge: var\(--color-primary\)/);
+    assert.match(css, /--map-bead-edge: var\(--color-tertiary\)/);
+    assert.match(css, /--map-label: var\(--color-text\)/);
+    assert.match(css, /--map-label-bg: var\(--color-bg\)/);
+  });
+
+  it('follows the theme, shows focus, stays 44px, and adds no motion unless asked', () => {
+    assert.match(css, /prefers-color-scheme: dark/);
+    assert.match(css, /data-theme='dark'/);
+    assert.match(css, /data-theme='light'/);
+    assert.match(css, /focus-visible/);
+    assert.match(css, /max\(2\.75rem, 44px\)/);
+    assert.match(css, /prefers-reduced-motion: no-preference/);
+    assert.doesNotMatch(css, /@keyframes|animation:/);
+  });
+});

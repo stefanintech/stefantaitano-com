@@ -1,7 +1,8 @@
 {#- Clay relief map of check-in cities. Set `checkinMap` from the `checkinMap` filter. Projected positions only: no coordinates, dates, or routes. Every bead links to its city in the list, which is the text alternative. -#}
 {%- if checkinMap and checkinMap.spots.length %}
 <figure class="checkins-map">
-  <div class="checkins-map__frame" style="aspect-ratio: {{ checkinMap.width }} / {{ checkinMap.height }}" role="group" aria-label="Map of cities with check-ins">
+  <div class="checkins-map__frame" role="group" aria-label="Map of cities with check-ins">
+    <div class="checkins-map__canvas" style="aspect-ratio: {{ checkinMap.width }} / {{ checkinMap.height }}">
     <svg class="checkins-map__svg" viewBox="0 0 {{ checkinMap.width }} {{ checkinMap.height }}" aria-hidden="true" focusable="false">
       <defs>
         <filter id="checkins-map-slab" x="-5%" y="-5%" width="110%" height="110%">
@@ -47,6 +48,7 @@
       </li>
       {%- endfor %}
     </ul>
+    </div>
   </div>
   <figcaption class="checkins-map__caption">Dots mark the middle of each city, never the exact spot. A small town I've only been to once shows up at the nearest big city. Every city is in the list below.</figcaption>
 </figure>
