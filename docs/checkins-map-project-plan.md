@@ -2,7 +2,7 @@
 
 A clay relief map on `/checkins/` with one marker per city I've checked in from, plus a plain city list that works without the map. Design option A (clay relief) is approved. It ships as four PRs, one per session.
 
-**Status (4 Oct 2026):** PR 1 (data pipeline and city list) is merged. PR 2 (SVG clay map) is in review. PRs 3 and 4 are future work.
+**Status (4 Oct 2026):** PRs 1 and 2 are merged. PR 3 (theme and polish) is in review. PR 4 is future work.
 
 **Outcome:** `/checkins/` lists every city with published check-ins, each with a `#city-…` anchor, a count, and links down to its check-ins in the timeline. Later PRs draw the same cities on a clay relief map. Home-area cities never appear in the list, on the map, or in the repo's data.
 
@@ -78,7 +78,18 @@ Testville|ZZ|ZZ; Saint Testville|ZZ|ZZ; Fakeburg|ZZ|ZZ|Example Pier
 
 **Done when:** the map is usable from the keyboard and with JavaScript off, axe reports no violations on `/checkins/`, and the page makes no third-party requests.
 
+## Theme and polish (PR 3)
+
+The map uses the same colour tokens as the rest of the site, including `prefers-color-scheme` and the theme switch.
+
+- **Beads.** The rim is amber on the light land and gold on the dark land. Those are the pairs that clear 3:1. The gold highlight stays in the middle of the light bead, where it is not the edge.
+- **Labels.** Text on the page background, in both themes, clears 4.5:1.
+- **Focus.** A 3px ring in the text colour, outside the 44px hit target.
+- **Motion.** The only transition is on the label background, and only when `prefers-reduced-motion` is not set. The site-wide reset already cuts transitions short.
+- **Small screens.** The frame is padded by half a hit target so a bead on the coast is not clipped, and a long name ellipsizes before it widens the page. The target stays at least 44px.
+
+**Done when:** contrast holds in both themes, focus is visible, and the mobile target is at least 44px.
+
 ## Later PRs
 
-- **PR 3:** light and dark polish, focus, reduced motion, mobile hit targets, and optional diorama thumbnails.
 - **PR 4:** a scheduled rebuild. Plan it with Stefan before starting.
