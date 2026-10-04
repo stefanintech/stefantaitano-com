@@ -21,6 +21,7 @@ import events from './src/_config/events.js';
 import filters from './src/_config/filters.js';
 import plugins from './src/_config/plugins.js';
 import shortcodes from './src/_config/shortcodes.js';
+import {buildCheckinCities, checkinAnchor, loadExclusions} from './src/_config/utils/checkin-map.js';
 import {themeLight} from './src/_data/meta.js';
 
 const require = createRequire(import.meta.url);
@@ -37,6 +38,8 @@ const jpegOnLight = async sharpInstance => {
 export default async function (eleventyConfig) {
   // --------------------- Events: before build
   eleventyConfig.on('eleventy.before', async () => {
+    // Fails a production build without CHECKIN_MAP_EXCLUDE, even when no page asks for the city list.
+    if (process.env.CONTEXT === 'production') loadExclusions();
     await events.buildAllCss();
     await events.buildAllJs();
   });
@@ -110,6 +113,10 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter('shuffle', filters.shuffleArray);
   eleventyConfig.addFilter('alphabetic', filters.sortAlphabetically);
   eleventyConfig.addFilter('slugify', filters.slugifyString);
+  eleventyConfig.addFilter('checkinAnchor', checkinAnchor);
+  eleventyConfig.addFilter('checkinCities', (checkins, centroids) =>
+    buildCheckinCities(checkins, {centroids, exclusions: loadExclusions()})
+  );
 
   // --------------------- Shortcodes
   eleventyConfig.addShortcode('svg', shortcodes.svgShortcode);

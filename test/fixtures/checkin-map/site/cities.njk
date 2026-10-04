@@ -1,0 +1,5 @@
+---
+permalink: /cities/index.html
+---
+{%- set cities = collections.fixtureCheckins | checkinCities(centroids) -%}
+{%- include "partials/checkin-cities.njk" -%}

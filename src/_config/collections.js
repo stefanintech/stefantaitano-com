@@ -1,4 +1,4 @@
-import {CHECKINS_DIR, isPublished, validateCheckinImages, validateCheckins} from './utils/checkins.js';
+import {CHECKINS_DIR, IMAGES_DIR, isPublished, validateCheckinImages, validateCheckins} from './utils/checkins.js';
 
 /** All blog posts as a collection. */
 export const getAllPosts = collection => {
@@ -11,15 +11,19 @@ export const getNowEntries = collection => {
 };
 
 /** Published check-ins, newest first. Fails the build on invalid front matter or images. */
-export const getCheckins = async collection => {
-  const publishAfterByPath = validateCheckins();
-  await validateCheckinImages();
-  const now = Date.now();
-  return collection
-    .getFilteredByGlob(`${CHECKINS_DIR}/**/*.md`)
-    .filter(item => isPublished(publishAfterByPath, item.inputPath, now))
-    .reverse();
-};
+export const createCheckinsCollection =
+  ({dir = CHECKINS_DIR, imagesDir = IMAGES_DIR} = {}) =>
+  async collection => {
+    const publishAfterByPath = validateCheckins(dir);
+    await validateCheckinImages(imagesDir);
+    const now = Date.now();
+    return collection
+      .getFilteredByGlob(`${dir}/**/*.md`)
+      .filter(item => isPublished(publishAfterByPath, item.inputPath, now))
+      .reverse();
+  };
+
+export const getCheckins = createCheckinsCollection();
 
 /** All talks, newest first. */
 export const getAllTalks = collection => {

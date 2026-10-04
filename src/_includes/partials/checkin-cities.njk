@@ -1,0 +1,19 @@
+{#- Check-ins grouped by city. Set `cities` from the `checkinCities` filter. Counts and links only: no coordinates, no dates. -#}
+{%- if cities.length %}
+<section class="checkins-cities" aria-labelledby="checkins-cities-title">
+  <h2 id="checkins-cities-title" class="checkins-cities__title">Cities</h2>
+  <ul class="checkins-cities__list" role="list">
+    {%- for city in cities %}
+    <li class="checkins-city" id="{{ city.slug }}">
+      <h3 class="checkins-city__name">{{ city.label }}</h3>
+      <p class="checkins-city__count">{{ city.countLabel }}</p>
+      <ul class="checkins-city__links" role="list">
+        {%- for checkin in city.checkins %}
+        <li><a href="#{{ checkin.anchor }}">{{ checkin.label }}</a></li>
+        {%- endfor %}
+      </ul>
+    </li>
+    {%- endfor %}
+  </ul>
+</section>
+{%- endif %}

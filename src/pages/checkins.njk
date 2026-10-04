@@ -12,6 +12,9 @@ description: 'Public places Stefan Taitano has been, newest first. Places only, 
   {% include "partials/page-intro.njk" %}
 
   {% if checkins.length %}
+    {% set cities = checkins | checkinCities(cityCentroids) %}
+    {% include "partials/checkin-cities.njk" %}
+
     {% set months = [] %}
     {% set monthKeys = [] %}
     {% for checkin in checkins %}
@@ -28,7 +31,7 @@ description: 'Public places Stefan Taitano has been, newest first. Places only, 
         <ol class="checkins-list" role="list">
           {% for checkin in checkins %}
             {% if (checkin.date | formatDateUtc('YYYY-MM')) == month.key %}
-              <li class="checkins-entry">
+              <li class="checkins-entry" id="{{ checkin | checkinAnchor }}">
                 {% set lastSeen = false %}
                 {% include "partials/checkin-line.njk" %}
               </li>

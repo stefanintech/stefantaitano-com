@@ -1,0 +1,4 @@
+{
+  "Minneapolis|MN|US": {"lat": 45.0, "lon": -93.3, "tier": "metro"},
+  "San Francisco|CA|US": {"lat": 37.8, "lon": -122.4, "tier": "metro"}
+}
