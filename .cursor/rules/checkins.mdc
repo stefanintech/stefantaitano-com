@@ -8,7 +8,7 @@ alwaysApply: true
 Plan: `docs/checkins-project-plan.md`. This file is the part that applies in every session.
 
 1. **Places only. No people, ever.** No companions, "with family," names, or faces. Not in front matter, not in the note. If Stefan's message mentions people, leave them out and say you did.
-2. **Nothing reaches GitHub until 24 hours after the visit.** No branch, PR, or commit before `publishAfter` has passed. Check the clock before `git push`. The repo is public, so pushing early publishes the check-in on GitHub even though the site filters it.
+2. **Nothing reaches GitHub until 24 hours after the visit.** No branch, PR, or commit before `publishAfter` has passed. Check the clock before `git push`. The repo is public, so pushing early publishes the check-in on GitHub even though the site filters it. The hourly `checkin-rebuild` function is a backstop for an entry already on `main`. It does not change this rule. Its build-hook URL lives only in `CHECKIN_REBUILD_HOOK_URL`. Never commit, log, or echo that value.
 3. **Nothing private is stored.** Not here, not as `draft: true`, not anywhere else. Git history is public and deleting a file doesn't un-publish it.
 4. **No home, kids' schools, daycare, or relatives' homes.** Those get no check-in. If a place is close enough to home that it narrows things down, use `precision: city`. Never write a list of those places into this repo.
 5. **No coordinates, trailheads, parking, addresses, or directions.** The schema has no field for them, and the note shouldn't carry them either.
