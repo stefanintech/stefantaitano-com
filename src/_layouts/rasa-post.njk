@@ -1,0 +1,49 @@
+---
+layout: rasa
+schema: BlogPosting
+---
+
+<article class="rasa-post h-entry">
+  <header class="rasa-post__header">
+    <h1 class="p-name">{{ title }}</h1>
+    <p class="rasa-post__date">
+      <time class="dt-published" datetime="{{ date | toIsoString }}">{{ date | formatDate('MMMM D, YYYY') }}</time>
+      {%- if draft %} · Draft{% endif %}
+    </p>
+  </header>
+
+  {% if image %}
+    {%
+      imageKeys {
+        "src": image,
+        "alt": alt or "",
+        "credit": credit,
+        "loading": "eager",
+        "containerClass": "rasa-post__feature"
+      }
+    %}
+  {% endif %}
+
+  <div class="rasa-prose e-content">{{ content | safe }}</div>
+
+  {% if related %}
+    <aside class="rasa-related" aria-labelledby="related-reading-title">
+      <h2 id="related-reading-title">Keep reading</h2>
+      <ul role="list">
+        {% for item in related %}
+          <li><a href="{{ item.url }}">{{ item.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </aside>
+  {% endif %}
+
+  <div hidden>
+    <a class="u-url" href="{{ page.url | url | absoluteUrl(meta.url) }}">{{ title }}</a>
+    <a class="p-author h-card" rel="author" href="{{ meta.url }}">{{ meta.author.name }}</a>
+  </div>
+</article>
+
+{%- css "rasa" -%}
+  {%- include "css/rasa-prose.css" -%}
+  {%- include "css/rasa-syntax.css" -%}
+{%- endcss -%}

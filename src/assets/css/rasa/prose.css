@@ -1,0 +1,160 @@
+/* Long-form reading: posts, /now, and plain pages. */
+
+.rasa-prose {
+  & > :where(*) {
+    margin-block: 0 1.1em;
+  }
+
+  & :where(h2, h3, h4) {
+    margin-block: 1.6em 0.4em;
+  }
+
+  & :where(h3) {
+    font-size: 1.625rem;
+  }
+
+  & :where(h4) {
+    font-size: 1.375rem;
+  }
+
+  & :where(h1 + *, h2 + *, h3 + *, h4 + *) {
+    margin-block-start: 0;
+  }
+
+  & :where(ul, ol) {
+    padding-inline-start: 1.25em;
+  }
+
+  & :where(li + li) {
+    margin-block-start: 0.35em;
+  }
+
+  & :where(blockquote) {
+    margin-inline: 0;
+    padding-inline-start: 1rem;
+    border-inline-start: 3px solid var(--accent);
+    color: var(--muted);
+  }
+
+  & :where(hr) {
+    margin-block: 2.5rem;
+    border: 0;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  & :where(img, picture, video, iframe) {
+    max-width: 100%;
+    border-radius: 0.5rem;
+  }
+
+  & :where(img, video) {
+    height: auto;
+  }
+
+  & :where(picture) {
+    display: block;
+  }
+
+  & :where(img.image-centered, picture:has(.image-centered)) {
+    width: 100%;
+    max-width: min(100%, 26.25rem);
+    margin-inline: auto;
+  }
+
+  & :where(figure) {
+    margin-inline: 0;
+  }
+
+  & :where(figcaption) {
+    margin-block-start: 0.5rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+
+  /* A table scrolls inside itself instead of widening the page. */
+  & :where(table) {
+    display: block;
+    max-width: 100%;
+    overflow-x: auto;
+    border-collapse: collapse;
+  }
+
+  & :where(th, td) {
+    padding: 0.4rem 1rem 0.4rem 0;
+    border-block-end: 1px solid var(--rule);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  & :where(caption) {
+    padding-block-end: 0.4rem;
+    color: var(--muted);
+    text-align: start;
+  }
+
+  & :where(:not(pre) > code) {
+    padding: 0.1em 0.3em;
+    border-radius: 0.25rem;
+    background: var(--card);
+    box-shadow: inset 0 0 0 1px var(--rule);
+    overflow-wrap: anywhere;
+  }
+
+  & :where(pre) {
+    max-width: 100%;
+    overflow-x: auto;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+    background: var(--card);
+    font-size: 0.875rem;
+    line-height: 1.55;
+    tab-size: 2;
+  }
+
+  & :where(pre code) {
+    font-size: inherit;
+  }
+
+  & :where(sup a) {
+    text-decoration: none;
+  }
+
+  & :where(.footnotes) {
+    color: var(--muted);
+    font-size: 0.9375rem;
+  }
+}
+
+:where(.rasa-post__header, .rasa-prose) > h1 {
+  margin-block-start: 0.5rem;
+}
+
+.rasa-post__header h1 {
+  margin-block-end: 0.25rem;
+}
+
+.rasa-post__date {
+  margin-block: 0 2rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.rasa-post__feature img {
+  width: 100%;
+  border-radius: 0.5rem;
+}
+
+.rasa-related {
+  margin-block-start: 3rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--rule);
+
+  & h2 {
+    margin-block-start: 0.5rem;
+  }
+
+  & li + li {
+    margin-block-start: 0.5rem;
+  }
+}

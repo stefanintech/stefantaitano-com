@@ -57,9 +57,12 @@ export default async function (eleventyConfig) {
   eleventyConfig.addWatchTarget('./src/_includes/**/*.{webc}');
 
   // --------------------- layout aliases
-  eleventyConfig.addLayoutAlias('base', 'base.njk');
-  eleventyConfig.addLayoutAlias('page', 'page.njk');
-  eleventyConfig.addLayoutAlias('post', 'post.njk');
+  // Tabula Rasa preview: `TABULA_RASA=1 npm run build`. Production never sets it before the switch.
+  const tabulaRasa = process.env.TABULA_RASA === '1';
+  eleventyConfig.addGlobalData('tabulaRasa', tabulaRasa);
+  eleventyConfig.addLayoutAlias('base', tabulaRasa ? 'rasa.njk' : 'base.njk');
+  eleventyConfig.addLayoutAlias('page', tabulaRasa ? 'rasa-page.njk' : 'page.njk');
+  eleventyConfig.addLayoutAlias('post', tabulaRasa ? 'rasa-post.njk' : 'post.njk');
   eleventyConfig.addLayoutAlias('tags', 'tags.njk');
 
   //	---------------------  Collections
