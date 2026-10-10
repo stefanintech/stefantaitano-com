@@ -5,6 +5,9 @@ title: 'Stefan Taitano'
 description: 'Veteran and ServiceNow developer in Minneapolis. I build systems for a living and escape plans for fun.'
 ---
 
+{%- if tabulaRasa -%}
+  {% include "rasa/home.njk" %}
+{%- else -%}
 {% set board = lichess.scoreboard %}
 {% set talk = collections.allTalks[0] %}
 
@@ -220,6 +223,8 @@ description: 'Veteran and ServiceNow developer in Minneapolis. I build systems f
     {% include "partials/pixel-hero.njk" %}
   </div>
 </div>
+
+{%- endif %}
 
 {% css "local" %}
   {% include "css/home.css" %}

@@ -11,6 +11,7 @@
 <footer class="rasa-footer">
   <span class="lichess-status" data-lichess-status hidden></span>
 
+  {%- if not compactHeader %}
   <nav aria-label="{{ meta.navigation.ariaExplore }}">
     <ul role="list">
       {% for item in rasaPages %}
@@ -21,6 +22,7 @@
       {% endfor %}
     </ul>
   </nav>
+  {%- endif %}
 
   <nav aria-label="{{ meta.navigation.ariaBottom }}">
     <ul role="list">

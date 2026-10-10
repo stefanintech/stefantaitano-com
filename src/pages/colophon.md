@@ -8,6 +8,9 @@ date: 2026-08-19
 layout: page
 ---
 
+{% if tabulaRasa %}
+This site is built with Eleventy, started from the Eleventy Excellent starter, and hosted on Netlify. The code is public on GitHub. Headings are in Caveat, a free handwritten font. The check-in pictures are little clay scenes of each place, not my actual photos, and they only go up a day after I've left. The rebuild was inspired by Robb Knight's "Tabula Rasa" post and Melanie Kat's site, so if you like how this looks, go check out theirs.
+{% else %}
 In the back of older books you would sometimes find a colophon: a short note about the typefaces, the paper, and the printer. This is that page for this website. If you are curious how the site is made and why it looks the way it does, you are in the right place.
 
 ## Type
@@ -65,3 +68,4 @@ The site launched with Red Hat Display for headings, inherited from the starter.
 ---
 
 *Last updated: {{ page.date | formatDate('MMMM D, YYYY') }}*
+{% endif %}
