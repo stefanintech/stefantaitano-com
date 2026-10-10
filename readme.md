@@ -16,10 +16,10 @@ This repository powers a personal site built with Eleventy. Writing, talks, proj
 
 ## Current Status
 
-- Homepage is a pixel night-sky banner, then type (no circle portrait). `/now` leads with Commit Your Code volunteering.
-- Top nav is four items: Now, Articles, Talks, Projects. Bookshelf, Field Notes, and Links live in the footer.
-- Inner pages share a calm intro. Talks stay cinematic. The photo is on `/links/` as a rounded square; holding it is a small easter egg.
-- Branding: slate + amber, Fraunces + Atkinson Hyperlegible + Caveat, ST monogram, favicons.
+- Homepage is a short intro, then one newest-first stream of posts, check-ins, and `/now` updates (Tabula Rasa, `docs/tabula-rasa-project-plan.md`).
+- Header is three links: Posts, Check-ins, Now. Everything else lives in the footer.
+- One plain stylesheet (`src/assets/css/rasa/`). Headings in Caveat, body in `system-ui`. The photo is on `/links/`; holding it is a small easter egg.
+- Branding: cream / ink / amber / gold, Caveat headings, ST monogram, favicons.
 - Writing lives here. Medium is a footer identity link, not a competing CTA.
 - Product checklist is complete. Next work is content as it comes: articles, `/now`, and projects.
 

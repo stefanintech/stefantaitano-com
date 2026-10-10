@@ -1,5 +1,5 @@
-/* Inner pages under the rasa layout: talks, projects, bookshelf, resume, AI, links.
-   The markup is shared with the live templates, so this file only styles their classes. */
+/* Inner pages: talks, projects, bookshelf, resume, AI, links.
+   Styles the classes those templates already use. */
 
 :is(.flow) > * {
   margin-block: 0;

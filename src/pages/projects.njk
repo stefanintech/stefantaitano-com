@@ -16,7 +16,7 @@ description: 'A few projects Stefan Taitano has built, including a family sticke
         <article class="project-card flow">
           <div class="project-card__header flow">
             <h2 class="project-card__title">{{ project.title }}</h2>
-            <div class="project-card__meta" aria-label="Project status and date">
+            <div class="project-card__meta">
               <span>{{ project.status }}</span>
               <span>{{ project.date }}</span>
             </div>
@@ -55,10 +55,6 @@ description: 'A few projects Stefan Taitano has built, including a family sticke
     {% endfor %}
   </div>
 </div>
-
-{% css "local" %}
-  {% include "css/projects.css" %}
-{% endcss %}
 
 {%- css "rasa" -%}
   {%- include "css/rasa-pages.css" -%}

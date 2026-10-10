@@ -20,8 +20,8 @@
       crossorigin
     />
 
-    {# Same inline bundle as base.njk, so the theme-preference key and the Lichess status carry over. #}
     {% include "head/js-inline.njk" %}
+    {% include "head/schema.njk" %}
 
     {% css "rasa" %}{% include "css/rasa-site.css" %}{% endcss %}
     <style>{% getBundle "css", "rasa" %}</style>

@@ -1,4 +1,4 @@
-// Fixture tests for the /next/ home stream. Every place name here is made up
+// Fixture tests for the home stream. Every place name here is made up
 // (region and country `ZZ`).
 import assert from 'node:assert/strict';
 import {describe, it} from 'node:test';

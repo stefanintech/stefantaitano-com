@@ -2,7 +2,7 @@
 
 Rebuild the layout and theme of stefantaitano.com from a blank page. Carry the content over exactly as it is. One small PR per phase.
 
-**Status (10 Oct 2026):** Phase 5 done: with `TABULA_RASA=1`, `/talks/` and the talk page, `/projects/`, `/bookshelf/`, `/resume/`, `/ai/`, `/links/` (compact header kept), `/privacy/`, `/accessibility/`, `/colophon/`, `/404.html`, and `/` render in the rasa layout, the colophon body is the approved paragraph, and the OG images are set in Caveat. All three swaps are behind the flag, so live pages and OG PNGs still match `main`. Phase 6 is next.
+**Status (10 Oct 2026):** Phase 6 done. The rasa layouts are the only layouts and the `TABULA_RASA` flag is gone. `/` is the intro and the stream; `/next/`, `/tags/`, `/styleguide/`, `/imprint/`, and `/sustainability/` 301 to their new homes. The old layouts, `global`/`local` CSS, Tailwind and the token pipeline, Fraunces, Atkinson, the pixel scene, "stefan is ___", the hit counter, and the retro skins are deleted. The project is complete.
 
 **Outcome:** The home page is a short intro followed by one newest-first stream of posts, check-ins, and `/now` updates. Every page uses one new layout and one plain stylesheet. The Eleventy Excellent look (Tailwind tokens, CUBE layers, Fraunces / Atkinson, the pixel scene) is gone. Every URL that works today still works, or 301s to where its content went.
 

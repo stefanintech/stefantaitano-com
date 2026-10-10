@@ -22,8 +22,7 @@ import {
   getCheckins,
   getHomeStream,
   getNowEntries,
-  showInSitemap,
-  tagList
+  showInSitemap
 } from './src/_config/collections.js';
 import events from './src/_config/events.js';
 import filters from './src/_config/filters.js';
@@ -57,13 +56,9 @@ export default async function (eleventyConfig) {
   eleventyConfig.addWatchTarget('./src/_includes/**/*.{webc}');
 
   // --------------------- layout aliases
-  // Tabula Rasa preview: `TABULA_RASA=1 npm run build`. Production never sets it before the switch.
-  const tabulaRasa = process.env.TABULA_RASA === '1';
-  eleventyConfig.addGlobalData('tabulaRasa', tabulaRasa);
-  eleventyConfig.addLayoutAlias('base', tabulaRasa ? 'rasa.njk' : 'base.njk');
-  eleventyConfig.addLayoutAlias('page', tabulaRasa ? 'rasa-page.njk' : 'page.njk');
-  eleventyConfig.addLayoutAlias('post', tabulaRasa ? 'rasa-post.njk' : 'post.njk');
-  eleventyConfig.addLayoutAlias('tags', 'tags.njk');
+  eleventyConfig.addLayoutAlias('base', 'rasa.njk');
+  eleventyConfig.addLayoutAlias('page', 'rasa-page.njk');
+  eleventyConfig.addLayoutAlias('post', 'rasa-post.njk');
 
   //	---------------------  Collections
   eleventyConfig.addCollection('allPosts', getAllPosts);
@@ -72,7 +67,6 @@ export default async function (eleventyConfig) {
   eleventyConfig.addCollection('checkins', getCheckins);
   eleventyConfig.addCollection('homeStream', getHomeStream);
   eleventyConfig.addCollection('showInSitemap', showInSitemap);
-  eleventyConfig.addCollection('tagList', tagList);
 
   // ---------------------  Plugins
   eleventyConfig.addPlugin(plugins.htmlConfig);
