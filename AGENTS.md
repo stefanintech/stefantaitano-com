@@ -6,6 +6,6 @@ This is Stefan Taitano’s Eleventy site. Read these before changing code.
 - **This Eleventy fork:** `.cursor/rules/eleventy-excellent.mdc` and `docs/eleventy-excellent-reference.md`.
 - **Chess page:** `.cursor/rules/chess-page.mdc` (Lichess endpoints, study-embed procedure).
 - **Copy:** `docs/site-voice.md`.
-- **Check-ins:** `.cursor/rules/checkins.mdc`, `docs/checkins-project-plan.md`, and the city map in `docs/checkins-map-project-plan.md`. The hourly rebuild reads `CHECKIN_REBUILD_HOOK_URL` when the function runs and never logs it. Home-area exclusions stay in `CHECKIN_MAP_EXCLUDE` only.
+- **Check-ins:** `.cursor/rules/checkins.mdc`, `docs/checkins-project-plan.md`, and the city map in `docs/checkins-map-project-plan.md`. A check-in goes live on the merge to `main`, which happens after `publishAfter`. There is no scheduled rebuild. Home-area exclusions stay in `CHECKIN_MAP_EXCLUDE` only.
 
 Small fixes (copy, one CSS rule, a study chapter paste) do not need a new plan. Do not invent a parallel layout. Input is `src/`, output is `dist/`.

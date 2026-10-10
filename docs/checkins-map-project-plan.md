@@ -2,7 +2,7 @@
 
 A clay relief map on `/checkins/` with one marker per city I've checked in from, plus a plain city list that works without the map. Design option A (clay relief) is approved. It ships as four PRs, one per session.
 
-**Status (4 Oct 2026):** PRs 1–3 are merged. PR 4 (scheduled rebuild) is in review.
+**Status (10 Oct 2026):** PRs 1–4 are merged. The hourly rebuild from PR 4 was removed. A check-in goes live when its PR merges after `publishAfter`.
 
 **Outcome:** `/checkins/` lists every city with published check-ins, each with a `#city-…` anchor, a count, and links down to its check-ins in the timeline, and draws those cities on a clay relief map. Home-area cities never appear in the list, on the map, or in the repo's data.
 
@@ -90,12 +90,8 @@ The map uses the same colour tokens as the rest of the site, including `prefers-
 
 **Done when:** contrast holds in both themes, focus is visible, and the mobile target is at least 44px.
 
-## Scheduled rebuild (PR 4)
+## Scheduled rebuild (PR 4, later removed)
 
-`netlify/functions/checkin-rebuild.js` POSTs to a Netlify build hook so a check-in already on `main` goes live once `publishAfter` has passed, without another commit. The `publishAfter` filter is still the gate. The 24-hour push rule still applies: nothing is committed before `publishAfter`. The hourly run is only a backstop for an entry that reached `main` early.
+PR 4 added an hourly function that POSTed a Netlify build hook so a check-in already on `main` would go live once `publishAfter` passed. That schedule is gone. Check-ins are pushed only after `publishAfter`, and the merge to `main` already deploys them, so the hourly run was not publishing anything.
 
-- **Schedule:** `@hourly` in `netlify.toml` (`0 * * * *`, minute 0 UTC). The schedule lives only in `netlify.toml`. Netlify runs it for published production deploys. Deploy previews do not fire it on their own. The Netlify UI "Run now" button can invoke it, including on a preview.
-- **Hook URL:** `CHECKIN_REBUILD_HOOK_URL`, read when the function runs. In Netlify, set it with Functions scope (or All) for Production. Add Deploy Previews too if "Run now" on a preview should rebuild. Create the hook under Site configuration → Build & deploy → Continuous deployment → Build hooks. The value is never committed, logged, or echoed. A missing or blank value logs a short warning that names the variable and skips the POST. A failed POST logs a status code or a fixed failure line, never the URL or the error message, because fetch errors include the URL.
-- **Tests:** `test/checkin-rebuild.test.js` mocks `fetch`. `npm run test:checkins` runs it with the map tests. The map fixture tests still prove a future `publishAfter` stays off the page until a build runs after that time.
-
-**Done when:** a future fixture appears only after its `publishAfter` passes and the next scheduled build runs, and no secrets are in the repo or client.
+`getCheckins` still drops an entry whose `publishAfter` is in the future. An entry pushed early stays off the site until a later build. There is no schedule in `netlify.toml` and no build-hook function. `npm run test:checkins` checks both. `CHECKIN_REBUILD_HOOK_URL` is unused. Do not commit or log its value.

@@ -55,8 +55,3 @@ package = "netlify-plugin-cache"
 [build]
   command = "npm run build"
   publish = "dist"
-
-# Minute 0 of every hour, UTC. Production publishes only.
-# The hook URL stays in CHECKIN_REBUILD_HOOK_URL, not here.
-[functions."checkin-rebuild"]
-  schedule = "@hourly"
