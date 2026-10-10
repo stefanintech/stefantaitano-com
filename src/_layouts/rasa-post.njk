@@ -1,0 +1,11 @@
+---
+layout: rasa.njk
+---
+
+<article class="rasa-post">
+  <h1>{{ title }}</h1>
+  <p class="rasa-post__date"><time datetime="{{ page.date | formatDateUtc('YYYY-MM-DD') }}">{{ page.date | formatDateUtc('MMMM D, YYYY') }}</time></p>
+  <div class="rasa-post__content">
+    {{ content | safe }}
+  </div>
+</article>

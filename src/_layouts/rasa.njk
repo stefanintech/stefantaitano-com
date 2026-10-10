@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="{{ meta.lang }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>
+      {%- if title -%}
+        {{- title -}}
+      {%- else -%}
+        {{- meta.siteName -}}
+      {%- endif -%}
+    </title>
+
+    <base href="{{ page.url }}" />
+
+    <link
+      rel="preload"
+      href="/assets/fonts/caveat/caveat-latin-600.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+      fetchpriority="high"
+    />
+
+    {% include "head/js-inline.njk" %}
+    {% include "head/schema.njk" %}
+
+    {%- if eleventy.env.runMode === "serve" %}
+      <link rel="stylesheet" href="{% getBundleFileUrl "css", "rasa" %}">
+    {%- else %}
+      <style>{% getBundle "css", "rasa" %}</style>
+    {%- endif %}
+
+    {% css "rasa" %}{% include "css/rasa-site.css" %}{% endcss %}
+
+    {% include "head/js-defer.njk" %}
+    {% include "head/meta-info.njk" %}
+  </head>
+
+  <body>
+    {% include "rasa/header.njk" %}
+
+    <main id="main" class="rasa-main rasa-layout">
+      {{ content | safe }}
+    </main>
+
+    {% include "rasa/footer.njk" %}
+  </body>
+</html>

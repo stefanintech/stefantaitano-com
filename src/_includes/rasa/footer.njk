@@ -1,0 +1,48 @@
+<footer class="rasa-footer">
+  <div class="rasa-layout rasa-footer__inner">
+    <nav aria-label="More pages">
+      <ul class="rasa-footer__links" role="list">
+        <li><a href="/chess/"{{ helpers.getLinkActiveState('/chess/', page.url) | safe }}>Chess</a></li>
+        <li><a href="/talks/"{{ helpers.getLinkActiveState('/talks/', page.url) | safe }}>Talks</a></li>
+        <li><a href="/projects/"{{ helpers.getLinkActiveState('/projects/', page.url) | safe }}>Projects</a></li>
+        <li><a href="/bookshelf/"{{ helpers.getLinkActiveState('/bookshelf/', page.url) | safe }}>Bookshelf</a></li>
+        <li><a href="/resume/"{{ helpers.getLinkActiveState('/resume/', page.url) | safe }}>Resume</a></li>
+        <li><a href="/ai/"{{ helpers.getLinkActiveState('/ai/', page.url) | safe }}>AI</a></li>
+        <li><a href="/links/"{{ helpers.getLinkActiveState('/links/', page.url) | safe }}>Links</a></li>
+        <li><a href="https://buttondown.com/stefantaitano" rel="noopener">Field Notes</a></li>
+        <li><a href="{{ meta.blog.feedLinks[0].url }}">RSS</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-label="Legal and colophon">
+      <ul class="rasa-footer__links" role="list">
+        <li><a href="/privacy/"{{ helpers.getLinkActiveState('/privacy/', page.url) | safe }}>Privacy</a></li>
+        <li><a href="/accessibility/"{{ helpers.getLinkActiveState('/accessibility/', page.url) | safe }}>Accessibility</a></li>
+        <li><a href="/colophon/"{{ helpers.getLinkActiveState('/colophon/', page.url) | safe }}>Colophon</a></li>
+      </ul>
+    </nav>
+
+    <div class="rasa-footer__meta">
+      <div>
+        <span class="lichess-status" data-lichess-status hidden></span>
+      </div>
+
+      <div
+        role="region"
+        class="rasa-theme-switch require-js"
+        aria-labelledby="rasa-theme-label"
+        data-theme-switcher
+      >
+        <span id="rasa-theme-label" class="rasa-theme-switch__label">{{ meta.themeSwitch.title }}</span>
+        <div class="rasa-theme-switch__buttons">
+          <button type="button" class="rasa-theme-switch__button" id="light-theme-toggle" data-theme="light">
+            <span>{{ meta.themeSwitch.light }}</span>
+          </button>
+          <button type="button" class="rasa-theme-switch__button" id="dark-theme-toggle" data-theme="dark">
+            <span>{{ meta.themeSwitch.dark }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

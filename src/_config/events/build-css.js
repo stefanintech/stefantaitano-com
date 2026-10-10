@@ -27,6 +27,22 @@ const buildCss = async (inputPath, outputPaths) => {
   return result.css;
 };
 
+const buildRasaCss = async (inputPath, outputPaths) => {
+  const inputContent = await fs.readFile(inputPath, 'utf-8');
+
+  const result = await postcss([
+    postcssImport,
+    cssnano
+  ]).process(inputContent, {from: inputPath});
+
+  for (const outputPath of outputPaths) {
+    await fs.mkdir(path.dirname(outputPath), {recursive: true});
+    await fs.writeFile(outputPath, result.css);
+  }
+
+  return result.css;
+};
+
 export const buildAllCss = async () => {
   const tasks = [];
 
@@ -36,6 +52,12 @@ export const buildAllCss = async () => {
   for (const inputPath of localCssFiles) {
     const baseName = path.basename(inputPath);
     tasks.push(buildCss(inputPath, [`src/_includes/css/${baseName}`]));
+  }
+
+  const rasaCssFiles = await fg(['src/assets/css/rasa/**/*.css']);
+  for (const inputPath of rasaCssFiles) {
+    const baseName = path.basename(inputPath);
+    tasks.push(buildRasaCss(inputPath, [`src/_includes/css/rasa-${baseName}`]));
   }
 
   const componentCssFiles = await fg(['src/assets/css/components/**/*.css']);

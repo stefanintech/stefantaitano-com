@@ -49,9 +49,10 @@ export default async function (eleventyConfig) {
   eleventyConfig.addWatchTarget('./src/_includes/**/*.{webc}');
 
   // --------------------- layout aliases
-  eleventyConfig.addLayoutAlias('base', 'base.njk');
-  eleventyConfig.addLayoutAlias('page', 'page.njk');
-  eleventyConfig.addLayoutAlias('post', 'post.njk');
+  const useTabulaRasa = Boolean(process.env.TABULA_RASA);
+  eleventyConfig.addLayoutAlias('base', useTabulaRasa ? 'rasa.njk' : 'base.njk');
+  eleventyConfig.addLayoutAlias('page', useTabulaRasa ? 'rasa.njk' : 'page.njk');
+  eleventyConfig.addLayoutAlias('post', useTabulaRasa ? 'rasa-post.njk' : 'post.njk');
   eleventyConfig.addLayoutAlias('tags', 'tags.njk');
 
   //	---------------------  Collections

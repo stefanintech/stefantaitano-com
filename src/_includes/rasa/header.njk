@@ -1,0 +1,13 @@
+<header class="rasa-header rasa-layout">
+  <a href="#main" class="skip-link">{{ meta.skipContent }}</a>
+  <div class="rasa-header__inner">
+    <a href="/" class="rasa-header__brand">{{ meta.siteName }}</a>
+    <nav aria-label="{{ meta.navigation.ariaTop }}">
+      <ul class="rasa-nav" role="list">
+        <li><a href="/articles/"{{ helpers.getLinkActiveState('/articles/', page.url) | safe }}>Posts</a></li>
+        <li><a href="/checkins/"{{ helpers.getLinkActiveState('/checkins/', page.url) | safe }}>Check-ins</a></li>
+        <li><a href="/now/"{{ helpers.getLinkActiveState('/now/', page.url) | safe }}>Now</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
