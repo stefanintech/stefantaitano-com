@@ -35,6 +35,7 @@
     <main id="main">{{ content | safe }}</main>
 
     {% include "rasa/footer.njk" %}
+    {% include "head/js-defer.njk" %}
     {%- if meta.easteregg -%}
       <custom-easteregg keyword="stefan" shape="♟" particle-count="40"></custom-easteregg>
       <script type="module">

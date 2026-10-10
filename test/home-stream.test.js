@@ -10,7 +10,7 @@ import {checkinAnchor} from '../src/_config/utils/checkin-map.js';
 
 const FIXTURE = './test/fixtures/home-stream';
 
-const build = async ({limit} = {}) => {
+const render = async ({limit, url = '/stream/'} = {}) => {
   const elev = new Eleventy(FIXTURE, `${FIXTURE}/_site`, {
     quietMode: true,
     configPath: `${FIXTURE}/eleventy.config.js`,
@@ -28,12 +28,21 @@ const build = async ({limit} = {}) => {
           limit
         })
       );
+      eleventyConfig.addCollection(
+        'fixtureCheckins',
+        createCheckinsCollection({dir: `${FIXTURE}/checkins`, imagesDir: `${FIXTURE}/no-images`})
+      );
     }
   });
   elev.disableLogger();
   const pages = await elev.toJSON();
-  return pages.find(entry => entry.url === '/stream/')?.content ?? '';
+  return pages.find(entry => entry.url === url)?.content ?? '';
 };
+
+const build = options => render(options);
+const buildTiles = () => render({url: '/tiles/'});
+const tiles = html => html.match(/<li class="rasa-tile[\s\S]*?<\/li>/g) ?? [];
+const tileLabel = tile => tile.match(/rasa-tile__label"><a href="([^"]+)">([^<]*)<\/a>/);
 
 const cards = html => html.match(/<article class="rasa-card[\s\S]*?<\/article>/g) ?? [];
 
@@ -87,6 +96,47 @@ describe('home stream fixture build', () => {
     assert.equal(cards(html).length, 2);
     assert.match(html, /href="\/articles\/"[\s\S]*href="\/checkins\/"[\s\S]*href="\/now\/"/);
     assert.ok(!(await build()).includes('rasa-stream__more'), 'archive links show without a cap');
+  });
+});
+
+describe('/checkins/ tile grid fixture build', () => {
+  it('shows every published check-in newest first, and no future or draft one', async () => {
+    const html = await buildTiles();
+    const days = tiles(html).map(tile => tile.match(/<time datetime="([^"]+)"/)[1]);
+    assert.deepEqual(days, ['2025-05-04', '2025-05-02']);
+    for (const hidden of ['Draftville', 'Hidden Draft Cafe', 'Futureville', 'Future Overlook', '2099']) {
+      assert.ok(!html.includes(hidden), `${hidden} reached the grid`);
+    }
+  });
+
+  it('labels a city-only tile with the city and no place name', async () => {
+    const tile = tiles(await buildTiles()).find(entry => entry.includes('Short walk'));
+    const [, href, text] = tileLabel(tile);
+    assert.equal(text, 'Fakeburg');
+    assert.ok(!tile.includes('·'), 'city-only tile has a place separator');
+    assert.ok(!tile.includes('ZZ'), 'city-only tile shows a region or country');
+    assert.ok(!tile.includes('Park'), 'city-only tile shows the kind as a place');
+    assert.match(tile, new RegExp(`id="${href.slice(1)}"`));
+  });
+
+  it('labels a place tile with the place and the city', async () => {
+    const tile = tiles(await buildTiles()).find(entry => entry.includes('Example Pier'));
+    assert.equal(tileLabel(tile)[2].replaceAll('&nbsp;', '\u00a0'), 'Example Pier\u00a0· Fakeburg');
+    assert.match(tile, /Windy at the end of the pier\./);
+    assert.ok(!tile.includes('ZZ'), 'place tile shows a region or country');
+  });
+
+  it('keeps the checkin-<hash> ids and makes a text tile when there is no image', async () => {
+    for (const tile of tiles(await buildTiles())) {
+      assert.match(tile, /^<li class="rasa-tile rasa-tile--text" id="checkin-[0-9a-f]{10}">/);
+      assert.ok(!tile.includes('<img'), 'text tile invented a picture');
+    }
+  });
+
+  it('puts no coordinates in the grid', async () => {
+    const html = await buildTiles();
+    assert.doesNotMatch(html, /\b(lat|lon|lng|latitude|longitude|coords?)\b/i);
+    assert.doesNotMatch(html, /-?\d{1,3}\.\d{2,}/, 'found a coordinate-looking number');
   });
 });
 

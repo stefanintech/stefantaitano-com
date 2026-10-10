@@ -1,0 +1,19 @@
+{#- One tile per check-in, in the order given. Set `checkins` from `collections.checkins`. City-only tiles never show a place or region. -#}
+<section class="rasa-tiles" aria-labelledby="checkins-grid-title">
+  <h2 id="checkins-grid-title">Every check-in</h2>
+  <ol class="rasa-tiles__list" role="list">
+    {%- for checkin in checkins %}
+    {%- set c = checkin.data %}
+    {%- set anchor = checkin | checkinAnchor %}
+    <li class="rasa-tile{% if not c.image %} rasa-tile--text{% endif %}" id="{{ anchor }}">
+      {% include "partials/checkin-figure.njk" %}
+      <p class="rasa-tile__label"><a href="#{{ anchor }}">{%- if c.precision == 'city' -%}{{ c.city }}{%- else -%}{{ c.place }}&nbsp;· {{ c.city }}{%- endif -%}</a></p>
+      <p class="rasa-tile__date"><time datetime="{{ checkin.date | formatDateUtc('YYYY-MM-DD') }}">{{ checkin.date | formatDateUtc('MMMM D, YYYY') }}</time></p>
+      {%- set note = checkin.templateContent | trim %}
+      {%- if note %}
+      <div class="rasa-tile__note">{{ note | safe }}</div>
+      {%- endif %}
+    </li>
+    {%- endfor %}
+  </ol>
+</section>
