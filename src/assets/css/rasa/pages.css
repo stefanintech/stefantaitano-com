@@ -172,6 +172,11 @@
   font-size: 1.1875rem;
 }
 
+.talk-listing__content > a {
+  display: inline-block;
+  padding-block: 0.4rem;
+}
+
 .talk-hero__all {
   padding-block: 0.6rem;
 }
