@@ -184,7 +184,7 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 - `precision: city` has no `place` line. The card shows the city only, never a place name and never "City, Region". Same rule as the current check-in line and as the Phase 4 tile.
 - The 24 Sep `/now` entry has an image with `eleventy:widths`. It has to render through the image transform.
 
-**Done when:** `/next/` shows the approved intro and the newest 30 published items, in order, with no second page. Both check-in images switch with the theme. The fixture tests pass. Live `/` is unchanged. The feeds are still posts only.
+**Done when:** `/next/` shows the approved intro and the newest 30 published items, in order, with no second page. Check-in cards show the day image unless the theme is dark. The fixture tests pass. Live `/` is unchanged. The feeds are still posts only.
 
 ---
 
@@ -202,10 +202,15 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 
 **Build**
 
-- `/checkins/` in this order: the clay map, the city list, then a photo grid in place of the month timeline. Model is [melaniekat.com/pics](https://melaniekat.com/pics): a responsive grid, newest first, each cell one published check-in.
-- A cell shows the clay diorama (the day image, the night image in dark mode, through `checkin-figure.njk`), the label, the date, and the one-line note. It keeps the existing `checkin-<hash>` id, so the home stream and the city list still land on it. No new permalinks. Check-ins have `permalink: false` and stay that way.
+- **Find the blue first.** Stefan says the check-in images all look weirdly blue. Before drawing the grid, find out where that comes from.
+  - CSS: filters, blend modes, overlays, and the tile and page backgrounds. `src/assets/css/local/checkin-figure.css` does not filter or blend the images today. Confirm nothing else (`checkins.css`, the new tile fill, a parent) tints them. Remove any site-side tint. Don't add a filter to "correct" the color.
+  - Which file is on screen. The inline theme script sets `data-theme` from `prefers-color-scheme` when nothing is stored, and `checkin-figure.css` then shows the night image. A dark OS preference is enough to make the first visit the night set. The grid shows the **day** image by default. The night image shows only when `data-theme` is `dark`.
+  - Open a day file on its own, in light mode, with no page CSS. If that file is blue too, the color is in the WebP. This phase does not recolor it. Postcard regenerates the dioramas in true-to-place colors, one content PR per check-in, through `npm run checkins:images`, at the same spec (WebP, 1600×1067, q≈80, 250,000 bytes, no metadata). Not part of Phase 4.
+- `/checkins/` in this order: the clay map, the city list, then a photo grid in place of the month timeline. Model is [melaniekat.com/pics](https://melaniekat.com/pics): a responsive grid, newest first, each cell one published check-in. Warm and playful, the kind of page a new visitor comes back to. Soft rounded tiles. A small hover lift. The same `checkin-figure.njk` partial as the home stream, so the day-by-default rule applies there too.
+- A cell shows the clay diorama, the label, the date, and the one-line note. It keeps the existing `checkin-<hash>` id, so the home stream and the city list still land on it. No new permalinks. Check-ins have `permalink: false` and stay that way.
 - **Label.** `precision: place` shows the place, then the city, as today's check-in line does. `precision: city` shows the city only. No place name, and no region. San Francisco is the example: the tile says San Francisco, not a venue.
-- **Tile fill.** The clay images are cutouts on a transparent background. Each tile has its own solid background, from the palette, so the cutout isn't sitting on the page color. Light theme uses `--card` (`#ffffff`) on `--bg`. Dark theme uses `--card` (`#322d25`) on `--bg`. One fill per theme, shared by every tile. It has to read clearly behind the day image and behind the night image. No color from outside the six tokens, and no per-city color.
+- **Tile fill.** The clay images are cutouts on a transparent background. Each tile has its own solid background, from the warm palette, so the cutout isn't sitting on the page color and the page doesn't wash it blue. Light theme uses `--card` (`#ffffff`) on `--bg`. Dark theme uses `--card` (`#322d25`) on `--bg`. One fill per theme, shared by every tile. It has to read clearly behind the day image and behind the night image. No color from outside the six tokens, and no per-city color.
+- **Playful, still accessible.** Soft rounded corners on the tile. A few pixels of lift on hover and on keyboard focus, with a visible focus ring that isn't the lift. `prefers-reduced-motion: reduce` drops the lift. Place and date are text, not only a tooltip. Contrast stays at the targets above.
 - The grid can run wider than the 40rem reading column, so several dioramas sit on a row. One column at 390, more as it widens. Images stay 3:2. No horizontal scroll.
 - A check-in with no `image` key is a text cell with the same words. Don't invent a picture.
 - The grid reads `collections.checkins` only. Same `publishAfter` filter, same `CHECKIN_MAP_EXCLUDE` behaviour, same image spec, no coordinates in the captions or the markup.
@@ -219,10 +224,12 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 - With `CHECKIN_MAP_EXCLUDE` missing locally, the city list is left out on purpose. The grid of non-excluded check-ins still has to respect the same filter. A missing variable is not a bug to "fix" by showing every city.
 - Month headings go away. Don't sort the grid by city; the list above already does that.
 - The transparent pixels are part of the WebP. Don't flatten them to white in the image pipeline. The tile CSS is the background.
+- Don't edit files in `src/assets/images/checkins/` in this phase. A baked-in blue is postcard's content PR, not a CSS fix and not a one-off re-encode.
+- Put the day-by-default rule in the rasa stylesheet. Don't edit `checkin-figure.css` in this phase. The live `/checkins/` page still includes it, and the live site has to keep matching `main` until Phase 6.
 
 **Tests:** in the check-in fixture, a `precision: city` tile's text is the city and does not include a place name, and a `precision: place` tile still shows its place. A future `publishAfter` is absent from the grid.
 
-**Done when:** with the flag, `/checkins/` shows the map, the city list, and a grid of every published diorama. Light mode shows the day image on the light tile fill; dark mode shows the night image on the dark tile fill; neither looks like it is floating on the page. A city-only tile shows the city and no place name. A future fixture check-in is absent. The page works from the keyboard and with JavaScript off, axe reports no violations, and `/chess/` has no sideways scroll at 390. Without the flag, both pages match `main`.
+**Done when:** with the flag, `/checkins/` shows the map, the city list, and a grid of every published diorama. With no theme stored, and in light mode, the day image is what shows, on the light tile fill, with no CSS tint. Dark mode (`data-theme='dark'`) shows the night image on the dark tile fill. Neither looks like it is floating. Tiles are rounded and lift a little on hover; with reduced motion they don't. A city-only tile shows the city and no place name. A future fixture check-in is absent. The page works from the keyboard and with JavaScript off, axe reports no violations, and `/chess/` has no sideways scroll at 390. Without the flag, both pages match `main`. If a day file is still blue with the page CSS removed, say so and leave the file for postcard.
 
 ---
 
@@ -278,7 +285,7 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 | Home length | Newest **30**. No pagination. Archives stay at `/articles/`, `/now/`, and `/checkins/`. |
 | RSS | **Posts only.** `/feed.xml` and `/feed.json` stay as they are. |
 | Homepage intro | Approved. Phase 2 uses the paragraph under "The new home", word for word. |
-| `/checkins/` | A diorama grid, on the model of [melaniekat.com/pics](https://melaniekat.com/pics). Map and city list stay. No real photos. Each tile has a palette fill behind the transparent cutout. A city-only check-in shows the city and no place name. |
+| `/checkins/` | A diorama grid, on the model of [melaniekat.com/pics](https://melaniekat.com/pics). Map and city list stay. No real photos. Day image by default; night only when the theme is dark. No site-side color tint. Warm rounded tiles with a small hover lift. Each tile has a palette fill behind the transparent cutout. A city-only check-in shows the city and no place name. |
 | Lichess status | **Footer.** Same `lichess-status` function. Not in the header. |
 | Cuts | **All of them.** `/tags/`, `/styleguide/`, the pixel scene, "stefan is ___", the hit counter, the retro skins, `/imprint/`, and `/sustainability/`. Nothing requires the last two: the email is already on other pages, and `/carbon.txt`'s sustainability disclosure is optional. Phase 6 adds the 301s. |
 | Nav | **Posts, Check-ins, Now.** URLs stay `/articles/`, `/checkins/`, `/now/`. Everything else is in the footer. No About page. |
