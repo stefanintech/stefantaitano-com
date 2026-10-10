@@ -27,7 +27,13 @@ const lineHeight = tokensToTailwind(textLeadingTokens.items);
 const spacing = tokensToTailwind(clampGenerator(spacingTokens.items));
 
 export default {
-  content: ['./src/**/*.{html,js,md,njk,liquid,webc}'],
+  // The Tabula Rasa templates use plain CSS, so their class names must not feed the live global bundle.
+  content: [
+    './src/**/*.{html,js,md,njk,liquid,webc}',
+    '!./src/_layouts/rasa*.njk',
+    '!./src/_includes/rasa/**',
+    '!./src/pages/next.njk'
+  ],
   presets: [],
   theme: {
     screens: {

@@ -1,0 +1,6 @@
+{#- theme-toggle.js finds these by id and data attribute. -#}
+<div role="region" class="theme-switch" aria-labelledby="theme-switcher-label" data-theme-switcher>
+  <h2 id="theme-switcher-label">{{ meta.themeSwitch.title }}</h2>
+  <button type="button" id="light-theme-toggle" data-theme="light">{{ meta.themeSwitch.light }}</button>
+  <button type="button" id="dark-theme-toggle" data-theme="dark">{{ meta.themeSwitch.dark }}</button>
+</div>

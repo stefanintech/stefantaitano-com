@@ -1,0 +1,11 @@
+<header class="site-header">
+  <a href="#main" class="skip-link">{{ meta.skipContent }}</a>
+  <a href="/" class="site-name"{% if page.url == "/" %} aria-current="page"{% endif %}>{{ meta.siteName }}</a>
+  <nav aria-label="{{ meta.navigation.ariaTop }}">
+    <ul>
+      {%- for item in navigation.rasa.top %}
+        <li><a href="{{ item.url }}"{% if page.url.startsWith(item.url) %} aria-current="page"{% endif %}>{{ item.text }}</a></li>
+      {%- endfor %}
+    </ul>
+  </nav>
+</header>

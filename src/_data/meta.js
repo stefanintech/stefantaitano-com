@@ -110,7 +110,8 @@ export const tests = {
       '/links/',
       '/checkins/',
       '/colophon/',
-      '/accessibility/'
+      '/accessibility/',
+      '/next/'
     ],
     globalIgnore: []
   }

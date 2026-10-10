@@ -27,6 +27,14 @@ const buildCss = async (inputPath, outputPaths) => {
   return result.css;
 };
 
+// The Tabula Rasa stylesheets are plain CSS: no Tailwind, no tokens, no autoprefixer.
+const buildRasaCss = async (inputPath, outputPath) => {
+  const inputContent = await fs.readFile(inputPath, 'utf-8');
+  const result = await postcss([postcssImport, cssnano]).process(inputContent, {from: inputPath});
+  await fs.mkdir(path.dirname(outputPath), {recursive: true});
+  await fs.writeFile(outputPath, result.css);
+};
+
 export const buildAllCss = async () => {
   const tasks = [];
 
@@ -42,6 +50,11 @@ export const buildAllCss = async () => {
   for (const inputPath of componentCssFiles) {
     const baseName = path.basename(inputPath);
     tasks.push(buildCss(inputPath, [`dist/assets/css/components/${baseName}`]));
+  }
+
+  const rasaCssFiles = await fg(['src/assets/css/rasa/**/*.css']);
+  for (const inputPath of rasaCssFiles) {
+    tasks.push(buildRasaCss(inputPath, `src/_includes/css/rasa-${path.basename(inputPath)}`));
   }
 
   await Promise.all(tasks);

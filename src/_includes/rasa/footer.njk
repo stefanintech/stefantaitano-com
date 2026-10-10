@@ -1,0 +1,28 @@
+<footer class="site-footer">
+  <span class="lichess-status" data-lichess-status hidden></span>
+
+  <nav aria-label="{{ meta.navigation.ariaExplore }}">
+    <ul>
+      {%- for item in navigation.rasa.footer %}
+        <li>
+          <a href="{{ item.url }}"{% if item.external %} rel="noopener"{% elif page.url.startsWith(item.url) %} aria-current="page"{% endif %}>{{ item.text }}</a>
+        </li>
+      {%- endfor %}
+      {%- for feedLink in meta.blog.feedLinks %}
+        <li><a href="{{ feedLink.url }}" rel="alternate" type="{{ feedLink.type }}">{{ feedLink.title }}</a></li>
+      {%- endfor %}
+    </ul>
+  </nav>
+
+  <nav aria-label="{{ meta.navigation.ariaBottom }}">
+    <ul>
+      {%- for item in navigation.legal %}
+        <li><a href="{{ item.url }}"{% if page.url.startsWith(item.url) %} aria-current="page"{% endif %}>{{ item.text }}</a></li>
+      {%- endfor %}
+    </ul>
+  </nav>
+
+  {% include "rasa/theme-switch.njk" %}
+
+  <p>&copy; {% year %} {{ meta.siteName }}</p>
+</footer>
