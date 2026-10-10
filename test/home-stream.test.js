@@ -68,9 +68,14 @@ describe('home stream fixture build', () => {
     assert.ok(!card.includes('Park'), 'city-only card shows the kind as a place');
   });
 
-  it('labels a place check-in with the place and its note', async () => {
+  it('labels a place check-in with the place, the city, and its note', async () => {
     const card = cards(await build()).find(entry => entry.includes('Example Pier'));
+    const label = card.match(/rasa-card__label">\s*<a href="[^"]+">([^<]*)<\/a>/)[1].replaceAll('&nbsp;', '\u00a0');
+    assert.equal(label, 'Example Pier\u00a0· Fakeburg');
     assert.match(card, /Windy at the end of the pier\./);
+    assert.ok(!card.includes('ZZ'), 'place card shows a region or country');
+    assert.doesNotMatch(card, /\b(lat|lon|lng|latitude|longitude|coords?)\b/i);
+    assert.doesNotMatch(card, /-?\d{1,3}\.\d{2,}/);
   });
 
   it('links /now entries to their id on /now/', async () => {
