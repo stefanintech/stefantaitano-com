@@ -1,0 +1,108 @@
+.now-entry__date {
+  margin-block-end: 0.5rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.now-previously {
+  margin-block: 2.5rem;
+  border-block: 1px solid var(--rule);
+
+  & > summary {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    min-height: 2.75rem;
+    padding-block: 0.75rem;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-hand);
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1.1;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    &::after {
+      content: '+';
+      margin-inline-start: auto;
+      color: var(--accent);
+      font-family: var(--font-code);
+      font-size: 1.25rem;
+    }
+
+    &:hover,
+    &:focus-visible {
+      color: var(--accent);
+    }
+
+    &:focus-visible {
+      outline: 3px solid var(--accent);
+      outline-offset: 3px;
+    }
+  }
+
+  &[open] > summary::after {
+    content: '–';
+  }
+}
+
+.now-previously__count {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 400;
+}
+
+.now-entries {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  & > li {
+    padding-block: 1.5rem;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  & > li > :where(*) {
+    margin-block: 0 1em;
+  }
+
+  & > li > :last-child {
+    margin-block-end: 0;
+  }
+}
+
+.now-stats-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.rasa-prose .now-stats {
+  display: table;
+  min-width: min(100%, 20rem);
+  font-variant-numeric: tabular-nums;
+
+  & th[scope='row'],
+  & thead th {
+    font-weight: 700;
+  }
+
+  & :where(td) {
+    text-align: end;
+  }
+
+  & thead th:not(:first-child) {
+    text-align: end;
+  }
+
+  & :where(th, td):last-child {
+    padding-inline-end: 0;
+  }
+}
+
+.now-experiment {
+  color: var(--muted);
+}

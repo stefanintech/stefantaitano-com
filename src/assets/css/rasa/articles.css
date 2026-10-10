@@ -1,0 +1,47 @@
+.rasa-posts {
+  margin-block: 1.5rem 0;
+
+  & li {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0.25rem 1rem;
+    align-items: baseline;
+    padding-block: 0.85rem;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  & time {
+    color: var(--muted);
+    font-size: 0.9375rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  & a {
+    font-size: 1.125rem;
+  }
+
+  @media (width < 30em) {
+    & li {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+.rasa-pager {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-block-start: 1.5rem;
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--rule);
+
+  & a {
+    display: inline-block;
+    padding-block: 0.5rem;
+  }
+
+  & [rel='next'] {
+    margin-inline-start: auto;
+  }
+}

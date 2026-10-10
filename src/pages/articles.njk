@@ -9,6 +9,9 @@ pagination:
 permalink: 'articles/{% if pagination.pageNumber >=1 %}page-{{ pagination.pageNumber + 1 }}/{% endif %}index.html'
 ---
 
+{%- if tabulaRasa -%}
+  {% include "rasa/articles.njk" %}
+{%- else -%}
 <div class="wrapper">
   {% set kicker = "Writing" %}
   {% set intro = "ServiceNow, code, chess, and life outside the browser." %}
@@ -32,3 +35,4 @@ permalink: 'articles/{% if pagination.pageNumber >=1 %}page-{{ pagination.pageNu
     {% include 'partials/pagination.njk' %}
   {% endif %}
 </div>
+{%- endif -%}

@@ -1,0 +1,26 @@
+{#- /articles/ and /articles/page-N/ under the Tabula Rasa preview. Uses the page's `pagination`. -#}
+<h1>Posts</h1>
+
+{% if pagination.items.length %}
+  <ol class="rasa-posts" role="list">
+    {% for item in pagination.items %}
+      <li>
+        <time datetime="{{ item.date | toIsoString }}">{{ item.date | formatDate('MMM D, YYYY') }}</time>
+        <a href="{{ item.url }}">{{ item.data.title }}</a>
+      </li>
+    {% endfor %}
+  </ol>
+{% else %}
+  <p>No articles published yet. When something is ready, it will show up here.</p>
+{% endif %}
+
+{% if pagination.href.previous or pagination.href.next %}
+  <nav class="rasa-pager" aria-label="{{ meta.blog.paginationLabel }}">
+    {% if pagination.href.previous %}<a href="{{ pagination.href.previous }}" rel="prev">Newer posts</a>{% endif %}
+    {% if pagination.href.next %}<a href="{{ pagination.href.next }}" rel="next">Older posts</a>{% endif %}
+  </nav>
+{% endif %}
+
+{%- css "rasa" -%}
+  {%- include "css/rasa-articles.css" -%}
+{%- endcss -%}

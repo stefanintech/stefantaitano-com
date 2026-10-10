@@ -1,0 +1,12 @@
+---
+layout: rasa
+---
+
+<article class="rasa-prose">
+  <h1>{{ title }}</h1>
+  {{ content | safe }}
+</article>
+
+{%- css "rasa" -%}
+  {%- include "css/rasa-prose.css" -%}
+{%- endcss -%}

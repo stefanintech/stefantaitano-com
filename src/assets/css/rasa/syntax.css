@@ -1,0 +1,80 @@
+/* Prism tokens on the warm palette. Every colour clears 4.5:1 on --card in its theme. */
+
+:root {
+  --code-comment: #686258;
+  --code-keyword: #a3330d;
+  --code-string: #3d6514;
+  --code-function: #8a4f00;
+  --code-number: #6b3fb8;
+  --code-tag: #9d2a48;
+  --code-punct: #5c564c;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --code-comment: #b0ada8;
+    --code-keyword: #ff9e7d;
+    --code-string: #b9dc8c;
+    --code-function: #fbbe25;
+    --code-number: #d4bcff;
+    --code-tag: #ff9fbd;
+    --code-punct: #cfcac2;
+  }
+}
+
+:root[data-theme='dark'] {
+  --code-comment: #b0ada8;
+  --code-keyword: #ff9e7d;
+  --code-string: #b9dc8c;
+  --code-function: #fbbe25;
+  --code-number: #d4bcff;
+  --code-tag: #ff9fbd;
+  --code-punct: #cfcac2;
+}
+
+:where(pre[class*='language-'], code[class*='language-']) {
+  color: var(--text);
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+  hyphens: none;
+}
+
+.token {
+  &:where(.comment, .prolog, .doctype, .cdata) {
+    color: var(--code-comment);
+    font-style: italic;
+  }
+
+  &:where(.punctuation, .operator) {
+    color: var(--code-punct);
+  }
+
+  &:where(.keyword, .atrule, .important, .rule) {
+    color: var(--code-keyword);
+  }
+
+  &:where(.string, .char, .attr-value, .regex, .url, .inserted) {
+    color: var(--code-string);
+  }
+
+  &:where(.function, .class-name, .builtin, .attr-name, .property) {
+    color: var(--code-function);
+  }
+
+  &:where(.number, .boolean, .constant, .symbol, .variable) {
+    color: var(--code-number);
+  }
+
+  &:where(.tag, .selector, .deleted, .entity) {
+    color: var(--code-tag);
+  }
+
+  &:where(.important, .bold) {
+    font-weight: 700;
+  }
+
+  &:where(.italic) {
+    font-style: italic;
+  }
+}
