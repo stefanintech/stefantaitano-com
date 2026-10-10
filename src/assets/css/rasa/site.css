@@ -259,3 +259,80 @@ main {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+.rasa-stream {
+  margin: 2.5rem 0 0;
+  padding: 0;
+  list-style: none;
+
+  & > li {
+    padding-block: 1.75rem;
+    border-top: 1px solid var(--rule);
+  }
+}
+
+.rasa-card > * {
+  margin-block: 0;
+}
+
+.rasa-card > * + * {
+  margin-top: 0.5rem;
+}
+
+.rasa-card__type,
+.rasa-card__date {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.rasa-card__type {
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.rasa-card__title {
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+.rasa-card__label {
+  font-weight: 600;
+}
+
+.rasa-card__note > :where(*),
+.rasa-card__body > :where(*) {
+  margin-block: 0 0.75rem;
+}
+
+.rasa-card__body img {
+  display: block;
+  max-width: min(100%, 26.25rem);
+  margin-inline: auto;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.rasa-card .checkin-figure {
+  margin: 0.75rem 0 0;
+}
+
+.rasa-card .checkin-figure__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+}
+
+.rasa-card .checkin-figure__img[data-variant='night'],
+:root[data-theme='dark'] .rasa-card .checkin-figure__img[data-variant='day'] {
+  display: none;
+}
+
+:root[data-theme='dark'] .rasa-card .checkin-figure__img[data-variant='night'] {
+  display: block;
+}
+
+.rasa-stream__more {
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--rule);
+}

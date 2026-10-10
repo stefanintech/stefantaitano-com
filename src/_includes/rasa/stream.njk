@@ -1,0 +1,13 @@
+{#- The home stream. Set `stream` to the result of buildHomeStream. -#}
+<ol class="rasa-stream" role="list">
+  {%- for entry in stream.items %}
+  <li>
+    {%- if entry.type == 'post' %}{% set post = entry.item %}{% include "rasa/card-post.njk" %}
+    {%- elif entry.type == 'checkin' %}{% set checkin = entry.item %}{% include "rasa/card-checkin.njk" %}
+    {%- else %}{% set nowEntry = entry.item %}{% include "rasa/card-now.njk" %}{% endif %}
+  </li>
+  {%- endfor %}
+</ol>
+{%- if stream.capped %}
+<p class="rasa-stream__more">Older: <a href="/articles/">posts</a>, <a href="/checkins/">check-ins</a>, and <a href="/now/">/now updates</a>.</p>
+{%- endif %}

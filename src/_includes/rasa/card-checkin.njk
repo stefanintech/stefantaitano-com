@@ -1,0 +1,14 @@
+{#- One check-in in the home stream. Set `checkin`. City-only check-ins never show a place or region. -#}
+{%- set c = checkin.data -%}
+<article class="rasa-card rasa-card--checkin">
+  <p class="rasa-card__type">Checked in</p>
+  {% include "partials/checkin-figure.njk" %}
+  <p class="rasa-card__label">
+    <a href="/checkins/#{{ checkin | checkinAnchor }}">{% if c.precision == 'city' %}{{ c.city }}{% else %}{{ c.place }}{% endif %}</a>
+  </p>
+  {%- set note = checkin.templateContent | trim %}
+  {%- if note %}
+  <div class="rasa-card__note">{{ note | safe }}</div>
+  {%- endif %}
+  <p class="rasa-card__date"><time datetime="{{ checkin.date | formatDateUtc('YYYY-MM-DD') }}">{{ checkin.date | formatDateUtc('MMMM D, YYYY') }}</time></p>
+</article>

@@ -2,7 +2,7 @@
 
 Rebuild the layout and theme of stefantaitano.com from a blank page. Carry the content over exactly as it is. One small PR per phase.
 
-**Status (10 Oct 2026):** Phase 1 done: the skeleton layout is live at the hidden `/next/` preview. Phase 2 is next.
+**Status (10 Oct 2026):** Phase 2 done: `/next/` shows the approved intro and the newest-first stream of posts, check-ins, and `/now` entries. Phase 3 is next.
 
 **Outcome:** The home page is a short intro followed by one newest-first stream of posts, check-ins, and `/now` updates. Every page uses one new layout and one plain stylesheet. The Eleventy Excellent look (Tailwind tokens, CUBE layers, Fraunces / Atkinson, the pixel scene) is gone. Every URL that works today still works, or 301s to where its content went.
 

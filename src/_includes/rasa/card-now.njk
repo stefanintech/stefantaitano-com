@@ -1,0 +1,7 @@
+{#- One /now entry in the home stream. Set `nowEntry`. -#}
+{%- set day = nowEntry.date | formatDateUtc('YYYY-MM-DD') -%}
+<article class="rasa-card rasa-card--now">
+  <p class="rasa-card__type">Now</p>
+  <p class="rasa-card__date"><a href="/now/#now-{{ day }}"><time datetime="{{ day }}">{{ nowEntry.date | formatDateUtc('MMMM D, YYYY') }}</time></a></p>
+  <div class="rasa-card__body">{{ nowEntry.templateContent | safe }}</div>
+</article>
