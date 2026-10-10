@@ -1,0 +1,41 @@
+{% set rasaPages = [
+  {text: "Chess", url: "/chess/"},
+  {text: "Talks", url: "/talks/"},
+  {text: "Projects", url: "/projects/"},
+  {text: "Bookshelf", url: "/bookshelf/"},
+  {text: "Resume", url: "/resume/"},
+  {text: "AI", url: "/ai/"},
+  {text: "Links", url: "/links/"},
+  {text: "Field Notes", url: "https://buttondown.com/stefantaitano", external: true}
+] %}
+<footer class="rasa-footer">
+  <span class="lichess-status" data-lichess-status hidden></span>
+
+  <nav aria-label="{{ meta.navigation.ariaExplore }}">
+    <ul role="list">
+      {% for item in rasaPages %}
+        <li><a href="{{ item.url }}"{% if item.external %} rel="noopener"{% elif page.url == item.url %} aria-current="page"{% endif %}>{{ item.text }}</a></li>
+      {% endfor %}
+      {% for feedLink in meta.blog.feedLinks %}
+        <li><a href="{{ feedLink.url }}" rel="alternate" type="{{ feedLink.type }}">{{ feedLink.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  <nav aria-label="{{ meta.navigation.ariaBottom }}">
+    <ul role="list">
+      {% for item in navigation.legal %}
+        <li><a href="{{ item.url }}"{% if page.url == item.url %} aria-current="page"{% endif %}>{{ item.text }}</a></li>
+      {% endfor %}
+    </ul>
+  </nav>
+
+  {# The IDs and data-theme-switcher are what theme-toggle.js binds to. #}
+  <div class="rasa-theme require-js" role="region" aria-labelledby="theme-switcher-label" data-theme-switcher>
+    <span id="theme-switcher-label">{{ meta.themeSwitch.title }}</span>
+    <button type="button" id="light-theme-toggle" data-theme="light">{{ meta.themeSwitch.light }}</button>
+    <button type="button" id="dark-theme-toggle" data-theme="dark">{{ meta.themeSwitch.dark }}</button>
+  </div>
+
+  <p class="rasa-footer__copy">&copy; {% year %} {{ meta.siteName }}</p>
+</footer>

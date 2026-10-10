@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="{{ meta.lang }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>
+      {%- if title -%}
+        {{- title -}}
+      {%- else -%}
+        {{- meta.siteName -}}
+      {%- endif -%}
+    </title>
+
+    <link
+      rel="preload"
+      href="/assets/fonts/caveat/caveat-latin-600.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    {# Same inline bundle as base.njk, so the theme-preference key and the Lichess status carry over. #}
+    {% include "head/js-inline.njk" %}
+
+    {% css "rasa" %}{% include "css/rasa-site.css" %}{% endcss %}
+    <style>{% getBundle "css", "rasa" %}</style>
+
+    {% include "head/meta-info.njk" %}
+  </head>
+
+  <body class="rasa">
+    {% include "rasa/header.njk" %}
+
+    <main id="main">{{ content | safe }}</main>
+
+    {% include "rasa/footer.njk" %}
+    {%- if meta.easteregg -%}
+      <custom-easteregg keyword="stefan" shape="♟" particle-count="40"></custom-easteregg>
+      <script type="module">
+        const loadEgg = () => import('/assets/scripts/components/custom-easteregg.js');
+        if ('requestIdleCallback' in window) requestIdleCallback(loadEgg, {timeout: 2000});
+        else window.addEventListener('load', loadEgg, {once: true});
+      </script>
+    {%- endif -%}
+  </body>
+</html>

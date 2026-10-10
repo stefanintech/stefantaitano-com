@@ -1,0 +1,11 @@
+<header class="rasa-header">
+  <a href="#main" class="skip-link">{{ meta.skipContent }}</a>
+  <a href="/" class="rasa-header__name"{% if page.url == "/" %} aria-current="page"{% endif %}>{{ meta.siteName }}</a>
+  <nav aria-label="{{ meta.navigation.ariaTop }}">
+    <ul role="list">
+      <li><a href="/articles/"{% if page.url.startsWith("/articles/") %} aria-current="page"{% endif %}>Posts</a></li>
+      <li><a href="/checkins/"{% if page.url == "/checkins/" %} aria-current="page"{% endif %}>Check-ins</a></li>
+      <li><a href="/now/"{% if page.url == "/now/" %} aria-current="page"{% endif %}>Now</a></li>
+    </ul>
+  </nav>
+</header>
