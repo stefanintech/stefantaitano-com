@@ -304,6 +304,21 @@ main {
   margin-block: 0 0.75rem;
 }
 
+.rasa-card__body > :where(h1, h2, h3, h4, h5, h6) {
+  margin-block: 1.15rem 0.35rem;
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.rasa-card__body :where(h1, h2, h3, h4, h5, h6) :where(a) {
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+}
+
 .rasa-card__body img {
   display: block;
   max-width: min(100%, 26.25rem);
