@@ -126,10 +126,12 @@
   }
 }
 
-.rasa-post__header {
-  & h1 {
-    margin-block-end: 0.25rem;
-  }
+:where(.rasa-post__header, .rasa-prose) > h1 {
+  margin-block-start: 0.5rem;
+}
+
+.rasa-post__header h1 {
+  margin-block-end: 0.25rem;
 }
 
 .rasa-post__date {
