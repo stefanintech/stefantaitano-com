@@ -8,6 +8,9 @@ pa11yRunners: ['htmlcs', 'axe']
 
 {% set checkins = collections.checkins %}
 
+{%- if tabulaRasa -%}
+  {% include "rasa/checkins.njk" %}
+{%- else -%}
 <div class="wrapper flow checkins">
   {% set intro = "Somewhere I was. Never somewhere I am." %}
   {% include "partials/page-intro.njk" %}
@@ -47,6 +50,7 @@ pa11yRunners: ['htmlcs', 'axe']
     <p>No check-ins yet.</p>
   {% endif %}
 </div>
+{%- endif -%}
 
 {% css "local" %}
   {% include "css/checkins.css" %}

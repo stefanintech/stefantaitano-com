@@ -1,0 +1,270 @@
+/* /chess/ under the Tabula Rasa preview: scoreboard, tables, chart, study embed. */
+
+.chess > section {
+  margin-block-start: 2.5rem;
+}
+
+.chess :where(h2) {
+  margin-block-start: 0;
+}
+
+.chess :where(p, dl, figure) {
+  margin-block: 0 0.75rem;
+}
+
+.page-intro {
+  & > * {
+    margin-block: 0;
+  }
+
+  & > * + * {
+    margin-block-start: 0.5rem;
+  }
+}
+
+.page-intro__kicker {
+  color: var(--muted);
+  font-size: 0.875rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.page-intro__lede {
+  font-size: 1.1875rem;
+}
+
+.chess-scoreboard__status {
+  font-weight: 700;
+}
+
+.chess-scoreboard__stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+  gap: 1rem 1.5rem;
+
+  & div {
+    display: grid;
+    gap: 0.25rem;
+    align-content: start;
+    padding-block-start: 0.5rem;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  & dt {
+    color: var(--muted);
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  & dd {
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.chess-progress__track {
+  height: 0.65rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--rule);
+}
+
+.chess-progress__fill {
+  height: 100%;
+  background: var(--accent);
+}
+
+.chess-progress__fill--below {
+  background: var(--muted);
+}
+
+.chess-progress__caption,
+.chess-provisional,
+.chess-chart__figure figcaption,
+.chess-study__caption,
+.chess-compare__note {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.chess-provisional {
+  font-weight: 400;
+}
+
+.chess-study__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  background: var(--card);
+
+  & iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+}
+
+.chess-compare__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.chess .button {
+  min-height: 2.75rem;
+  padding: 0.25rem 1.25rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+}
+
+.chess-chart__svg {
+  width: 100%;
+  height: auto;
+}
+
+.chess-chart__baseline {
+  stroke: var(--rule);
+  stroke-width: 1;
+}
+
+.chess-chart__line {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chess-chart__line--visitor {
+  stroke: var(--muted);
+}
+
+.chess-chart__now {
+  fill: var(--accent);
+}
+
+.chess-chart__now--visitor {
+  fill: var(--muted);
+}
+
+.chess-chart__axis {
+  fill: var(--muted);
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+.chess-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.chess-chart__swatch {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-inline-end: 0.25rem;
+  vertical-align: -0.1em;
+  background: var(--accent);
+}
+
+.chess-chart__swatch--visitor {
+  background: var(--muted);
+}
+
+.now-stats-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.now-stats {
+  width: 100%;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+
+  & caption {
+    padding-block-end: 0.5rem;
+    color: var(--muted);
+    font-size: 0.9375rem;
+    text-align: start;
+  }
+
+  & :where(th, td) {
+    padding: 0.5rem 1rem 0.5rem 0;
+    border-block-end: 1px solid var(--rule);
+    text-align: start;
+    vertical-align: top;
+  }
+
+  & :where(th, td):last-child {
+    padding-inline-end: 0;
+  }
+
+  & th {
+    font-weight: 700;
+  }
+}
+
+.chess-result {
+  font-weight: 700;
+}
+
+.chess-result--win {
+  color: var(--accent);
+}
+
+.chess-result--draw,
+.chess-result--loss {
+  color: var(--muted);
+}
+
+/* On a phone the games table stacks into rows instead of scrolling sideways. */
+@media (max-width: 40em) {
+  .chess-games__table,
+  .chess-games__table :is(caption, tbody, tr, td) {
+    display: block;
+    width: 100%;
+  }
+
+  .chess-games__table thead {
+    display: none;
+  }
+
+  .chess-games__table tr {
+    padding-block: 0.75rem;
+    border-block-start: 1px solid var(--rule);
+  }
+
+  .chess-games__table td {
+    padding: 0;
+    border: 0;
+  }
+
+  .chess-games__table td:nth-child(2) {
+    font-weight: 700;
+  }
+
+  .chess-games__table td:nth-child(3)::before {
+    content: 'Rated ';
+    color: var(--muted);
+  }
+}

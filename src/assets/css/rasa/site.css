@@ -348,12 +348,14 @@ main {
   border-radius: 0.5rem;
 }
 
-.rasa-card .checkin-figure__img[data-variant='night'],
-:root[data-theme='dark'] .rasa-card .checkin-figure__img[data-variant='day'] {
+/* Day image unless data-theme is dark. No prefers-color-scheme branch: the
+   inline theme script already sets data-theme from it on a first visit. */
+:is(.rasa-card, .rasa-tile) .checkin-figure__img[data-variant='night'],
+:root[data-theme='dark'] :is(.rasa-card, .rasa-tile) .checkin-figure__img[data-variant='day'] {
   display: none;
 }
 
-:root[data-theme='dark'] .rasa-card .checkin-figure__img[data-variant='night'] {
+:root[data-theme='dark'] :is(.rasa-card, .rasa-tile) .checkin-figure__img[data-variant='night'] {
   display: block;
 }
 

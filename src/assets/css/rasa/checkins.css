@@ -1,0 +1,290 @@
+/* /checkins/ under the Tabula Rasa preview: clay map, city list, diorama tiles.
+   The page runs wider than the reading column so several tiles share a row. */
+
+main:has(.rasa-checkins) {
+  width: min(100% - 2.5rem, 72rem);
+}
+
+.rasa-checkins__intro {
+  max-width: var(--column);
+  margin-block-start: 0;
+  font-size: 1.1875rem;
+}
+
+/* Map colours are the six tokens. The bead rim is amber on light land and gold
+   on dark land (both clear 3:1); labels sit on --bg (4.5:1); 3px focus ring. */
+.checkins-map {
+  --map-target: max(2.75rem, 44px);
+  --map-pad: calc(var(--map-target) / 2 + 0.35rem);
+  --map-land: var(--rule);
+  --map-label: var(--text);
+  --map-label-bg: var(--bg);
+  --map-focus: var(--text);
+  --map-bead: var(--accent);
+  --map-bead-highlight: var(--card);
+  --map-bead-edge: var(--accent);
+  --map-shade: var(--text);
+  --map-shade-opacity: 0.22;
+  --map-drop-opacity: 0.16;
+
+  margin: 1.5rem 0 0;
+  max-inline-size: 60rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .checkins-map {
+    --map-bead-highlight: var(--text);
+    --map-shade: var(--bg);
+    --map-shade-opacity: 0.55;
+    --map-drop-opacity: 0.5;
+  }
+}
+
+:root[data-theme='dark'] .checkins-map {
+  --map-bead-highlight: var(--text);
+  --map-shade: var(--bg);
+  --map-shade-opacity: 0.55;
+  --map-drop-opacity: 0.5;
+}
+
+.checkins-map__frame {
+  padding: var(--map-pad);
+}
+
+.checkins-map__canvas {
+  position: relative;
+}
+
+.checkins-map__svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.checkins-map__land {
+  filter: url(#checkins-map-lift);
+}
+
+.checkins-map__state {
+  fill: var(--map-land);
+  stroke: var(--map-label-bg);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  filter: url(#checkins-map-slab);
+}
+
+.checkins-map__shade {
+  flood-color: var(--map-shade);
+  flood-opacity: var(--map-shade-opacity);
+}
+
+.checkins-map__drop {
+  flood-color: var(--map-shade);
+  flood-opacity: var(--map-drop-opacity);
+}
+
+.checkins-map__bead-light {
+  stop-color: var(--map-bead-highlight);
+}
+
+.checkins-map__bead-mid {
+  stop-color: var(--map-bead);
+}
+
+.checkins-map__bead-deep {
+  stop-color: var(--map-bead-edge);
+}
+
+.checkins-map__bead {
+  fill: url(#checkins-map-bead);
+  stroke: var(--map-bead-edge);
+  stroke-width: 2;
+  filter: url(#checkins-map-lift);
+}
+
+.checkins-map__spots {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checkins-map__spot {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  min-width: var(--map-target);
+  min-height: var(--map-target);
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  color: var(--map-label);
+  text-decoration: none;
+
+  &:hover .checkins-map__name,
+  &:focus-visible .checkins-map__name {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--map-focus);
+    outline-offset: 3px;
+  }
+
+  &[data-anchor='end'] .checkins-map__name {
+    inset-inline: auto calc(50% + 0.7rem);
+  }
+}
+
+.checkins-map__name {
+  position: absolute;
+  inset-inline-start: calc(50% + 0.7rem);
+  padding: 0.05rem 0.4rem;
+  border-radius: 999px;
+  background: var(--map-label-bg);
+  color: var(--map-label);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+
+@media (max-width: 40rem) {
+  .checkins-map__name {
+    max-width: 42vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.checkins-map__caption {
+  max-width: var(--column);
+  margin-block-start: 0.5rem;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.checkins-cities__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14rem), 1fr));
+  gap: 1rem 1.5rem;
+}
+
+.checkins-city {
+  scroll-margin-block-start: 2rem;
+  padding-block-start: 0.5rem;
+  border-block-start: 1px solid var(--rule);
+
+  & > * {
+    margin: 0;
+  }
+}
+
+.checkins-city__name {
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.checkins-city__count {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.checkins-city__links a {
+  display: inline-block;
+  padding-block: 0.25rem;
+}
+
+.checkins-cities__list,
+.checkins-city__links,
+.rasa-tiles__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rasa-tiles__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+  gap: 1.25rem;
+}
+
+/* One fill per theme behind the transparent cutouts: --card on --bg. */
+.rasa-tile {
+  scroll-margin-block-start: 2rem;
+  padding: 0.75rem 0.75rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 1.25rem;
+  background: var(--card);
+
+  & > * {
+    margin: 0;
+  }
+
+  & > * + * {
+    margin-block-start: 0.35rem;
+  }
+
+  & .checkin-figure {
+    margin-block-end: 0.75rem;
+  }
+
+  & .checkin-figure picture {
+    display: contents;
+  }
+
+  & .checkin-figure__img {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    object-fit: contain;
+    border-radius: 0.75rem;
+  }
+
+  &:hover,
+  &:focus-within,
+  &:target {
+    border-color: var(--muted);
+  }
+
+  &:has(a:focus-visible) {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  &:has(a:focus-visible) a:focus-visible {
+    outline: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .rasa-tile {
+    transition: translate 150ms ease, border-color 150ms ease;
+
+    &:hover,
+    &:focus-within {
+      translate: 0 -4px;
+    }
+  }
+}
+
+.rasa-tile__label {
+  font-weight: 600;
+  line-height: 1.35;
+
+  & a {
+    color: var(--text);
+    text-decoration-color: var(--accent);
+  }
+}
+
+.rasa-tile__date {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.rasa-tile__note > :where(*) {
+  margin: 0;
+}
