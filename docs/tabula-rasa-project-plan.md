@@ -182,6 +182,7 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 - Now-entry dates come from filenames (UTC midnight); check-in `date` is the local visit day; posts carry an offset. Compare by calendar day with `formatDateUtc`, or same-day items jump around.
 - Use `checkinAnchor` for check-in links so no date ends up in a URL.
 - `precision: city` has no `place` line. The card shows the city only, never a place name and never "City, Region". Same rule as the current check-in line and as the Phase 4 tile.
+- The day/night switch for these cards lives in the rasa stylesheet: day image unless `data-theme` is `dark`. Don't change `checkin-figure.css`. That file still styles the live page. Phase 4 looks for the blue cast and keeps this rule.
 - The 24 Sep `/now` entry has an image with `eleventy:widths`. It has to render through the image transform.
 
 **Done when:** `/next/` shows the approved intro and the newest 30 published items, in order, with no second page. Check-in cards show the day image unless the theme is dark. The fixture tests pass. Live `/` is unchanged. The feeds are still posts only.
