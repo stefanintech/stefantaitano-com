@@ -2,7 +2,7 @@
 
 Rebuild the layout and theme of stefantaitano.com from a blank page. Carry the content over exactly as it is. One small PR per phase.
 
-**Status (10 Oct 2026):** Plan only. No phase has started. Heading font, home length, feeds, the homepage intro, and the `/checkins/` grid are decided (see "Decisions"). Still waiting on the items under "Open decisions."
+**Status (10 Oct 2026):** Plan only. No phase has started. Every open question is decided (see "Decisions"). Nothing is blocking Phase 1.
 
 **Outcome:** The home page is a short intro followed by one newest-first stream of posts, check-ins, and `/now` updates. Every page uses one new layout and one plain stylesheet. The Eleventy Excellent look (Tailwind tokens, CUBE layers, Fraunces / Atkinson, the pixel scene) is gone. Every URL that works today still works, or 301s to where its content went.
 
@@ -26,7 +26,7 @@ Rebuild the layout and theme of stefantaitano.com from a blank page. Carry the c
 
 ## Inventory
 
-Keep = same URL, new look. Move = content goes somewhere else. Cut = suggestion for Stefan to confirm; a cut URL gets a 301.
+Keep = same URL, new look. Move = content goes somewhere else. Cut = decided. Phase 6 deletes it, and every removed URL gets a 301.
 
 ### Routes
 
@@ -41,8 +41,9 @@ Keep = same URL, new look. Move = content goes somewhere else. Cut = suggestion 
 | `/talks/`, `/talks/rubyconf-2026/`, `/talks/rubyconf-2026/slides/` | Talks | Keep. The slides are their own HTML; leave them alone. |
 | `/projects/`, `/bookshelf/`, `/resume/` (+ PDF), `/ai/` | Inner pages | Keep |
 | `/links/` | Compact profile card | Keep |
-| `/privacy/`, `/accessibility/`, `/colophon/` | Footer legal links | Keep. The colophon still describes the old fonts and starter. New copy is drafted and waiting on Stefan (see open decisions). |
-| `/imprint/`, `/sustainability/` | Pages nothing links to | Keep URL, leave unlinked (or cut, see decisions) |
+| `/privacy/`, `/accessibility/`, `/colophon/` | Footer legal links | Keep. Phase 5 replaces the colophon body with the approved paragraph. |
+| `/imprint/` | Legal notice. Nothing links to it. | **Cut** → 301 to `/privacy/`. The email is already on `/privacy/`, `/links/`, `/resume/`, and the 404. |
+| `/sustainability/` | Short hosting note. Nothing links to it. | **Cut** → 301 to `/colophon/`. Only `/carbon.txt` points at it, and that disclosure is optional. |
 | `/tags/`, `/tags/<tag>/` | Tag index. No post has tags today. | **Cut** → 301 to `/articles/` |
 | `/styleguide/` | Eleventy Excellent token showcase | **Cut** → 301 to `/` |
 | `/feed.xml`, `/feed.json` | Atom and JSON feeds, posts only | Keep, posts only. Same URLs, same entry IDs. No second feed in this project. |
@@ -57,13 +58,13 @@ Keep = same URL, new look. Move = content goes somewhere else. Cut = suggestion 
 | Check-in day / night images (`checkin-figure.njk`) | Keep. Same partial, new CSS. |
 | City map (`checkin-map.njk`, `checkin-cities.njk`) | Keep. Port the colours; keep PR 3's contrast and 44px targets. |
 | Scheduled rebuild (`netlify/functions/checkin-rebuild.js`) | Keep, untouched |
-| Lichess status pill in the header (`lichess-status` function) | Keep, smaller (see decisions) |
+| Lichess status pill (`lichess-status` function) | **Move** to the footer. Same function. Not in the header. |
 | Field Notes link | Keep, in the footer |
 | `stefan` pawn confetti, `/links/` Lichess egg | Keep. JS only, no theme ties. |
-| "stefan is ___" cycling wordmark | **Cut** |
-| Pixel night scene and horizon | **Cut** |
-| Footer Rapid hit counter | **Cut** (chess numbers stay on `/chess/` and `/now/`) |
-| Retro 2005 / 2006 skins | **Cut**. They restyle the old home and links markup. |
+| "stefan is ___" cycling wordmark | **Cut** (decided) |
+| Pixel night scene and horizon | **Cut** (decided) |
+| Footer Rapid hit counter | **Cut** (decided). Chess numbers stay on `/chess/` and `/now/`. |
+| Retro 2005 / 2006 skins | **Cut** (decided) |
 | Nav drawer, header dock, masonry, gallery, WebC embeds | **Cut** if no page uses them after the switch (grep first) |
 | Tailwind, CUBE layers, `designTokens/*.json`, Fraunces, Atkinson | **Cut** after the switch |
 | pa11y-ci | Keep, pointed at the new pages |
@@ -101,7 +102,7 @@ These hold in every phase. If a phase needs to change one, stop and ask.
 | Type | Source | Card |
 | --- | --- | --- |
 | Post | `collections.allPosts` | Title (link), date, `description` |
-| Check-in | `collections.checkins` | Clay image (day / night pair via `checkin-figure.njk`, with its `alt`), place (or city when `precision: city`), "City, Region", the one-line note, date. Links to `/checkins/#checkin-<hash>`. No image key → text-only card. |
+| Check-in | `collections.checkins` | Clay image (day / night pair via `checkin-figure.njk`, with its `alt`), the label, the one-line note, date. `precision: place` labels the place. `precision: city` labels the city only, never a place name. Links to `/checkins/#checkin-<hash>`. No image key → text-only card. |
 | Now | `collections.nowEntries` | Date, the entry body (they are short), link to `/now/#now-YYYY-MM-DD` |
 
 - Sort by the visible date. Check-ins sort by `date` (the visit day), never `publishAfter`.
@@ -126,7 +127,7 @@ These hold in every phase. If a phase needs to change one, stop and ask.
 
   Check every pair for contrast in Phase 1 before building on it.
 - **Layout.** One centred column, about 40rem. Cards separated by hairlines, not boxes and shadows. Images full column width, rounded a little.
-- **Nav.** Name on the left (links home). Three or four links on the right, no drawer. Everything else in the footer. Proposed: Articles, Now, Check-ins, Chess.
+- **Nav.** Name on the left (links home). Header is three links: **Posts** (`/articles/`), **Check-ins**, **Now**. No drawer. Chess, Talks, Projects, Bookshelf, Resume, AI, Links, Field Notes, and the legal links sit in the footer, with the Lichess status. There is no About page; the intro on `/` is that.
 - **CSS.** Plain CSS. One site stylesheet plus a few page files, custom properties, native nesting, `:where()` for low specificity. No Tailwind, no build-time tokens, no utility classes.
 
 ---
@@ -150,7 +151,7 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 - One phase per session. Commit at the end. Do not start the next until Stefan says next phase.
 - Live pages render the same on `main` after every phase until Phase 6. Check by diffing `dist/` HTML (minus `/next/`) against a build of `main`.
 - Content files are read-only in this project: `src/posts/`, `src/now-entries/`, `src/checkins/`, `src/talks/`, `src/_data/*.yaml`.
-- Copy: `docs/site-voice.md`. New labels are plain ("Checked in", "Older posts"). The homepage intro is approved; paste it, don't paraphrase it. Don't draft colophon copy. The approved colophon text will be supplied.
+- Copy: `docs/site-voice.md`. New labels are plain ("Checked in", "Older posts"). The homepage intro and the colophon paragraph are approved; paste them, don't paraphrase them.
 - `npm run build` passes in every phase, including `npm run test:checkins`.
 - No Lichess changes. If a page needs a new Lichess field, stop; see `.cursor/rules/chess-page.mdc`.
 
@@ -158,7 +159,7 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 
 ## Phase 1 — Skeleton at `/next/`
 
-**Build:** `rasa.njk` with header (name + nav), main, footer (Field Notes, feeds, legal links, theme switch). `src/assets/css/rasa/site.css` with the palette, Caveat headings, `system-ui` body, and the column. `/next/` can be the intro alone; the stream arrives in Phase 2. No font specimen. Caveat is already on disk.
+**Build:** `rasa.njk` with the header (name, plus Posts, Check-ins, Now) and a footer (Lichess status, Field Notes, feeds, the other page links, legal links, theme switch). No hit counter. `src/assets/css/rasa/site.css` with the palette, Caveat headings, `system-ui` body, and the column. `/next/` can be the intro alone; the stream arrives in Phase 2. No font specimen. Caveat is already on disk.
 
 **Gotchas:** keep the theme switch's existing storage key and the inline script in `head/js-inline.njk`, or the choice is lost when the site switches. `noindex` on `/next/`. Exclude it from `showInSitemap` and the feeds.
 
@@ -174,13 +175,13 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 
 **Build:** the approved intro, verbatim, then a `homeStream` collection in `src/_config/collections.js` that merges `allPosts`, `nowEntries`, and `checkins` (from the filtered collection only), sorts newest first, and keeps 30. Card partials in `src/_includes/rasa/`: `card-post.njk`, `card-checkin.njk` (reuses `checkin-figure.njk`), `card-now.njk`. Add `id="now-YYYY-MM-DD"` to each entry on `/now/`. That is the one additive change to a live page.
 
-**Tests:** extend the check-in fixture tests: a future `publishAfter` and a draft never appear in the stream, and the stream HTML has no `lat`, `lon`, or coordinate-looking numbers.
+**Tests:** extend the check-in fixture tests: a future `publishAfter` and a draft never appear in the stream, the stream HTML has no `lat`, `lon`, or coordinate-looking numbers, and a `precision: city` card shows the city only.
 
 **Gotchas**
 
 - Now-entry dates come from filenames (UTC midnight); check-in `date` is the local visit day; posts carry an offset. Compare by calendar day with `formatDateUtc`, or same-day items jump around.
 - Use `checkinAnchor` for check-in links so no date ends up in a URL.
-- `precision: city` has no `place`. The card shows the city as its title.
+- `precision: city` has no `place` line. The card shows the city only, never a place name and never "City, Region". Same rule as the current check-in line and as the Phase 4 tile.
 - The 24 Sep `/now` entry has an image with `eleventy:widths`. It has to render through the image transform.
 
 **Done when:** `/next/` shows the approved intro and the newest 30 published items, in order, with no second page. Both check-in images switch with the theme. The fixture tests pass. Live `/` is unchanged. The feeds are still posts only.
@@ -202,7 +203,9 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 **Build**
 
 - `/checkins/` in this order: the clay map, the city list, then a photo grid in place of the month timeline. Model is [melaniekat.com/pics](https://melaniekat.com/pics): a responsive grid, newest first, each cell one published check-in.
-- A cell shows the clay diorama (the day image, the night image in dark mode, through `checkin-figure.njk`), the place (the city when `precision: city`), the date, and the one-line note. It keeps the existing `checkin-<hash>` id, so the home stream and the city list still land on it. No new permalinks. Check-ins have `permalink: false` and stay that way.
+- A cell shows the clay diorama (the day image, the night image in dark mode, through `checkin-figure.njk`), the label, the date, and the one-line note. It keeps the existing `checkin-<hash>` id, so the home stream and the city list still land on it. No new permalinks. Check-ins have `permalink: false` and stay that way.
+- **Label.** `precision: place` shows the place, then the city, as today's check-in line does. `precision: city` shows the city only. No place name, and no region. San Francisco is the example: the tile says San Francisco, not a venue.
+- **Tile fill.** The clay images are cutouts on a transparent background. Each tile has its own solid background, from the palette, so the cutout isn't sitting on the page color. Light theme uses `--card` (`#ffffff`) on `--bg`. Dark theme uses `--card` (`#322d25`) on `--bg`. One fill per theme, shared by every tile. It has to read clearly behind the day image and behind the night image. No color from outside the six tokens, and no per-city color.
 - The grid can run wider than the 40rem reading column, so several dioramas sit on a row. One column at 390, more as it widens. Images stay 3:2. No horizontal scroll.
 - A check-in with no `image` key is a text cell with the same words. Don't invent a picture.
 - The grid reads `collections.checkins` only. Same `publishAfter` filter, same `CHECKIN_MAP_EXCLUDE` behaviour, same image spec, no coordinates in the captions or the markup.
@@ -215,18 +218,23 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 - Do not touch `src/_config/utils/checkin-map.js`, `cityCentroids.json`, the outline, or the check-in validator. CSS and the page template only.
 - With `CHECKIN_MAP_EXCLUDE` missing locally, the city list is left out on purpose. The grid of non-excluded check-ins still has to respect the same filter. A missing variable is not a bug to "fix" by showing every city.
 - Month headings go away. Don't sort the grid by city; the list above already does that.
+- The transparent pixels are part of the WebP. Don't flatten them to white in the image pipeline. The tile CSS is the background.
 
-**Done when:** with the flag, `/checkins/` shows the map, the city list, and a grid of every published diorama, day in light and night in dark. Place and date are visible on each cell. A future fixture check-in is absent. The page works from the keyboard and with JavaScript off, axe reports no violations, and `/chess/` has no sideways scroll at 390. Without the flag, both pages match `main`.
+**Tests:** in the check-in fixture, a `precision: city` tile's text is the city and does not include a place name, and a `precision: place` tile still shows its place. A future `publishAfter` is absent from the grid.
+
+**Done when:** with the flag, `/checkins/` shows the map, the city list, and a grid of every published diorama. Light mode shows the day image on the light tile fill; dark mode shows the night image on the dark tile fill; neither looks like it is floating on the page. A city-only tile shows the city and no place name. A future fixture check-in is absent. The page works from the keyboard and with JavaScript off, axe reports no violations, and `/chess/` has no sideways scroll at 390. Without the flag, both pages match `main`.
 
 ---
 
 ## Phase 5 — Everything else
 
-**Build:** `rasa` CSS for `/talks/` and the talk page, `/projects/`, `/bookshelf/`, `/resume/`, `/ai/`, `/links/`, the legal pages, and `/404.html`. Restyle the OG SVG templates in Caveat. Leave the colophon words as they are; the replacement copy isn't approved yet.
+**Build:** `rasa` CSS for `/talks/` and the talk page, `/projects/`, `/bookshelf/`, `/resume/`, `/ai/`, `/links/`, `/privacy/`, `/accessibility/`, and `/404.html`. Restyle the OG SVG templates in Caveat. Replace the colophon body with this paragraph and nothing else. The title stays Colophon. Don't add links or a second paragraph.
+
+> This site is built with Eleventy, started from the Eleventy Excellent starter, and hosted on Netlify. The code is public on GitHub. Headings are in Caveat, a free handwritten font. The check-in pictures are little clay scenes of each place, not my actual photos, and they only go up a day after I've left. The rebuild was inspired by Robb Knight's "Tabula Rasa" post and Melanie Kat's site, so if you like how this looks, go check out theirs.
 
 **Gotchas:** `/links/` uses `compactHeader`; keep that flag working in `rasa.njk`. Leave `/talks/rubyconf-2026/slides/` alone.
 
-**Done when:** with the flag, every page in `sitemap.xml` renders in both themes at 1440 and 390, and `npm run test:a11y` passes.
+**Done when:** with the flag, every page in `sitemap.xml` renders in both themes at 1440 and 390, the colophon body is that paragraph, and `npm run test:a11y` passes.
 
 ---
 
@@ -235,9 +243,18 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 **Build**
 
 - Point the `base`, `page`, and `post` aliases at the new layouts for good. Remove the flag. Move the stream from `/next/` to `/`. Delete `/next/`.
-- Add 301s for the cuts Stefan confirmed (`/tags/*` → `/articles/`, `/styleguide/` → `/`, anything else) through `redirectFrom` or static lines in `src/common/_redirects.njk`.
-- Delete the old layouts, the `global` and `local` CSS, Tailwind and the token pipeline, Fraunces, and Atkinson. Keep Caveat. Grep before each deletion, including the cut features.
-- Update `.cursor/rules/eleventy-excellent.mdc`, `docs/eleventy-excellent-reference.md`, and `AGENTS.md` to describe the new layout and CSS. Rewrite the colophon only with the approved copy, once Stefan supplies it. Until then, restyle the page and leave the words.
+- Add these 301s, through `redirectFrom` or static lines in `src/common/_redirects.njk`.
+
+| From | To |
+| --- | --- |
+| `/tags/`, `/tags/*` | `/articles/` |
+| `/styleguide/` | `/` |
+| `/imprint/` | `/privacy/` |
+| `/sustainability/` | `/colophon/` |
+
+- Delete the page files for those cuts. In `src/_data/meta.js`, drop the `sustainability-page` disclosure so `/carbon.txt` doesn't point at a page that's gone. Keep `/carbon.txt` itself.
+- Delete the old layouts, the `global` and `local` CSS, Tailwind and the token pipeline, Fraunces, Atkinson, the pixel scene, the "stefan is ___" script, the hit counter, and the retro skins. Keep Caveat. Grep before each deletion.
+- Update `.cursor/rules/eleventy-excellent.mdc`, `docs/eleventy-excellent-reference.md`, and `AGENTS.md` to describe the new layout and CSS. The colophon body already landed in Phase 5.
 
 **Gotchas**
 
@@ -261,14 +278,13 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 | Home length | Newest **30**. No pagination. Archives stay at `/articles/`, `/now/`, and `/checkins/`. |
 | RSS | **Posts only.** `/feed.xml` and `/feed.json` stay as they are. |
 | Homepage intro | Approved. Phase 2 uses the paragraph under "The new home", word for word. |
-| `/checkins/` | A diorama grid, on the model of [melaniekat.com/pics](https://melaniekat.com/pics). Map and city list stay. No real photos. |
+| `/checkins/` | A diorama grid, on the model of [melaniekat.com/pics](https://melaniekat.com/pics). Map and city list stay. No real photos. Each tile has a palette fill behind the transparent cutout. A city-only check-in shows the city and no place name. |
+| Lichess status | **Footer.** Same `lichess-status` function. Not in the header. |
+| Cuts | **All of them.** `/tags/`, `/styleguide/`, the pixel scene, "stefan is ___", the hit counter, the retro skins, `/imprint/`, and `/sustainability/`. Nothing requires the last two: the email is already on other pages, and `/carbon.txt`'s sustainability disclosure is optional. Phase 6 adds the 301s. |
+| Nav | **Posts, Check-ins, Now.** URLs stay `/articles/`, `/checkins/`, `/now/`. Everything else is in the footer. No About page. |
+| Colophon | Approved. Phase 5 uses the paragraph in that phase, word for word. |
 
-## Open decisions for Stefan
-
-1. **Cuts:** confirm pixel scene, "stefan is ___", hit counter, retro skins, `/tags/`, `/styleguide/`. Keep or cut `/imprint/` and `/sustainability/`.
-2. **Nav:** Articles, Now, Check-ins, Chess? Or keep today's Now, Articles, Talks, Projects?
-3. **Lichess pill:** keep it in the header, move it to the footer, or drop it.
-4. **Colophon:** a draft is written and waiting on Stefan's approval. The approved copy will be supplied. Don't invent a replacement in this plan or in a phase.
+**Open decisions:** none.
 
 ---
 
