@@ -1,0 +1,24 @@
+<svg
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-labelledby="title"
+>
+  {% set titleInLines = post.data.title | splitlines(26) %}
+  {% set verticalStartingPoint = 320 - (titleInLines.length - 1) * 40 %}
+  {% if verticalStartingPoint < 200 %}{% set verticalStartingPoint = 200 %}{% endif %}
+
+  <title id="title">{{ post.data.title }}</title>
+  {% include "rasa/og-chrome.njk" %}
+
+  <text x="88" y="120" fill="#686258" font-family="Helvetica, Arial, Liberation Sans, sans-serif" font-size="22">Post · {{ post.date | formatDate('MMMM D, YYYY') }}</text>
+
+  <text fill="#322d25" font-family="Caveat, Bradley Hand, cursive" font-size="76" font-weight="600">
+    {% for line in titleInLines | batch(5) | first %}
+      <tspan x="88" y="{{ verticalStartingPoint + loop.index0 * 80 }}">{{ line }}</tspan>
+    {% endfor %}
+  </text>
+</svg>

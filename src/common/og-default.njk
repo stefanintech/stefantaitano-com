@@ -3,7 +3,7 @@ permalink: /assets/og-images/default-preview.svg
 eleventyExcludeFromCollections: true
 excludeFromSitemap: true
 ---
-<svg
+{% if tabulaRasa %}{% include "rasa/og-default.njk" %}{% else %}<svg
   xmlns="http://www.w3.org/2000/svg"
   width="1200"
   height="630"
@@ -53,4 +53,4 @@ excludeFromSitemap: true
     font-family="Atkinson Hyperlegible, system-ui, sans-serif"
     font-size="24"
   >stefantaitano.com</text>
-</svg>
+</svg>{% endif %}

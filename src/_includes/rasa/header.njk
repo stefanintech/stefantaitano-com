@@ -1,5 +1,8 @@
-<header class="rasa-header">
+<header class="rasa-header{% if compactHeader %} rasa-header--compact{% endif %}">
   <a href="#main" class="skip-link">{{ meta.skipContent }}</a>
+  {%- if compactHeader %}
+  <a href="/" class="rasa-header__home"><span aria-hidden="true">&larr;</span> Home</a>
+  {%- else %}
   <a href="/" class="rasa-header__name"{% if page.url == "/" %} aria-current="page"{% endif %}>{{ meta.siteName }}</a>
   <nav aria-label="{{ meta.navigation.ariaTop }}">
     <ul role="list">
@@ -8,4 +11,5 @@
       <li><a href="/now/"{% if page.url == "/now/" %} aria-current="page"{% endif %}>Now</a></li>
     </ul>
   </nav>
+  {%- endif %}
 </header>

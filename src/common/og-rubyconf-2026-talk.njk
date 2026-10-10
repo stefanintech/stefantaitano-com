@@ -3,7 +3,7 @@ permalink: /assets/og-images/rubyconf-2026-talk-preview.svg
 eleventyExcludeFromCollections: true
 excludeFromSitemap: true
 ---
-<svg
+{% if tabulaRasa %}{% include "rasa/og-rubyconf-2026-talk.njk" %}{% else %}<svg
   xmlns="http://www.w3.org/2000/svg"
   width="1200"
   height="630"
@@ -44,4 +44,4 @@ excludeFromSitemap: true
     <polygon points="78,0 98,31 58,31" />
     <polygon points="2,31 42,31 50,92 58,31 98,31" />
   </g>
-</svg>
+</svg>{% endif %}

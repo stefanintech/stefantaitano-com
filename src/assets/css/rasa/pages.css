@@ -1,0 +1,533 @@
+/* Inner pages under the rasa layout: talks, projects, bookshelf, resume, AI, links.
+   The markup is shared with the live templates, so this file only styles their classes. */
+
+:where(.flow) > * {
+  margin-block: 0;
+}
+
+:where(.flow) > * + * {
+  margin-block-start: 1rem;
+}
+
+:where(.handwritten) {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--muted);
+}
+
+:where(.cluster) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+:where(.button) {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.4rem 1.1rem;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9375rem;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+  }
+}
+
+:where(.button[data-ghost-button]) {
+  border-color: var(--rule);
+  background: transparent;
+}
+
+:where(.page-intro, .talks-index__intro .region) {
+  padding-block-end: 1.5rem;
+  border-block-end: 1px solid var(--rule);
+
+  & h1 {
+    margin-block-start: 0.25rem;
+  }
+}
+
+.page-intro__kicker {
+  margin-block-start: 1rem;
+}
+
+:where(.page-intro__lede) {
+  font-size: 1.1875rem;
+}
+
+:where(.page-intro__note) {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+/* Tags and meta lines shared by the card lists. */
+:where(.project-card__meta, .talk-listing__meta, .talk-hero__context, .bookshelf-card__author, .resume-job__dates, .resume-edu__dates, .ai-workflow__meta, .ai-updated, .resume-footer) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0.75rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+:where(.project-card__tag, .bookshelf-card__tag, .ai-status) {
+  display: inline-block;
+  padding: 0.05rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.8125rem;
+}
+
+/* Card lists: hairlines, not boxes. */
+:where(.projects-grid, .bookshelf-grid, .talk-list) {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  & > * {
+    margin: 0;
+    padding-block: 1.75rem;
+    border-block-end: 1px solid var(--rule);
+  }
+
+  & > :last-child {
+    border-block-end: 0;
+  }
+}
+
+:where(.project-card__title, .bookshelf-card__title, .talk-listing h2, .ai-workflow__title, .ai-section__title) {
+  margin: 0;
+  font-size: 2rem;
+  line-height: 1.15;
+}
+
+:where(.project-card__proof) {
+  display: grid;
+  gap: 0.75rem;
+  margin-block-start: 1rem;
+
+  & dt {
+    font-weight: 600;
+  }
+
+  & dd {
+    margin: 0;
+  }
+}
+
+.bookshelf-group {
+  margin-block-start: 2rem;
+}
+
+.bookshelf-group__label {
+  margin-block-end: 0;
+}
+
+.bookshelf-card__title {
+  font-size: 1.75rem;
+}
+
+/* Talks */
+.talk-listing__event,
+.talk-hero__event {
+  font-weight: 600;
+  color: var(--text);
+}
+
+:where(.talk-page) > * + * {
+  margin-block-start: 2.5rem;
+  padding-block-start: 2rem;
+  border-block-start: 1px solid var(--rule);
+}
+
+.talk-hero__atmosphere {
+  display: none;
+}
+
+:where(.talk-hero__content, .talk-message .flow, .talk-watch__inner, .talk-about .prose) > * {
+  margin-block: 0;
+}
+
+:where(.talk-hero__content, .talk-message .flow, .talk-watch__inner, .talk-about .prose) > * + * {
+  margin-block-start: 1rem;
+}
+
+.talk-hero h1 {
+  margin-block-start: 0.5rem;
+}
+
+.talk-hero__description {
+  font-size: 1.1875rem;
+}
+
+.talk-hero__all {
+  padding-block: 0.6rem;
+}
+
+.talk-hero__hint {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.talk-message h2 {
+  font-size: clamp(2rem, 1.6rem + 1.5vw, 2.5rem);
+}
+
+custom-youtube,
+lite-youtube {
+  display: block;
+  max-width: 100%;
+}
+
+lite-youtube {
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+/* Resume */
+.resume-header {
+  padding-block-end: 1.5rem;
+  border-block-end: 1px solid var(--rule);
+}
+
+.resume-header__name {
+  margin-block: 1rem 0;
+}
+
+.resume-header__title {
+  margin: 0;
+  font-size: 1.1875rem;
+}
+
+.resume-header__contact {
+  font-style: normal;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.resume-section {
+  margin-block-start: 2rem;
+}
+
+.resume-section__heading {
+  margin-block: 0;
+}
+
+.resume-skills__row {
+  display: grid;
+  gap: 0.15rem;
+
+  & dt {
+    font-weight: 600;
+  }
+
+  & dd {
+    margin: 0;
+  }
+}
+
+.resume-job,
+.resume-edu {
+  padding-block-start: 1rem;
+  border-block-start: 1px solid var(--rule);
+}
+
+.resume-job__meta > * {
+  margin: 0;
+}
+
+:where(.resume-job__role, .resume-edu__institution) {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.resume-edu__field {
+  margin-block-start: 0.15rem;
+}
+
+.resume-edu__dates {
+  margin-block-start: 0.15rem;
+}
+
+:where(.resume-job__bullets, .resume-certs) {
+  padding-inline-start: 1.25rem;
+
+  & > * + * {
+    margin-block-start: 0.4rem;
+  }
+}
+
+.resume-footer {
+  margin-block-start: 2rem;
+}
+
+/* AI */
+.ai-workflow,
+.ai-section {
+  margin-block-start: 2.5rem;
+  padding-block-start: 2rem;
+  border-block-start: 1px solid var(--rule);
+}
+
+.ai-workflow__summary {
+  font-size: 1.1875rem;
+}
+
+.ai-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  & li {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+}
+
+.ai-flow__step {
+  padding: 0.2rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--card);
+  font-size: 0.875rem;
+}
+
+.ai-flow__arrow {
+  color: var(--muted);
+}
+
+.ai-artifacts {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.ai-artifact {
+  margin: 0;
+
+  & img {
+    width: 100%;
+    border: 1px solid var(--rule);
+    border-radius: 0.5rem;
+  }
+
+  & figcaption {
+    margin-block-start: 0.5rem;
+    color: var(--muted);
+    font-size: 0.875rem;
+  }
+}
+
+.ai-artifact__frame {
+  max-height: 28rem;
+  overflow: hidden;
+  border-radius: 0.5rem;
+}
+
+.ai-artifact--fit .ai-artifact__frame {
+  max-height: none;
+}
+
+.ai-artifact__open {
+  margin-block-start: 0.5rem;
+  min-height: 2.75rem;
+  padding: 0.25rem 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.ai-artifact__dialog {
+  width: min(100% - 2rem, 64rem);
+  max-height: calc(100dvh - 2rem);
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.5rem;
+  background: var(--bg);
+  color: var(--text);
+
+  &::backdrop {
+    background: rgb(25 21 14 / 0.75);
+  }
+
+  & img {
+    margin-block-start: 1rem;
+  }
+}
+
+:where(.ai-label, .ai-rules__heading) {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.ai-rules__groups {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.ai-rules__group ul {
+  list-style: disc;
+  padding-inline-start: 1.25rem;
+}
+
+:where(.ai-rules__note, .ai-rules__silence) {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.ai-extra summary {
+  cursor: pointer;
+  color: var(--accent);
+  padding-block: 0.5rem;
+}
+
+.ai-topics,
+.ai-experiments {
+  list-style: disc;
+  padding-inline-start: 1.25rem;
+}
+
+.ai-experiments__name {
+  font-weight: 600;
+}
+
+.ai-updated {
+  margin-block-start: 2.5rem;
+}
+
+/* Links */
+.links-profile {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  padding-block: 1rem;
+}
+
+.links-avatar {
+  padding: 0;
+  border: 0;
+  border-radius: 1.5rem;
+  background: none;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  user-select: none;
+
+  & img {
+    width: min(14rem, 60vw);
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 1.5rem;
+  }
+}
+
+.links-hint {
+  font-size: 1.25rem;
+}
+
+.links-hint__keyboard {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .links-hint__touch {
+    display: none;
+  }
+
+  .links-hint__keyboard {
+    display: inline;
+  }
+}
+
+.links-name {
+  margin-block: 0;
+}
+
+.links-tagline {
+  color: var(--muted);
+}
+
+.links-nav {
+  display: grid;
+  width: min(100%, 24rem);
+  gap: 0.75rem;
+
+  & > * + * {
+    margin-block-start: 0;
+  }
+}
+
+.links-button {
+  justify-content: center;
+}
+
+.links-button[data-button-variant='primary'] {
+  background: var(--card);
+}
+
+.links-egg {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.links-egg__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgb(25 21 14 / 0.75);
+}
+
+.links-egg__card {
+  position: relative;
+  width: min(100%, 24rem);
+  padding: 1.5rem;
+  border: 1px solid var(--rule);
+  border-radius: 1rem;
+  background: var(--bg);
+  text-align: center;
+}
+
+.links-egg__pawn {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.links-egg__title {
+  margin: 0;
+}
+
+.links-egg__actions {
+  justify-content: center;
+}

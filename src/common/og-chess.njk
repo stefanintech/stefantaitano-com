@@ -3,7 +3,7 @@ permalink: /assets/og-images/chess-preview.svg
 eleventyExcludeFromCollections: true
 excludeFromSitemap: true
 ---
-{% set board = lichess.scoreboard %}
+{% if tabulaRasa %}{% include "rasa/og-chess.njk" %}{% else %}{% set board = lichess.scoreboard %}
 {% set chart = lichess.ogChart %}
 {% set rating = board.currentRating %}
 <svg
@@ -98,4 +98,4 @@ excludeFromSitemap: true
     font-size="22"
     letter-spacing="0.12em"
   >STEFAN TAITANO</text>
-</svg>
+</svg>{% endif %}
