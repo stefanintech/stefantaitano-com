@@ -21,7 +21,7 @@
     "start": "npm run dev:11ty",
     "build": "npm run clean && npm run test:checkins && npm run build:11ty",
     "test": "npm run test:checkins",
-    "test:checkins": "node --test ./test/checkin-map.test.js ./test/checkin-rebuild.test.js",
+    "test:checkins": "node --test ./test/checkin-map.test.js ./test/checkin-rebuild.test.js ./test/home-stream.test.js",
     "pa11y:build": "npm run clean && cross-env ELEVENTY_ENV=test eleventy",
     "pa11y:test": "sleep 3 && pa11y-ci --config ./dist/pa11y.json",
     "pa11y:serve": "ELEVENTY_ENV=test eleventy --serve --ignore-initial",

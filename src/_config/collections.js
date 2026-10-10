@@ -25,6 +25,39 @@ export const createCheckinsCollection =
 
 export const getCheckins = createCheckinsCollection();
 
+export const HOME_STREAM_LIMIT = 30;
+
+const utcDay = date => new Date(date).toISOString().slice(0, 10);
+
+/**
+ * Posts, /now entries, and published check-ins in one newest-first list.
+ * Sorted by calendar day in UTC, the same day `formatDateUtc` prints, so a
+ * post's offset can't move it past a same-day check-in or /now entry.
+ */
+export const buildHomeStream = ({posts = [], nowEntries = [], checkins = []}, limit = HOME_STREAM_LIMIT) => {
+  const items = [
+    ...posts.map(item => ({type: 'post', item})),
+    ...checkins.map(item => ({type: 'checkin', item})),
+    ...nowEntries.map(item => ({type: 'now', item}))
+  ].map(entry => ({...entry, day: utcDay(entry.item.date)}));
+
+  const sorted = items.sort(
+    (a, b) => b.day.localeCompare(a.day) || new Date(b.item.date) - new Date(a.item.date)
+  );
+  return {items: sorted.slice(0, limit), capped: sorted.length > limit};
+};
+
+/** The /next/ stream. Check-ins come only from the filtered check-ins collection. */
+export const createHomeStreamCollection =
+  ({posts = getAllPosts, nowEntries = getNowEntries, checkins = getCheckins, limit} = {}) =>
+  async collection =>
+    buildHomeStream(
+      {posts: posts(collection), nowEntries: nowEntries(collection), checkins: await checkins(collection)},
+      limit
+    );
+
+export const getHomeStream = createHomeStreamCollection();
+
 /** All talks, newest first. */
 export const getAllTalks = collection => {
   return collection.getFilteredByGlob('./src/talks/**/*.md').reverse();

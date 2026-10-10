@@ -9,7 +9,7 @@ layout: page
 
 {% if entries.length %}
   {% set latest = entries[0] %}
-  <p class="now-entry__date">
+  <p class="now-entry__date" id="now-{{ latest.date | formatDateUtc('YYYY-MM-DD') }}">
     <time datetime="{{ latest.date | formatDateUtc('YYYY-MM-DD') }}">{{ latest.date | formatDateUtc('MMMM D, YYYY') }}</time>
   </p>
   {{ latest.templateContent | safe }}
@@ -22,7 +22,7 @@ layout: page
       </summary>
       <ol class="now-entries flow" role="list">
         {% for entry in entries %}{% if not loop.first %}
-          <li class="flow">
+          <li class="flow" id="now-{{ entry.date | formatDateUtc('YYYY-MM-DD') }}">
             <p class="now-entry__date">
               <time datetime="{{ entry.date | formatDateUtc('YYYY-MM-DD') }}">{{ entry.date | formatDateUtc('MMMM D, YYYY') }}</time>
             </p>

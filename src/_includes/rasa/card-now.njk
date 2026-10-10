@@ -1,0 +1,14 @@
+{#- One /now entry in the home stream. Set `nowEntry`. -#}
+{%- set day = nowEntry.date | formatDateUtc('YYYY-MM-DD') -%}
+<article class="rasa-card rasa-card--now">
+  <p class="rasa-card__type">Now</p>
+  <p class="rasa-card__date"><a href="/now/#now-{{ day }}"><time datetime="{{ day }}">{{ nowEntry.date | formatDateUtc('MMMM D, YYYY') }}</time></a></p>
+  {#- Shift the entry's headings down one level so they sit under the h2 card titles. -#}
+  <div class="rasa-card__body">{{ nowEntry.templateContent
+    | replace('<h5', '<h6') | replace('</h5>', '</h6>')
+    | replace('<h4', '<h5') | replace('</h4>', '</h5>')
+    | replace('<h3', '<h4') | replace('</h3>', '</h4>')
+    | replace('<h2', '<h3') | replace('</h2>', '</h3>')
+    | replace('<h1', '<h2') | replace('</h1>', '</h2>')
+    | safe }}</div>
+</article>

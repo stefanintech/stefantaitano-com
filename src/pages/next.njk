@@ -7,3 +7,6 @@ eleventyExcludeFromCollections: true
 ---
 <h1 class="visually-hidden">{{ meta.siteName }}</h1>
 <p class="rasa-intro">Hey, I'm Stefan. I'm a veteran who builds backend systems and integrations, currently in the ServiceNow world, and I'm back in school. Right now I'm writing Ruby, running, playing chess, and planning our family's next move. This is where my posts, check-ins, and /now updates end up, newest first.</p>
+
+{% set stream = collections.homeStream %}
+{% include "rasa/stream.njk" %}
