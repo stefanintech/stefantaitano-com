@@ -8,16 +8,12 @@ import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
 import fg from 'fast-glob';
 
-const buildCss = async (inputPath, outputPaths) => {
+const defaultPlugins = [postcssImportExtGlob, postcssImport, tailwindcss, autoprefixer, cssnano];
+
+const buildCss = async (inputPath, outputPaths, plugins = defaultPlugins) => {
   const inputContent = await fs.readFile(inputPath, 'utf-8');
 
-  const result = await postcss([
-    postcssImportExtGlob,
-    postcssImport,
-    tailwindcss,
-    autoprefixer,
-    cssnano
-  ]).process(inputContent, {from: inputPath});
+  const result = await postcss(plugins).process(inputContent, {from: inputPath});
 
   for (const outputPath of outputPaths) {
     await fs.mkdir(path.dirname(outputPath), {recursive: true});
@@ -42,6 +38,13 @@ export const buildAllCss = async () => {
   for (const inputPath of componentCssFiles) {
     const baseName = path.basename(inputPath);
     tasks.push(buildCss(inputPath, [`dist/assets/css/components/${baseName}`]));
+  }
+
+  // Tabula Rasa: plain CSS, no Tailwind.
+  const rasaCssFiles = await fg(['src/assets/css/rasa/**/*.css']);
+  for (const inputPath of rasaCssFiles) {
+    const baseName = path.basename(inputPath);
+    tasks.push(buildCss(inputPath, [`src/_includes/css/rasa-${baseName}`], [postcssImport, cssnano]));
   }
 
   await Promise.all(tasks);
