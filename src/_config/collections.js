@@ -34,7 +34,8 @@ export const getAllTalks = collection => {
 export const showInSitemap = collection => {
   return collection
     .getFilteredByGlob('./src/**/*.{md,njk}')
-    .filter(item => !item.inputPath.startsWith(`${CHECKINS_DIR}/`));
+    .filter(item => !item.inputPath.startsWith(`${CHECKINS_DIR}/`))
+    .filter(item => item.url !== '/next/');
 };
 
 /** All tags from all posts as a collection - excluding custom collections */

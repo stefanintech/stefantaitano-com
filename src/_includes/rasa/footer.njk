@@ -1,0 +1,40 @@
+<footer class="site-footer">
+  <div class="column">
+    <span class="lichess-status" data-lichess-status hidden></span>
+
+    <nav aria-label="{{ meta.navigation.ariaExplore }}">
+      <ul class="nav-list">
+        <li><a href="/chess/">Chess</a></li>
+        <li><a href="/talks/">Talks</a></li>
+        <li><a href="/projects/">Projects</a></li>
+        <li><a href="/bookshelf/">Bookshelf</a></li>
+        <li><a href="/resume/">Resume</a></li>
+        <li><a href="/ai/">AI</a></li>
+        <li><a href="/links/">Links</a></li>
+        <li>
+          <a href="https://buttondown.com/stefantaitano" rel="noopener">Field Notes</a>
+        </li>
+      </ul>
+    </nav>
+
+    <nav aria-label="Feeds">
+      <ul class="nav-list">
+        {% for feedLink in meta.blog.feedLinks %}
+          <li>
+            <a href="{{ feedLink.url }}" rel="alternate" type="{{ feedLink.type }}">{{ feedLink.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <nav aria-label="{{ meta.navigation.ariaBottom }}">
+      <ul class="nav-list">
+        {% for item in navigation.legal %}
+          <li><a href="{{ item.url }}">{{ item.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    {% include "partials/theme-switch.njk" %}
+  </div>
+</footer>

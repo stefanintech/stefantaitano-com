@@ -1,0 +1,238 @@
+/* Tabula Rasa. Plain CSS, six tokens.
+   Contrast checked (WCAG 2.1) before use: text and muted pairs are at least 5.7:1
+   on --bg and --card in both themes. Accent pairs are at least 4.74:1.
+   Accent also clears 3:1 as a focus ring. */
+
+@font-face {
+  font-family: Caveat;
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/assets/fonts/caveat/caveat-latin-600.woff2") format("woff2");
+}
+
+:root {
+  color-scheme: light;
+  --bg: #fbf8f3;
+  --text: #322d25;
+  --muted: #686258;
+  --rule: #e7e4de;
+  --accent: #b45309;
+  --card: #ffffff;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-heading: Caveat, cursive;
+  --font-code: ui-monospace, "Cascadia Code", "Segoe UI Mono", monospace;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #19150e;
+  --text: #fbf8f3;
+  --muted: #b0ada8;
+  --rule: #3f3a30;
+  --accent: #fbbe25;
+  --card: #322d25;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #19150e;
+    --text: #fbf8f3;
+    --muted: #b0ada8;
+    --rule: #3f3a30;
+    --accent: #fbbe25;
+    --card: #322d25;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+:where(h1, h2, h3) {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+:where(p) {
+  margin: 0;
+}
+
+:where(a) {
+  color: var(--accent);
+}
+
+:where(a, button):focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+:where(code, kbd) {
+  font-family: var(--font-code);
+}
+
+:where(img) {
+  max-width: 100%;
+  height: auto;
+}
+
+.skip-link {
+  position: absolute;
+  inset-inline-start: 0.75rem;
+  inset-block-start: 0.75rem;
+  padding: 0.4rem 0.7rem;
+  background: var(--card);
+  color: var(--text);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.column {
+  width: min(40rem, 100%);
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+.site-header {
+  border-block-end: 1px solid var(--rule);
+}
+
+.site-header .column {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding-block: 1.1rem;
+}
+
+.site-name {
+  margin: 0;
+  font-size: 2.25rem;
+}
+
+.site-name a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-name a:hover {
+  color: var(--accent);
+}
+
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav-list a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.nav-list a:hover,
+.nav-list a[aria-current="page"] {
+  color: var(--accent);
+}
+
+.intro {
+  padding-block: 2rem 3rem;
+}
+
+.site-footer {
+  border-block-start: 1px solid var(--rule);
+  padding-block: 1.5rem 2.5rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.site-footer .column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.site-footer a {
+  color: var(--accent);
+}
+
+.lichess-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-block-size: 2.75rem;
+  color: var(--text);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.lichess-status[hidden] {
+  display: none;
+}
+
+.lichess-status__dot {
+  inline-size: 0.55rem;
+  block-size: 0.55rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.theme-switch {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.theme-switch h2 {
+  margin: 0;
+  color: var(--text);
+  font-size: 1.6rem;
+}
+
+.theme-switch button {
+  min-block-size: 2.75rem;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.theme-switch button[aria-pressed="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+@media (scripting: none) {
+  .require-js {
+    display: none;
+  }
+}

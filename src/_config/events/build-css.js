@@ -44,5 +44,23 @@ export const buildAllCss = async () => {
     tasks.push(buildCss(inputPath, [`dist/assets/css/components/${baseName}`]));
   }
 
+  const rasaCssFiles = await fg(['src/assets/css/rasa/**/*.css']);
+  for (const inputPath of rasaCssFiles) {
+    const baseName = path.basename(inputPath);
+    tasks.push(buildRasaCss(inputPath, `src/_includes/css/rasa-${baseName}`));
+  }
+
   await Promise.all(tasks);
+};
+
+/** New layout CSS: import + minify only. No Tailwind. */
+const buildRasaCss = async (inputPath, outputPath) => {
+  const inputContent = await fs.readFile(inputPath, 'utf-8');
+
+  const result = await postcss([postcssImport, cssnano]).process(inputContent, {from: inputPath});
+
+  await fs.mkdir(path.dirname(outputPath), {recursive: true});
+  await fs.writeFile(outputPath, result.css);
+
+  return result.css;
 };
