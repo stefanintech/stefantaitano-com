@@ -2,7 +2,7 @@
 
 Rebuild the layout and theme of stefantaitano.com from a blank page. Carry the content over exactly as it is. One small PR per phase.
 
-**Status (10 Oct 2026):** Phase 4 done: with `TABULA_RASA=1`, `/checkins/` shows the map, the city list, and a diorama grid (day image unless the theme is dark, `--card` tile fill), and `/chess/` has rasa styles. No site-side CSS tints the images; the blue is the night set, shown when `data-theme` is dark. Phase 5 is next.
+**Status (10 Oct 2026):** Phase 5 done: with `TABULA_RASA=1`, `/talks/` and the talk page, `/projects/`, `/bookshelf/`, `/resume/`, `/ai/`, `/links/` (compact header kept), `/privacy/`, `/accessibility/`, `/colophon/`, `/404.html`, and `/` render in the rasa layout, the colophon body is the approved paragraph, and the OG images are set in Caveat. All three swaps are behind the flag, so live pages and OG PNGs still match `main`. Phase 6 is next.
 
 **Outcome:** The home page is a short intro followed by one newest-first stream of posts, check-ins, and `/now` updates. Every page uses one new layout and one plain stylesheet. The Eleventy Excellent look (Tailwind tokens, CUBE layers, Fraunces / Atkinson, the pixel scene) is gone. Every URL that works today still works, or 301s to where its content went.
 

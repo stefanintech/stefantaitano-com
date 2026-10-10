@@ -1,15 +1,15 @@
 /* Inner pages under the rasa layout: talks, projects, bookshelf, resume, AI, links.
    The markup is shared with the live templates, so this file only styles their classes. */
 
-:where(.flow) > * {
+:is(.flow) > * {
   margin-block: 0;
 }
 
-:where(.flow) > * + * {
+:is(.flow) > * + * {
   margin-block-start: 1rem;
 }
 
-:where(.handwritten) {
+:is(.handwritten) {
   font-family: var(--font-hand);
   font-weight: 600;
   font-size: 1.5rem;
@@ -17,14 +17,14 @@
   color: var(--muted);
 }
 
-:where(.cluster) {
+:is(.cluster) {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem 0.75rem;
 }
 
-:where(.button) {
+:is(.button) {
   display: inline-flex;
   align-items: center;
   min-height: 2.75rem;
@@ -44,12 +44,12 @@
   }
 }
 
-:where(.button[data-ghost-button]) {
+:is(.button[data-ghost-button]) {
   border-color: var(--rule);
   background: transparent;
 }
 
-:where(.page-intro, .talks-index__intro .region) {
+:is(.page-intro, .talks-index__intro .region) {
   padding-block-end: 1.5rem;
   border-block-end: 1px solid var(--rule);
 
@@ -62,17 +62,17 @@
   margin-block-start: 1rem;
 }
 
-:where(.page-intro__lede) {
+:is(.page-intro__lede) {
   font-size: 1.1875rem;
 }
 
-:where(.page-intro__note) {
+:is(.page-intro__note) {
   color: var(--muted);
   font-size: 0.9375rem;
 }
 
 /* Tags and meta lines shared by the card lists. */
-:where(.project-card__meta, .talk-listing__meta, .talk-hero__context, .bookshelf-card__author, .resume-job__dates, .resume-edu__dates, .ai-workflow__meta, .ai-updated, .resume-footer) {
+:is(.project-card__meta, .talk-listing__meta, .talk-hero__context, .bookshelf-card__author, .resume-job__dates, .resume-edu__dates, .ai-workflow__meta, .ai-updated, .resume-footer) {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem 0.75rem;
@@ -80,7 +80,7 @@
   font-size: 0.875rem;
 }
 
-:where(.project-card__tag, .bookshelf-card__tag, .ai-status) {
+:is(.project-card__tag, .bookshelf-card__tag, .ai-status) {
   display: inline-block;
   padding: 0.05rem 0.6rem;
   border: 1px solid var(--rule);
@@ -90,7 +90,7 @@
 }
 
 /* Card lists: hairlines, not boxes. */
-:where(.projects-grid, .bookshelf-grid, .talk-list) {
+:is(.projects-grid, .bookshelf-grid, .talk-list) {
   display: grid;
   margin: 0;
   padding: 0;
@@ -107,13 +107,13 @@
   }
 }
 
-:where(.project-card__title, .bookshelf-card__title, .talk-listing h2, .ai-workflow__title, .ai-section__title) {
+:is(.project-card__title, .bookshelf-card__title, .talk-listing h2, .ai-workflow__title, .ai-section__title) {
   margin: 0;
   font-size: 2rem;
   line-height: 1.15;
 }
 
-:where(.project-card__proof) {
+:is(.project-card__proof) {
   display: grid;
   gap: 0.75rem;
   margin-block-start: 1rem;
@@ -146,7 +146,7 @@
   color: var(--text);
 }
 
-:where(.talk-page) > * + * {
+:is(.talk-page) > * + * {
   margin-block-start: 2.5rem;
   padding-block-start: 2rem;
   border-block-start: 1px solid var(--rule);
@@ -156,11 +156,11 @@
   display: none;
 }
 
-:where(.talk-hero__content, .talk-message .flow, .talk-watch__inner, .talk-about .prose) > * {
+:is(.talk-hero__content, .talk-message .flow, .talk-watch__inner, .talk-about .prose) > * {
   margin-block: 0;
 }
 
-:where(.talk-hero__content, .talk-message .flow, .talk-watch__inner, .talk-about .prose) > * + * {
+:is(.talk-hero__content, .talk-message .flow, .talk-watch__inner, .talk-about .prose) > * + * {
   margin-block-start: 1rem;
 }
 
@@ -248,7 +248,7 @@ lite-youtube {
   margin: 0;
 }
 
-:where(.resume-job__role, .resume-edu__institution) {
+:is(.resume-job__role, .resume-edu__institution) {
   margin: 0;
   font-family: var(--font-body);
   font-size: 1.0625rem;
@@ -264,7 +264,7 @@ lite-youtube {
   margin-block-start: 0.15rem;
 }
 
-:where(.resume-job__bullets, .resume-certs) {
+:is(.resume-job__bullets, .resume-certs) {
   padding-inline-start: 1.25rem;
 
   & > * + * {
@@ -377,7 +377,7 @@ lite-youtube {
   }
 }
 
-:where(.ai-label, .ai-rules__heading) {
+:is(.ai-label, .ai-rules__heading) {
   margin: 0;
   font-family: var(--font-body);
   font-size: 1.0625rem;
@@ -395,7 +395,7 @@ lite-youtube {
   padding-inline-start: 1.25rem;
 }
 
-:where(.ai-rules__note, .ai-rules__silence) {
+:is(.ai-rules__note, .ai-rules__silence) {
   color: var(--muted);
   font-size: 0.9375rem;
 }

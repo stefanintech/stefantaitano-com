@@ -7,7 +7,7 @@
   role="img"
   aria-labelledby="title"
 >
-  {% set titleInLines = post.data.title | splitlines(26) %}
+  {% set titleInLines = post.data.title | splitlines(30) %}
   {% set verticalStartingPoint = 320 - (titleInLines.length - 1) * 40 %}
   {% if verticalStartingPoint < 200 %}{% set verticalStartingPoint = 200 %}{% endif %}
 
