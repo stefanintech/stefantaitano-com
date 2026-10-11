@@ -5,6 +5,7 @@ import {describe, it} from 'node:test';
 import Eleventy from '@11ty/eleventy';
 import {buildHomeStream, createCheckinsCollection, createHomeStreamCollection} from '../src/_config/collections.js';
 import {formatDateUtc} from '../src/_config/filters/dates.js';
+import {firstBlock, nbsp} from '../src/_config/filters/feed-text.js';
 import {drafts} from '../src/_config/plugins/drafts.js';
 import {checkinAnchor} from '../src/_config/utils/checkin-map.js';
 
@@ -19,6 +20,8 @@ const render = async ({limit, url = '/stream/'} = {}) => {
       eleventyConfig.addPlugin(drafts);
       eleventyConfig.addFilter('formatDateUtc', formatDateUtc);
       eleventyConfig.addFilter('checkinAnchor', checkinAnchor);
+      eleventyConfig.addFilter('firstBlock', firstBlock);
+      eleventyConfig.addFilter('nbsp', nbsp);
       eleventyConfig.addCollection(
         'fixtureStream',
         createHomeStreamCollection({

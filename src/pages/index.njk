@@ -2,7 +2,8 @@
 layout: base
 permalink: /index.html
 title: 'Stefan Taitano'
-description: 'Veteran and ServiceNow developer in Minneapolis. I build systems for a living and escape plans for fun.'
+eleventyComputed:
+  description: '{{ siteCopy.homeDescription }}'
 ---
 
 {% include "rasa/home.njk" %}

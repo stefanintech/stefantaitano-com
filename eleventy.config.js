@@ -119,6 +119,8 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter('shuffle', filters.shuffleArray);
   eleventyConfig.addFilter('alphabetic', filters.sortAlphabetically);
   eleventyConfig.addFilter('slugify', filters.slugifyString);
+  eleventyConfig.addFilter('firstBlock', filters.firstBlock);
+  eleventyConfig.addFilter('nbsp', filters.nbsp);
   eleventyConfig.addFilter('checkinAnchor', checkinAnchor);
   eleventyConfig.addFilter('checkinCities', (checkins, centroids) =>
     buildCheckinCities(checkins, {centroids, exclusions: loadExclusions()})

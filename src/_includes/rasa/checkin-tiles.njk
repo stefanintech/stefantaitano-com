@@ -7,7 +7,7 @@
     {%- set anchor = checkin | checkinAnchor %}
     <li class="rasa-tile{% if not c.image %} rasa-tile--text{% endif %}" id="{{ anchor }}">
       {% include "partials/checkin-figure.njk" %}
-      <p class="rasa-tile__label"><a href="#{{ anchor }}">{%- if c.precision == 'city' -%}{{ c.city }}{%- else -%}{{ c.place }}&nbsp;· {{ c.city }}{%- endif -%}</a></p>
+      <p class="rasa-tile__label"><a href="#{{ anchor }}">{%- if c.precision == 'city' -%}{{ c.city | nbsp | safe }}{%- else -%}{{ c.place }}&nbsp;· {{ c.city | nbsp | safe }}{%- endif -%}</a></p>
       <p class="rasa-tile__date"><time datetime="{{ checkin.date | formatDateUtc('YYYY-MM-DD') }}">{{ checkin.date | formatDateUtc('MMMM D, YYYY') }}</time></p>
       {%- set note = checkin.templateContent | trim %}
       {%- if note %}

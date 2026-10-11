@@ -1,5 +1,16 @@
 <h1 class="visually-hidden">{{ meta.siteName }}</h1>
-<p class="rasa-intro">Hey, I'm Stefan. I'm a veteran who builds backend systems and integrations, currently in the ServiceNow world, and I'm back in school. Right now I'm writing Ruby, running, playing chess, and planning our family's next move. This is where my posts, check-ins, and /now updates end up, newest first.</p>
+{%- if siteCopy.intro %}
+<p class="rasa-intro">{{ siteCopy.intro }}</p>
+{%- endif %}
+{%- if siteCopy.linkLine.length %}
+<nav class="rasa-linkline" aria-label="{{ siteCopy.linkLineLabel }}">
+  <ul role="list">
+    {%- for link in siteCopy.linkLine %}
+    <li><a href="{{ link.url }}">{{ link.label }}</a></li>
+    {%- endfor %}
+  </ul>
+</nav>
+{%- endif %}
 
 {% set stream = collections.homeStream %}
 {% include "rasa/stream.njk" %}

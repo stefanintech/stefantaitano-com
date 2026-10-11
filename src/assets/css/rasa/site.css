@@ -340,7 +340,7 @@ main {
 
 /* Compact check-in: a small 3:2 thumbnail beside the type, label, note, and date,
    so each one is about as tall as a text card. */
-.rasa-card--checkin:has(.checkin-figure) {
+.rasa-card--checkin:has(.rasa-card__thumb) {
   display: grid;
   grid-template-columns: clamp(6.5rem, 28vw, 9rem) minmax(0, 1fr);
   column-gap: 1rem;
@@ -350,10 +350,15 @@ main {
     grid-column: 2;
   }
 
-  & > .checkin-figure {
+  & > .rasa-card__thumb {
     grid-column: 1;
     grid-row: 1 / span 4;
     align-self: start;
+    display: block;
+    border-radius: 0.5rem;
+  }
+
+  & .checkin-figure {
     margin: 0;
   }
 
@@ -370,6 +375,65 @@ main {
   object-fit: contain;
   border-radius: 0.5rem;
   background: var(--card);
+}
+
+/* Feed links keep their look but get a 44px hit area: vertical padding on an
+   inline box grows the target without moving the line. */
+.rasa-card :where(.rasa-card__title, .rasa-card__label, .rasa-card__date, .rasa-card__more) a {
+  padding-block: 0.75rem;
+}
+
+.rasa-card__title a {
+  padding-block: 0.35rem;
+}
+
+.rasa-card__date a {
+  padding-block: 0.85rem;
+}
+
+.rasa-card__body a {
+  padding-block: 0.7rem;
+}
+
+.rasa-linkline {
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+
+  & ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  & li {
+    display: flex;
+    align-items: center;
+    color: var(--muted);
+  }
+
+  & li + li::before {
+    content: '·' / '';
+    padding-inline: 0.15rem;
+  }
+
+  & a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding-inline: 0.4rem;
+    color: var(--muted);
+  }
+
+  & li:first-child a {
+    padding-inline-start: 0;
+  }
+
+  & a:hover {
+    color: var(--accent);
+  }
 }
 
 .rasa-card__note > :where(:last-child) {

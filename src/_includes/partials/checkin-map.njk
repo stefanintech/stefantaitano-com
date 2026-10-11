@@ -50,6 +50,8 @@
     </ul>
     </div>
   </div>
-  <figcaption class="checkins-map__caption">Dots mark the middle of each city, never the exact spot. A small town I've only been to once shows up at the nearest big city. Every city is in the list below.</figcaption>
+  {%- if siteCopy.checkinsMapCaption %}
+  <figcaption class="checkins-map__caption">{{ siteCopy.checkinsMapCaption }}</figcaption>
+  {%- endif %}
 </figure>
 {%- endif %}
