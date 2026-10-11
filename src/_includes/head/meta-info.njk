@@ -21,7 +21,7 @@
 {% set socialImage = meta.url + (discover.image or meta.opengraph_default) %}
 {% set socialImageAlt = discover.imageAlt or meta.opengraph_default_alt %}
 
-<meta name="description" content="{{ metaDescription }}" />
+<meta name="description" content="{{ metaDescription | safe }}" />
 <meta name="theme-color" content="{{ meta.themeDark }}" media="(prefers-color-scheme: dark)" />
 <meta name="theme-color" content="{{ meta.themeLight }}" media="(prefers-color-scheme: light)" />
 <!-- Search Engines -->
@@ -51,18 +51,18 @@
 <!-- Open Graph meta  -->
 <meta property="og:url" content="{{ meta.url }}{{ page.url }}" />
 <meta property="og:type" content="website" />
-<meta property="og:title" content="{{ metaTitle }}" />
+<meta property="og:title" content="{{ metaTitle | safe }}" />
 <meta property="og:image" content="{{ socialImage }}" />
 <meta property="og:image:alt" content="{{ socialImageAlt }}" />
 <meta property="og:image:type" content="image/png" />
-<meta property="og:description" content="{{ metaDescription }}" />
+<meta property="og:description" content="{{ metaDescription | safe }}" />
 <meta property="og:site_name" content="{{ meta.siteName }}" />
 <meta property="og:locale" content="{{ meta.locale }}" />
 <meta property="article:author" content="{{ meta.author.name }}" />
 
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="{{ metaTitle }}" />
-<meta name="twitter:description" content="{{ metaDescription }}" />
+<meta name="twitter:title" content="{{ metaTitle | safe }}" />
+<meta name="twitter:description" content="{{ metaDescription | safe }}" />
 <meta name="twitter:image" content="{{ socialImage }}" />
 <meta name="twitter:image:alt" content="{{ socialImageAlt }}" />
 
