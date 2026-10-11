@@ -36,9 +36,9 @@ SOFTWARE.
 
 ### SIL OPEN FONT LICENSE
 
-The Fonts **Fraunces** and **Atkinson Hyperlegible** are licensed under the SIL License, Version 1.1.
+The font **Caveat** is licensed under the SIL License, Version 1.1.
 
-Copyright (c) Undercase Type (Fraunces) and (c) Braille Institute.
+Copyright (c) The Caveat Project Authors.
 
 This license allows
 

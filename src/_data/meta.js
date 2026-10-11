@@ -45,36 +45,16 @@ export const blog = {
       type: 'application/json'
     }
   ],
-  // Tags
-  tagSingle: 'Tag',
-  tagPlural: 'Tags',
-  tagMore: 'More tags:',
   // pagination
-  paginationLabel: 'Articles',
-  paginationPage: 'Page',
-  paginationPrevious: 'Previous',
-  paginationNext: 'Next',
-  paginationNumbers: true
-};
-export const details = {
-  aria: 'section controls',
-  expand: 'expand all',
-  collapse: 'collapse all'
+  paginationLabel: 'Posts'
 };
 export const dialog = {
-  close: 'Close',
-  next: 'Next',
-  previous: 'Previous'
+  close: 'Close'
 };
 export const navigation = {
-  navLabel: 'Menu',
-  closeLabel: 'Close',
   ariaTop: 'Main',
   ariaExplore: 'Explore',
-  ariaBottom: 'About this site',
-  ariaPlatforms: 'Platforms',
-  drawerNav: true,
-  subMenu: false
+  ariaBottom: 'About this site'
 };
 export const themeSwitch = {
   title: 'Theme',
@@ -83,13 +63,7 @@ export const themeSwitch = {
 };
 export const greenweb = {
   // https://carbontxt.org/
-  disclosures: [
-    {
-      docType: 'sustainability-page',
-      url: `${url}/sustainability/`,
-      domain: domain
-    }
-  ],
+  disclosures: [],
   services: [{domain: 'netlify.com', serviceType: 'cdn'}]
 };
 export const tests = {
@@ -114,10 +88,5 @@ export const tests = {
     ],
     globalIgnore: []
   }
-};
-export const viewRepo = {
-  // this is for the view/edit on github link. The value in the package.json will be pulled in.
-  allow: false,
-  infoText: 'View this page on GitHub'
 };
 export const easteregg = true;

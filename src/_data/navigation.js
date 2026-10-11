@@ -1,41 +1,4 @@
 export default {
-  top: [
-    {
-      text: 'Now',
-      url: '/now/'
-    },
-    {
-      text: 'Articles',
-      url: '/articles/'
-    },
-    {
-      text: 'Talks',
-      url: '/talks/'
-    },
-    {
-      text: 'Projects',
-      url: '/projects/'
-    }
-  ],
-  bottom: [
-    {
-      text: 'Bookshelf',
-      url: '/bookshelf/'
-    },
-    {
-      text: 'Field Notes',
-      url: 'https://buttondown.com/stefantaitano',
-      external: true
-    },
-    {
-      text: 'Links',
-      url: '/links/'
-    },
-    {
-      text: 'Check-ins',
-      url: '/checkins/'
-    }
-  ],
   legal: [
     {
       text: 'Privacy',

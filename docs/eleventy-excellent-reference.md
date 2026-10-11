@@ -1,101 +1,68 @@
-# Eleventy Excellent — ingested reference
+# Site reference (layout, CSS, config)
 
-Canonical upstream docs (keep these bookmarks):
+The site started from [Eleventy Excellent](https://eleventy-excellent.netlify.app/get-started/) and kept its config layout, image pipeline, and SVG shortcode. Since Tabula Rasa Phase 6 (`docs/tabula-rasa-project-plan.md`) the look is its own: one layout, one plain stylesheet, no Tailwind, no CUBE layers, no design-token pipeline. The upstream style guide no longer describes this site.
 
-- [Style guide](https://eleventy-excellent.netlify.app/styleguide/)
-- [Get started](https://eleventy-excellent.netlify.app/get-started/)
-
-This file is a **distilled** summary for this repo. When in doubt, prefer design tokens and patterns from `src/_data/designTokens/` and existing global CSS over ad hoc values.
+Older plans in `docs/` (chess, check-ins, redesign, retro skin, footer counter) name pre-switch paths such as `src/assets/css/local/` and `global/base/variables.css`. Those files are gone. Use this page instead.
 
 ---
 
-## Design tokens (style guide)
+## Layouts
 
-Tokens live in `src/_data/designTokens/`; generated custom properties land in `src/assets/css/global/base/variables.css`. The [style guide](https://eleventy-excellent.netlify.app/styleguide/) shows the full palette.
+`eleventy.config.js` maps three aliases. Templates use the alias, not the file name.
 
-### Semantic / theme colors (often used in CSS)
+| Alias | File | Used by |
+| --- | --- | --- |
+| `base` | `src/_layouts/rasa.njk` | Home, list pages, chess, check-ins, links, 404 |
+| `page` | `src/_layouts/rasa-page.njk` | Markdown pages (privacy, accessibility, colophon): `<h1>` and prose |
+| `post` | `src/_layouts/rasa-post.njk` | Posts in `src/posts/`: title, date, prose, "Keep reading" |
 
-- `--color-text`, `--color-text-accent`
-- `--color-bg`, `--color-bg-accent`, `--color-bg-accent-2`
-- `--color-primary`, `--color-secondary`, `--color-tertiary`
+`src/_layouts/talk.njk` is the talk page and sits on `base`.
 
-### Neutral scale (examples)
+- Header: `src/_includes/rasa/header.njk`. Name links home, then Posts, Check-ins, Now. `compactHeader: true` (used by `/links/`) swaps it for a single Home link and hides the footer page list.
+- Footer: `src/_includes/rasa/footer.njk`. Lichess status, the other pages, feeds, `navigation.legal`, theme switch.
+- Home: `src/pages/index.njk` → `src/_includes/rasa/home.njk`. The approved intro, then `collections.homeStream` (newest 30 posts, check-ins, and `/now` entries) through `rasa/stream.njk` and the `card-*.njk` partials.
+- Head: `head/js-inline.njk` (theme script, Lichess status; keep the storage key), `head/schema.njk`, `head/meta-info.njk`, `head/js-defer.njk`.
 
-- `--color-gray-100` … `--color-gray-900`
+## CSS
 
-### Accent palettes (examples)
+Plain CSS in `src/assets/css/rasa/`. `src/_config/events/build-css.js` runs each file through postcss-import and cssnano into `src/_includes/css/rasa-<name>.css`. Nothing else is in the pipeline.
 
-- `--color-pink`, `--color-pink-subdued`
-- `--color-blue`, `--color-blue-subdued`
-- `--color-gold`, `--color-gold-subdued`
+| File | What it styles |
+| --- | --- |
+| `site.css` | Palette, fonts, column, header, footer, stream cards, check-in day/night rule. Every page. |
+| `prose.css` | Post and Markdown page bodies |
+| `syntax.css` | Code highlighting, both themes |
+| `articles.css`, `now.css`, `checkins.css`, `chess.css` | Those pages |
+| `pages.css` | Talks, projects, bookshelf, resume, AI, links, 404 |
 
-### Gradients
-
-- `--gradient-rainbow`, `--gradient-conic`, `--gradient-stripes`
-
-### Typography
-
-- Display: `var(--font-display)` (Fraunces stack, serif fallbacks)
-- Body: `var(--font-base)` (Atkinson Hyperlegible stack)
-- Mono: `var(--font-mono)`
-
-### Fluid type steps
-
-- `--size-step-min-2` through `--size-step-6` (Utopia-based; see style guide for px ranges)
-
-### Fluid spacing
-
-- `--space-3xs` … `--space-3xl` and paired tokens like `--space-l-xl`, `--space-xl-2xl`
-
-### Regenerating palette-driven colors (v4+)
-
-After editing `src/_data/designTokens/colorsBase.json`, run `npm run colors` to regenerate `colors.json`. If you **rename** color keys, update `variables.css` accordingly; other CSS should reference the custom properties only.
-
----
-
-## CSS architecture (Get started)
-
-- **Methodology:** [CUBE CSS](https://cube.fyi/).
-- **Global blocks:** `src/assets/css/global/blocks/*.css`.
-- **Per-page / scoped CSS:** `src/assets/css/local/*.css`, included only where needed:
+Add page CSS with the `rasa` bucket. The layout inlines the whole bucket in a `<style>` tag, so there is no stylesheet URL to cache-bust.
 
 ```njk
-{% css "local" %}
-  {% include "css/your-file.css" %}
-{% endcss %}
+{%- css "rasa" -%}
+  {%- include "css/rasa-pages.css" -%}
+{%- endcss -%}
 ```
 
-- **Cascade layers:** Global bundle uses layers; **local bundle does not**, so local CSS wins without fighting selector specificity.
-- **Production:** Main CSS is inlined (see `src/_includes/head/css-inline.njk`).
-- **Component CSS** (copied to output): `src/assets/css/components/` → `/assets/css/components/`.
-- **Tailwind:** Utilities exist but behavior differs from a typical Tailwind app; see the starter’s blog post linked from Get started.
+- **Palette.** Six custom properties in `site.css`, light and dark: `--bg`, `--text`, `--muted`, `--rule`, `--accent`, `--card`. Dark applies on `:root[data-theme='dark']` and, with no stored choice, `prefers-color-scheme: dark`. Don't add colours outside these six.
+- **Type.** `--font-hand` (Caveat, headings only, self-hosted under `src/assets/fonts/caveat/`), `--font-body` (`system-ui` stack), `--font-code` (`ui-monospace`). `--column` is the 40rem reading width.
+- **Style.** Native nesting, `:where()` for low specificity, no utility classes, no framework.
+- **Check-in images.** `partials/checkin-figure.njk` prints a day and a night `<img>`. `site.css` shows the day image unless `data-theme` is `dark`. Don't tint them with CSS.
+- **Cache.** Netlify caches `/assets/*` for a month. New CSS goes in the inline bucket or gets a new filename.
 
----
+## Eleventy config
 
-## Eleventy config layout
-
-Modular config under `src/_config/`:
-
-- `collections.js`, `events.js`, `filters.js`, `plugins.js`, `shortcodes.js`
-
-Register additions in `eleventy.config.js` from those modules.
-
----
+Modular config under `src/_config/`: `collections.js`, `events.js`, `filters.js`, `plugins.js`, `shortcodes.js`. Register additions in `eleventy.config.js` from those modules.
 
 ## Content and site data
 
-- Site-wide strings / options: `src/_data/meta.js`
-- Person + socials: `src/_data/personal.yaml`
-- Nav: `src/_data/navigation.js`
-- External link domain allowlist styling: `src/assets/css/global/blocks/external-link.css` (replace starter domain with yours, or use `no-indicator` on links)
-
----
+- Site strings and options: `src/_data/meta.js`
+- Person and socials: `src/_data/personal.yaml`
+- Footer legal links: `src/_data/navigation.js`
+- Redirects: static lines and `redirectFrom` front matter, both in `src/common/_redirects.njk`
 
 ## Images
 
 Eleventy Image: HTML transform, Markdown `![]()`, or Nunjucks `{% image %}` / `{% imageKeys %}`. Use `eleventy:ignore` on an `<img>` to skip optimization.
-
----
 
 ## SVG shortcode
 
@@ -103,22 +70,11 @@ Eleventy Image: HTML transform, Markdown `![]()`, or Nunjucks `{% image %}` / `{
 {% svg "folder/name", "Accessible name or null", "class-names", "optional: inline style" %}
 ```
 
-Paths are under `src/assets/svg/` (e.g. `divider/soft-bottom`). Default: `aria-hidden="true"` when no accessible name.
+Paths are under `src/assets/svg/`. Default: `aria-hidden="true"` when no accessible name.
 
-**Build note:** Prefer **CSS-controlled `fill`** (or a single path without fragile `var()` in attributes if your SVGO pipeline strips them) for dividers and complex shapes.
+## Other pieces
 
----
-
-## Other features (pointers)
-
-- **Cards:** `<custom-card>` WebC + slots (see Get started).
-- **Masonry:** `<custom-masonry>` with optional `layout="50-50"`.
-- **Theme:** `prefers-color-scheme` + footer toggle; preserve `aria-labelledby="theme-switcher-label"` if you change UI.
-- **OG images:** `src/common/og-images.njk`, assets under `src/assets/og-images/`; `npm run clean:og` to reset generated images.
-- **A11y tests:** `npm run test:a11y` (pa11y-ci; config from sitemap / `meta.js`).
-
----
-
-## This fork
-
-URLs and collections may differ from upstream examples (e.g. articles listing, permalinks). Follow **this repo’s** `src/pages/`, `src/posts/`, and `eleventy.config.js` when they conflict with generic starter docs.
+- **WebC.** Only `<custom-youtube>` (talk page) and its link fallback remain, in `src/_includes/webc/`.
+- **Theme switch.** In the footer. Keep the IDs and `data-theme-switcher`; `theme-toggle.js` binds to them.
+- **OG images.** `src/common/og-*.njk` include the Caveat templates in `src/_includes/rasa/og-*.njk`; `svg-to-png.js` rasterizes them with the fonts in `src/_config/og-fonts/`. `npm run clean:og` resets generated images.
+- **A11y tests.** `npm run test:a11y` (pa11y-ci; paths from `meta.js`).

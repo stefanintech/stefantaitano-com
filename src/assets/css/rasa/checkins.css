@@ -1,4 +1,4 @@
-/* /checkins/ under the Tabula Rasa preview: clay map, city list, diorama tiles.
+/* /checkins/: clay map, city list, diorama tiles.
    The page runs wider than the reading column so several tiles share a row. */
 
 main:has(.rasa-checkins) {

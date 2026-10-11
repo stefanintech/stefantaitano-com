@@ -1,7 +1,9 @@
-{#- /checkins/ under the Tabula Rasa preview: map, city list, then one tile per published check-in, newest first. Set `checkins` from `collections.checkins`. -#}
+{#- /checkins/: map, city list, then one tile per published check-in, newest first. Set `checkins` from `collections.checkins`. -#}
 <div class="rasa-checkins">
   <h1>{{ title }}</h1>
-  <p class="rasa-checkins__intro">Somewhere I was. Never somewhere I am.</p>
+  {%- if siteCopy.checkinsIntro %}
+  <p class="rasa-checkins__intro">{{ siteCopy.checkinsIntro }}</p>
+  {%- endif %}
 
   {% if checkins.length %}
     {% set cities = checkins | checkinCities(cityCentroids) %}

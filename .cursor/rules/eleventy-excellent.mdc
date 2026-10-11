@@ -1,12 +1,13 @@
 ---
-description: Eleventy Excellent theme — tokens, CSS layout, and docs pointer
+description: Site layout and CSS (Tabula Rasa) — one layout, plain CSS, docs pointer
 alwaysApply: true
 ---
 
-# This site (Eleventy Excellent fork)
+# This site (started from Eleventy Excellent, restyled by Tabula Rasa)
 
-- Read **`docs/eleventy-excellent-reference.md`** for design tokens, CSS bundle rules, config layout, `{% svg %}`, images, and links to the upstream [style guide](https://eleventy-excellent.netlify.app/styleguide/) and [Get started](https://eleventy-excellent.netlify.app/get-started/).
-- Prefer **existing custom properties** from `src/assets/css/global/base/variables.css` (and related tokens) over ad hoc colors or spacing.
-- **Scoped CSS:** `src/assets/css/local/` and include via `{% css "local" %}` / `{% include "css/…" %}` in layouts or templates.
-- **Global CSS:** `src/assets/css/global/blocks/`; architecture is CUBE CSS with cascade layers on global, not on local.
-- When this repo differs from generic starter docs (e.g. `/articles/`, custom layouts), follow **this repo’s** `src/pages/`, `src/posts/`, and `eleventy.config.js`.
+- Read **`docs/eleventy-excellent-reference.md`** for the layouts, the CSS files, config layout, `{% svg %}`, and images.
+- **Layouts:** the `base`, `page`, and `post` aliases point at `src/_layouts/rasa.njk`, `rasa-page.njk`, and `rasa-post.njk`. Header, footer, home stream, and cards live in `src/_includes/rasa/`.
+- **CSS:** plain CSS in `src/assets/css/rasa/`, built with postcss-import and cssnano only. Include it with `{% css "rasa" %}{% include "css/rasa-<file>.css" %}{% endcss %}`; the layout inlines the bucket. No Tailwind, no utility classes, no CUBE layers, no token JSON.
+- **Colours:** use the six custom properties in `site.css` (`--bg`, `--text`, `--muted`, `--rule`, `--accent`, `--card`), which flip for dark mode. Headings `--font-hand` (Caveat), body `--font-body` (`system-ui`), code `--font-code`.
+- Netlify caches `/assets/*` for a month, so new CSS goes in the inline bucket or gets a new filename.
+- Older plans in `docs/` name `src/assets/css/local/` and `global/`. Those are gone; follow this repo's `src/pages/`, `src/posts/`, and `eleventy.config.js`.

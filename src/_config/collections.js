@@ -47,7 +47,7 @@ export const buildHomeStream = ({posts = [], nowEntries = [], checkins = []}, li
   return {items: sorted.slice(0, limit), capped: sorted.length > limit};
 };
 
-/** The /next/ stream. Check-ins come only from the filtered check-ins collection. */
+/** The home stream. Check-ins come only from the filtered check-ins collection. */
 export const createHomeStreamCollection =
   ({posts = getAllPosts, nowEntries = getNowEntries, checkins = getCheckins, limit} = {}) =>
   async collection =>
@@ -68,14 +68,4 @@ export const showInSitemap = collection => {
   return collection
     .getFilteredByGlob('./src/**/*.{md,njk}')
     .filter(item => !item.inputPath.startsWith(`${CHECKINS_DIR}/`));
-};
-
-/** All tags from all posts as a collection - excluding custom collections */
-export const tagList = collection => {
-  const tagsSet = new Set();
-  collection.getAll().forEach(item => {
-    if (!item.data.tags) return;
-    item.data.tags.filter(tag => !['posts', 'docs', 'all'].includes(tag)).forEach(tag => tagsSet.add(tag));
-  });
-  return Array.from(tagsSet).sort();
 };

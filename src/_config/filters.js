@@ -5,6 +5,7 @@ import {sortAlphabetically} from './filters/sort-alphabetic.js';
 import {splitlines} from './filters/splitlines.js';
 import {striptags} from './filters/striptags.js';
 import {slugifyString} from './filters/slugify.js';
+import {firstBlock, nbsp} from './filters/feed-text.js';
 
 export default {
   toISOString,
@@ -15,5 +16,7 @@ export default {
   striptags,
   shuffleArray,
   sortAlphabetically,
-  slugifyString
+  slugifyString,
+  firstBlock,
+  nbsp
 };

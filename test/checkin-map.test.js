@@ -327,10 +327,12 @@ describe('clay map', () => {
 });
 
 describe('map theme and polish', () => {
-  const css = fs.readFileSync('./src/assets/css/local/checkin-map.css', 'utf8');
-  const colors = Object.fromEntries(
-    JSON.parse(fs.readFileSync('./src/_data/designTokens/colors.json', 'utf8')).items.map(item => [item.name, item.value])
-  );
+  const css = fs.readFileSync('./src/assets/css/rasa/checkins.css', 'utf8');
+  const site = fs.readFileSync('./src/assets/css/rasa/site.css', 'utf8');
+  const palette = block =>
+    Object.fromEntries([...block.matchAll(/--(bg|text|rule|accent|card|muted):\s*(#[0-9a-f]{6})/gi)].map(([, name, hex]) => [name, hex]));
+  const light = palette(site.match(/:root \{[^}]*\}/)[0]);
+  const dark = palette(site.match(/:root\[data-theme='dark'\] \{[^}]*\}/)[0]);
   const lin = channel => {
     const value = channel / 255;
     return value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
@@ -345,16 +347,15 @@ describe('map theme and polish', () => {
   };
 
   it('keeps label text and bead rims at WCAG AA in both themes', () => {
-    // Labels use --color-text on --color-bg. Beads use amber on the light land
-    // and gold on the dark land, which are the rims declared in checkin-map.css.
-    assert.ok(contrast(colors['Gray 800'], colors['Gray 100']) >= 4.5);
-    assert.ok(contrast(colors['Gray 100'], colors['Gray 800']) >= 4.5);
-    assert.ok(contrast(colors['Amber'], colors['Gray 200']) >= 3);
-    assert.ok(contrast(colors['Gold Subdued'], colors['Gray 700']) >= 3);
-    assert.match(css, /--map-bead-edge: var\(--color-primary\)/);
-    assert.match(css, /--map-bead-edge: var\(--color-tertiary\)/);
-    assert.match(css, /--map-label: var\(--color-text\)/);
-    assert.match(css, /--map-label-bg: var\(--color-bg\)/);
+    // Labels use --text on --bg. Beads use --accent (amber light, gold dark) on --rule land.
+    assert.ok(contrast(light.text, light.bg) >= 4.5);
+    assert.ok(contrast(dark.text, dark.bg) >= 4.5);
+    assert.ok(contrast(light.accent, light.rule) >= 3);
+    assert.ok(contrast(dark.accent, dark.rule) >= 3);
+    assert.match(css, /--map-bead-edge: var\(--accent\)/);
+    assert.match(css, /--map-land: var\(--rule\)/);
+    assert.match(css, /--map-label: var\(--text\)/);
+    assert.match(css, /--map-label-bg: var\(--bg\)/);
   });
 
   it('follows the theme, shows focus, stays 44px, and adds no motion unless asked', () => {

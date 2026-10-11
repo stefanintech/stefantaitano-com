@@ -1,6 +1,6 @@
 ---
 layout: base
-title: Articles
+title: Posts
 description: 'Articles about ServiceNow, code, chess, and life outside the browser.'
 pagination:
   data: collections.allPosts
@@ -9,30 +9,4 @@ pagination:
 permalink: 'articles/{% if pagination.pageNumber >=1 %}page-{{ pagination.pageNumber + 1 }}/{% endif %}index.html'
 ---
 
-{%- if tabulaRasa -%}
-  {% include "rasa/articles.njk" %}
-{%- else -%}
-<div class="wrapper">
-  {% set kicker = "Writing" %}
-  {% set intro = "ServiceNow, code, chess, and life outside the browser." %}
-  {% include "partials/page-intro.njk" %}
-
-  {% if pagination.items.length %}
-    <custom-masonry layout="50-50">
-      {% asyncEach item in pagination.items %}
-        {% include "partials/card-blog.njk" %}
-      {% endeach %}
-    </custom-masonry>
-  {% else %}
-    <div class="prose flow region" style="--region-space-top: var(--space-l)">
-      <p>No articles published yet. When something is ready, it will show up here.</p>
-    </div>
-  {% endif %}
-
-  {% set collectionToPaginate = collections.allPosts %}
-  {% set metaKey = "blog" %}
-  {% if collectionToPaginate.length > pagination.size %}
-    {% include 'partials/pagination.njk' %}
-  {% endif %}
-</div>
-{%- endif -%}
+{% include "rasa/articles.njk" %}

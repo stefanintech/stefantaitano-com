@@ -1,7 +1,7 @@
 ---
 layout: base
 permalink: /resume/index.html
-title: 'Résumé — Stefan Taitano'
+title: 'Stefan Taitano · Résumé'
 description: 'Résumé for Stefan Taitano, ServiceNow developer in Minneapolis: platform upgrades, security, and Software Asset Management.'
 schema: ProfilePage
 lastUpdated: '2026-08-20'
@@ -15,7 +15,7 @@ lastUpdated: '2026-08-20'
         <h1 class="resume-header__name">{{ resume.name }}</h1>
         <p class="resume-header__title">{{ resume.title }}</p>
       </div>
-      <address class="resume-header__contact cluster" aria-label="Contact information">
+      <address class="resume-header__contact cluster">
         <span>{{ resume.location }}</span>
         <a href="mailto:{{ resume.email }}">{{ resume.email }}</a>
         <a href="{{ resume.website }}" rel="me">stefantaitano.com</a>
@@ -133,10 +133,6 @@ lastUpdated: '2026-08-20'
 
   </article>
 </div>
-
-{% css "local" %}
-  {% include "css/resume.css" %}
-{% endcss %}
 
 {%- css "rasa" -%}
   {%- include "css/rasa-pages.css" -%}

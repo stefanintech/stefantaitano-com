@@ -1,10 +1,14 @@
 {#- One check-in in the home stream. Set `checkin`. City-only check-ins never show a place or region. -#}
 {%- set c = checkin.data -%}
+{%- set href = "/checkins/#" + (checkin | checkinAnchor) -%}
 <article class="rasa-card rasa-card--checkin">
   <p class="rasa-card__type">Checked in</p>
-  {% include "partials/checkin-figure.njk" %}
+  {%- if c.image %}
+  {#- Same target as the label; hidden from the tab order and screen readers so the place is announced once. -#}
+  <a class="rasa-card__thumb" href="{{ href }}" tabindex="-1" aria-hidden="true">{% include "partials/checkin-figure.njk" %}</a>
+  {%- endif %}
   <p class="rasa-card__label">
-    <a href="/checkins/#{{ checkin | checkinAnchor }}">{%- if c.precision == 'city' -%}{{ c.city }}{%- else -%}{{ c.place }}&nbsp;· {{ c.city }}{%- endif -%}</a>
+    <a href="{{ href }}">{%- if c.precision == 'city' -%}{{ c.city | nbsp | safe }}{%- else -%}{{ c.place }}&nbsp;· {{ c.city | nbsp | safe }}{%- endif -%}</a>
   </p>
   {%- set note = checkin.templateContent | trim %}
   {%- if note %}
