@@ -271,7 +271,7 @@ main {
   list-style: none;
 
   & > li {
-    padding-block: 1.75rem;
+    padding-block: 1.25rem;
     border-top: 1px solid var(--rule);
   }
 
@@ -328,28 +328,52 @@ main {
   text-decoration: none;
 }
 
-/* Feed photos share one width, about 25rem: the /now cap, not the full column. */
-.rasa-card__body img,
-.rasa-card .checkin-figure {
-  max-width: min(100%, 26.25rem);
-}
-
+/* /now photos stay modest so they don't break the rhythm of text cards. */
 .rasa-card__body img {
   display: block;
-  margin-inline: auto;
+  width: auto;
+  max-width: min(100%, 20rem);
   height: auto;
+  max-height: 18rem;
   border-radius: 0.5rem;
 }
 
-.rasa-card .checkin-figure {
-  margin: 0.5rem auto 0;
+/* Compact check-in: a small 3:2 thumbnail beside the type, label, note, and date,
+   so each one is about as tall as a text card. */
+.rasa-card--checkin:has(.checkin-figure) {
+  display: grid;
+  grid-template-columns: clamp(6.5rem, 28vw, 9rem) minmax(0, 1fr);
+  column-gap: 1rem;
+  align-content: start;
+
+  & > * {
+    grid-column: 2;
+  }
+
+  & > .checkin-figure {
+    grid-column: 1;
+    grid-row: 1 / span 4;
+    align-self: start;
+    margin: 0;
+  }
+
+  & > * + * {
+    margin-top: 0.25rem;
+  }
 }
 
 .rasa-card .checkin-figure__img {
   display: block;
   width: 100%;
   height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: contain;
   border-radius: 0.5rem;
+  background: var(--card);
+}
+
+.rasa-card__note > :where(:last-child) {
+  margin-block-end: 0;
 }
 
 /* Day image unless data-theme is dark. No prefers-color-scheme branch: the

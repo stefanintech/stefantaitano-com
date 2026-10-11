@@ -102,7 +102,7 @@ These hold in every phase. If a phase needs to change one, stop and ask.
 | Type | Source | Card |
 | --- | --- | --- |
 | Post | `collections.allPosts` | Title (link), date, `description` |
-| Check-in | `collections.checkins` | Clay image (day / night pair via `checkin-figure.njk`, with its `alt`), the label, the one-line note, date. `precision: place` labels the place, then the city (`Place · City`, no region or country). `precision: city` labels the city only, never a place name. Links to `/checkins/#checkin-<hash>`. No image key → text-only card. On the feed the diorama is capped at 26.25rem (about 25rem), the same width as a `/now` photo, not the full column. |
+| Check-in | `collections.checkins` | Clay image (day / night pair via `checkin-figure.njk`, with its `alt`), the label, the one-line note, date. `precision: place` labels the place, then the city (`Place · City`, no region or country). `precision: city` labels the city only, never a place name. Links to `/checkins/#checkin-<hash>`. No image key → text-only card. On the feed the card is compact: a small 3:2 thumbnail (about 9rem, `--card` fill) beside the type, label, note, and date, about one text card tall (changed after Phase 6 review). |
 | Now | `collections.nowEntries` | Date, the entry body (they are short), link to `/now/#now-YYYY-MM-DD` |
 
 - Sort by the visible date. Check-ins sort by `date` (the visit day), never `publishAfter`.
@@ -126,7 +126,7 @@ These hold in every phase. If a phase needs to change one, stop and ask.
 | `--card` | `#ffffff` | `#322d25` |
 
   Check every pair for contrast in Phase 1 before building on it.
-- **Layout.** One centred column, about 40rem. Cards separated by hairlines, not boxes and shadows. Images full column width, rounded a little. Feed cards are the exception: check-in dioramas and `/now` photos cap at 26.25rem (about 25rem) so they line up. `/checkins/` stays full width.
+- **Layout.** One centred column, about 40rem. Cards separated by hairlines, not boxes and shadows. Images full column width, rounded a little. Feed cards are the exception: check-ins show a ~9rem thumbnail beside the text, and `/now` photos cap at 20rem wide and 18rem tall. `/checkins/` stays full width.
 - **Nav.** Name on the left (links home). Header is three links: **Posts** (`/articles/`), **Check-ins**, **Now**. No drawer. Chess, Talks, Projects, Bookshelf, Resume, AI, Links, Field Notes, and the legal links sit in the footer, with the Lichess status. There is no About page; the intro on `/` is that.
 - **CSS.** Plain CSS. One site stylesheet plus a few page files, custom properties, native nesting, `:where()` for low specificity. No Tailwind, no build-time tokens, no utility classes.
 
@@ -182,7 +182,7 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 - Now-entry dates come from filenames (UTC midnight); check-in `date` is the local visit day; posts carry an offset. Compare by calendar day with `formatDateUtc`, or same-day items jump around.
 - Use `checkinAnchor` for check-in links so no date ends up in a URL.
 - `precision: city` has no `place` line. The card shows the city only, never a place name and never "City, Region". A named place shows `Place · City`, city only, no region or country. Same rule as the current check-in line and as the Phase 4 tile.
-- Feed dioramas cap at 26.25rem, centered, still 3:2, day image unless the theme is dark. That overrides "full column width" for these cards only. Don't change `checkin-figure.css` or `/checkins/`.
+- (Superseded by the compact feed card, see Decisions.) Feed dioramas cap at 26.25rem, centered, still 3:2, day image unless the theme is dark. That overrides "full column width" for these cards only. Don't change `checkin-figure.css` or `/checkins/`.
 - The day/night switch for these cards lives in the rasa stylesheet: day image unless `data-theme` is `dark`. Don't change `checkin-figure.css`. That file still styles the live page. Phase 4 looks for the blue cast and keeps this rule.
 - The 24 Sep `/now` entry has an image with `eleventy:widths`. It has to render through the image transform.
 
@@ -292,7 +292,7 @@ This is a deliberate, temporary exception to "do not invent a parallel layout." 
 | Cuts | **All of them.** `/tags/`, `/styleguide/`, the pixel scene, "stefan is ___", the hit counter, the retro skins, `/imprint/`, and `/sustainability/`. Nothing requires the last two: the email is already on other pages, and `/carbon.txt`'s sustainability disclosure is optional. Phase 6 adds the 301s. |
 | Nav | **Posts, Check-ins, Now.** URLs stay `/articles/`, `/checkins/`, `/now/`. Everything else is in the footer. No About page. |
 | Colophon | Approved. Phase 5 uses the paragraph in that phase, word for word. |
-| Feed cards | Check-in dioramas cap at 26.25rem (about 25rem), lined up with the `/now` photo, not the full column. A named place shows `Place · City`. City-only stays the city. |
+| Feed cards | **Compact** (Phase 6 review, 11 Oct 2026). Check-ins are a ~9rem 3:2 thumbnail (day unless `data-theme` is dark) beside the label, note, and date, so posts show up sooner. `/now` photos cap at 20rem wide, 18rem tall. A named place shows `Place · City`. City-only stays the city. |
 
 **Open decisions:** none.
 
