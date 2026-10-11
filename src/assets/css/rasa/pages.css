@@ -536,3 +536,10 @@ lite-youtube {
 .links-egg__actions {
   justify-content: center;
 }
+
+/* 404: the one sentence is the h1. */
+.rasa-404 {
+  margin-block: 2rem 4rem;
+  font-size: clamp(2rem, 6vw, 2.75rem);
+  line-height: 1.2;
+}

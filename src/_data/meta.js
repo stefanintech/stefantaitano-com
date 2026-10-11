@@ -46,7 +46,7 @@ export const blog = {
     }
   ],
   // pagination
-  paginationLabel: 'Articles'
+  paginationLabel: 'Posts'
 };
 export const dialog = {
   close: 'Close'
