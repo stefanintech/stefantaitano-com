@@ -5,29 +5,34 @@ import {author} from './meta.js';
 export default {
   // Home intro, above the link line and the stream. Approved; paste replacements verbatim.
   intro:
-    "Hey, I'm Stefan. I'm a veteran who builds backend systems and integrations, currently in the ServiceNow world, and I'm back in school. Right now I'm writing Ruby, running, playing chess, and planning our family's next move. This is where my posts, check-ins, and /now updates end up, newest first.",
+    "Hey, I'm Stefan. I'm a veteran and a software developer who builds the behind-the-scenes systems that help apps talk to each other, and I'm back in school. Right now I'm writing Ruby, running, playing chess, and planning our family's next move. Below is everything I've been up to, newest first: posts, places I've been, and quick updates on what I'm doing now.",
 
-  // Home link line under the intro, in order. Labels are placeholders until the copy lands.
+  // Home link line under the intro, in order.
   linkLine: [
     {label: 'Résumé', url: '/resume/'},
     {label: 'Projects', url: '/projects/'},
     {label: 'GitHub', url: 'https://github.com/stefanintech'},
     {label: 'Email', url: `mailto:${author.email}`}
   ],
+  // Visible muted prefix before the link line. Hidden from screen readers; linkLineLabel says it instead.
+  linkLinePrefix: 'Hiring?',
   // Screen-reader name for the link line.
-  linkLineLabel: 'Elsewhere',
+  linkLineLabel:
+    'Hiring? Résumé, projects, GitHub, and email',
 
   // <meta name="description"> and og/twitter description for /.
   homeDescription:
-    'Veteran and ServiceNow developer in Minneapolis. I build systems for a living and escape plans for fun.',
+    "I'm Stefan, a veteran and software developer. Posts, places I've been, and what I'm up to now.",
 
   // Optional line under the /checkins/ heading.
-  checkinsIntro: 'Somewhere I was. Never somewhere I am.',
+  checkinsIntro:
+    "Places I've been, turned into little clay scenes. Each one goes up a day after I've left.",
 
   // Caption under the /checkins/ map.
   checkinsMapCaption:
-    "Dots mark the middle of each city, never the exact spot. A small town I've only been to once shows up at the nearest big city. Every city is in the list below.",
+    "Dots mark the middle of each city, never the exact spot. A small town I've only been to once shows up at the nearest big city. You can browse them by city below.",
 
   // Link at the end of each /now card on the home stream.
-  nowMore: 'More on /now'
+  nowMore:
+    "More of what I'm up to"
 };

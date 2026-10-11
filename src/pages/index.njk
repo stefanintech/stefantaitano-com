@@ -3,7 +3,7 @@ layout: base
 permalink: /index.html
 title: 'Stefan Taitano'
 eleventyComputed:
-  description: '{{ siteCopy.homeDescription }}'
+  description: '{{ siteCopy.homeDescription | safe }}'
 ---
 
 {% include "rasa/home.njk" %}

@@ -4,6 +4,9 @@
 {%- endif %}
 {%- if siteCopy.linkLine.length %}
 <nav class="rasa-linkline" aria-label="{{ siteCopy.linkLineLabel }}">
+  {%- if siteCopy.linkLinePrefix %}
+  <span class="rasa-linkline__prefix" aria-hidden="true">{{ siteCopy.linkLinePrefix }}</span>
+  {%- endif %}
   <ul role="list">
     {%- for link in siteCopy.linkLine %}
     <li><a href="{{ link.url }}">{{ link.label }}</a></li>

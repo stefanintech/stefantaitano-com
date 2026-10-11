@@ -396,8 +396,16 @@ main {
 }
 
 .rasa-linkline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.4rem;
   margin-top: 0.75rem;
   font-size: 0.9375rem;
+
+  & .rasa-linkline__prefix {
+    color: var(--muted);
+  }
 
   & ul {
     display: flex;
