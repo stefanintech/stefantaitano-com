@@ -3,9 +3,10 @@
 import {author} from './meta.js';
 
 export default {
-  // Home intro, above the link line and the stream. Approved; paste replacements verbatim.
+  // Home intro, above the link line and the stream.
+  // The two emoji are decorative. They stay in aria-hidden spans, same as other decorative marks.
   intro:
-    "Hey, I'm Stefan. I'm a veteran and a software developer who builds the behind-the-scenes systems that help apps talk to each other, and I'm back in school. Right now I'm writing Ruby, running, playing chess, and planning our family's next move. Below is everything I've been up to, newest first: posts, places I've been, and quick updates on what I'm doing now.",
+    'Hello friend, I\'m Stefan <span aria-hidden="true">👋🏽</span>. Do you like RuneScape, World of Warcraft, or chess? Let\'s be friends! I\'ve got some blurbs below, so check them out <span aria-hidden="true">🧢</span>',
 
   // Home link line under the intro, in order.
   linkLine: [
