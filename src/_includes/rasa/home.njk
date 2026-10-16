@@ -1,6 +1,6 @@
 <h1 class="visually-hidden">{{ meta.siteName }}</h1>
 {%- if siteCopy.intro %}
-<p class="rasa-intro">{{ siteCopy.intro }}</p>
+<p class="rasa-intro">{{ siteCopy.intro | safe }}</p>
 {%- endif %}
 {%- if siteCopy.linkLine.length %}
 <nav class="rasa-linkline" aria-label="{{ siteCopy.linkLineLabel }}">
