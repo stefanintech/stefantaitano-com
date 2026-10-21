@@ -22,6 +22,7 @@ import {
   getCheckins,
   getHomeStream,
   getNowEntries,
+  nowAnchor,
   showInSitemap
 } from './src/_config/collections.js';
 import events from './src/_config/events.js';
@@ -113,6 +114,7 @@ export default async function (eleventyConfig) {
   eleventyConfig.addFilter('toIsoString', filters.toISOString);
   eleventyConfig.addFilter('formatDate', filters.formatDate);
   eleventyConfig.addFilter('formatDateUtc', filters.formatDateUtc);
+  eleventyConfig.addFilter('nowAnchor', nowAnchor);
   eleventyConfig.addFilter('markdownFormat', filters.markdownFormat);
   eleventyConfig.addFilter('splitlines', filters.splitlines);
   eleventyConfig.addFilter('striptags', filters.striptags);
