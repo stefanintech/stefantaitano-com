@@ -1,3 +1,4 @@
+import {formatDateUtc} from './filters/dates.js';
 import {CHECKINS_DIR, IMAGES_DIR, isPublished, validateCheckinImages, validateCheckins} from './utils/checkins.js';
 
 /** All blog posts as a collection. */
@@ -5,9 +6,28 @@ export const getAllPosts = collection => {
   return collection.getFilteredByGlob('./src/posts/**/*.md').reverse();
 };
 
+/**
+ * Newest first. Eleventy's default is oldest first, then input path A→Z, and
+ * `.reverse()` flips both. A date-plus-slug file (`2026-10-20-family-hub.md`)
+ * sorts before `2026-10-20.md` because the hyphen comes before the dot, so
+ * reversing would put the older same-day note on top. Break the tie A→Z
+ * instead. Days that have one file keep the order `.reverse()` produced.
+ */
+export const compareNowEntries = (a, b) => b.date - a.date || a.inputPath.localeCompare(b.inputPath);
+
 /** All Now journal entries, newest first. */
 export const getNowEntries = collection => {
-  return collection.getFilteredByGlob('./src/now-entries/**/*.md').reverse();
+  return collection.getFilteredByGlob('./src/now-entries/**/*.md').sort(compareNowEntries);
+};
+
+/**
+ * Fragment for `/now/#…`. A `YYYY-MM-DD.md` file stays `now-YYYY-MM-DD`.
+ * A date-plus-slug file adds the slug so two notes on one day don't share an id.
+ */
+export const nowAnchor = entry => {
+  const day = formatDateUtc(entry.date, 'YYYY-MM-DD');
+  const slug = entry.fileSlug;
+  return slug && slug !== day ? `now-${day}-${slug}` : `now-${day}`;
 };
 
 /** Published check-ins, newest first. Fails the build on invalid front matter or images. */

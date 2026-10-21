@@ -3,7 +3,13 @@
 import assert from 'node:assert/strict';
 import {describe, it} from 'node:test';
 import Eleventy from '@11ty/eleventy';
-import {buildHomeStream, createCheckinsCollection, createHomeStreamCollection} from '../src/_config/collections.js';
+import {
+  buildHomeStream,
+  compareNowEntries,
+  createCheckinsCollection,
+  createHomeStreamCollection,
+  nowAnchor
+} from '../src/_config/collections.js';
 import {formatDateUtc} from '../src/_config/filters/dates.js';
 import {firstBlock, nbsp} from '../src/_config/filters/feed-text.js';
 import {drafts} from '../src/_config/plugins/drafts.js';
@@ -19,6 +25,7 @@ const render = async ({limit, url = '/stream/'} = {}) => {
       eleventyConfig.setIncludesDirectory('../../../src/_includes');
       eleventyConfig.addPlugin(drafts);
       eleventyConfig.addFilter('formatDateUtc', formatDateUtc);
+      eleventyConfig.addFilter('nowAnchor', nowAnchor);
       eleventyConfig.addFilter('checkinAnchor', checkinAnchor);
       eleventyConfig.addFilter('firstBlock', firstBlock);
       eleventyConfig.addFilter('nbsp', nbsp);
@@ -150,5 +157,53 @@ describe('buildHomeStream', () => {
     assert.equal(items.length, 30);
     assert.ok(capped);
     assert.equal(items[0].day, '2025-02-09');
+  });
+
+  it('keeps same-timestamp /now entries in the order the collection gave them', () => {
+    const day = new Date('2026-10-20T00:00:00.000Z');
+    const nowEntries = [
+      {date: day, inputPath: './src/now-entries/2026-10-20-family-hub.md'},
+      {date: day, inputPath: './src/now-entries/2026-10-20.md'}
+    ];
+    const {items} = buildHomeStream({nowEntries});
+    assert.deepEqual(
+      items.map(entry => entry.item.inputPath),
+      nowEntries.map(entry => entry.inputPath)
+    );
+  });
+});
+
+describe('compareNowEntries', () => {
+  const entry = (inputPath, day) => ({inputPath, date: new Date(`${day}T00:00:00.000Z`)});
+
+  it('puts a later day before an earlier one', () => {
+    const newer = entry('./src/now-entries/2026-10-20.md', '2026-10-20');
+    const older = entry('./src/now-entries/2026-10-16.md', '2026-10-16');
+    assert.ok(compareNowEntries(newer, older) < 0);
+    assert.ok(compareNowEntries(older, newer) > 0);
+  });
+
+  it('puts a same-day date-plus-slug file above the plain date file', () => {
+    const plain = entry('./src/now-entries/2026-10-20.md', '2026-10-20');
+    const slug = entry('./src/now-entries/2026-10-20-family-hub.md', '2026-10-20');
+    assert.deepEqual([plain, slug].sort(compareNowEntries).map(item => item.inputPath), [
+      './src/now-entries/2026-10-20-family-hub.md',
+      './src/now-entries/2026-10-20.md'
+    ]);
+  });
+});
+
+describe('nowAnchor', () => {
+  const dated = day => ({date: new Date(`${day}T00:00:00.000Z`), fileSlug: day});
+
+  it('keeps a date-only filename on now-YYYY-MM-DD', () => {
+    assert.equal(nowAnchor(dated('2026-10-20')), 'now-2026-10-20');
+  });
+
+  it('adds the slug when two notes share a day', () => {
+    assert.equal(
+      nowAnchor({date: new Date('2026-10-20T00:00:00.000Z'), fileSlug: 'family-hub'}),
+      'now-2026-10-20-family-hub'
+    );
   });
 });
