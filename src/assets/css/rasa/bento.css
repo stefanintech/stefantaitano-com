@@ -41,24 +41,41 @@ main:has(.bento-sample) {
 
 .bento-tile {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
   background: var(--card);
   border: 1px solid var(--rule);
   border-radius: 0.75rem;
   overflow: hidden;
 }
 
-.bento-tile--placeholder {
+.bento-tile a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.bento-tile a:hover .bento-label,
+.bento-copy a:hover {
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+}
+
+.bento-link {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  justify-content: flex-end;
-  gap: 0.2rem;
-  min-height: 9rem;
-  padding: 1rem;
-  border-style: dashed;
+  gap: 0.65rem;
+  padding: 1rem 1rem 0.35rem;
 }
 
 .bento-copy {
   padding: 0.85rem 1rem 1rem;
+}
+
+.bento-tile--family .bento-caption,
+.bento-tile--boot .bento-caption {
+  padding: 0.35rem 1rem 1rem;
 }
 
 .bento-label {
@@ -66,6 +83,18 @@ main:has(.bento-sample) {
   font-size: 1.125rem;
   font-weight: 600;
   line-height: 1.3;
+}
+
+.bento-caption,
+.bento-date {
+  margin: 0.3rem 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.45;
+}
+
+.bento-date {
+  color: var(--muted);
+  font-size: 0.9375rem;
 }
 
 .bento-shot {
@@ -93,6 +122,138 @@ main:has(.bento-sample) {
   opacity: 1;
 }
 
+.bento-frame {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-block: 0.35rem 0.15rem;
+}
+
+.bento-frame__bezel {
+  width: min(100%, 16.5rem);
+  padding: 0.65rem;
+  border-radius: 0.85rem;
+  background: #2a241c;
+}
+
+.bento-frame__screen {
+  display: flex;
+  align-items: center;
+  min-height: 6.5rem;
+  padding: 0.9rem 1rem;
+  border-radius: 0.35rem;
+  background: var(--bg);
+}
+
+.bento-frame__fact {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.bento-frame__stand {
+  width: 4.75rem;
+  height: 0.45rem;
+  margin-top: 0.15rem;
+  border-radius: 0 0 0.35rem 0.35rem;
+  background: #3a332b;
+}
+
+.bento-stat {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
+.bento-stat__num {
+  color: var(--accent);
+  font-size: 3.25rem;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+}
+
+.bento-stat__unit {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.bento-stat__path,
+.bento-chapter {
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.bento-courses {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.bento-course {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.bento-course span:last-child {
+  flex: none;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.bento-meter {
+  width: 100%;
+  height: 0.4rem;
+  overflow: hidden;
+  border: 0;
+  border-radius: 999px;
+  background: var(--rule);
+  color: var(--accent);
+  appearance: none;
+}
+
+.bento-meter::-webkit-progress-bar {
+  background: var(--rule);
+  border-radius: 999px;
+}
+
+.bento-meter::-webkit-progress-value {
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+.bento-meter::-moz-progress-bar {
+  background: var(--accent);
+  border-radius: 999px;
+}
+
+.bento-checkin__shot {
+  display: block;
+  height: 12rem;
+  overflow: hidden;
+}
+
+.bento-checkin__shot .checkin-figure,
+.bento-checkin__shot .checkin-figure picture {
+  display: contents;
+}
+
+.bento-checkin__shot .checkin-figure__img {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  object-position: center 42%;
+}
+
 @media (max-width: 39.99rem) {
   .bento-shot img {
     aspect-ratio: 680 / 600;
@@ -100,6 +261,11 @@ main:has(.bento-sample) {
 
   .bento-loop {
     display: none;
+  }
+
+  .bento-checkin__shot,
+  .bento-checkin__shot .checkin-figure__img {
+    height: 11rem;
   }
 }
 
@@ -132,6 +298,10 @@ main:has(.bento-sample) {
 
   .bento-tile--checkin {
     grid-area: checkin;
-    min-height: 7rem;
+  }
+
+  .bento-checkin__shot,
+  .bento-checkin__shot .checkin-figure__img {
+    height: 14rem;
   }
 }

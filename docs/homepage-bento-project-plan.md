@@ -2,7 +2,7 @@
 
 A "What I'm building" grid on the homepage. Four tiles. One of them moves. The rest hold still.
 
-**Status:** Phase 0 is the sample on this branch. `/lab/bento/` shows the grid. The live homepage is unchanged. Phases 1–4 have not started.
+**Status:** Phase 0 is the sample on this branch. `/lab/bento/` shows the grid with real published data and the lines Stefan supplied for this pass. The live homepage is unchanged. Phases 1–4 have not started.
 
 **Outcome:** Under the homepage intro, a bento of what Stefan is building: Field Notes, the family frame, the boot.dev path, and the latest check-in. A visitor sees one picture made of four tiles, with one short loop on Field Notes and a still everywhere else, including when they prefer reduced motion.
 
@@ -55,11 +55,11 @@ Extend `home.njk` and add one CSS file. Do not add a second homepage.
 
 - One phase per session. Stop until Stefan says next phase.
 - Fit this repo. Input `src/`, output `dist/`. No React in the site. Stageshow is a filming tool, not a dependency.
-- No voice copy. Labels in the sample are the plain names, each marked `placeholder copy`. The writer replaces them.
+- No voice copy, except the three captions Stefan wrote for this sample (Field Notes, the photo frame, boot.dev). Those are in the page verbatim. The heading `What I'm building` still carries a `placeholder copy` marker. The writer replaces that.
 - Places only, on the check-in tile, and only once that tile is real. No people. No coordinates.
-- Field Notes #002 does not publish until Monday 2 Nov 2026, 8:00 AM CT (`2026-11-02T08:00:00-06:00`; daylight saving ends the day before). Deploy previews are public. Until that time, the tile may say `Field Notes #002` and a generic new-issue line. It may not link to the issue, and it may not carry a topic, excerpt, body, or any other detail from it.
-- The family frame tile stays generic until Stefan says what it may show. No photo of a person, no name, no family data.
-- Do not invent a boot.dev number or path name. The stat is a figure Stefan supplies.
+- Field Notes #002 does not publish until Monday 2 Nov 2026, 8:00 AM CT (`2026-11-02T08:00:00-06:00`; daylight saving ends the day before). Deploy previews are public. The sample shows the subject and date Stefan supplied for that issue (`Streaks, a hacked photo frame, and my first 10K`, `Mon, Nov 2`) and nothing else: no body, no excerpt, no link to the issue. The tile links to the public archive. #001 may show, as the older row, with its published subject and date only.
+- The family frame tile is a device silhouette. Stefan said it may show the screen layout with one generic fact. That fact is the public night-mode line from the Oct 20 note, `NASA's Astronomy Picture of the Day`. No photo of a person, no name, no calendar, no kids.
+- Do not invent a boot.dev number or path name. The figures live in `src/_data/bento.json`, from the dashboard read on Oct 31.
 - Bitmaps do not follow the six color tokens. Film a light still and a dark still before the tile is asked to flip with the theme.
 - Netlify caches `/assets/*` for a month. A changed picture needs a new filename.
 - Do not read, log, or commit `CHECKIN_MAP_EXCLUDE` or `CHECKIN_REBUILD_HOOK_URL`.
@@ -72,10 +72,10 @@ One picture, four tiles. Not four demos. Field Notes is the only window. The oth
 
 | Tile | Desktop | Mobile | Kind | The one thing | Words in this sample |
 | --- | --- | --- | --- | --- | --- |
-| Field Notes | Left, about 1.45fr, two rows tall | First | Hero UI | An inbox, and one new issue arriving | Label `Field Notes`. Inside the picture: `Inbox`, `Field Notes #002`, `New issue` |
-| family frame dashboard | Right, top | Second | One component, later | A single dashboard widget, no window chrome | The plain name. No picture yet |
-| boot.dev path progress | Right, under the family frame | Third | Stat, later | One progress figure | The plain name. No number yet |
-| latest check-in | Full width, under the rest | Fourth | Photo or object, later | The newest published check-in | The plain name. No place yet |
+| Field Notes | Left, about 1.45fr, two rows tall | First | Hero UI | An inbox. #002 is on screen, then leaves and arrives again | Label `Field Notes`. Inside the picture: `Inbox`, `Field Notes #002`, the supplied subject, `Mon, Nov 2`, plus #001's published subject and date. Other rows are blank |
+| Photo frame | Right, top | Second | One component | A frame, and one fact on its screen | Label `Photo frame`. Caption is Stefan's line. Screen text is the published NASA line |
+| boot.dev | Right, under the photo frame | Third | Stat | The streak, with the two course bars under it | Label `boot.dev`. The number is `33` and `day streak` on one line. Caption is Stefan's line |
+| Latest check-in | Full width, under the rest | Fourth | Photo | The newest published check-in's day and night diorama | Label is the city when `precision` is `city`, otherwise place and city. Caption is that entry's note |
 
 Check against the Stageshow bento rules: one tile is UI with a window (the hero). The other three are not windows. The hero is the big tile. No real string repeats. The check-in does not sit beside another window. Motion has one place to lead.
 
@@ -106,14 +106,30 @@ Phase 0 files:
 | --- | --- |
 | Sample page | `src/pages/lab/bento.njk` → `/lab/bento/` |
 | CSS | `src/assets/css/rasa/bento.css`, inlined on that page only |
-| Stills | `src/assets/images/bento/field-notes-wide.webp` and `.avif`, `field-notes-compact.webp` and `.avif` |
-| Loop | `src/assets/video/bento/field-notes.webm` and `.mp4` |
+| Stills | `src/assets/images/bento/field-notes-inbox-wide.webp` and `.avif`, `field-notes-inbox-compact.webp` and `.avif` |
+| Loop | `src/assets/video/bento/field-notes-inbox.webm` and `.mp4` |
+| boot.dev figures | `src/_data/bento.json` |
 | Copy | `eleventy.config.js` passthrough for those two folders |
 | Headers | `netlify.toml`, `/lab/*` only |
 
 `/lab/bento/` sets `robots: noindex, nofollow`, `eleventyExcludeFromCollections: true`, and `excludeFromSitemap: true`. It is not in the header, the footer, the feeds, or the sitemap. The homepage template is not edited.
 
-The picture's only words are `Inbox`, `Field Notes #002`, and `New issue`. The other rows are blank bars. The accent in the film is the site's light-mode amber (`#b45309`). The sample is the light film in both themes. A dark film is later, if the tile should follow the theme switch the way check-in photos do.
+The picture's words are `Inbox`, `Field Notes #002`, the subject `Streaks, a hacked photo frame, and my first 10K`, `Mon, Nov 2`, and the older row `Field Notes #001` / `The Default Path` / `April 29`. The other rows are blank bars. There is no issue body. The accent in the film is the site's light-mode amber (`#b45309`). The sample is the light film in both themes. A dark film is later, if the tile should follow the theme switch the way check-in photos do.
+
+---
+
+## Data sources
+
+Nothing on the sample is invented. Each tile reads from a published page, or from a figure Stefan supplied for this pass. The homepage does not read `bento.json`.
+
+| Tile | What it shows | Where it comes from | Where it links |
+| --- | --- | --- | --- |
+| Field Notes | #002 subject and date, and #001 as the older row | #002 subject and date, and the caption, are the lines Stefan supplied for this sample. #001 subject `The Default Path` and date April 29, 2026 are the public archive at `https://buttondown.com/stefantaitano/archive/`. The archive listing is `Field Notes #001: The Default Path`. No body from either issue | `https://buttondown.com/stefantaitano/archive/` |
+| Photo frame | A frame silhouette. The screen's one line is `NASA's Astronomy Picture of the Day` | The Oct 20 note `src/now-entries/2026-10-20-family-hub.md`: "At night it dims and rotates through NASA's Astronomy Picture of the Day." The caption is Stefan's line. The purchase note `src/now-entries/2026-10-20.md` is the same project and is not quoted on the tile. No photo from either note | `/now/#now-2026-10-20-family-hub` |
+| boot.dev | Level 28, a 33-day streak, Backend Developer path (Python and Go), Learn Python for Beginners 168/168, Learn Linux 37/66, Chapter 4: Input/Output | `src/_data/bento.json`, hardcoded from the dashboard read on Oct 31, 2026. The caption is Stefan's line and repeats those figures, so a later update changes the JSON and the caption together. The linked notes are older and say different streak counts (19 days on Oct 16, 28 days on Oct 24). The tile does not use those counts, and it does not use `bootdev-streak.jpg` or `boot-dev-dashboard.jpg` | `/now/#now-2026-10-24` |
+| Latest check-in | City, date, the entry's note, and its day and night diorama | `collections.checkins`, newest published entry. Today that is `src/checkins/2026-10-10-coffman-memorial-union.md`. `precision` is `city`, so the label is Minneapolis and the template does not print a place. The images are the existing `2026-10-10-coffman-memorial-union-day.webp` and `-night.webp`. The note is the entry body | `/checkins/#` plus `checkinAnchor` |
+
+There is no running or 10K tile. The check-in tile follows `.cursor/rules/checkins.mdc`: only a published entry, places only, no coordinates. A future entry with `precision: place` prints place and city. A city-only entry prints the city.
 
 ---
 

@@ -1,0 +1,20 @@
+{
+  "bootdev": {
+    "asOf": "2026-10-31",
+    "level": 28,
+    "streakDays": 33,
+    "path": "Backend Developer",
+    "languages": "Python and Go",
+    "python": {
+      "name": "Learn Python for Beginners",
+      "done": 168,
+      "total": 168
+    },
+    "linux": {
+      "name": "Learn Linux",
+      "done": 37,
+      "total": 66,
+      "chapter": "Chapter 4: Input/Output"
+    }
+  }
+}
