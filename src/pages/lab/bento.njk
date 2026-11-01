@@ -1,0 +1,131 @@
+---
+layout: base
+permalink: /lab/bento/index.html
+title: Bento sample
+description: Hidden sample of a homepage bento grid.
+robots: noindex, nofollow
+eleventyExcludeFromCollections: true
+excludeFromSitemap: true
+---
+
+<div class="bento-sample">
+  <h1>Bento sample</h1>
+  <p class="bento-note">Hidden sample. Not linked from the site.</p>
+
+  <div class="bento-head">
+    <h2>What I'm building</h2>
+    <p class="bento-marker">placeholder copy</p>
+  </div>
+
+  <div class="bento">
+    <article class="bento-tile bento-tile--notes">
+      <div class="bento-shot">
+        <picture>
+          <source media="(max-width: 39.99rem)" srcset="/assets/images/bento/field-notes-compact.avif" type="image/avif" />
+          <source media="(max-width: 39.99rem)" srcset="/assets/images/bento/field-notes-compact.webp" type="image/webp" />
+          <source srcset="/assets/images/bento/field-notes-wide.avif" type="image/avif" />
+          <source srcset="/assets/images/bento/field-notes-wide.webp" type="image/webp" />
+          <img
+            src="/assets/images/bento/field-notes-wide.webp"
+            alt="An inbox window titled Inbox. The top row reads Field Notes #002 and New issue. The other rows are blank."
+            width="1120"
+            height="680"
+            fetchpriority="high"
+            decoding="async"
+            eleventy:ignore
+          />
+        </picture>
+        <video
+          class="bento-loop"
+          muted
+          loop
+          playsinline
+          preload="none"
+          width="1120"
+          height="680"
+          tabindex="-1"
+          aria-hidden="true"
+          data-bento-loop
+        >
+          <source data-src="/assets/video/bento/field-notes.webm" type="video/webm" />
+          <source data-src="/assets/video/bento/field-notes.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="bento-copy">
+        <p class="bento-label">Field Notes</p>
+        <p class="bento-marker">placeholder copy</p>
+      </div>
+    </article>
+
+    <article class="bento-tile bento-tile--placeholder bento-tile--family">
+      <p class="bento-label">family frame dashboard</p>
+      <p class="bento-marker">placeholder copy</p>
+    </article>
+
+    <article class="bento-tile bento-tile--placeholder bento-tile--boot">
+      <p class="bento-label">boot.dev path progress</p>
+      <p class="bento-marker">placeholder copy</p>
+    </article>
+
+    <article class="bento-tile bento-tile--placeholder bento-tile--checkin">
+      <p class="bento-label">latest check-in</p>
+      <p class="bento-marker">placeholder copy</p>
+    </article>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var shot = document.querySelector('.bento-shot');
+    var video = document.querySelector('[data-bento-loop]');
+    if (!shot || !video || !('IntersectionObserver' in window)) return;
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var wide = window.matchMedia('(min-width: 40rem)');
+    var armed = false;
+
+    function allowed() {
+      return !reduce.matches && wide.matches;
+    }
+
+    function stop() {
+      video.pause();
+      video.classList.remove('is-playing');
+    }
+
+    function arm() {
+      if (!allowed()) {
+        stop();
+        return;
+      }
+      if (!armed) {
+        video.querySelectorAll('source[data-src]').forEach(function (source) {
+          source.src = source.getAttribute('data-src');
+        });
+        video.load();
+        armed = true;
+      }
+      var play = video.play();
+      if (play && play.then) {
+        play.then(function () {
+          video.classList.add('is-playing');
+        }).catch(function () {});
+      }
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) arm();
+        else stop();
+      });
+    }, { rootMargin: '200px 0px' });
+
+    observer.observe(shot);
+    reduce.addEventListener('change', arm);
+    wide.addEventListener('change', arm);
+  })();
+</script>
+
+{%- css "rasa" -%}
+  {%- include "css/rasa-bento.css" -%}
+{%- endcss -%}

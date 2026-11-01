@@ -51,6 +51,16 @@ package = "netlify-plugin-cache"
     [headers.values]
     Cache-Control = "public, max-age=2592000, stale-while-revalidate=31536000"
 
+# The lab sample is public on deploy previews. Keep it out of search, and let
+# the one same-origin muted loop play. The site-wide policy is autoplay=(),
+# which would block that. The homepage phase has to allow autoplay=(self)
+# on the pages that show the loop.
+[[headers]]
+    for = "/lab/*"
+    [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Permissions-Policy = "autoplay=(self), camera=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), publickey-credentials-get=()"
+
 
 [build]
   command = "npm run build"

@@ -1,0 +1,137 @@
+/* Hidden /lab/bento/ sample. Homepage phase widens only the grid.
+   This page widens main, because the page is the grid. */
+
+main:has(.bento-sample) {
+  width: min(100% - 2.5rem, 60rem);
+}
+
+.bento-sample > h1 {
+  margin-block: 0.25rem 0.35rem;
+  font-size: 2.5rem;
+}
+
+.bento-note {
+  margin: 0;
+  color: var(--muted);
+}
+
+.bento-head {
+  margin-block: 1.75rem 0.75rem;
+}
+
+.bento-head h2 {
+  margin: 0;
+}
+
+.bento-marker {
+  margin: 0.15rem 0 0;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.bento {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.bento-tile {
+  min-width: 0;
+  background: var(--card);
+  border: 1px solid var(--rule);
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.bento-tile--placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.2rem;
+  min-height: 9rem;
+  padding: 1rem;
+  border-style: dashed;
+}
+
+.bento-copy {
+  padding: 0.85rem 1rem 1rem;
+}
+
+.bento-label {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.bento-shot {
+  position: relative;
+  background: var(--card);
+}
+
+.bento-shot img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1120 / 680;
+}
+
+.bento-loop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.bento-loop.is-playing {
+  opacity: 1;
+}
+
+@media (max-width: 39.99rem) {
+  .bento-shot img {
+    aspect-ratio: 680 / 600;
+  }
+
+  .bento-loop {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bento-loop {
+    display: none;
+  }
+}
+
+@media (min-width: 40rem) {
+  .bento {
+    grid-template-columns: 1.45fr 1fr;
+    grid-template-areas:
+      'notes family'
+      'notes boot'
+      'checkin checkin';
+  }
+
+  .bento-tile--notes {
+    grid-area: notes;
+  }
+
+  .bento-tile--family {
+    grid-area: family;
+  }
+
+  .bento-tile--boot {
+    grid-area: boot;
+  }
+
+  .bento-tile--checkin {
+    grid-area: checkin;
+    min-height: 7rem;
+  }
+}
