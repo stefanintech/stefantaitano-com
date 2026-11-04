@@ -15,7 +15,7 @@ import {
   normalizeName,
   parseExclusions
 } from '../src/_config/utils/checkin-map.js';
-import {projector} from '../src/_config/utils/map-projection.js';
+import {inExtent, projector} from '../src/_config/utils/map-projection.js';
 
 const FIXTURE = './test/fixtures/checkin-map';
 
@@ -304,7 +304,16 @@ describe('clay map', () => {
     assert.ok(liveOutline.states.every(state => state.postal !== 'AK' && state.postal !== 'HI' && !/[.-]\d/.test(state.d)));
 
     const project = projector(liveOutline.projection);
-    const cities = Object.keys(liveCentroids).map(key => ({
+    const entries = Object.entries(liveCentroids);
+    const inside = entries.filter(([, centroid]) => inExtent(liveOutline.extent, centroid.lon, centroid.lat));
+    const outside = entries.filter(([, centroid]) => !inExtent(liveOutline.extent, centroid.lon, centroid.lat));
+    const insideKeys = inside.map(([key]) => key);
+    const outsideKeys = outside.map(([key]) => key);
+    assert.ok(insideKeys.includes('Minneapolis|MN|US'));
+    assert.ok(insideKeys.includes('San Francisco|CA|US'));
+    assert.ok(outsideKeys.includes('Anchorage|AK|US'));
+
+    const cities = entries.map(([key]) => ({
       key,
       slug: 'city-example',
       label: key.split('|')[0],
@@ -312,8 +321,12 @@ describe('clay map', () => {
       checkins: []
     }));
     const map = buildCheckinMap(cities, {centroids: liveCentroids, outline: liveOutline});
-    assert.equal(map.spots.length, cities.length);
-    for (const [key, centroid] of Object.entries(liveCentroids)) {
+    assert.equal(map.spots.length, inside.length);
+    for (const [key] of outside) {
+      const name = key.split('|')[0];
+      assert.ok(!map.spots.some(spot => spot.label.startsWith(name)));
+    }
+    for (const [key, centroid] of inside) {
       const [x, y] = project(centroid.lon, centroid.lat);
       const spot = map.spots.find(entry => entry.label.startsWith(key.split('|')[0]));
       assert.equal(spot.x, x);
