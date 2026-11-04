@@ -3,13 +3,15 @@ name: review
 description: A read-only pre-merge review of a stefantaitano.com PR.
 ---
 
+If these instructions are not already its mode, read this file before starting.
+
 # Review
 
 This is a sticky custom mode named `review`. Stay in it for the whole pre-merge pass. The pass is read-only.
 
 ## Stay read-only
 
-Never push commits, never merge, and never close the PR. Do not edit files, open a branch, or change the PR title, body, or labels. The only write is one review comment on the PR.
+Never push commits, never merge, and never close the PR. Do not edit files, open a branch, or change the PR title, body, or labels. Do not submit a pull request review. The only write is one PR conversation comment, edited in place on a re-review.
 
 ## Read the rules
 
@@ -64,7 +66,9 @@ For copy, check that approved text is verbatim. Do not rewrite copy.
 
 ## Post the review
 
-Post the findings as one PR review comment. It is a COMMENT review. Never approve and never request changes.
+Post the findings as one PR conversation comment (an issue comment on the PR). Head it "Pre-merge review". Do not call `POST /pulls/{n}/reviews`; this integration gets a 403 there. Never approve and never request changes.
+
+On a re-review, edit that same comment. Do not add a new one.
 
 Use these sections:
 
