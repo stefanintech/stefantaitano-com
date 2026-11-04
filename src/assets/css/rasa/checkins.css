@@ -27,6 +27,7 @@ main:has(.rasa-checkins) {
   --map-shade-opacity: 0.22;
   --map-drop-opacity: 0.16;
 
+  container: checkins-map / inline-size;
   margin: 1.5rem 0 0;
   max-inline-size: 60rem;
 }
@@ -49,6 +50,10 @@ main:has(.rasa-checkins) {
 
 .checkins-map__frame {
   padding: var(--map-pad);
+}
+
+.checkins-map__stage {
+  position: relative;
 }
 
 .checkins-map__canvas {
@@ -135,6 +140,69 @@ main:has(.rasa-checkins) {
 
   &[data-anchor='end'] .checkins-map__name {
     inset-inline: auto calc(50% + 0.7rem);
+  }
+
+  &[data-anchor='above'] .checkins-map__name {
+    inset-inline-start: 50%;
+    inset-block-start: auto;
+    inset-block-end: calc(100% + 0.15rem);
+    max-width: min(8.5rem, 42vw);
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    translate: -50% 0;
+  }
+}
+
+/* Alaska and Hawaii sit under the map until the frame is wide enough to hold
+   them in the empty lower-left corner without covering the lower 48. */
+.checkins-map__insets {
+  display: flex;
+  align-items: flex-end;
+  gap: 0.4rem;
+  margin-block-start: 0.65rem;
+}
+
+.checkins-map__inset {
+  flex: 1 1 0;
+  min-width: 0;
+  border: 1px solid var(--muted);
+  border-radius: 0.65rem;
+  background: var(--bg);
+  padding: 0 0.2rem 0.25rem;
+}
+
+/* Weights match the inset viewBoxes, so both shapes share one scale. */
+.checkins-map__inset[data-frame='ak'] {
+  flex-grow: 220;
+}
+
+.checkins-map__inset[data-frame='hi'] {
+  flex-grow: 166;
+}
+
+.checkins-map__inset-label {
+  margin: 0;
+  padding: 0.15rem 0.35rem 0;
+  color: var(--map-label);
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+@container checkins-map (min-width: 58rem) {
+  .checkins-map__insets {
+    position: absolute;
+    z-index: 1;
+    inset-inline-start: 0;
+    inset-block-end: 0;
+    width: 26%;
+    margin-block-start: 0;
+    pointer-events: none;
+  }
+
+  .checkins-map__inset .checkins-map__spot {
+    pointer-events: auto;
   }
 }
 

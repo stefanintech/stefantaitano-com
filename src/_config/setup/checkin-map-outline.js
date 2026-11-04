@@ -1,12 +1,14 @@
 /**
- * Builds the check-ins map outline from Natural Earth's 1:110m US states.
+ * Builds the check-ins map frames from Natural Earth's 1:110m US states.
  *
  *   npm run checkins:map-outline                 # downloads the pinned release
  *   npm run checkins:map-outline -- <file.geojson>
  *
- * Writes src/_data/checkinMapOutline.json: the projection the build uses for
- * city beads, plus one whole-number SVG path per contiguous state. Run by hand
- * and commit the result; the site build never fetches anything.
+ * Writes src/_data/checkinMapOutline.json: one frame per drawn region, each
+ * with its own extent and Albers fit, plus whole-number SVG paths. The
+ * contiguous US frame keeps the original 960-wide fit. Alaska and Hawaii are
+ * inset frames in their own boxes. Run by hand and commit the result; the
+ * site build never fetches anything.
  */
 import crypto from 'node:crypto';
 import fs from 'node:fs';
@@ -20,11 +22,6 @@ const SOURCE = {
   license: 'Public domain (naturalearthdata.com/about/terms-of-use)'
 };
 const OUT = './src/_data/checkinMapOutline.json';
-const SKIP = new Set(['AK', 'HI']);
-const PARALLELS = [29.5, 45.5];
-const ORIGIN = [-96, 37.5];
-const WIDTH = 960;
-const PADDING = 16;
 const EXTENT_MARGIN = 0.5;
 
 const readSource = async file => {
@@ -39,14 +36,14 @@ const readSource = async file => {
 const polygonsOf = geometry =>
   geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.type === 'MultiPolygon' ? geometry.coordinates : [];
 
-const main = async () => {
-  const geojson = await readSource(process.argv[2]);
-  const states = geojson.features
-    .filter(feature => feature.properties.adm0_a3 === 'USA' && !SKIP.has(feature.properties.postal))
+const featuresFor = (geojson, {postal, skip}) =>
+  geojson.features
+    .filter(feature => feature.properties.adm0_a3 === 'USA')
+    .filter(feature => (postal ? feature.properties.postal === postal : !skip.has(feature.properties.postal)))
     .map(feature => ({postal: feature.properties.postal, name: feature.properties.name, polygons: polygonsOf(feature.geometry)}))
     .sort((a, b) => a.postal.localeCompare(b.postal));
 
-  const raw = albers({parallels: PARALLELS, origin: ORIGIN});
+const boundsOf = (states, raw) => {
   const extent = {west: Infinity, east: -Infinity, south: Infinity, north: -Infinity};
   const bounds = {minX: Infinity, maxX: -Infinity, minY: Infinity, maxY: -Infinity};
   for (const state of states) {
@@ -64,15 +61,18 @@ const main = async () => {
       }
     }
   }
+  return {extent, bounds};
+};
 
-  const scale = Number(((WIDTH - 2 * PADDING) / (bounds.maxX - bounds.minX)).toFixed(4));
-  const translate = [PADDING - bounds.minX * scale, PADDING - bounds.minY * scale].map(value => Number(value.toFixed(2)));
-  const height = Math.ceil((bounds.maxY - bounds.minY) * scale + 2 * PADDING);
-  const project = (lon, lat) => {
-    const [x, y] = raw(lon, lat);
-    return [Math.round(x * scale + translate[0]), Math.round(y * scale + translate[1])];
-  };
+const paddedExtent = extent =>
+  Object.fromEntries(
+    Object.entries(extent).map(([key, value]) => [
+      key,
+      Number((key === 'west' || key === 'south' ? value - EXTENT_MARGIN : value + EXTENT_MARGIN).toFixed(1))
+    ])
+  );
 
+const pathsFor = (states, project) => {
   const ringPath = ring => {
     const points = [];
     for (const [lon, lat] of ring) {
@@ -84,27 +84,109 @@ const main = async () => {
     if (points.length < 3) return '';
     return `M${points.map(([x, y]) => `${x} ${y}`).join('L')}Z`;
   };
+  return states
+    .map(state => ({postal: state.postal, name: state.name, d: state.polygons.map(polygon => polygon.map(ringPath).join('')).join('')}))
+    .filter(state => state.d);
+};
+
+/**
+ * Contiguous US: scale to a fixed width and let the height follow.
+ * Same constants as the original outline, so the lower 48 does not move.
+ */
+const contiguousFrame = states => {
+  const parallels = [29.5, 45.5];
+  const origin = [-96, 37.5];
+  const width = 960;
+  const padding = 16;
+  const raw = albers({parallels, origin});
+  const {extent, bounds} = boundsOf(states, raw);
+  const scale = Number(((width - 2 * padding) / (bounds.maxX - bounds.minX)).toFixed(4));
+  const translate = [padding - bounds.minX * scale, padding - bounds.minY * scale].map(value => Number(value.toFixed(2)));
+  const height = Math.ceil((bounds.maxY - bounds.minY) * scale + 2 * padding);
+  const project = (lon, lat) => {
+    const [x, y] = raw(lon, lat);
+    return [Math.round(x * scale + translate[0]), Math.round(y * scale + translate[1])];
+  };
+  return {
+    id: 'us',
+    role: 'main',
+    view: 'us',
+    country: 'US',
+    width,
+    height,
+    extent: paddedExtent(extent),
+    projection: {type: 'albers', parallels, origin, scale, translate},
+    states: pathsFor(states, project)
+  };
+};
+
+/** Inset: one uniform scale that fits the shape inside a box with even padding. */
+const insetFrame = (states, {id, label, region, parallels, origin, contentWidth, padding}) => {
+  const raw = albers({parallels, origin});
+  const {extent, bounds} = boundsOf(states, raw);
+  const spanX = bounds.maxX - bounds.minX;
+  const spanY = bounds.maxY - bounds.minY;
+  const contentHeight = contentWidth / (spanX / spanY);
+  const width = Math.round(contentWidth + 2 * padding);
+  const height = Math.round(contentHeight + 2 * padding);
+  const scale = Number((Math.min((width - 2 * padding) / spanX, (height - 2 * padding) / spanY)).toFixed(4));
+  const translate = [
+    (width - spanX * scale) / 2 - bounds.minX * scale,
+    (height - spanY * scale) / 2 - bounds.minY * scale
+  ].map(value => Number(value.toFixed(2)));
+  const project = (lon, lat) => {
+    const [x, y] = raw(lon, lat);
+    return [Math.round(x * scale + translate[0]), Math.round(y * scale + translate[1])];
+  };
+  return {
+    id,
+    label,
+    role: 'inset',
+    view: 'us',
+    country: 'US',
+    region,
+    width,
+    height,
+    extent: paddedExtent(extent),
+    projection: {type: 'albers', parallels, origin, scale, translate},
+    states: pathsFor(states, project)
+  };
+};
+
+const main = async () => {
+  const geojson = await readSource(process.argv[2]);
+  const contiguous = contiguousFrame(featuresFor(geojson, {skip: new Set(['AK', 'HI'])}));
+  const alaska = insetFrame(featuresFor(geojson, {postal: 'AK'}), {
+    id: 'ak',
+    label: 'Alaska',
+    region: 'AK',
+    parallels: [55, 65],
+    origin: [-154, 64],
+    contentWidth: 200,
+    padding: 10
+  });
+  const hawaii = insetFrame(featuresFor(geojson, {postal: 'HI'}), {
+    id: 'hi',
+    label: 'Hawaii',
+    region: 'HI',
+    parallels: [18, 22],
+    origin: [-157.5, 20.5],
+    contentWidth: 150,
+    padding: 8
+  });
 
   const output = {
     source: SOURCE,
-    country: 'US',
-    note: 'Contiguous US only. Alaska and Hawaii are not drawn yet.',
-    width: WIDTH,
-    height,
-    extent: Object.fromEntries(
-      Object.entries(extent).map(([key, value]) => [
-        key,
-        Number((key === 'west' || key === 'south' ? value - EXTENT_MARGIN : value + EXTENT_MARGIN).toFixed(1))
-      ])
-    ),
-    projection: {type: 'albers', parallels: PARALLELS, origin: ORIGIN, scale, translate},
-    states: states
-      .map(state => ({postal: state.postal, name: state.name, d: state.polygons.map(polygon => polygon.map(ringPath).join('')).join('')}))
-      .filter(state => state.d)
+    note: 'One frame per drawn region. us is the contiguous states. ak and hi are inset frames with their own extent and Albers fit. A frame with view "world" is ignored until the world view is built.',
+    width: contiguous.width,
+    height: contiguous.height,
+    frames: [contiguous, alaska, hawaii]
   };
 
   fs.writeFileSync(OUT, `${JSON.stringify(output, null, 2)}\n`);
-  console.log(`[checkins:map-outline] wrote ${OUT}: ${output.states.length} states, ${WIDTH}×${height}`);
+  console.log(
+    `[checkins:map-outline] wrote ${OUT}: ${contiguous.states.length} states, ${contiguous.width}×${contiguous.height}; insets ${alaska.id} ${alaska.width}×${alaska.height}, ${hawaii.id} ${hawaii.width}×${hawaii.height}`
+  );
 };
 
 main().catch(error => {

@@ -39,7 +39,7 @@ const OUTLINE = {
 
 const quietLog = {warn: () => {}};
 
-const build = async ({centroids = CENTROIDS, exclude = EXCLUDE} = {}) => {
+const build = async ({centroids = CENTROIDS, exclude = EXCLUDE, outline = OUTLINE} = {}) => {
   const exclusions = parseExclusions(exclude);
   const elev = new Eleventy(FIXTURE, `${FIXTURE}/_site`, {
     quietMode: true,
@@ -48,7 +48,7 @@ const build = async ({centroids = CENTROIDS, exclude = EXCLUDE} = {}) => {
       eleventyConfig.setIncludesDirectory('../../../src/_includes');
       eleventyConfig.addPlugin(drafts);
       eleventyConfig.addGlobalData('centroids', centroids);
-      eleventyConfig.addGlobalData('outline', OUTLINE);
+      eleventyConfig.addGlobalData('outline', outline);
       eleventyConfig.addCollection(
         'fixtureCheckins',
         createCheckinsCollection({dir: `${FIXTURE}/checkins`, imagesDir: `${FIXTURE}/no-images`})
@@ -129,6 +129,37 @@ describe('fixture build (collection → exclusions → city list)', () => {
     }
     assert.doesNotMatch(map, /\b(lat|lon|latitude|longitude)\b/i);
     assert.doesNotMatch(map, /<time|datetime|\b(19|20)\d{2}\b/);
+  });
+
+  it('draws an inset frame without moving the main map', async () => {
+    const outline = {
+      width: OUTLINE.width,
+      height: OUTLINE.height,
+      frames: [
+        {id: 'us', role: 'main', view: 'us', ...OUTLINE},
+        {
+          id: 'hi',
+          label: 'Hawaii',
+          role: 'inset',
+          view: 'us',
+          country: 'ZZ',
+          region: 'HI',
+          width: 80,
+          height: 40,
+          extent: {west: 0, east: 5, south: 0, north: 5},
+          projection: OUTLINE.projection,
+          states: [{postal: 'HI', name: 'Hawaii', d: 'M1 1L8 1L8 8Z'}]
+        }
+      ]
+    };
+    const {map} = await build({outline});
+    assert.match(map, /data-frame="hi"/);
+    assert.match(map, /checkins-map__inset-label">Hawaii</);
+    assert.match(map, /<path class="checkins-map__state" d="M1 1L8 1L8 8Z"/);
+    assert.match(map, /href="#city-fakeburg-zz-zz"/);
+    const insets = map.slice(map.indexOf('checkins-map__insets'));
+    assert.doesNotMatch(insets, /Fakeburg/);
+    assert.doesNotMatch(map, /\b(lat|lon|latitude|longitude)\b/i);
   });
 
   it('fails the build on a missing centroid', async () => {
@@ -299,20 +330,43 @@ describe('clay map', () => {
   it('projects the published cities onto the committed outline', () => {
     const liveCentroids = JSON.parse(fs.readFileSync('./src/_data/cityCentroids.json', 'utf8'));
     const liveOutline = JSON.parse(fs.readFileSync('./src/_data/checkinMapOutline.json', 'utf8'));
+    const main = liveOutline.frames.find(frame => frame.id === 'us');
+    const ak = liveOutline.frames.find(frame => frame.id === 'ak');
+    const hi = liveOutline.frames.find(frame => frame.id === 'hi');
     assert.equal(liveOutline.source.sha256, '8e048ee20587e124e74de5c6bfeea8132ab2313a8f7f4f97e043617f8f37f7f6');
-    assert.equal(liveOutline.states.length, 49);
-    assert.ok(liveOutline.states.every(state => state.postal !== 'AK' && state.postal !== 'HI' && !/[.-]\d/.test(state.d)));
+    assert.equal(liveOutline.width, 960);
+    assert.equal(liveOutline.height, 609);
+    assert.equal(main.role, 'main');
+    assert.equal(main.states.length, 49);
+    assert.equal(main.width, 960);
+    assert.equal(main.height, 609);
+    assert.deepEqual(main.extent, {west: -125.2, east: -66.5, south: 24.6, north: 49.9});
+    assert.equal(main.projection.scale, 1284.6713);
+    assert.ok(main.states.every(state => state.postal !== 'AK' && state.postal !== 'HI' && !/[.-]\d/.test(state.d)));
+    assert.deepEqual(
+      ak.states.map(state => state.postal),
+      ['AK']
+    );
+    assert.deepEqual(
+      hi.states.map(state => state.postal),
+      ['HI']
+    );
+    for (const frame of [ak, hi]) {
+      assert.equal(frame.role, 'inset');
+      assert.equal(frame.view, 'us');
+      assert.equal(frame.country, 'US');
+      assert.ok(frame.states.every(state => !/[.-]\d/.test(state.d)));
+    }
 
-    const project = projector(liveOutline.projection);
+    const project = projector(main.projection);
+    const projectAk = projector(ak.projection);
     const entries = Object.entries(liveCentroids);
-    const inside = entries.filter(([, centroid]) => inExtent(liveOutline.extent, centroid.lon, centroid.lat));
-    const outside = entries.filter(([, centroid]) => !inExtent(liveOutline.extent, centroid.lon, centroid.lat));
+    const inside = entries.filter(([, centroid]) => inExtent(main.extent, centroid.lon, centroid.lat));
     const insideKeys = inside.map(([key]) => key);
-    const outsideKeys = outside.map(([key]) => key);
     assert.ok(insideKeys.includes('Minneapolis|MN|US'));
     assert.ok(insideKeys.includes('San Francisco|CA|US'));
-    assert.ok(outsideKeys.includes('Anchorage|AK|US'));
-    assert.ok(outsideKeys.includes('Girdwood|AK|US'));
+    assert.ok(!inExtent(main.extent, liveCentroids['Anchorage|AK|US'].lon, liveCentroids['Anchorage|AK|US'].lat));
+    assert.ok(!inExtent(main.extent, liveCentroids['Girdwood|AK|US'].lon, liveCentroids['Girdwood|AK|US'].lat));
 
     const cities = entries.map(([key]) => ({
       key,
@@ -323,20 +377,101 @@ describe('clay map', () => {
     }));
     const map = buildCheckinMap(cities, {centroids: liveCentroids, outline: liveOutline});
     assert.equal(map.spots.length, inside.length);
-    for (const [key] of outside) {
-      const name = key.split('|')[0];
-      assert.ok(!map.spots.some(spot => spot.label.startsWith(name)));
-    }
+    assert.equal(map.width, 960);
+    assert.equal(map.height, 609);
     for (const [key, centroid] of inside) {
       const [x, y] = project(centroid.lon, centroid.lat);
       const spot = map.spots.find(entry => entry.label.startsWith(key.split('|')[0]));
       assert.equal(spot.x, x);
       assert.equal(spot.y, y);
-      assert.ok(x > 0 && x < liveOutline.width && y > 0 && y < liveOutline.height);
+      assert.ok(x > 0 && x < main.width && y > 0 && y < main.height);
+      assert.equal(spot.frame, 'us');
       assert.ok(!('lat' in spot) && !('lon' in spot));
       assert.ok(!JSON.stringify(spot).includes(centroid.lat.toFixed(1)));
       assert.ok(!JSON.stringify(spot).includes(centroid.lon.toFixed(1)));
     }
+    assert.deepEqual(project(liveCentroids['Minneapolis|MN|US'].lon, liveCentroids['Minneapolis|MN|US'].lat), [533, 161]);
+    assert.deepEqual(project(liveCentroids['San Francisco|CA|US'].lon, liveCentroids['San Francisco|CA|US'].lat), [33, 260]);
+
+    // Girdwood is a one-check-in town, so it shares Anchorage's bead. Both still land in the Alaska inset.
+    const akFrame = map.insets.find(frame => frame.id === 'ak');
+    const akSpot = akFrame.spots.find(spot => spot.label.includes('Anchorage') && spot.label.includes('Girdwood'));
+    assert.equal(akFrame.spots.length, 1);
+    assert.equal(akSpot.frame, 'ak');
+    assert.equal(akSpot.labelAnchor, 'above');
+    const [ax, ay] = projectAk(liveCentroids['Anchorage|AK|US'].lon, liveCentroids['Anchorage|AK|US'].lat);
+    assert.deepEqual([akSpot.x, akSpot.y], [ax, ay]);
+    assert.ok(ax > 0 && ax < ak.width && ay > 0 && ay < ak.height);
+    const [gx, gy] = projectAk(liveCentroids['Girdwood|AK|US'].lon, liveCentroids['Girdwood|AK|US'].lat);
+    assert.ok(gx > 0 && gx < ak.width && gy > 0 && gy < ak.height);
+    assert.ok(!map.spots.some(spot => /Anchorage|Girdwood/.test(`${spot.label} ${spot.name}`)));
+    assert.equal(map.insets.find(frame => frame.id === 'hi').spots.length, 0);
+    for (const spot of akFrame.spots) {
+      assert.ok(!('lat' in spot) && !('lon' in spot));
+      assert.ok(spot.target >= 22);
+    }
+
+    const separate = buildCheckinMap(
+      cities.map(city => (city.key === 'Girdwood|AK|US' ? {...city, count: 2} : city)),
+      {centroids: liveCentroids, outline: liveOutline}
+    );
+    const ownBeads = separate.insets.find(frame => frame.id === 'ak').spots;
+    assert.equal(ownBeads.length, 2);
+    assert.ok(ownBeads.some(spot => spot.label.startsWith('Anchorage')));
+    assert.ok(ownBeads.some(spot => spot.label.startsWith('Girdwood')));
+    assert.ok(ownBeads.every(spot => spot.x > 0 && spot.x < ak.width && spot.y > 0 && spot.y < ak.height));
+    assert.ok(!separate.spots.some(spot => /Anchorage|Girdwood/.test(`${spot.label} ${spot.name}`)));
+  });
+
+  it('puts a Hawaii centroid in the Hawaii inset and skips other countries', () => {
+    const liveCentroids = JSON.parse(fs.readFileSync('./src/_data/cityCentroids.json', 'utf8'));
+    const liveOutline = JSON.parse(fs.readFileSync('./src/_data/checkinMapOutline.json', 'utf8'));
+    const hi = liveOutline.frames.find(frame => frame.id === 'hi');
+    const centroids = {
+      ...liveCentroids,
+      'Honolulu|HI|US': {lat: 21.3, lon: -157.8, tier: 'metro'},
+      'Hilo|HI|US': {lat: 19.7, lon: -155.1, tier: 'town'},
+      'Chiang Mai|CM|TH': {lat: 18.8, lon: 99.0, tier: 'metro'},
+      'Overlap|MN|TH': {lat: 45.0, lon: -93.3, tier: 'metro'}
+    };
+    const cities = Object.keys(centroids).map(key => ({
+      key,
+      slug: 'city-example',
+      label: key.split('|')[0],
+      count: 1,
+      checkins: []
+    }));
+    const withWorld = {
+      ...liveOutline,
+      frames: [
+        ...liveOutline.frames,
+        {
+          id: 'th',
+          label: 'Thailand',
+          role: 'inset',
+          view: 'world',
+          country: 'TH',
+          width: 100,
+          height: 80,
+          extent: {west: 90, east: 110, south: 5, north: 21},
+          projection: hi.projection,
+          states: [{postal: 'TH', name: 'Thailand', d: 'M0 0L10 0L10 10Z'}]
+        }
+      ]
+    };
+    const map = buildCheckinMap(cities, {centroids, outline: withWorld});
+    const hiFrame = map.insets.find(frame => frame.id === 'hi');
+    const hiSpot = hiFrame.spots.find(spot => spot.label.includes('Honolulu') && spot.label.includes('Hilo'));
+    const [hx, hy] = projector(hi.projection)(-157.8, 21.3);
+    assert.ok(hiSpot);
+    assert.equal(hiSpot.frame, 'hi');
+    assert.deepEqual([hiSpot.x, hiSpot.y], [hx, hy]);
+    assert.ok(hx > 0 && hx < hi.width && hy > 0 && hy < hi.height);
+    assert.equal(hiFrame.spots.length, 1);
+    assert.ok(!map.spots.some(spot => /Honolulu|Hilo|Chiang Mai|Overlap/.test(spot.label)));
+    assert.ok(!map.insets.some(frame => frame.id === 'th' || frame.label === 'Thailand'));
+    const rendered = JSON.stringify(map);
+    assert.ok(!rendered.includes('18.8') && !rendered.includes('99.0') && !rendered.includes('-157.8') && !rendered.includes('21.3'));
   });
 });
 
@@ -379,6 +514,10 @@ describe('map theme and polish', () => {
     assert.match(css, /focus-visible/);
     assert.match(css, /max\(2\.75rem, 44px\)/);
     assert.match(css, /prefers-reduced-motion: no-preference/);
+    assert.match(css, /checkins-map__inset/);
+    assert.match(css, /@container checkins-map \(min-width: 58rem\)/);
+    assert.match(css, /data-anchor='above'/);
     assert.doesNotMatch(css, /@keyframes|animation:/);
+    assert.doesNotMatch(css, /#[0-9a-f]{3,8}/i);
   });
 });

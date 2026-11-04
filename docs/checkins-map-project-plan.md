@@ -4,6 +4,8 @@ A clay relief map on `/checkins/` with one marker per city I've checked in from,
 
 **Status (10 Oct 2026):** PRs 1–4 are merged. The hourly rebuild from PR 4 was removed. A check-in goes live when its PR merges after `publishAfter`.
 
+**Update (4 Nov 2026):** Alaska and Hawaii are inset frames on the same map. The plan is `docs/checkins-map-insets-project-plan.md`. The PR 2 note that those states are not drawn is the original ship, not the current map.
+
 **Outcome:** `/checkins/` lists every city with published check-ins, each with a `#city-…` anchor, a count, and links down to its check-ins in the timeline, and draws those cities on a clay relief map. Home-area cities never appear in the list, on the map, or in the repo's data.
 
 **Cut**

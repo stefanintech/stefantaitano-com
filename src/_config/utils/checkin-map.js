@@ -310,64 +310,133 @@ const listFormat = new Intl.ListFormat('en', {type: 'conjunction'});
 const placeLabel = ({city, region}) => (region ? `${city}, ${region}` : city);
 
 /**
+ * Frames the US composition actually draws. A flat outline (the fixture, and
+ * the original contiguous file) is one main frame. `view: "world"` waits for
+ * the world view, so a country frame can sit in the file without being drawn.
+ */
+const framesOf = outline => {
+  const frames =
+    Array.isArray(outline?.frames) && outline.frames.length
+      ? outline.frames
+      : [{id: 'main', role: 'main', view: 'us', ...outline}];
+  return frames.filter(frame => (frame.view ?? 'us') === 'us');
+};
+
+/** Country match, and a region frame only when the region matches. Region wins over country. */
+export const selectFrame = (frames, {country, region}) => {
+  let best = null;
+  let bestScore = -1;
+  for (const frame of frames) {
+    if (frame.country && frame.country !== country) continue;
+    if (frame.region && frame.region !== region) continue;
+    if (!frame.country && !frame.region) continue;
+    const score = (frame.region ? 2 : 0) + (frame.country ? 1 : 0);
+    if (score > bestScore) {
+      best = frame;
+      bestScore = score;
+    }
+  }
+  return best;
+};
+
+const frameOf = (frames, entry) => {
+  const frame = selectFrame(frames, entry);
+  if (!frame || !inExtent(frame.extent, entry.lon, entry.lat)) return null;
+  return frame;
+};
+
+const drawSpot = (frame, anchor, members) => {
+  const [x, y] = projector(frame.projection)(anchor.lon, anchor.lat);
+  const count = members.reduce((sum, city) => sum + city.count, 0);
+  const own = members.find(city => city.key === anchor.key);
+  const near = !own || members.length > 1;
+  const anchorLabel = placeLabel(anchor);
+  const r = Math.round(Math.min(BEAD_RADIUS.max, BEAD_RADIUS.base + BEAD_RADIUS.perCheckin * Math.sqrt(count)));
+  return {
+    frame: frame.id,
+    place: anchorLabel,
+    href: `#${(own ?? members[0]).slug}`,
+    x,
+    y,
+    r,
+    target: Math.max(TARGET_RADIUS, r + LABEL_GAP),
+    count,
+    label: near
+      ? `Near ${anchorLabel}: ${countLabel(count)} in ${listFormat.format(members.map(city => city.label))}`
+      : `${anchorLabel}: ${countLabel(count)}`,
+    name: near ? `near ${anchor.city}` : anchor.city,
+    labelAnchor: frame.role === 'inset' ? 'above' : x > frame.width - LABEL_ROOM ? 'end' : 'start',
+    left: `${((x / frame.width) * 100).toFixed(1)}%`,
+    top: `${((y / frame.height) * 100).toFixed(1)}%`
+  };
+};
+
+/**
  * Clay-bead spots for the SVG map, from `buildCheckinCities` output (already
  * filtered and excluded). Each spot carries projected x/y, a radius, its
- * accessible label, and a link to a city anchor. Cities outside the outline
- * stay in the list only. Returns null when nothing can be drawn.
+ * accessible label, and a link to a city anchor. Country and region pick the
+ * frame; a city with no frame stays in the list only. A one-check-in town
+ * shares the nearest metro bead in that same frame. Returns null when
+ * nothing can be drawn.
  */
 export const buildCheckinMap = (cities, {centroids, outline}) => {
   if (!cities?.length) return null;
 
-  const byKey = new Map([...indexCentroids(centroids).values()].map(entry => [entry.key, entry]));
-  const project = projector(outline.projection);
-  const drawable = entry => entry.country === outline.country && inExtent(outline.extent, entry.lon, entry.lat);
-  const metros = [...byKey.values()].filter(entry => entry.tier === 'metro' && drawable(entry));
-  const spots = new Map();
+  const frames = framesOf(outline);
+  const main = frames.find(frame => frame.role === 'main') ?? frames[0];
+  if (!main?.projection || !main.states) {
+    throw new Error('[checkins:map] outline needs a main frame with a projection and states');
+  }
 
+  const byKey = new Map([...indexCentroids(centroids).values()].map(entry => [entry.key, entry]));
+  const metrosByFrame = new Map();
+  for (const entry of byKey.values()) {
+    if (entry.tier !== 'metro') continue;
+    const frame = frameOf(frames, entry);
+    if (!frame) continue;
+    if (!metrosByFrame.has(frame.id)) metrosByFrame.set(frame.id, []);
+    metrosByFrame.get(frame.id).push(entry);
+  }
+
+  const spots = new Map();
   for (const city of cities) {
     const centroid = byKey.get(city.key);
     if (!centroid) throw new Error(`[checkins:map] no centroid for "${city.key}"`);
-    if (!drawable(centroid)) continue;
+    const frame = frameOf(frames, centroid);
+    if (!frame) continue;
 
-    const anchor = centroid.tier === 'town' && city.count < TOWN_MIN_CHECKINS ? nearest(metros, centroid) : centroid;
-    if (!anchor) continue;
+    let anchor = centroid;
+    if (centroid.tier === 'town' && city.count < TOWN_MIN_CHECKINS) {
+      const metros = metrosByFrame.get(frame.id) ?? [];
+      anchor = metros.length ? nearest(metros, centroid) : centroid;
+    }
 
-    if (!spots.has(anchor.key)) spots.set(anchor.key, {anchor, cities: []});
-    spots.get(anchor.key).cities.push(city);
+    const spotKey = `${frame.id}|${anchor.key}`;
+    if (!spots.has(spotKey)) spots.set(spotKey, {frame, anchor, cities: []});
+    spots.get(spotKey).cities.push(city);
   }
 
   if (!spots.size) return null;
 
-  const drawn = [...spots.values()].map(({anchor, cities: members}) => {
-    const [x, y] = project(anchor.lon, anchor.lat);
-    const count = members.reduce((sum, city) => sum + city.count, 0);
-    const own = members.find(city => city.key === anchor.key);
-    const near = !own || members.length > 1;
-    const anchorLabel = placeLabel(anchor);
-    const r = Math.round(Math.min(BEAD_RADIUS.max, BEAD_RADIUS.base + BEAD_RADIUS.perCheckin * Math.sqrt(count)));
-    const labelEnd = x > outline.width - LABEL_ROOM;
-    return {
-      place: anchorLabel,
-      href: `#${(own ?? members[0]).slug}`,
-      x,
-      y,
-      r,
-      target: Math.max(TARGET_RADIUS, r + LABEL_GAP),
-      count,
-      label: near
-        ? `Near ${anchorLabel}: ${countLabel(count)} in ${listFormat.format(members.map(city => city.label))}`
-        : `${anchorLabel}: ${countLabel(count)}`,
-      name: near ? `near ${anchor.city}` : anchor.city,
-      labelAnchor: labelEnd ? 'end' : 'start',
-      left: `${((x / outline.width) * 100).toFixed(1)}%`,
-      top: `${((y / outline.height) * 100).toFixed(1)}%`
-    };
-  });
+  const drawn = [...spots.values()].map(({frame, anchor, cities: members}) => drawSpot(frame, anchor, members));
+  const byPlace = (a, b) => a.place.localeCompare(b.place, 'en');
+  const spotsFor = frame => drawn.filter(spot => spot.frame === frame.id).sort(byPlace);
+  const insets = frames
+    .filter(frame => frame.role === 'inset')
+    .map(frame => ({
+      id: frame.id,
+      label: frame.label ?? frame.region ?? frame.id,
+      width: frame.width,
+      height: frame.height,
+      states: frame.states,
+      spots: spotsFor(frame)
+    }));
 
   return {
-    width: outline.width,
-    height: outline.height,
-    states: outline.states,
-    spots: drawn.sort((a, b) => a.place.localeCompare(b.place, 'en'))
+    width: main.width,
+    height: main.height,
+    states: main.states,
+    spots: spotsFor(main),
+    insets
   };
 };

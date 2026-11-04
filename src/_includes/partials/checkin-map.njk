@@ -1,7 +1,8 @@
-{#- Clay relief map of check-in cities. Set `checkinMap` from the `checkinMap` filter. Projected positions only: no coordinates, dates, or routes. Every bead links to its city in the list, which is the text alternative. -#}
-{%- if checkinMap and checkinMap.spots.length %}
+{#- Clay relief map of check-in cities. Set `checkinMap` from the `checkinMap` filter. Projected positions only: no coordinates, dates, or routes. Every bead links to its city in the list, which is the text alternative. Inset frames (Alaska, Hawaii) are their own outlines. -#}
+{%- if checkinMap and (checkinMap.spots.length or checkinMap.insets.length) %}
 <figure class="checkins-map">
   <div class="checkins-map__frame" role="group" aria-label="Map of cities with check-ins">
+    <div class="checkins-map__stage">
     <div class="checkins-map__canvas" style="aspect-ratio: {{ checkinMap.width }} / {{ checkinMap.height }}">
     <svg class="checkins-map__svg" viewBox="0 0 {{ checkinMap.width }} {{ checkinMap.height }}" aria-hidden="true" focusable="false">
       <defs>
@@ -48,6 +49,43 @@
       </li>
       {%- endfor %}
     </ul>
+    </div>
+    {%- if checkinMap.insets.length %}
+    <div class="checkins-map__insets">
+      {%- for inset in checkinMap.insets %}
+      <div class="checkins-map__inset" data-frame="{{ inset.id }}">
+        <p class="checkins-map__inset-label">{{ inset.label }}</p>
+        <div class="checkins-map__canvas" style="aspect-ratio: {{ inset.width }} / {{ inset.height }}">
+          <svg class="checkins-map__svg" viewBox="0 0 {{ inset.width }} {{ inset.height }}" aria-hidden="true" focusable="false">
+            <g class="checkins-map__land">
+              {%- for state in inset.states %}
+              <path class="checkins-map__state" d="{{ state.d }}" />
+              {%- endfor %}
+            </g>
+            {%- if inset.spots.length %}
+            <g class="checkins-map__beads">
+              {%- for spot in inset.spots %}
+              <circle class="checkins-map__bead" cx="{{ spot.x }}" cy="{{ spot.y }}" r="{{ spot.r }}" />
+              {%- endfor %}
+            </g>
+            {%- endif %}
+          </svg>
+          {%- if inset.spots.length %}
+          <ul class="checkins-map__spots" role="list">
+            {%- for spot in inset.spots %}
+            <li>
+              <a class="checkins-map__spot" href="{{ spot.href }}" aria-label="{{ spot.label }}" style="inset-inline-start: {{ spot.left }}; inset-block-start: {{ spot.top }}" data-anchor="{{ spot.labelAnchor }}">
+                <span class="checkins-map__name" aria-hidden="true">{{ spot.name }}</span>
+              </a>
+            </li>
+            {%- endfor %}
+          </ul>
+          {%- endif %}
+        </div>
+      </div>
+      {%- endfor %}
+    </div>
+    {%- endif %}
     </div>
   </div>
   {%- if siteCopy.checkinsMapCaption %}
