@@ -1,5 +1,6 @@
 {
   "Anchorage|AK|US": {"lat": 61.2, "lon": -149.9, "tier": "metro"},
+  "Girdwood|AK|US": {"lat": 60.9, "lon": -149.2, "tier": "town"},
   "Minneapolis|MN|US": {"lat": 45.0, "lon": -93.3, "tier": "metro"},
   "San Francisco|CA|US": {"lat": 37.8, "lon": -122.4, "tier": "metro"}
 }
