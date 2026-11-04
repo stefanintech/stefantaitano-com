@@ -7,5 +7,6 @@ This is Stefan Taitano’s Eleventy site. Read these before changing code.
 - **Chess page:** `.cursor/rules/chess-page.mdc` (Lichess endpoints, study-embed procedure).
 - **Copy:** `docs/site-voice.md`.
 - **Check-ins:** `.cursor/rules/checkins.mdc`, `docs/checkins-project-plan.md`, and the city map in `docs/checkins-map-project-plan.md`. A check-in goes live on the merge to `main`, which happens after `publishAfter`. There is no scheduled rebuild. Home-area exclusions stay in `CHECKIN_MAP_EXCLUDE` only.
+- **Pre-merge review:** Before Stefan is asked for a merge OK, every PR gets a review pass from a cloud agent in the `review` mode (`.cursor/skills/review/SKILL.md`) that posts its findings on the PR. Stefan is pinged only once the review is CLEAN or its findings are fixed, and merges still need his explicit OK.
 
 Small fixes (copy, one CSS rule, a study chapter paste) do not need a new plan. Do not invent a parallel layout. Input is `src/`, output is `dist/`.
