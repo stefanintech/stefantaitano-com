@@ -311,6 +311,7 @@ describe('clay map', () => {
     const outsideKeys = outside.map(([key]) => key);
     assert.ok(insideKeys.includes('Minneapolis|MN|US'));
     assert.ok(insideKeys.includes('San Francisco|CA|US'));
+    assert.ok(outsideKeys.includes('Anchorage|AK|US'));
     assert.ok(outsideKeys.includes('Girdwood|AK|US'));
 
     const cities = entries.map(([key]) => ({
