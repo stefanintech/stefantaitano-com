@@ -157,7 +157,12 @@ export default async function (eleventyConfig) {
     'src/assets/talks/rubyconf-2026/slides/': 'talks/rubyconf-2026/slides/',
 
     // -- node_modules
-    'node_modules/lite-youtube-embed/src/lite-yt-embed.{css,js}': `assets/components/`
+    'node_modules/lite-youtube-embed/src/lite-yt-embed.{css,js}': `assets/components/`,
+
+    // Bento sample media. Stills are art-directed (wide and compact), so they
+    // skip the image transform. The loop is a video, which the transform does not handle.
+    'src/assets/images/bento/': 'assets/images/bento/',
+    'src/assets/video/bento/': 'assets/video/bento/'
   });
 
   // ----------------------  ignore test files

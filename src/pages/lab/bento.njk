@@ -1,0 +1,183 @@
+---
+layout: base
+permalink: /lab/bento/index.html
+title: Bento sample
+description: Hidden sample of a homepage bento grid.
+robots: noindex, nofollow
+eleventyExcludeFromCollections: true
+excludeFromSitemap: true
+---
+
+{%- set checkin = collections.checkins | first -%}
+{%- set c = checkin.data -%}
+{%- set checkinHref = "/checkins/#" + (checkin | checkinAnchor) -%}
+{%- set checkinNote = checkin.templateContent | striptags | trim -%}
+{%- set boot = bento.bootdev -%}
+
+<div class="bento-sample">
+  <h1>Bento sample</h1>
+  <p class="bento-note">Hidden sample. Not linked from the site.</p>
+
+  <div class="bento-head">
+    <h2>What I'm building</h2>
+    <p class="bento-marker">placeholder copy</p>
+  </div>
+
+  <div class="bento">
+    <article class="bento-tile bento-tile--notes">
+      <div class="bento-shot">
+        <picture>
+          <source media="(max-width: 39.99rem)" srcset="/assets/images/bento/field-notes-inbox-compact.avif" type="image/avif" />
+          <source media="(max-width: 39.99rem)" srcset="/assets/images/bento/field-notes-inbox-compact.webp" type="image/webp" />
+          <source srcset="/assets/images/bento/field-notes-inbox-wide.avif" type="image/avif" />
+          <source srcset="/assets/images/bento/field-notes-inbox-wide.webp" type="image/webp" />
+          <img
+            src="/assets/images/bento/field-notes-inbox-wide.webp"
+            alt="An inbox window titled Inbox. The top row is Field Notes #002, Streaks, a hacked photo frame, and my first 10K, dated Mon, Nov 2. Under it, Field Notes #001, The Default Path, dated April 29. The other rows are blank."
+            width="1120"
+            height="680"
+            fetchpriority="high"
+            decoding="async"
+            eleventy:ignore
+          />
+        </picture>
+        <video
+          class="bento-loop"
+          muted
+          loop
+          playsinline
+          preload="none"
+          width="1120"
+          height="680"
+          tabindex="-1"
+          aria-hidden="true"
+          data-bento-loop
+        >
+          <source data-src="/assets/video/bento/field-notes-inbox.webm" type="video/webm" />
+          <source data-src="/assets/video/bento/field-notes-inbox.mp4" type="video/mp4" />
+        </video>
+      </div>
+      <div class="bento-copy">
+        <p class="bento-label"><a href="https://buttondown.com/stefantaitano/archive/">Field Notes</a></p>
+        <p class="bento-caption">My monthly newsletter. #002 lands Monday: streaks, a hacked photo frame, and my first 10K.</p>
+      </div>
+    </article>
+
+    <article class="bento-tile bento-tile--family">
+      <a class="bento-link" href="/now/#now-2026-10-20-family-hub">
+        <span class="bento-label">Photo frame</span>
+        <span class="bento-frame">
+          <span class="bento-frame__bezel">
+            <span class="bento-frame__screen">
+              <span class="bento-frame__fact">NASA's Astronomy Picture of the Day</span>
+            </span>
+          </span>
+          <span class="bento-frame__stand"></span>
+        </span>
+      </a>
+      <p class="bento-caption">I hacked a photo frame into a little hub for the house.</p>
+    </article>
+
+    <article class="bento-tile bento-tile--boot">
+      <a class="bento-link" href="/now/#now-2026-10-24">
+        <span class="bento-label">boot.dev</span>
+        <span class="bento-stat">
+          <span class="bento-stat__num">{{ boot.streakDays }}</span>
+          <span class="bento-stat__unit">day streak</span>
+        </span>
+        <span class="bento-stat__path">Level {{ boot.level }} · {{ boot.path }} path ({{ boot.languages }})</span>
+        <span class="bento-courses">
+          <span class="bento-course">
+            <span>{{ boot.python.name }}</span>
+            <span>{{ boot.python.done }}/{{ boot.python.total }}</span>
+          </span>
+          <progress class="bento-meter" value="{{ boot.python.done }}" max="{{ boot.python.total }}" aria-hidden="true"></progress>
+          <span class="bento-course">
+            <span>{{ boot.linux.name }}</span>
+            <span>{{ boot.linux.done }}/{{ boot.linux.total }}</span>
+          </span>
+          <span class="bento-chapter">{{ boot.linux.chapter }}</span>
+          <progress class="bento-meter" value="{{ boot.linux.done }}" max="{{ boot.linux.total }}" aria-hidden="true"></progress>
+        </span>
+      </a>
+      <p class="bento-caption">33-day streak, and Learn Python for Beginners is done, 168 of 168. Now 37 of 66 into Learn Linux.</p>
+    </article>
+
+    <article class="bento-tile bento-tile--checkin">
+      <a class="bento-checkin__shot" href="{{ checkinHref }}" tabindex="-1">
+        {% include "partials/checkin-figure.njk" %}
+      </a>
+      <div class="bento-copy">
+        <p class="bento-label">
+          <a href="{{ checkinHref }}">
+            {%- if c.precision == 'city' -%}
+              {{ c.city | nbsp | safe }}
+            {%- else -%}
+              {{ c.place }} · {{ c.city | nbsp | safe }}
+            {%- endif -%}
+          </a>
+        </p>
+        {%- if checkinNote %}
+        <p class="bento-caption">{{ checkinNote }}</p>
+        {%- endif %}
+        <p class="bento-date"><time datetime="{{ checkin.date | formatDateUtc('YYYY-MM-DD') }}">{{ checkin.date | formatDateUtc('MMMM D, YYYY') }}</time></p>
+      </div>
+    </article>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var shot = document.querySelector('.bento-shot');
+    var video = document.querySelector('[data-bento-loop]');
+    if (!shot || !video || !('IntersectionObserver' in window)) return;
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var wide = window.matchMedia('(min-width: 40rem)');
+    var armed = false;
+
+    function allowed() {
+      return !reduce.matches && wide.matches;
+    }
+
+    function stop() {
+      video.pause();
+      video.classList.remove('is-playing');
+    }
+
+    function arm() {
+      if (!allowed()) {
+        stop();
+        return;
+      }
+      if (!armed) {
+        video.querySelectorAll('source[data-src]').forEach(function (source) {
+          source.src = source.getAttribute('data-src');
+        });
+        video.load();
+        armed = true;
+      }
+      var play = video.play();
+      if (play && play.then) {
+        play.then(function () {
+          video.classList.add('is-playing');
+        }).catch(function () {});
+      }
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) arm();
+        else stop();
+      });
+    }, { rootMargin: '200px 0px' });
+
+    observer.observe(shot);
+    reduce.addEventListener('change', arm);
+    wide.addEventListener('change', arm);
+  })();
+</script>
+
+{%- css "rasa" -%}
+  {%- include "css/rasa-bento.css" -%}
+{%- endcss -%}
