@@ -365,8 +365,13 @@ describe('clay map', () => {
     const insideKeys = inside.map(([key]) => key);
     assert.ok(insideKeys.includes('Minneapolis|MN|US'));
     assert.ok(insideKeys.includes('San Francisco|CA|US'));
+    assert.equal(liveCentroids['Anchorage|AK|US'].tier, 'metro');
+    assert.equal(liveCentroids['Girdwood|AK|US'].tier, 'town');
+    assert.equal(liveCentroids['Juneau|AK|US'].tier, 'metro');
     assert.ok(!inExtent(main.extent, liveCentroids['Anchorage|AK|US'].lon, liveCentroids['Anchorage|AK|US'].lat));
     assert.ok(!inExtent(main.extent, liveCentroids['Girdwood|AK|US'].lon, liveCentroids['Girdwood|AK|US'].lat));
+    assert.ok(!inExtent(main.extent, liveCentroids['Juneau|AK|US'].lon, liveCentroids['Juneau|AK|US'].lat));
+    assert.ok(inExtent(ak.extent, liveCentroids['Juneau|AK|US'].lon, liveCentroids['Juneau|AK|US'].lat));
 
     const cities = entries.map(([key]) => ({
       key,
@@ -393,22 +398,45 @@ describe('clay map', () => {
     assert.deepEqual(project(liveCentroids['Minneapolis|MN|US'].lon, liveCentroids['Minneapolis|MN|US'].lat), [533, 161]);
     assert.deepEqual(project(liveCentroids['San Francisco|CA|US'].lon, liveCentroids['San Francisco|CA|US'].lat), [33, 260]);
 
-    // Girdwood is a one-check-in town, so it shares Anchorage's bead. Both still land in the Alaska inset.
+    // Girdwood is a one-check-in town, so it shares Anchorage's bead.
+    // Juneau is its own metro, so it keeps a separate bead in the same inset.
     const akFrame = map.insets.find(frame => frame.id === 'ak');
-    const akSpot = akFrame.spots.find(spot => spot.label.includes('Anchorage') && spot.label.includes('Girdwood'));
-    assert.equal(akFrame.spots.length, 1);
-    assert.equal(akSpot.frame, 'ak');
-    assert.equal(akSpot.labelAnchor, 'above');
+    const anchorageSpot = akFrame.spots.find(spot => spot.name === 'near Anchorage');
+    const juneauSpot = akFrame.spots.find(spot => spot.name === 'Juneau');
+    assert.deepEqual(
+      akFrame.spots.map(spot => spot.name),
+      ['near Anchorage', 'Juneau']
+    );
+    assert.equal(anchorageSpot.frame, 'ak');
+    assert.equal(juneauSpot.frame, 'ak');
+    assert.equal(anchorageSpot.labelAnchor, 'above-end');
+    assert.equal(juneauSpot.labelAnchor, 'above');
+    assert.equal(anchorageSpot.count, 2);
+    assert.equal(juneauSpot.count, 1);
+    assert.ok(anchorageSpot.label.startsWith('Near Anchorage, AK: 2 check-ins in '));
+    assert.ok(anchorageSpot.label.includes('Anchorage'));
+    assert.ok(anchorageSpot.label.includes('Girdwood'));
+    assert.ok(!anchorageSpot.label.includes('Juneau'));
+    assert.equal(juneauSpot.label, 'Juneau, AK: 1 check-in');
     const [ax, ay] = projectAk(liveCentroids['Anchorage|AK|US'].lon, liveCentroids['Anchorage|AK|US'].lat);
-    assert.deepEqual([akSpot.x, akSpot.y], [ax, ay]);
+    const [jx, jy] = projectAk(liveCentroids['Juneau|AK|US'].lon, liveCentroids['Juneau|AK|US'].lat);
+    assert.deepEqual([anchorageSpot.x, anchorageSpot.y], [ax, ay]);
+    assert.deepEqual([juneauSpot.x, juneauSpot.y], [jx, jy]);
+    assert.notDeepEqual([jx, jy], [ax, ay]);
     assert.ok(ax > 0 && ax < ak.width && ay > 0 && ay < ak.height);
+    assert.ok(jx > 0 && jx < ak.width && jy > 0 && jy < ak.height);
     const [gx, gy] = projectAk(liveCentroids['Girdwood|AK|US'].lon, liveCentroids['Girdwood|AK|US'].lat);
     assert.ok(gx > 0 && gx < ak.width && gy > 0 && gy < ak.height);
-    assert.ok(!map.spots.some(spot => /Anchorage|Girdwood/.test(`${spot.label} ${spot.name}`)));
+    assert.ok(!map.spots.some(spot => /Anchorage|Girdwood|Juneau/.test(`${spot.label} ${spot.name}`)));
     assert.equal(map.insets.find(frame => frame.id === 'hi').spots.length, 0);
     for (const spot of akFrame.spots) {
       assert.ok(!('lat' in spot) && !('lon' in spot));
       assert.ok(spot.target >= 22);
+      const rendered = JSON.stringify(spot);
+      for (const centroid of [liveCentroids['Anchorage|AK|US'], liveCentroids['Girdwood|AK|US'], liveCentroids['Juneau|AK|US']]) {
+        assert.ok(!rendered.includes(centroid.lat.toFixed(1)));
+        assert.ok(!rendered.includes(centroid.lon.toFixed(1)));
+      }
     }
 
     const separate = buildCheckinMap(
@@ -416,11 +444,27 @@ describe('clay map', () => {
       {centroids: liveCentroids, outline: liveOutline}
     );
     const ownBeads = separate.insets.find(frame => frame.id === 'ak').spots;
-    assert.equal(ownBeads.length, 2);
-    assert.ok(ownBeads.some(spot => spot.label.startsWith('Anchorage')));
-    assert.ok(ownBeads.some(spot => spot.label.startsWith('Girdwood')));
-    assert.ok(ownBeads.every(spot => spot.x > 0 && spot.x < ak.width && spot.y > 0 && spot.y < ak.height));
-    assert.ok(!separate.spots.some(spot => /Anchorage|Girdwood/.test(`${spot.label} ${spot.name}`)));
+    const ownAnchorage = ownBeads.find(spot => spot.name === 'Anchorage');
+    const ownGirdwood = ownBeads.find(spot => spot.name === 'Girdwood');
+    const ownJuneau = ownBeads.find(spot => spot.name === 'Juneau');
+    assert.deepEqual(
+      ownBeads.map(spot => spot.name),
+      ['Anchorage', 'Girdwood', 'Juneau']
+    );
+    assert.equal(ownAnchorage.label, 'Anchorage, AK: 1 check-in');
+    assert.equal(ownGirdwood.label, 'Girdwood, AK: 2 check-ins');
+    assert.equal(ownJuneau.label, 'Juneau, AK: 1 check-in');
+    assert.equal(ownAnchorage.count, 1);
+    assert.equal(ownGirdwood.count, 2);
+    assert.equal(ownJuneau.count, 1);
+    assert.equal(ownAnchorage.labelAnchor, 'above-end');
+    assert.equal(ownGirdwood.labelAnchor, 'above-end');
+    assert.equal(ownJuneau.labelAnchor, 'above');
+    assert.deepEqual([ownAnchorage.x, ownAnchorage.y], [ax, ay]);
+    assert.deepEqual([ownGirdwood.x, ownGirdwood.y], [gx, gy]);
+    assert.deepEqual([ownJuneau.x, ownJuneau.y], [jx, jy]);
+    assert.ok(ownBeads.every(spot => spot.frame === 'ak' && spot.x > 0 && spot.x < ak.width && spot.y > 0 && spot.y < ak.height));
+    assert.ok(!separate.spots.some(spot => /Anchorage|Girdwood|Juneau/.test(`${spot.label} ${spot.name}`)));
   });
 
   it('puts a Hawaii centroid in the Hawaii inset and skips other countries', () => {
@@ -517,6 +561,7 @@ describe('map theme and polish', () => {
     assert.match(css, /checkins-map__inset/);
     assert.match(css, /@container checkins-map \(min-width: 58rem\)/);
     assert.match(css, /data-anchor='above'/);
+    assert.match(css, /data-anchor='above-end'/);
     assert.doesNotMatch(css, /@keyframes|animation:/);
     assert.doesNotMatch(css, /#[0-9a-f]{3,8}/i);
   });

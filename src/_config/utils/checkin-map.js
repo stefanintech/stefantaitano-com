@@ -419,6 +419,19 @@ export const buildCheckinMap = (cities, {centroids, outline}) => {
   if (!spots.size) return null;
 
   const drawn = [...spots.values()].map(({frame, anchor, cities: members}) => drawSpot(frame, anchor, members));
+  // Inset names sit above the bead. Every name except the rightmost one grows
+  // toward the start edge, so a long label ellipsizes before it covers the next.
+  const rightmostInset = new Map();
+  for (const spot of drawn) {
+    const frame = frames.find(item => item.id === spot.frame);
+    if (frame?.role !== 'inset') continue;
+    const current = rightmostInset.get(spot.frame);
+    if (!current || spot.x > current.x) rightmostInset.set(spot.frame, spot);
+  }
+  for (const spot of drawn) {
+    const rightmost = rightmostInset.get(spot.frame);
+    if (rightmost && spot !== rightmost) spot.labelAnchor = 'above-end';
+  }
   const byPlace = (a, b) => a.place.localeCompare(b.place, 'en');
   const spotsFor = frame => drawn.filter(spot => spot.frame === frame.id).sort(byPlace);
   const insets = frames
