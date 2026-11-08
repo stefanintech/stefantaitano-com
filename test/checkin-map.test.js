@@ -409,7 +409,7 @@ describe('clay map', () => {
     );
     assert.equal(anchorageSpot.frame, 'ak');
     assert.equal(juneauSpot.frame, 'ak');
-    assert.equal(anchorageSpot.labelAnchor, 'above');
+    assert.equal(anchorageSpot.labelAnchor, 'above-end');
     assert.equal(juneauSpot.labelAnchor, 'above');
     assert.equal(anchorageSpot.count, 2);
     assert.equal(juneauSpot.count, 1);
@@ -457,6 +457,9 @@ describe('clay map', () => {
     assert.equal(ownAnchorage.count, 1);
     assert.equal(ownGirdwood.count, 2);
     assert.equal(ownJuneau.count, 1);
+    assert.equal(ownAnchorage.labelAnchor, 'above-end');
+    assert.equal(ownGirdwood.labelAnchor, 'above-end');
+    assert.equal(ownJuneau.labelAnchor, 'above');
     assert.deepEqual([ownAnchorage.x, ownAnchorage.y], [ax, ay]);
     assert.deepEqual([ownGirdwood.x, ownGirdwood.y], [gx, gy]);
     assert.deepEqual([ownJuneau.x, ownJuneau.y], [jx, jy]);
@@ -558,6 +561,7 @@ describe('map theme and polish', () => {
     assert.match(css, /checkins-map__inset/);
     assert.match(css, /@container checkins-map \(min-width: 58rem\)/);
     assert.match(css, /data-anchor='above'/);
+    assert.match(css, /data-anchor='above-end'/);
     assert.doesNotMatch(css, /@keyframes|animation:/);
     assert.doesNotMatch(css, /#[0-9a-f]{3,8}/i);
   });

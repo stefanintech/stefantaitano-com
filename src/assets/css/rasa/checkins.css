@@ -152,6 +152,17 @@ main:has(.rasa-checkins) {
     text-overflow: ellipsis;
     translate: -50% 0;
   }
+
+  &[data-anchor='above-end'] .checkins-map__name {
+    inset-inline-start: auto;
+    inset-inline-end: 50%;
+    inset-block-start: auto;
+    inset-block-end: calc(100% + 0.15rem);
+    max-width: min(8.5rem, 42cqi);
+    overflow: hidden;
+    text-align: end;
+    text-overflow: ellipsis;
+  }
 }
 
 /* Alaska and Hawaii sit under the map until the frame is wide enough to hold
@@ -179,6 +190,10 @@ main:has(.rasa-checkins) {
 
 .checkins-map__inset[data-frame='hi'] {
   flex-grow: 166;
+}
+
+.checkins-map__inset .checkins-map__canvas {
+  container-type: inline-size;
 }
 
 .checkins-map__inset-label {
