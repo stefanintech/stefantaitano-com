@@ -11,5 +11,5 @@ draft: false
 image:
   day: 2026-11-06-mendenhall-glacier-day.webp
   night: 2026-11-06-mendenhall-glacier-night.webp
-  alt: Pale turquoise glacier between rocky mountains above a gray lake and evergreen peninsula
+  alt: "Clay miniature of Mendenhall Glacier, pale turquoise between rocky mountains above a gray lake."
 ---

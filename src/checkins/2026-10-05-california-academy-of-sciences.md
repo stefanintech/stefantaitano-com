@@ -12,6 +12,6 @@ draft: false
 image:
   day: 2026-10-05-california-academy-of-sciences-day.webp
   night: 2026-10-05-california-academy-of-sciences-night.webp
-  alt: "Clay miniature of the California Academy of Sciences entrance: glass facade, wide stairs and plaza, red vertical academy sign, slatted roof overhang, palms, floating cutout."
+  alt: "Clay miniature of the California Academy of Sciences' glass entrance and red vertical sign."
 ---
 SCIENCEEE! Could spend a HOT MINUTE in here.

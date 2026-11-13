@@ -49,7 +49,7 @@ Both, weighted to the dedicated page. `/chess/` is the real thing — a URL you 
 
 Both pages keep reading `lichess.*` from the same data file. Window and target live in one extra data file. That `/now` edit is a ten-minute task at the end of Phase 2, not its own phase.
 
-The `/now` line “climb from 700 to 1200” is the long-term improver goal. The six-week target of 1000 is the scoreboard. Do not overwrite one with the other.
+The `/now` line “climb from 700 to 1200” is the long-term improver goal. The scoreboard target is 1200. Do not overwrite one with the other.
 
 ---
 

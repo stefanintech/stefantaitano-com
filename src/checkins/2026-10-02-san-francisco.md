@@ -11,6 +11,6 @@ draft: false
 image:
   day: 2026-10-02-san-francisco-day.webp
   night: 2026-10-02-san-francisco-night.webp
-  alt: "Clay miniature of the San Francisco skyline, with Salesforce Tower rising above the Transamerica Pyramid, 181 Fremont, and Millennium Tower behind a hillside of tiny pastel rowhouses."
+  alt: "Clay miniature of the San Francisco skyline, led by Salesforce Tower."
 ---
 Golden hour over the city.

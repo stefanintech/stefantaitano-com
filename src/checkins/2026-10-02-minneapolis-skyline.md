@@ -12,6 +12,6 @@ draft: false
 image:
   day: 2026-10-02-minneapolis-skyline-day.webp
   night: 2026-10-02-minneapolis-skyline-night.webp
-  alt: "Clay miniature of the Minneapolis skyline at dawn, featuring the blue IDS Center, the stepped Wells Fargo Center crown, the Capella Tower halo, and the tapered Foshay Tower above a curved overpass."
+  alt: "Clay miniature of the Minneapolis skyline, featuring the blue IDS Center."
 ---
 Downtown waking up on the drive in.

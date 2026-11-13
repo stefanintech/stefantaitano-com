@@ -2,7 +2,7 @@
 # No end date — play when you can.
 
 start: '2026-08-27'
-target: 1000
+target: 1200
 
 # Rapid rating at the start of 27 Aug 2026 UTC. Last Lichess rating-history
 # point on or before that date (2026-04-09).
