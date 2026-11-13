@@ -12,6 +12,6 @@ draft: false
 image:
   day: 2026-10-03-keikos-coffee-shop-day.webp
   night: 2026-10-03-keikos-coffee-shop-night.webp
-  alt: "Clay miniature of a cozy two-story coffee shop with a bay window, blue brick storefront, purple sign, ornate window grille, and café chairs out front."
+  alt: "Clay miniature of Keiko's Coffee Shop's two-story blue brick storefront with a purple sign."
 ---
 Morning coffee at Keiko's.
