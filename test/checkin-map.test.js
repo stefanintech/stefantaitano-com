@@ -401,11 +401,11 @@ describe('clay map', () => {
     // Girdwood is a one-check-in town, so it shares Anchorage's bead.
     // Juneau is its own metro, so it keeps a separate bead in the same inset.
     const akFrame = map.insets.find(frame => frame.id === 'ak');
-    const anchorageSpot = akFrame.spots.find(spot => spot.name === 'near Anchorage');
+    const anchorageSpot = akFrame.spots.find(spot => spot.name === 'Anchorage');
     const juneauSpot = akFrame.spots.find(spot => spot.name === 'Juneau');
     assert.deepEqual(
       akFrame.spots.map(spot => spot.name),
-      ['near Anchorage', 'Juneau']
+      ['Anchorage', 'Juneau']
     );
     assert.equal(anchorageSpot.frame, 'ak');
     assert.equal(juneauSpot.frame, 'ak');

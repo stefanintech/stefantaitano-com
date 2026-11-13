@@ -153,12 +153,14 @@ main:has(.rasa-checkins) {
     translate: -50% 0;
   }
 
+  /* Grows toward the start edge, away from the next bead. 8.5rem fits
+     "Anchorage"; the old 42cqi cap ellipsized it once Juneau was added. */
   &[data-anchor='above-end'] .checkins-map__name {
     inset-inline-start: auto;
     inset-inline-end: 50%;
     inset-block-start: auto;
     inset-block-end: calc(100% + 0.15rem);
-    max-width: min(8.5rem, 42cqi);
+    max-width: 8.5rem;
     overflow: hidden;
     text-align: end;
     text-overflow: ellipsis;

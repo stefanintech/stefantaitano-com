@@ -364,7 +364,9 @@ const drawSpot = (frame, anchor, members) => {
     label: near
       ? `Near ${anchorLabel}: ${countLabel(count)} in ${listFormat.format(members.map(city => city.label))}`
       : `${anchorLabel}: ${countLabel(count)}`,
-    name: near ? `near ${anchor.city}` : anchor.city,
+    // Insets are too narrow for a "near …" prefix. The accessible label still
+    // says "Near" and lists every city on the bead.
+    name: near && frame.role !== 'inset' ? `near ${anchor.city}` : anchor.city,
     labelAnchor: frame.role === 'inset' ? 'above' : x > frame.width - LABEL_ROOM ? 'end' : 'start',
     left: `${((x / frame.width) * 100).toFixed(1)}%`,
     top: `${((y / frame.height) * 100).toFixed(1)}%`
@@ -420,7 +422,7 @@ export const buildCheckinMap = (cities, {centroids, outline}) => {
 
   const drawn = [...spots.values()].map(({frame, anchor, cities: members}) => drawSpot(frame, anchor, members));
   // Inset names sit above the bead. Every name except the rightmost one grows
-  // toward the start edge, so a long label ellipsizes before it covers the next.
+  // toward the start edge, away from the next label.
   const rightmostInset = new Map();
   for (const spot of drawn) {
     const frame = frames.find(item => item.id === spot.frame);
