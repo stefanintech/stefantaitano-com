@@ -31,6 +31,12 @@ Get the PR diff and check it against those rules. Flag:
 - Tailwind or token pipelines
 - test changes that loosen assertions
 
+## Security
+
+When the PR touches code, forms, scripts, third-party embeds, redirects, headers, or build/deploy config, include this in the same review on the final head. No extra round.
+
+- Exposed secrets (name `CHECKIN_REBUILD_HOOK_URL` and `CHECKIN_MAP_EXCLUDE` only; never print or commit their values), unsafe embeds or scripts, location or privacy leaks (check-in coordinates and EXIF), dependency risks, and missing security headers. Put findings under **Secrets and privacy**.
+
 ## Tests and build
 
 Run each command and report the pass or fail result of each:

@@ -79,6 +79,8 @@ Stefan approved this on 13 Nov 2026. Merge rules stay the same: Stefan approves 
 2. **Review once, at the end.** Run the separate pre-merge review only on the final head commit, and state that SHA. If the head changes after the review, re-review only that head.
 3. **Scale the review to the change.** Copy-only, alt-text-only, or data-only PRs (no code, layout, CSS, templates, tests, or config logic) skip the separate review agent. The builder self-checks the actual deploy preview, then runs tests, the build, and `npm run checkins:images -- --check`, and posts that proof with screenshots in the PR. Anything touching code, layout, CSS, templates, tests, or build config still gets the full separate review in custom_mode `review`.
 4. **Final verification** always looks at the real Netlify deploy preview, not just the diff.
+5. **Design first.** A visible layout, CSS, or UI change starts with a mockup or screenshot Stefan OKs before the build, the same way copy gets settled first. Plain copy, alt text, data, and check-ins are exempt.
+6. **Security review.** Code, forms, scripts, third-party embeds, redirects, headers, or build/deploy config get a defensive security pass inside that same final review: exposed secrets (name `CHECKIN_REBUILD_HOOK_URL` and `CHECKIN_MAP_EXCLUDE` only; never print or commit their values), unsafe embeds or scripts, location or privacy leaks (check-in coordinates and EXIF), dependency risks, and missing security headers. Findings go in the PR. No extra review round.
 
 ---
 
