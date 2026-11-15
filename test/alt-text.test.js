@@ -31,13 +31,13 @@ describe('alt text', () => {
     ]);
   });
 
-  it('allows an empty alt marked role="presentation", role="none", or aria-hidden', () => {
+  it('allows an empty alt marked role="presentation", role="none", or aria-hidden="true"', () => {
     const html = [
       '<img src="/ok/presentation.webp" alt="" role="presentation">',
       '<img src="/ok/none.webp" alt="" role="none">',
       '<img src="/ok/hidden.webp" alt="" aria-hidden="true">',
-      '<p role="presentation"><img src="/ok/wrapped.webp" alt=""></p>',
-      '<div aria-hidden="true"><img src="/ok/ancestor.webp" alt=""></div>'
+      '<div aria-hidden=" TRUE "><img src="/ok/ancestor.webp" alt=""></div>',
+      '<a href="/checkins/" aria-hidden="true"><img src="/ok/hidden-link.webp" alt=""></a>'
     ].join('');
     assert.deepEqual(altProblems(page(html)), []);
   });
@@ -47,6 +47,54 @@ describe('alt text', () => {
       <picture><source srcset="/img/stefan.avif"><img src="/img/stefan.jpeg" alt=""></picture>
     </button>`;
     assert.deepEqual(altProblems(page(html)), []);
+  });
+
+  it('allows an empty alt inside a button named by an existing aria-labelledby', () => {
+    const html = `<button type="button" aria-labelledby="avatar-name">
+      <img src="/img/stefan.jpeg" alt="">
+    </button>
+    <span id="avatar-name">Stefan Taitano</span>`;
+    assert.deepEqual(altProblems(page(html)), []);
+  });
+
+  it('fails a planted empty alt inside a labelled link', () => {
+    const html = [
+      '<a href="/p/" aria-label="Read more"><div><img src="/hero.webp" alt=""></div></a>',
+      '<button aria-label="Outer"><a href="/p/" aria-label="Inner"><img src="/planted/nested-link.webp" alt=""></a></button>'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/hero.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/nested-link.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('fails a planted aria-labelledby that points at a missing id or empty text', () => {
+    const html = [
+      '<button aria-labelledby="nope"><img src="/planted/missing-id.webp" alt=""></button>',
+      '<button aria-labelledby="blank"><span id="blank"> &nbsp; </span><img src="/planted/blank-name.webp" alt=""></button>'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/missing-id.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/blank-name.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('fails a planted empty or bare aria-hidden', () => {
+    const html = [
+      '<div aria-hidden=""><img src="/planted/empty-hidden.webp" alt=""></div>',
+      '<img src="/planted/bare-hidden.webp" alt="" aria-hidden>'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/empty-hidden.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/bare-hidden.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('fails a planted presentation role on a parent', () => {
+    const html = '<section role="presentation"><figure><img src="/planted/parent-role.webp" alt=""></figure></section>';
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/parent-role.webp', reason: 'empty alt is not decorative'}
+    ]);
   });
 
   it('does not treat a labelled div as the links-page pattern', () => {
