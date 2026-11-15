@@ -1,7 +1,7 @@
 const storageKey = 'theme-preference';
 const themeColors = {
-  dark: '{{ meta.themeLight }}',
-  light: '{{ meta.themeDark }}'
+  dark: '{{ meta.themeDark }}',
+  light: '{{ meta.themeLight }}'
 };
 
 const theme = {
@@ -66,10 +66,12 @@ function reflectPreference() {
   document.firstElementChild.setAttribute('data-theme', theme.value);
 }
 
+// Both media-scoped tags get the chosen colour, so a site theme that differs from the OS one still wins.
 function updateMetaThemeColor() {
-  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
   const newColor = theme.value === 'dark' ? themeColors.dark : themeColors.light;
-  metaThemeColor.setAttribute('content', newColor);
+  document.querySelectorAll('meta[name="theme-color"]').forEach(meta => {
+    meta.setAttribute('content', newColor);
+  });
 }
 
 // set early so no page flashes / CSS is made aware

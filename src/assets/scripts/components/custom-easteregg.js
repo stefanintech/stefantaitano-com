@@ -47,7 +47,8 @@ class customEasteregg extends HTMLElement {
       confetti({
         shapes: [customShape],
         scalar,
-        particleCount: this.particleCount
+        particleCount: this.particleCount,
+        disableForReducedMotion: true
       });
     });
   }
