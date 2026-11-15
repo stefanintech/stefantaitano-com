@@ -1,5 +1,6 @@
 import Image from '@11ty/eleventy-img';
 import path from 'node:path';
+import {IMAGE_CACHE_DIR, trackFilename} from '../utils/image-cache.js';
 
 const stringifyAttributes = attributeMap => {
   return Object.entries(attributeMap)
@@ -38,16 +39,18 @@ const processImage = async options => {
     src = `./src${src}`;
   }
 
+  // These filenames have no content hash, so each version of a source gets its own cache folder.
+  // Otherwise an edited image with the same name would reuse the old encode.
   const metadata = await Image(src, {
     widths: [...widths],
     formats: [...formats],
     urlPath: '/assets/images/',
-    outputDir: './dist/assets/images/',
-    filenameFormat: (id, src, width, format, _options) => {
+    outputDir: path.join(IMAGE_CACHE_DIR, 'assets-images', Image.getHash(src, {})),
+    filenameFormat: trackFilename((id, src, width, format) => {
       const extension = path.extname(src);
       const name = path.basename(src, extension);
       return `${name}-${width}w.${format}`;
-    }
+    })
   });
 
   const lowsrc = metadata.jpeg[metadata.jpeg.length - 1];

@@ -30,6 +30,7 @@ import filters from './src/_config/filters.js';
 import plugins from './src/_config/plugins.js';
 import shortcodes from './src/_config/shortcodes.js';
 import {buildCheckinCities, buildCheckinMap, checkinAnchor, loadExclusions} from './src/_config/utils/checkin-map.js';
+import {IMAGE_CACHE_DIR, copyCachedImages, trackFilename} from './src/_config/utils/image-cache.js';
 import {themeLight} from './src/_data/meta.js';
 
 const require = createRequire(import.meta.url);
@@ -92,8 +93,10 @@ export default async function (eleventyConfig) {
       ...defaultFormatHooks,
       jpeg: jpegOnLight
     },
+    // Written to the cache and copied to dist/img/ after the build (src/_config/utils/image-cache.js).
     urlPath: '/img/',
-    outputDir: './dist/img/',
+    outputDir: IMAGE_CACHE_DIR,
+    filenameFormat: trackFilename(),
     htmlOptions: {
       imgAttributes: {
         loading: 'lazy',
@@ -137,6 +140,7 @@ export default async function (eleventyConfig) {
 
   // --------------------- Events: after build
   eleventyConfig.on('eleventy.after', events.svgToPng);
+  eleventyConfig.on('eleventy.after', copyCachedImages);
 
   // --------------------- Passthrough File Copy
 
