@@ -5,6 +5,8 @@ import {existsSync, readFileSync, readdirSync, statSync} from 'node:fs';
 import path from 'node:path';
 import {describe, it} from 'node:test';
 import {fileURLToPath} from 'node:url';
+import {assertAltText} from './checks/alt-text.js';
+import {futureCheckinLeaks, readCheckinEntries} from './checks/checkin-privacy.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -315,6 +317,21 @@ describe('built site', () => {
     assert.match(html, /<figure[^>]*class="checkins-map"/, 'check-ins page has no map');
     assert.match(html, /<circle[^>]*class="checkins-map__bead"/, 'check-ins map rendered no city beads');
     assert.match(html, /<li[^>]*class="checkins-city"/, 'check-ins page rendered no cities');
+  });
+
+  it('gives every image an alt, or marks an empty alt as decorative', () => {
+    const pages = htmlFiles().map(file => ({page: urlForFile(file), html: readFileSync(file, 'utf8')}));
+    assert.ok(pages.length > 0, 'dist/ has no HTML pages');
+    assertAltText(pages);
+  });
+
+  it('leaves check-ins with a future publishAfter out of the build', () => {
+    const entries = readCheckinEntries(path.join(ROOT, 'src/checkins'));
+    assert.ok(entries.length > 0, 'no check-ins were read');
+    const files = walk(DIST)
+      .filter(file => /\.(html|xml|json|txt|svg|md)$/i.test(file))
+      .map(file => ({file: urlForFile(file), text: readFileSync(file, 'utf8')}));
+    assert.deepEqual(futureCheckinLeaks({entries, files}), []);
   });
 
   it('keeps check-in coordinates and secret env values out of the HTML', () => {
