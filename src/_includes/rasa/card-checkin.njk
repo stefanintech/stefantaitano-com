@@ -2,9 +2,7 @@
 {%- set c = checkin.data -%}
 {%- set href = "/checkins/#" + (checkin | checkinAnchor) -%}
 {#- Thumbnail column in site.css: clamp(6.5rem, 28vw, 9rem). -#}
-{%- set figureSizes = "(min-width: 32.2rem) 9rem, (min-width: 23.2rem) 28vw, 6.5rem" -%}
-{%- set figureEager = false -%}
-<article class="rasa-card rasa-card--checkin">
+{%- set figureSizes = "(min-width: 32.2rem) 9rem, (min-width: 23.2rem) 28vw, 6.5rem" -%}<article class="rasa-card rasa-card--checkin">
   <p class="rasa-card__type">Checked in</p>
   {%- if c.image %}
   {#- Same target as the label; hidden from the tab order and screen readers so the place is announced once. -#}

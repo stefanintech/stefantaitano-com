@@ -1,7 +1,7 @@
 {#- Day and night images for `checkin`. The site stylesheet shows the day image unless the theme is dark.
-    Callers set `figureSizes` to the rendered width of the image, and `figureEager` to true for the one
-    above-the-fold LCP image. eleventy-img builds the srcset from `eleventy:widths` and writes width and
-    height from its largest output, so the 3:2 box is reserved before the file loads. -#}
+    Callers set `figureSizes` to the rendered width of the image. eleventy-img builds the srcset from
+    `eleventy:widths` and writes width and height from its largest output, so the 3:2 box is reserved
+    before the file loads. Both variants stay lazy, so the hidden one is never fetched. -#}
 {%- set image = checkin.data.image -%}
 {%- if image %}
 <figure class="checkin-figure">
@@ -12,12 +12,7 @@
     src="/assets/images/checkins/{{ image[variant] }}"
     alt="{{ image.alt }}"
     eleventy:widths="320,480,800,1200"
-    {%- if figureEager %}
-    loading="eager"
-    fetchpriority="high"
-    {%- else %}
     loading="lazy"
-    {%- endif %}
     decoding="async"
     sizes="{{ figureSizes or '100vw' }}"
   >

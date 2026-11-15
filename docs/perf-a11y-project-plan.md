@@ -2,7 +2,7 @@
 
 Fixes from the November 2026 performance and accessibility audit, one PR per phase.
 
-**Status:** Phase 1 (responsive check-in images) in progress. Phases 2–5 not started. Phase 3 and 5 need Stefan's OK before they start.
+**Status:** Phase 1 (responsive check-in images) in progress. It misses its `/checkins/` mobile transfer target, and Stefan decides whether that's OK. Finding #3 (eager first tile) was dropped after review: in production no tile is above the fold. Phases 2–5 not started. Phases 3 and 5 need Stefan's OK before they start.
 
 **Outcome:** `/` and `/checkins/` stop shipping 1600px check-in images into 144px thumbnails, builds stop re-encoding images that haven't changed, and the small script, font, and accessibility gaps from the audit are closed. Every page keeps its content and looks the same unless a phase says otherwise and has a mockup.
 
@@ -49,6 +49,8 @@ Perf / A11y / Best Practices / SEO. LCP, CLS, TBT, and transfer size are from th
 | `/projects/` | desktop | 100 | 100 | 100 | 100 | 0.3 s | 0 | 0 ms | 64 KiB | 7 |
 | `/privacy/` | mobile | 100 | 100 | 100 | 100 | 1.5 s | 0 | 0 ms | 63 KiB | 7 |
 | `/privacy/` | desktop | 100 | 100 | 100 | 100 | 0.4 s | 0 | 0 ms | 63 KiB | 7 |
+
+**The `/checkins/` rows are not production.** The audit built `dist/` without `CHECKIN_MAP_EXCLUDE`, and a build without it leaves out the city map and city list. In production those sit above the tiles. With the map present (CI's placeholder value), `/checkins/` measured mobile Perf 99, LCP 2.10 s, 381 KiB and desktop Perf 100, LCP 0.46 s, 687 KiB. The LCP element is the intro paragraph, not a tile. Phase 1 compares against those numbers.
 
 **Note on "one check-in page":** check-ins have no pages of their own. `src/checkins/checkins.json` sets `permalink: false`, and each check-in is an anchor on `/checkins/`. `/chess/` was tested in that slot because it's the one page with a third-party embed.
 
@@ -121,7 +123,7 @@ Extend these. Don't add a second image pipeline, a second layout, or a second CS
 - No content removed. Images look the same unless a phase says otherwise and has a mockup.
 - Never change, re-encode, rename, or delete a committed check-in WebP. Responsive sizes are build output only.
 - Don't touch the `publishAfter` gate, the rebuild hook, `CHECKIN_MAP_EXCLUDE` handling, `package.json`, the lockfile, workflows, `netlify.toml`, or headers unless the phase says so and Stefan has OK'd it. Never print `CHECKIN_REBUILD_HOOK_URL` or `CHECKIN_MAP_EXCLUDE`.
-- Measure before and after with the same setup: Lighthouse 12.8.2 mobile and desktop on a served `dist/`. Simulated LCP moves run to run, so take the median of three runs when a number is close.
+- Measure before and after with the same setup: Lighthouse 12.8.2 mobile and desktop on a served `dist/` built with CI's placeholder `CHECKIN_MAP_EXCLUDE` (read from the workflow file, never printed) so `/checkins/` matches production, or on the PR's deploy preview. Simulated LCP moves run to run, so take the median of three runs.
 - Every phase that touches templates, CSS, scripts, or config gets the single pre-merge review pass in `AGENTS.md`, including the security pass.
 
 ---
@@ -145,12 +147,11 @@ Extend these. Don't add a second image pipeline, a second layout, or a second CS
 - **Estimated gain:** About 8–9 s per local build, likely more on Netlify. Visitors see no change.
 - **Effort / risk:** S–M / low–medium. `.cache/img` will grow over time unless something prunes it. **Needs Stefan's OK:** **yes**.
 
-### 3. `/checkins/` LCP is a lazy-loaded image
+### 3. `/checkins/` LCP is a lazy-loaded image — **dropped**
 
-- **What:** The first tile is the LCP element but has `loading="lazy"`, so the browser finds it late (`lcp-lazy-loaded`, `lcp-discovery-insight`).
-- **Fix (after #1):** For the first tile only, use `loading="eager"` and `fetchpriority="high"`. Hidden `display: none` images still download when eager, so this fetches both the day and night images for that one tile (about 15–30 KiB after #1).
-- **Estimated gain:** About 0.3–0.5 s mobile LCP on `/checkins/` (estimate).
-- **Effort / risk:** S / low. **Needs Stefan's OK:** no.
+- **What the audit saw:** The first tile was the LCP element but had `loading="lazy"`, so the browser found it late (`lcp-lazy-loaded`, `lcp-discovery-insight`).
+- **Why it's dropped:** That came from a build without the city map. In production the map (about 685px) and the city list (about 417px) come first, so the first tile starts about 1635px down at 1440×900 and about 1820px down at 390×844. With the map present, the LCP element is the intro paragraph. Making the first tile eager would only fetch two offscreen images (day and night, since `display: none` doesn't stop an eager fetch) at high priority on every visit. Phase 1 tried it, and the review caught it.
+- **If it comes back:** only with a measurement on the real page that shows a tile is the LCP element.
 
 ### 4. Caveat font: 51 KB preloaded on every page, and a small swap shift
 
@@ -218,36 +219,40 @@ Extend these. Don't add a second image pipeline, a second layout, or a second CS
 
 Each phase is one PR and ships on its own. Phase 5 is stretch.
 
-### Phase 1 — Responsive check-in images (#1, #3) — **in progress**
+### Phase 1 — Responsive check-in images (#1) — **in progress**
 
 **Build**
 
-- `checkin-figure.njk`: drop `width="1600"` and `height="1067"`, add `eleventy:widths="320,480,800,1200"`, and take `sizes` (`figureSizes`) and eager loading (`figureEager`) from the caller. eleventy-img writes `width="1200" height="800"` back from its output, which is the same 3:2 box.
+- `checkin-figure.njk`: drop `width="1600"` and `height="1067"`, add `eleventy:widths="320,480,800,1200"`, and take `sizes` (`figureSizes`) from the caller. eleventy-img writes `width="1200" height="800"` back from its output, which is the same 3:2 box. Both variants stay `loading="lazy"`.
 - `card-checkin.njk` (home stream): `sizes="(min-width: 32.2rem) 9rem, (min-width: 23.2rem) 28vw, 6.5rem"`, matching `clamp(6.5rem, 28vw, 9rem)`.
-- `checkin-tiles.njk` (`/checkins/`): `sizes="(min-width: 74.5rem) 22rem, (min-width: 59rem) 31vw, (min-width: 39.75rem) 47vw, 100vw"`, worked out from `main` (`min(100vw - 2.5rem, 72rem)`) and the `minmax(18rem, 1fr)` grid. The first tile with an image gets `loading="eager" fetchpriority="high"`; every other tile stays lazy.
+- `checkin-tiles.njk` (`/checkins/`): `sizes="(min-width: 74.5rem) 21.7rem, (min-width: 59rem) calc(33.33vw - 3.1rem), (min-width: 39.75rem) calc(50vw - 3.3rem), calc(100vw - 3.9rem)"`. This comes from `main` (`min(100vw - 2.5rem, 72rem)`), the `minmax(18rem, 1fr)` grid with a 1.25rem gap, and the tile's 0.75rem padding and 1px border. Each value comes out a pixel or two over the real slot, never under.
 - Alt stays on each `<img>` from `image.alt`. The hidden variant is `display: none`, so it's out of the accessibility tree and the alt isn't read twice.
 
-**Verify first:** every `srcset` on `/` and `/checkins/` has four candidates, `sizes` matches the caller, `width`/`height` are present, and only two `<img>` (the first tile's day and night) are eager.
+**Verify first:** every `srcset` on `/` and `/checkins/` has four candidates, `sizes` matches the caller, `width`/`height` are present, and every check-in `<img>` is lazy (no `fetchpriority`).
 
 **Gotchas**
 
 - A plain numeric `width` on an `<img>` overrides `eleventy:widths`. Don't add it back.
-- The eager tile downloads both variants, because `display: none` doesn't stop an eager fetch. The `site.css` comment about lazy loading still holds for every other image.
-- The audit's guess of `16rem` for tiles was low. Three columns at the 72rem cap are about 21.6rem wide.
-- `npm run smoke` needs `CHECKIN_MAP_EXCLUDE` set (CI uses a placeholder) or the map test fails on a local build. That's by design, not this phase.
+- Keep every check-in image lazy. An eager image downloads even when `display: none`, so the hidden day or night variant would be fetched too. The `site.css` comment depends on this.
+- Build with CI's placeholder `CHECKIN_MAP_EXCLUDE` before measuring `/checkins/`. Without it the map and city list drop out, the tiles move to the top, and the numbers stop matching production. That's how finding #3 went wrong.
+- `npm run smoke` also needs that placeholder, or its map test fails on a local build.
 
 **Done when** `/` mobile Perf is 100, `/` and `/checkins/` transfer is down by at least 60%, CLS stays 0, the images look the same, and `npm run checkins:images -- --check` passes.
 
-**Result (2026-11-15, same local setup as the audit):**
+**Result (2026-11-15).** Lighthouse 12.8.2 on a local `dist/` built with CI's placeholder `CHECKIN_MAP_EXCLUDE`, so the map renders. Before is the `2a6bbb6` templates; after is this phase. Perf scores are 3 runs; LCP and transfer are medians of 3.
 
 | Page | Mode | Perf before → after | LCP before → after | Transfer before → after |
 |---|---|---|---|---|
-| `/` | mobile | 98 → 100 | 2.40 s → 1.50 s (median of 3) | 312 → 101 KiB (−68%) |
-| `/` | desktop | 100 → 100 | 0.40 s → 0.38 s | 429 → 117 KiB (−73%) |
-| `/checkins/` | mobile | 99 → 100 | 1.95 s → 1.80 s (median of 3) | 593 → 338 KiB (−43%) |
-| `/checkins/` | desktop | 100 → 100 | 0.42 s → 0.42 s | 679 → 228 KiB (−66%) |
+| `/` | mobile | 98/100/100 → 100/100/100 | 1.80 s → 1.50 s | 312 → 101 KiB (−68%) |
+| `/` | desktop | 100 → 100 | 0.58 s → 0.40 s | 429 → 117 KiB (−73%) |
+| `/checkins/` | mobile | 99 → 99 | 2.10 s → 2.03 s | 381 → 218 KiB (**−43%**) |
+| `/checkins/` | desktop | 100 → 100 | 0.46 s → 0.46 s | 687 → 228 KiB (−67%) |
 
-`/checkins/` mobile misses the 60% target. On a 412px, 1.75× phone a tile is full width, so the browser correctly picks the 800w files (Lighthouse now estimates only 48 KiB left to save). The LCP image's load delay dropped from about 0.9–1.1 s to about 0.5 s; most of what's left is render delay.
+CLS is 0 in every run. Accessibility is 100 in every run.
+
+**`/checkins/` mobile misses the 60% target (−43%).** With the map present, the phone loads only the first five tiles' images (the lazy-load margin). Each tile is full width on a 412px, 1.75× screen, so the browser correctly picks the 800w files. Lighthouse estimates 31 KiB left to save. Getting under 60% would mean lower image quality or fewer images, which this plan rules out. Stefan decides whether to accept the miss or change the target.
+
+**`/checkins/` mobile stays at 99, and images aren't why.** The LCP element is the intro paragraph (TTFB about 450 ms, render delay about 1.6 s, no image in the path). That's worth a look in a later phase, not this one.
 
 ### Phase 2 — Small script and accessibility fixes (#5, #6, #7, #8, `/resume/` new-tab cue)
 
