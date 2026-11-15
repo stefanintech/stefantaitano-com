@@ -5,7 +5,10 @@
  */
 const RADIANS = Math.PI / 180;
 
-/** Raw Albers x/y for one point, before the viewBox fit. */
+/**
+ * Raw Albers x/y for one point, before the viewBox fit.
+ * @param {{ parallels: number[], origin: number[] }} spec
+ */
 export const albers = ({parallels: [south, north], origin: [originLon, originLat]}) => {
   const phi1 = south * RADIANS;
   const phi2 = north * RADIANS;

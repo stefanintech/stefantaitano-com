@@ -490,7 +490,7 @@ export default async function () {
     console.error('[lichess]', message);
   }
 
-  let experimentGames = [];
+  let experimentGames;
   try {
     const since = Math.max(EXPERIMENT_START_MS, GAMES_TIMESTAMP_MIN);
     const until = Math.max(experimentUntil(), since);

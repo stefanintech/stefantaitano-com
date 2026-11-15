@@ -36,6 +36,10 @@ const readSource = async file => {
 const polygonsOf = geometry =>
   geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.type === 'MultiPolygon' ? geometry.coordinates : [];
 
+/**
+ * @param {{ features: Array<{ properties: { adm0_a3?: string, postal?: string, name?: string }, geometry: any }> }} geojson
+ * @param {{ postal?: string, skip?: Set<string> }} filter
+ */
 const featuresFor = (geojson, {postal, skip}) =>
   geojson.features
     .filter(feature => feature.properties.adm0_a3 === 'USA')

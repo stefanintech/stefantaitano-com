@@ -62,14 +62,17 @@ export const buildHomeStream = ({posts = [], nowEntries = [], checkins = []}, li
   ].map(entry => ({...entry, day: utcDay(entry.item.date)}));
 
   const sorted = items.sort(
-    (a, b) => b.day.localeCompare(a.day) || new Date(b.item.date) - new Date(a.item.date)
+    (a, b) => b.day.localeCompare(a.day) || new Date(b.item.date).getTime() - new Date(a.item.date).getTime()
   );
   return {items: sorted.slice(0, limit), capped: sorted.length > limit};
 };
 
-/** The home stream. Check-ins come only from the filtered check-ins collection. */
+/**
+ * The home stream. Check-ins come only from the filtered check-ins collection.
+ * @param {{ posts?: typeof getAllPosts, nowEntries?: typeof getNowEntries, checkins?: typeof getCheckins, limit?: number }} [options]
+ */
 export const createHomeStreamCollection =
-  ({posts = getAllPosts, nowEntries = getNowEntries, checkins = getCheckins, limit} = {}) =>
+  ({posts = getAllPosts, nowEntries = getNowEntries, checkins = getCheckins, limit} = /** @type {any} */ ({})) =>
   async collection =>
     buildHomeStream(
       {posts: posts(collection), nowEntries: nowEntries(collection), checkins: await checkins(collection)},

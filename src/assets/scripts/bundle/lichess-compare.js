@@ -392,7 +392,7 @@ async function visitorFromToken(token) {
 
   const username = account.username;
   const rapid = account.perfs?.rapid ?? {};
-  let points = [];
+  let points;
   try {
     points = parseRapidHistory(await fetchJson(`/api/user/${encodeURIComponent(username)}/rating-history`));
   } catch {
@@ -447,7 +447,7 @@ async function previewVisitor(name) {
   const username = name || 'ask17';
   const user = await fetchJson(`/api/user/${encodeURIComponent(username)}`);
   const rapid = user.perfs?.rapid ?? {};
-  let points = [];
+  let points;
   try {
     points = parseRapidHistory(await fetchJson(`/api/user/${encodeURIComponent(username)}/rating-history`));
   } catch {

@@ -131,7 +131,7 @@ export const validateCheckins = (dir = CHECKINS_DIR) => {
   if (!fs.existsSync(dir)) return new Map();
 
   const files = fs
-    .readdirSync(dir, {recursive: true})
+    .readdirSync(dir, {recursive: true, encoding: 'utf8'})
     .filter(file => file.endsWith('.md'))
     .map(file => path.join(dir, file));
 
@@ -197,7 +197,7 @@ export const validateCheckinImages = async (dir = IMAGES_DIR) => {
   if (!fs.existsSync(dir)) return;
 
   const files = fs
-    .readdirSync(dir, {recursive: true})
+    .readdirSync(dir, {recursive: true, encoding: 'utf8'})
     .map(file => path.join(dir, file))
     .filter(file => fs.statSync(file).isFile() && path.basename(file) !== '.gitkeep');
 
