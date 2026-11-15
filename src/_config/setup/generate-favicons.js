@@ -32,7 +32,8 @@ async function createFavicons() {
 
   // ICO icon
   const iconSharp = sharp(svgBuffer);
-  await sharpsToIco([iconSharp], `${outputDir}/favicon.ico`, {sizes: [32]});
+  // sharp-ico's types require resizeOptions. Omitting it keeps the runtime default.
+  await sharpsToIco([iconSharp], `${outputDir}/favicon.ico`, /** @type {import('sharp-ico').IcoOptions} */ ({sizes: [32]}));
 
   console.log('All favicons generated.');
 }

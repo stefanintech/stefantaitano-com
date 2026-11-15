@@ -1,0 +1,28 @@
+// Not named tsconfig.json. esbuild auto-loads that name and would emit "use strict"
+// into every bundle, because strict turns on alwaysStrict and TypeScript 7
+// no longer lets that flag be turned off.
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": true,
+    // The Eleventy plugins and image libraries ship no declaration files.
+    // Leaving implicit any off keeps checkJs on our own code without a
+    // types package for every import, and without converting files to TypeScript.
+    "noImplicitAny": false,
+    // JSON from Lichess and the map outline is checked by the build, not by
+    // narrowing every field. strictNullChecks on that JS is a rewrite.
+    "strictNullChecks": false,
+    // Catch bindings stay as they are. Call sites already read error.message.
+    "useUnknownInCatchVariables": false,
+    "skipLibCheck": true,
+    "types": ["node"],
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["eleventy.config.js", "src/_config/**/*.js", "src/_data/**/*.js"],
+  "exclude": ["node_modules", "dist", "src/_includes"]
+}

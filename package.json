@@ -21,6 +21,10 @@
     "build": "npm run clean && npm run test:checkins && npm run build:11ty",
     "test": "npm run test:checkins",
     "test:checkins": "node --test ./test/checkin-map.test.js ./test/checkin-rebuild.test.js ./test/home-stream.test.js",
+    "lint": "eslint . && node ./src/_config/setup/lint-frontmatter.js",
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
+    "smoke": "node --test ./test/smoke.test.js",
+    "check": "npm run lint && npm run typecheck && npm run test && npm run build && npm run checkins:images -- --check && npm run smoke",
     "pa11y:build": "npm run clean && cross-env ELEVENTY_ENV=test eleventy",
     "pa11y:test": "sleep 3 && pa11y-ci --config ./dist/pa11y.json",
     "pa11y:serve": "ELEVENTY_ENV=test eleventy --serve --ignore-initial",
@@ -43,13 +47,17 @@
     "lite-youtube-embed": "^0.3.4"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@toycode/markdown-it-class": "^1.2.4",
+    "@types/node": "^26.6.6",
     "cross-env": "^10.1.0",
     "cssnano": "^7.1.2",
     "dayjs": "^1.11.19",
     "dotenv": "^17.3.1",
     "esbuild": "^0.27.3",
+    "eslint": "^10.15.0",
     "fast-glob": "^3.3.3",
+    "globals": "^17.14.0",
     "html-minifier-terser": "^7.2.0",
     "js-yaml": "^4.1.1",
     "markdown-it": "^14.1.1",
@@ -72,6 +80,7 @@
     "sharp": "^0.34.5",
     "sharp-ico": "^0.1.5",
     "slugify": "^1.6.6",
-    "svgo": "^4.0.0"
+    "svgo": "^4.0.0",
+    "typescript": "^7.0.2"
   }
 }

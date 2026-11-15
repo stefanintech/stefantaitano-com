@@ -18,7 +18,8 @@ export const markdownLib = markdownIt({
 })
   .disable('code')
   .use(markdownItAttrs)
-  .use(markdownItPrism, {
+  // NodeNext reads this package's default export as a module object, not the plugin function.
+  .use(/** @type {any} */ (markdownItPrism), {
     defaultLanguage: 'plaintext'
   })
   .use(markdownItAnchor, {

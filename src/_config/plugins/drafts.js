@@ -24,7 +24,8 @@ export const drafts = eleventyConfig => {
   eleventyConfig.on('eleventy.before', ({runMode}) => {
     // Set the environment variable
     if (runMode === 'serve' || runMode === 'watch') {
-      process.env.BUILD_DRAFTS = true;
+      // Node stores env values as strings. Readers only test truthiness.
+      process.env.BUILD_DRAFTS = 'true';
     }
   });
 };
