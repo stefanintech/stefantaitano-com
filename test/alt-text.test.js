@@ -113,7 +113,7 @@ describe('alt text', () => {
       '<p aria-hidden="true">x<span><div><img src="/planted/p-span-div.webp" alt=""></div></span>',
       '<dl><dt aria-hidden="true">term<dd><img src="/planted/after-dt.webp" alt=""></dl>',
       '<dl><dd aria-hidden="true">def<dt><img src="/planted/after-dd.webp" alt=""></dl>',
-      '<select><option aria-hidden="true">a<option><img src="/planted/after-option.webp" alt=""></select>',
+      '<select><option aria-hidden="true">a<option><img src="/planted/in-select.webp" alt=""></select><img src="/planted/after-option.webp" alt="">',
       '<table><tr aria-hidden="true"><td>a<tr><td><img src="/planted/after-tr.webp" alt=""></table>',
       '<table><tr><td aria-hidden="true">a<td><img src="/planted/after-td.webp" alt=""></table>',
       '<table><tr><th aria-hidden="true">a<th><img src="/planted/after-th.webp" alt=""></table>'
@@ -136,6 +136,88 @@ describe('alt text', () => {
     const html = [
       '<ul><li aria-hidden="true"><img src="/ok/in-li.webp" alt=""></li><li><img src="/ok/next.webp" alt="Next"></li></ul>',
       '<p aria-hidden="true"><img src="/ok/in-p.webp" alt=""></p><div><img src="/ok/after.webp" alt="After"></div>'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), []);
+  });
+
+  it('fails a planted empty alt after a block end tag that closed an open p, li, or cell', () => {
+    const html = [
+      '<div aria-hidden="true"><p>Note</div><img src="/planted/closed-div.webp" alt="">',
+      '<section aria-hidden="true"><p>Body</section><img src="/planted/closed-section.webp" alt="">',
+      '<ul aria-hidden="true"><li>a<li>b</ul><img src="/planted/closed-ul.webp" alt="">',
+      '<dl aria-hidden="true"><dd>a</dl><img src="/planted/closed-dl.webp" alt="">',
+      '<table aria-hidden="true"><tr><td>a</table><img src="/planted/closed-table.webp" alt="">',
+      '<figure aria-hidden="true"><p>cap</figure><img src="/planted/closed-figure.webp" alt="">',
+      '<table><tr><td aria-hidden="true"><p>a<td><img src="/planted/td-p.webp" alt=""></table>',
+      '<table><tr aria-hidden="true"><td><p>a<tr><td><img src="/planted/tr-p.webp" alt=""></table>',
+      '<table><tr><td aria-hidden="true"><li>a<td><img src="/planted/td-li.webp" alt=""></table>',
+      '<table><tr><td aria-hidden="true"><dd>a<td><img src="/planted/td-dd.webp" alt=""></table>',
+      '<table><tr><th aria-hidden="true"><dt>a<th><img src="/planted/th-dt.webp" alt=""></table>'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/closed-div.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/closed-section.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/closed-ul.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/closed-dl.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/closed-table.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/closed-figure.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/td-p.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/tr-p.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/td-li.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/td-dd.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/th-dt.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('keeps an empty alt hidden when it is actually inside the cell', () => {
+    const html = '<table><tr><td aria-hidden="true"><img src="/ok/in-td.webp" alt=""></td></tr></table>';
+    assert.deepEqual(altProblems(page(html)), []);
+  });
+
+  it('fails a planted alt that is only named whitespace references', () => {
+    const html = '<img src="/planted/tab-newline.webp" alt="&Tab;&NewLine;">';
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/tab-newline.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('fails a planted character reference that omits the semicolon', () => {
+    const html = [
+      '<img src="/planted/nbsp-nosemi.webp" alt="&nbsp">',
+      '<img src="/planted/num-nosemi.webp" alt="&#32">'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/nbsp-nosemi.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/num-nosemi.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('keeps the first alt when the attribute is duplicated', () => {
+    const html = [
+      '<img alt="" alt="Text" src="/planted/dup-empty.webp">',
+      '<img alt="Text" alt="" src="/ok/dup-text.webp">'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/dup-empty.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('still checks an image after a stray quote in an unquoted attribute', () => {
+    const html = [
+      `<div title=it's><img src="/planted/after-quote.webp" alt=""></div>`,
+      `<img title=it's src="/ok/apostrophe.webp" alt="A clay glacier">`
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/after-quote.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('ignores images the browser does not render', () => {
+    const html = [
+      '<template><img src="/planted/in-template.webp"></template>',
+      '<textarea><img src="/planted/in-textarea.webp"></textarea>',
+      '<title><img src="/planted/in-title.webp"></title>',
+      '<img src="/ok/after-raw.webp" alt="Shown">'
     ].join('');
     assert.deepEqual(altProblems(page(html)), []);
   });
