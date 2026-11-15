@@ -2,7 +2,7 @@
 
 Fixes from the November 2026 performance and accessibility audit, one PR per phase.
 
-**Status:** Phase 1 (responsive check-in images) done in #99, merged as `72bb196`. Stefan accepted the −43% `/checkins/` mobile transfer cut in place of the 60% target. Finding #3 (eager first tile) was dropped after review: in production no tile is above the fold. Phase 2 (script and accessibility fixes) in progress, approved 2026-11-15. Phases 3–5 not started. Phases 3 and 5 need Stefan's OK before they start.
+**Status:** Phase 1 (responsive check-in images) done in #99, merged as `72bb196`. Stefan accepted the −43% `/checkins/` mobile transfer cut in place of the 60% target. Finding #3 (eager first tile) was dropped after review: in production no tile is above the fold. Phase 2 (script and accessibility fixes) done in #100, merged as `9594c97`. Phase 3 (build image cache) in progress, approved by Stefan 2026-11-15. Phases 4–5 not started. Phase 5 needs Stefan's OK before it starts.
 
 **Outcome:** `/` and `/checkins/` stop shipping 1600px check-in images into 144px thumbnails, builds stop re-encoding images that haven't changed, and the small script, font, and accessibility gaps from the audit are closed. Every page keeps its content and looks the same unless a phase says otherwise and has a mockup.
 
@@ -254,7 +254,7 @@ CLS is 0 in every run. Accessibility is 100 in every run.
 
 **`/checkins/` mobile stays at 99, and images aren't why.** The LCP element is the intro paragraph (TTFB about 450 ms, render delay about 1.6 s, no image in the path). That's worth a look in a later phase, not this one.
 
-### Phase 2 — Small script and accessibility fixes (#5, #6, #7, #8, `/resume/` new-tab cue) — **in progress**
+### Phase 2 — Small script and accessibility fixes (#5, #6, #7, #8, `/resume/` new-tab cue) — **Done** (#100, `9594c97`)
 
 **Build:** Move `lichess-status` out of the head into the deferred bundle, fix the theme-color swap, add `disableForReducedMotion`, fix the heading levels in the two posts, add a visually hidden "(opens in new tab)" on the two `/resume/` links, and add one article to the pa11y paths with axe.
 
@@ -266,7 +266,7 @@ CLS is 0 in every run. Accessibility is 100 in every run.
 
 **Found while building.** axe runs only on the article paths (`meta.tests.pa11y.axePaths`) and on `/checkins/` (its own front matter). With axe on every path, 5 of 18 URLs fail on contrast issues that predate this phase: the `aria-hidden` arrows on `/` (17) and `/ai/` (7), the back arrow on `/links/`, the chart axis labels and the Lichess iframe ("frames should be tested") on `/chess/`, and red title text on the slides. Fixing them changes CSS, so they wait for a later phase with a mockup. pa11y's axe runner reports `heading-order` as a warning, not an error, so a new skipped heading level shows in the log but doesn't fail CI.
 
-### Phase 3 — Build image cache (#2) — **needs Stefan's OK**
+### Phase 3 — Build image cache (#2) — **in progress** (approved 2026-11-15)
 
 **Build:** Move eleventy-img output to `.cache/img` and pass it through to `/img/`; do the same for the shortcode output.
 
@@ -275,6 +275,18 @@ CLS is 0 in every run. Accessibility is 100 in every run.
 **Gotchas:** `.cache/img` grows; plan a prune. Hashed filenames make stale output unlikely but check the deploy preview's images.
 
 **Done when** a warm `npm run build` is about 5 s and a Netlify deploy log shows "(N cached)" close to N.
+
+**How it's built.** Both eleventy-img users write to `.cache/img/` instead of `dist/`: the transform at the top level, and the `{% image %}` shortcode under `.cache/img/assets-images/<source hash>/`. The shortcode's filenames have no hash (`name-650w.avif`), so the folder holds that, and an edited source can't reuse an old encode. A wrapped `filenameFormat` (`src/_config/utils/image-cache.js`) records every output the build uses. An `eleventy.after` step copies those files to their usual URLs under `dist/` and, on a full build, deletes everything else in `.cache/img`. That deletion is the prune, so the cache only ever holds the current build's images. Dev-server on-request images are dry runs and aren't recorded. No change to `package.json`, `netlify.toml`, or workflows: `netlify-plugin-cache` already saves and restores `.cache`. CI doesn't cache `.cache`, so CI builds stay cold, as they are today.
+
+**Result (2026-11-15, local, Node 22.15.1, CI's placeholder `CHECKIN_MAP_EXCLUDE`, Lichess data already cached).** 70 images, 336 output files, 15 MB in `.cache/img`.
+
+| Build | `npm run build` wall | Eleventy | eleventy-img |
+|---|---|---|---|
+| `main` (always cold) | — | 12.3–12.5 s | 70 optimized (26 cached) |
+| this phase, cold (`.cache/img` empty) | 15.0–15.3 s | 12.4–12.6 s | 70 optimized (26 cached) |
+| this phase, warm | 5.0–5.2 s | 2.4–2.5 s | 70 optimized (69 cached) |
+
+About 10 s (two-thirds) saved per warm build. The "26 cached" on a cold build is eleventy-img reusing images shared between pages within the same build. `dist/` matches `main` file for file and byte for byte, except the build timestamp in `feed.xml`. Still to confirm: a Netlify deploy log with "(69 cached)" on the second deploy after the cache is filled.
 
 ### Phase 4 — Font subset and fallback metrics (#4) — **mockup first**
 
