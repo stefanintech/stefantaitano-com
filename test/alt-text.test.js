@@ -212,9 +212,46 @@ describe('alt text', () => {
     ]);
   });
 
+  it('fails a planted image inside a template this site renders', () => {
+    const html = [
+      '<is-land><template data-island><img src="/planted/island.webp"></template></is-land>',
+      '<div><template shadowrootmode="open"><img src="/planted/shadow.webp" alt=""></template></div>'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/island.webp', reason: 'missing alt'},
+      {page: '/planted/', src: '/planted/shadow.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('keeps an empty alt hidden when the template host or island is hidden', () => {
+    const html = [
+      '<is-land aria-hidden="true"><template data-island><img src="/ok/hidden-island.webp" alt=""></template></is-land>',
+      '<div aria-hidden="true"><template shadowrootmode="open"><img src="/ok/hidden-shadow.webp" alt=""></template></div>'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), []);
+  });
+
+  it('fails a planted image inside noscript', () => {
+    const html = '<noscript><img src="/planted/noscript.webp"></noscript>';
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/noscript.webp', reason: 'missing alt'}
+    ]);
+  });
+
+  it('fails a planted input type="image" with a missing or empty alt', () => {
+    const html = [
+      '<input type="image" src="/planted/input-missing.webp">',
+      '<input type="IMAGE" src="/planted/input-empty.webp" alt="  ">',
+      '<input type="image" src="/ok/input.webp" alt="Search">'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/input-missing.webp', reason: 'missing alt'},
+      {page: '/planted/', src: '/planted/input-empty.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
   it('ignores images the browser does not render', () => {
     const html = [
-      '<template><img src="/planted/in-template.webp"></template>',
       '<textarea><img src="/planted/in-textarea.webp"></textarea>',
       '<title><img src="/planted/in-title.webp"></title>',
       '<img src="/ok/after-raw.webp" alt="Shown">'

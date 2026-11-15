@@ -1,15 +1,18 @@
 /**
  * Alt text on rendered <img> tags.
  *
- * The page is parsed with parse5, so the tree is the one a browser builds:
- * implied end tags, character references (with or without a semicolon),
- * duplicate attributes (the first wins), and quotes only where the HTML
- * tokenizer starts them. Images the parser never creates, including ones
- * written inside script, style, textarea, title, select, or template, are
- * not rendered and are not checked.
+ * The page is parsed with parse5 (scripting off, so noscript is HTML), so the
+ * tree matches a browser: implied end tags, character references (with or
+ * without a semicolon), duplicate attributes (the first wins), and quotes
+ * only where the HTML tokenizer starts them. Images the parser never creates,
+ * including ones written inside script, style, textarea, title, or select,
+ * are not checked. Template contents are checked, because this site renders
+ * them (is-land and declarative shadow roots). The template stays in the
+ * ancestor chain, so aria-hidden on the island or a host still counts.
  *
- * An image fails when the alt attribute is missing, or when the alt is empty
- * (or only whitespace) and the image is not explicitly decorative.
+ * An img, or an input type="image", fails when its alt attribute is missing,
+ * or when the alt is empty (or only whitespace) and it is not explicitly
+ * decorative.
  *
  * Empty alt is decorative when any of these is true:
  * - the img itself has role="presentation" or role="none". A parent role does
@@ -61,15 +64,24 @@ const textOf = node => {
 };
 
 /**
+ * Template contents live on a document fragment, not under the template.
+ * The fragment's host is the template, so ancestor walks can keep going.
+ * @type {WeakMap<object, {tagName?: string, parentNode?: unknown}>}
+ */
+const templateHosts = new WeakMap();
+
+/**
  * @param {{tagName?: string, parentNode?: {tagName?: string, parentNode?: unknown}|null}} element
  */
 const ancestorElements = element => {
   /** @type {{tagName: string, attrs?: {name: string, value: string}[]}[]} */
   const ancestors = [];
+  const seen = new Set();
   let parent = element.parentNode;
-  while (parent?.tagName) {
-    ancestors.push(parent);
-    parent = parent.parentNode;
+  while (parent && !seen.has(parent)) {
+    seen.add(parent);
+    if (parent.tagName) ancestors.push(parent);
+    parent = parent.parentNode ?? templateHosts.get(parent);
   }
   return ancestors;
 };
@@ -115,14 +127,23 @@ const emptyAltIsDecorative = (element, idText) => {
   return namedButtonOwnsImage(element, idText);
 };
 
+/** An img, or an input whose type is image (any case, trimmed). */
+const isImageControl = element =>
+  element.tagName === 'img' ||
+  (element.tagName === 'input' && (attr(element, 'type') ?? '').trim().toLowerCase() === 'image');
+
 /**
- * @param {{childNodes?: unknown[], tagName?: string, namespaceURI?: string, attrs?: {name: string, value: string}[]}} node
- * @param {(element: {tagName: string, attrs: {name: string, value: string}[], namespaceURI?: string, childNodes?: unknown[], parentNode?: unknown}) => void} visit
+ * @param {{childNodes?: {tagName?: string, namespaceURI?: string, content?: {childNodes?: unknown[]}, childNodes?: unknown[]}[]}} node
+ * @param {(element: {tagName: string, attrs: {name: string, value: string}[]}) => void} visit
  */
 const walk = (node, visit) => {
   for (const child of node.childNodes ?? []) {
     if (child.tagName && child.namespaceURI === HTML_NS) visit(child);
-    if (child.tagName === 'template') continue;
+    if (child.tagName === 'template' && child.content) {
+      templateHosts.set(child.content, child);
+      walk(child.content, visit);
+      continue;
+    }
     if (child.childNodes) walk(child, visit);
   }
 };
@@ -132,7 +153,7 @@ const walk = (node, visit) => {
  * @returns {{src: string, reason: string}[]}
  */
 export const imagesIn = html => {
-  const document = parse(html);
+  const document = parse(html, {scriptingEnabled: false});
   /** @type {Map<string, string>} */
   const idText = new Map();
   /** @type {{tagName: string, attrs: {name: string, value: string}[]}[]} */
@@ -141,7 +162,7 @@ export const imagesIn = html => {
   walk(document, element => {
     const id = attr(element, 'id');
     if (id && !idText.has(id)) idText.set(id, textOf(element));
-    if (element.tagName === 'img') images.push(element);
+    if (isImageControl(element)) images.push(element);
   });
 
   const problems = [];
