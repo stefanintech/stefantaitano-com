@@ -24,6 +24,21 @@ describe('alt text', () => {
     ]);
   });
 
+  it('fails a planted alt that is only entity whitespace', () => {
+    const html = [
+      '<img src="/planted/nbsp.webp" alt="&nbsp;">',
+      '<img src="/planted/num.webp" alt="&#32;">',
+      '<img src="/planted/hex.webp" alt="&#x20;">',
+      '<img src="/planted/mixed.webp" alt="&nbsp;&#32;  &#x20;">'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/nbsp.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/num.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/hex.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/mixed.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
   it('fails a missing alt even when an ancestor is hidden', () => {
     const html = '<div aria-hidden="true"><img src="/planted/hidden.webp"></div>';
     assert.deepEqual(altProblems(page(html)), [
@@ -87,6 +102,52 @@ describe('alt text', () => {
     assert.deepEqual(altProblems(page(html)), [
       {page: '/planted/', src: '/planted/empty-hidden.webp', reason: 'empty alt is not decorative'},
       {page: '/planted/', src: '/planted/bare-hidden.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('fails a planted empty alt once an implied end tag has closed the hidden ancestor', () => {
+    const html = [
+      '<ul><li aria-hidden="true">hidden<li><img src="/planted/next-li.webp" alt=""></ul>',
+      '<ul><li aria-hidden="true"><div><li><img src="/planted/li-in-div.webp" alt=""></ul>',
+      '<p aria-hidden="true">x<div><img src="/planted/after-p.webp" alt=""></div>',
+      '<p aria-hidden="true">x<span><div><img src="/planted/p-span-div.webp" alt=""></div></span>',
+      '<dl><dt aria-hidden="true">term<dd><img src="/planted/after-dt.webp" alt=""></dl>',
+      '<dl><dd aria-hidden="true">def<dt><img src="/planted/after-dd.webp" alt=""></dl>',
+      '<select><option aria-hidden="true">a<option><img src="/planted/after-option.webp" alt=""></select>',
+      '<table><tr aria-hidden="true"><td>a<tr><td><img src="/planted/after-tr.webp" alt=""></table>',
+      '<table><tr><td aria-hidden="true">a<td><img src="/planted/after-td.webp" alt=""></table>',
+      '<table><tr><th aria-hidden="true">a<th><img src="/planted/after-th.webp" alt=""></table>'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/next-li.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/li-in-div.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/after-p.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/p-span-div.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/after-dt.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/after-dd.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/after-option.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/after-tr.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/after-td.webp', reason: 'empty alt is not decorative'},
+      {page: '/planted/', src: '/planted/after-th.webp', reason: 'empty alt is not decorative'}
+    ]);
+  });
+
+  it('keeps an empty alt hidden when the ancestor is explicitly closed', () => {
+    const html = [
+      '<ul><li aria-hidden="true"><img src="/ok/in-li.webp" alt=""></li><li><img src="/ok/next.webp" alt="Next"></li></ul>',
+      '<p aria-hidden="true"><img src="/ok/in-p.webp" alt=""></p><div><img src="/ok/after.webp" alt="After"></div>'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), []);
+  });
+
+  it('reads a > inside a quoted attribute as part of the tag', () => {
+    const html = [
+      '<img title="a>b" src="/planted/quoted-gt.webp" alt="">',
+      '<img alt="1 > 0" src="/ok/alt-gt.webp">',
+      '<img title="a>b" src="/ok/titled.webp" alt="A clay glacier">'
+    ].join('');
+    assert.deepEqual(altProblems(page(html)), [
+      {page: '/planted/', src: '/planted/quoted-gt.webp', reason: 'empty alt is not decorative'}
     ]);
   });
 

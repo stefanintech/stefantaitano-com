@@ -2,7 +2,8 @@
  * Alt text on rendered <img> tags.
  *
  * An image fails when the alt attribute is missing, or when the alt is empty
- * (or only whitespace) and the image is not explicitly decorative.
+ * (or only whitespace, after decoding character references) and the image is
+ * not explicitly decorative.
  *
  * Empty alt is decorative when any of these is true:
  * - the img itself has role="presentation" or role="none". A parent role does
@@ -17,6 +18,11 @@
  *
  * A missing alt attribute fails even when one of those marks is present.
  * Script, style, and comment text are not rendered, so they are skipped.
+ *
+ * Optional end tags follow the HTML parser far enough to drop a hidden
+ * ancestor that a browser would already have closed: a new li, dt/dd,
+ * option, tr, or td/th closes the open one of that kind, and a block
+ * start closes an open p. A ">" inside a quoted attribute stays in the tag.
  */
 
 const VOID_TAGS = new Set([
@@ -39,7 +45,116 @@ const VOID_TAGS = new Set([
 const INTERACTIVE = new Set(['a', 'button', 'input', 'select', 'textarea']);
 
 const ATTR = /([^\s"'=<>`/]+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'=<>`]+)))?/g;
-const TOKEN = /<\/?([a-zA-Z][\w:-]*)\b([^>]*)>|[^<]+/g;
+const TAG_NAME = /^<\/?([a-zA-Z][\w:-]*)/;
+
+/** Not special. An implied close can pop these on the way to its target. */
+const PHRASING = new Set([
+  'a',
+  'abbr',
+  'b',
+  'bdi',
+  'bdo',
+  'cite',
+  'code',
+  'data',
+  'dfn',
+  'em',
+  'i',
+  'kbd',
+  'label',
+  'mark',
+  'picture',
+  'q',
+  's',
+  'samp',
+  'small',
+  'span',
+  'strong',
+  'sub',
+  'sup',
+  'time',
+  'u',
+  'var'
+]);
+
+/**
+ * A start tag of one of these closes an open p, as in the HTML parser.
+ * li, dt, and dd do too: their insertion steps close a p in button scope.
+ */
+const CLOSES_P = new Set([
+  'address',
+  'article',
+  'aside',
+  'blockquote',
+  'dd',
+  'details',
+  'dialog',
+  'div',
+  'dl',
+  'dt',
+  'fieldset',
+  'figcaption',
+  'figure',
+  'footer',
+  'form',
+  'h1',
+  'h2',
+  'h3',
+  'h4',
+  'h5',
+  'h6',
+  'header',
+  'hgroup',
+  'hr',
+  'li',
+  'main',
+  'menu',
+  'nav',
+  'ol',
+  'p',
+  'pre',
+  'search',
+  'section',
+  'table',
+  'ul'
+]);
+
+/** Elements an end tag will not pop through when its own name is not open. */
+const SPECIAL = new Set([
+  ...CLOSES_P,
+  'button',
+  'caption',
+  'option',
+  'select',
+  'table',
+  'tbody',
+  'td',
+  'tfoot',
+  'th',
+  'thead',
+  'tr'
+]);
+
+const SAME_KIND = new Map([
+  ['li', new Set(['li'])],
+  ['dt', new Set(['dt', 'dd'])],
+  ['dd', new Set(['dt', 'dd'])],
+  ['option', new Set(['option'])],
+  ['tr', new Set(['tr'])],
+  ['td', new Set(['td', 'th'])],
+  ['th', new Set(['td', 'th'])]
+]);
+
+/** Ancestors the walk may pass while looking for the element a start tag closes. */
+const PASS_THROUGH = new Map([
+  ['li', new Set([...PHRASING, 'address', 'div', 'p'])],
+  ['dt', new Set([...PHRASING, 'address', 'div', 'p'])],
+  ['dd', new Set([...PHRASING, 'address', 'div', 'p'])],
+  ['option', new Set()],
+  ['tr', new Set([...PHRASING, 'td', 'th'])],
+  ['td', new Set(PHRASING)],
+  ['th', new Set(PHRASING)]
+]);
 
 const stripUnrendered = html =>
   html
@@ -58,9 +173,18 @@ const parseAttrs = raw => {
   return attrs;
 };
 
+const characterFromCode = code => {
+  if (!Number.isInteger(code) || code < 0 || code > 0x10ffff) return '';
+  if (code === 0 || (code >= 0xd800 && code <= 0xdfff)) return '\uFFFD';
+  return String.fromCodePoint(code);
+};
+
+/** Decode the character references that show up in alt text and element text. */
 const decodeText = value =>
   value
-    .replace(/&nbsp;|&#160;|&#x0*a0;/gi, ' ')
+    .replace(/&#(\d+);/g, (_, digits) => characterFromCode(Number(digits)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => characterFromCode(Number.parseInt(hex, 16)))
+    .replace(/&nbsp;/gi, ' ')
     .replace(/&amp;/gi, '&')
     .replace(/&lt;/gi, '<')
     .replace(/&gt;/gi, '>')
@@ -126,6 +250,116 @@ const recordId = (element, idText) => {
   idText.set(id, decodeText(element.text));
 };
 
+const popThrough = (ancestors, idText, index) => {
+  while (ancestors.length > index) recordId(ancestors.pop(), idText);
+};
+
+/**
+ * Index of the element this start tag closes, or -1. The walk stops at an
+ * element it is not allowed to pass, so a later li does not close an li
+ * that a ul or a button sits between.
+ * @param {{name: string}[]} ancestors
+ * @param {Set<string>} match
+ * @param {Set<string>} pass
+ */
+const impliedIndex = (ancestors, match, pass) => {
+  for (let index = ancestors.length - 1; index >= 0; index -= 1) {
+    const {name} = ancestors[index];
+    if (match.has(name)) return index;
+    if (!pass.has(name)) return -1;
+  }
+  return -1;
+};
+
+/**
+ * Pop the open element HTML would close before inserting this start tag.
+ * @param {{name: string, attrs: Map<string, string>, text: string}[]} ancestors
+ * @param {Map<string, string>} idText
+ * @param {string} startName
+ */
+const popImplied = (ancestors, idText, startName) => {
+  if (CLOSES_P.has(startName)) {
+    const index = impliedIndex(ancestors, new Set(['p']), PHRASING);
+    if (index !== -1) popThrough(ancestors, idText, index);
+  }
+
+  const same = SAME_KIND.get(startName);
+  if (!same) return;
+  const index = impliedIndex(ancestors, same, PASS_THROUGH.get(startName));
+  if (index !== -1) popThrough(ancestors, idText, index);
+};
+
+/**
+ * An end tag pops through its matching open element. If a special element
+ * is in the way, the tag is ignored, which is what a browser does with a
+ * closer whose element an implied end tag already removed.
+ * @param {{name: string, attrs: Map<string, string>, text: string}[]} ancestors
+ * @param {Map<string, string>} idText
+ * @param {string} name
+ */
+const popEndTag = (ancestors, idText, name) => {
+  for (let index = ancestors.length - 1; index >= 0; index -= 1) {
+    if (ancestors[index].name === name) {
+      popThrough(ancestors, idText, index);
+      return;
+    }
+    if (SPECIAL.has(ancestors[index].name)) return;
+  }
+};
+
+/** Index just past the tag's ">", or -1. Quoted attribute values may contain ">". */
+const tagEnd = (html, start) => {
+  let quote = '';
+  for (let index = start + 1; index < html.length; index += 1) {
+    const char = html[index];
+    if (quote) {
+      if (char === quote) quote = '';
+      continue;
+    }
+    if (char === '"' || char === "'") {
+      quote = char;
+      continue;
+    }
+    if (char === '>') return index + 1;
+  }
+  return -1;
+};
+
+/**
+ * @param {string} html
+ * @returns {{text?: string, raw?: string, name?: string, attrs?: string, closing?: boolean}[]}
+ */
+const tokenize = html => {
+  /** @type {{text?: string, raw?: string, name?: string, attrs?: string, closing?: boolean}[]} */
+  const tokens = [];
+  let cursor = 0;
+  while (cursor < html.length) {
+    const start = html.indexOf('<', cursor);
+    if (start === -1) {
+      tokens.push({text: html.slice(cursor)});
+      break;
+    }
+    if (start > cursor) tokens.push({text: html.slice(cursor, start)});
+
+    const end = tagEnd(html, start);
+    if (end === -1) {
+      tokens.push({text: html.slice(start)});
+      break;
+    }
+
+    const raw = html.slice(start, end);
+    const match = TAG_NAME.exec(raw);
+    if (!match) tokens.push({text: raw});
+    else {
+      let attrs = raw.slice(match[0].length, -1);
+      if (attrs.endsWith('/')) attrs = attrs.slice(0, -1);
+      tokens.push({raw, name: match[1].toLowerCase(), attrs, closing: raw.startsWith('</')});
+    }
+    cursor = end;
+  }
+  return tokens;
+};
+
 /**
  * @param {string} html
  * @returns {{src: string, reason: string}[]}
@@ -138,38 +372,33 @@ export const imagesIn = html => {
   /** @type {Map<string, string>} */
   const idText = new Map();
 
-  TOKEN.lastIndex = 0;
-  for (const match of stripUnrendered(html).matchAll(TOKEN)) {
-    if (!match[1]) {
-      for (const ancestor of ancestors) ancestor.text += match[0];
+  for (const token of tokenize(stripUnrendered(html))) {
+    if (!token.name) {
+      for (const ancestor of ancestors) ancestor.text += token.text;
       continue;
     }
 
-    const raw = match[0];
-    const name = match[1].toLowerCase();
-    if (raw.startsWith('</')) {
-      for (let index = ancestors.length - 1; index >= 0; index -= 1) {
-        const popped = ancestors.pop();
-        recordId(popped, idText);
-        if (popped.name === name) break;
-      }
+    if (token.closing) {
+      popEndTag(ancestors, idText, token.name);
       continue;
     }
 
-    const attrs = parseAttrs(match[2]);
-    if (name === 'img') {
+    popImplied(ancestors, idText, token.name);
+
+    const attrs = parseAttrs(token.attrs);
+    if (token.name === 'img') {
       const alt = attrs.get('alt');
       images.push({
         src: attrs.get('src') || '(no src)',
         missing: !attrs.has('alt'),
-        empty: attrs.has('alt') && alt.trim() === '',
+        empty: attrs.has('alt') && decodeText(alt) === '',
         attrs,
         ancestors: ancestors.map(ancestor => ({name: ancestor.name, attrs: ancestor.attrs}))
       });
     }
 
-    const selfClosing = /\/>$/.test(raw) || VOID_TAGS.has(name);
-    if (!selfClosing) ancestors.push({name, attrs, text: ''});
+    const selfClosing = token.raw.endsWith('/>') || VOID_TAGS.has(token.name);
+    if (!selfClosing) ancestors.push({name: token.name, attrs, text: ''});
   }
 
   while (ancestors.length) recordId(ancestors.pop(), idText);
