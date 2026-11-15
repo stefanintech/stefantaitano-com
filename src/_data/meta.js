@@ -84,7 +84,8 @@ export const tests = {
       '/links/',
       '/checkins/',
       '/colophon/',
-      '/accessibility/'
+      '/accessibility/',
+      '/privacy/'
     ],
     globalIgnore: []
   }
