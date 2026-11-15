@@ -22,7 +22,7 @@
     "test": "npm run test:checkins",
     "test:checkins": "node --test ./test/checkin-map.test.js ./test/checkin-rebuild.test.js ./test/home-stream.test.js",
     "lint": "eslint . && node ./src/_config/setup/lint-frontmatter.js",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p tsconfig.typecheck.json",
     "smoke": "node --test ./test/smoke.test.js",
     "check": "npm run lint && npm run typecheck && npm run test && npm run build && npm run checkins:images -- --check && npm run smoke",
     "pa11y:build": "npm run clean && cross-env ELEVENTY_ENV=test eleventy",

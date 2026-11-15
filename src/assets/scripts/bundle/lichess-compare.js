@@ -392,7 +392,9 @@ async function visitorFromToken(token) {
 
   const username = account.username;
   const rapid = account.perfs?.rapid ?? {};
-  let points;
+  // The empty array is assigned over, but leaving it out changes the minified bundle.
+  // eslint-disable-next-line no-useless-assignment
+  let points = [];
   try {
     points = parseRapidHistory(await fetchJson(`/api/user/${encodeURIComponent(username)}/rating-history`));
   } catch {
@@ -447,7 +449,9 @@ async function previewVisitor(name) {
   const username = name || 'ask17';
   const user = await fetchJson(`/api/user/${encodeURIComponent(username)}`);
   const rapid = user.perfs?.rapid ?? {};
-  let points;
+  // The empty array is assigned over, but leaving it out changes the minified bundle.
+  // eslint-disable-next-line no-useless-assignment
+  let points = [];
   try {
     points = parseRapidHistory(await fetchJson(`/api/user/${encodeURIComponent(username)}/rating-history`));
   } catch {

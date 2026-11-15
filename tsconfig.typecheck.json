@@ -1,3 +1,6 @@
+// Not named tsconfig.json. esbuild auto-loads that name and would emit "use strict"
+// into every bundle, because strict turns on alwaysStrict and TypeScript 7
+// no longer lets that flag be turned off.
 {
   "compilerOptions": {
     "target": "ES2022",

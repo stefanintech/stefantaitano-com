@@ -166,8 +166,12 @@ const checkinImageUrls = html => {
   return [...urls];
 };
 
-/** Drop styles, scripts, and SVG path data so CSS and map geometry are not coordinates. */
-const markupForCoordinates = html =>
+/**
+ * Drop styles, scripts, and SVG geometry before the broad decimal checks.
+ * Inlined CSS contains values such as 1.0625. Wording and centroid pairs are
+ * checked on the raw HTML, so a coordinate inside a script or a path stays visible.
+ */
+const markupForDecimals = html =>
   html
     .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, '')
     .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '')
@@ -205,6 +209,25 @@ const numberPresent = (html, raw) => {
   // A percentage such as 45.0% is a bar width, not a coordinate.
   const re = new RegExp(`(?<![\\w.])${escaped}(?!%)(?![\\w.])`, 'g');
   return re.test(html);
+};
+
+const hasCoordinateWording = html => /\b(latitude|longitude|coords?)\b/i.test(html) || /\b(lat|lon|lng)\b/.test(html);
+
+/** Wording and centroid pairs use the raw HTML. Broad decimals use the stripped copy. */
+const coordinateHits = html => {
+  const hits = [];
+  if (hasCoordinateWording(html)) hits.push('coordinate wording');
+  for (const [lat, lon] of centroidNeedles()) {
+    if (numberPresent(html, lat) && numberPresent(html, lon)) {
+      hits.push('city centroid pair');
+      break;
+    }
+  }
+
+  const decimals = markupForDecimals(html);
+  if (hasCoordinatePair(decimals)) hits.push('coordinate pair');
+  if (/-?\d{1,3}\.\d{4,}/.test(decimals)) hits.push('precise decimal');
+  return hits;
 };
 
 describe('built site', () => {
@@ -284,28 +307,22 @@ describe('built site', () => {
     assert.ok(seen.size > 0, 'built HTML references no check-in images');
   });
 
+  it('renders check-in cities on the map', () => {
+    const html = readFileSync(path.join(DIST, 'checkins', 'index.html'), 'utf8').replace(
+      /<style\b[^>]*>[\s\S]*?<\/style>/gi,
+      ''
+    );
+    assert.match(html, /<figure[^>]*class="checkins-map"/, 'check-ins page has no map');
+    assert.match(html, /<circle[^>]*class="checkins-map__bead"/, 'check-ins map rendered no city beads');
+    assert.match(html, /<li[^>]*class="checkins-city"/, 'check-ins page rendered no cities');
+  });
+
   it('keeps check-in coordinates and secret env values out of the HTML', () => {
-    const needles = centroidNeedles();
     const hits = [];
 
     for (const file of htmlFiles()) {
       const where = urlForFile(file);
-      const html = markupForCoordinates(readFileSync(file, 'utf8'));
-
-      if (/\b(latitude|longitude|coords?)\b/i.test(html) || /\b(lat|lon|lng)\b/.test(html)) {
-        hits.push(`${where}: coordinate wording`);
-      }
-      if (hasCoordinatePair(html)) {
-        hits.push(`${where}: coordinate pair`);
-      }
-      if (/-?\d{1,3}\.\d{4,}/.test(html)) {
-        hits.push(`${where}: precise decimal`);
-      }
-      for (const [lat, lon] of needles) {
-        if (numberPresent(html, lat) && numberPresent(html, lon)) {
-          hits.push(`${where}: city centroid pair`);
-        }
-      }
+      for (const hit of coordinateHits(readFileSync(file, 'utf8'))) hits.push(`${where}: ${hit}`);
     }
 
     assert.deepEqual(hits, []);
@@ -318,5 +335,15 @@ describe('built site', () => {
         assert.ok(!html.includes(value), `${urlForFile(file)} contains the ${name} value`);
       }
     }
+  });
+});
+
+describe('coordinate scan', () => {
+  it('catches a coordinate planted in a script or a path', () => {
+    const script = '<p>Fine</p><script>const latitude = 1;</script>';
+    assert.ok(coordinateHits(script).includes('coordinate wording'));
+
+    const pathD = '<svg><path d="37.8,-122.4" /></svg>';
+    assert.ok(coordinateHits(pathD).includes('city centroid pair'));
   });
 });
