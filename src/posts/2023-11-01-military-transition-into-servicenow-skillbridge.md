@@ -15,7 +15,7 @@ I’ve decided to document my journey on Medium because its a platform I use oft
 
 Overall, I’d love to share a timeline on how I got started in tech.
 
-#### The Early Late Days
+## The Early Late Days
 
 Late 2021, living in South Korea, military contract is shortly coming to an end, and I have no clue what I’m going to do with my life. There were various jobs I considered such as electrician, plumber, HVAC, welding, the blue collar job. Working hard at first to one day own a company in the trades wasn’t a dream, but a means to an end.
 
@@ -29,7 +29,7 @@ The Odin Project is a free, self pace course, that takes you from not knowing an
 
 I learned quickly that it was difficult to learn on my own, and asking for help wasnt easy for me. I gave up on TOP because I could not grasp the concept of if/else statements and functions in JavaScript.
 
-#### The Come Up — Reddit
+## The Come Up — Reddit
 
 A guy on the internet named [Leon Noel](https://leonnoel.com/100devs/) posted on the [r/learnprogramming](https://www.reddit.com/r/learnprogramming/?rdt=56292) subreddit about [running a second cohort for their 30-week full stack software engineering bootcamp](https://www.reddit.com/r/learnprogramming/comments/rlmulr/i_ran_a_100_free_full_stack_web_development/) called [100Devs](https://www.reddit.com/r/learnprogramming/comments/rlmulr/i_ran_a_100_free_full_stack_web_development/).
 
@@ -39,7 +39,7 @@ Leon Noel’s post
 
 It was at this moment I shared this post that I was going to participate.
 
-#### Fast Forward
+## Fast Forward
 
 Summer of 2022, I’m trying to find what training program I would like to complete before my military service is over. I’ve attended various networking events with [50Strong](https://www.50-strong.us), [ACP](https://www.acp-usa.org), [Hiring Our Heroes](https://www.hiringourheroes.org/?utm_source=HOH&utm_medium=Cvent&utm_campaign=registration&utm_id=Cvent), and [Hire Heroes](https://www.hireheroesusa.org). But it was either a post or video I saw on YouTube about ServiceNow that I was hooked to pursue. The ability to create a full stack application and customize within minutes was game changing. So I researched, how can I learn about the platform?
 
@@ -49,7 +49,7 @@ Research consisted of YouTube, LinkedIn cold messages, virtual coffee chats, fin
 
 Safe to say, I receive both, positives and negatives on the matter, and the positives outweighed the negative. I attended a webinar with [Herb Thompson](https://www.linkedin.com/in/herb-thompson-sf2biz/), applied with all the documents, and got accepted to begin November 14, 2023!
 
-#### Overall
+## Overall
 
 I start the cohort in two weeks, grown a circle of like-minded folks that are ready to tackle the cohort, reached out to veterans and beginners of the platform, and learned the free material on the Now Learning platform.
 

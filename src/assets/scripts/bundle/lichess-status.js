@@ -64,8 +64,17 @@ function paint() {
     .catch(() => {});
 }
 
+// The badge is a footer extra, so the fetch waits until the browser is idle.
+function schedule() {
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(paint, {timeout: 2000});
+  } else {
+    setTimeout(paint, 1);
+  }
+}
+
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', paint, {once: true});
+  document.addEventListener('DOMContentLoaded', schedule, {once: true});
 } else {
-  paint();
+  schedule();
 }

@@ -24,7 +24,7 @@ export const creator = {
 export const pathToSvgLogo = 'src/assets/svg/misc/logo.svg'; // used for favicon generation
 export const themeColor = '#B45309'; // used in manifest, for example primary color value
 export const themeLight = '#fbf8f3'; // used for meta tag theme-color, if light colors are prefered. best use value set for light bg
-export const themeDark = '#322d25'; // used for meta tag theme-color, if dark colors are prefered. best use value set for dark bg
+export const themeDark = '#19150e'; // used for meta tag theme-color, if dark colors are prefered. matches the dark --bg in site.css
 export const opengraph_default = '/assets/og-images/default-preview.png'; // fallback/default meta image
 export const opengraph_default_alt =
   'Stefan Taitano. I build systems for a living and escape plans for fun.';
@@ -85,7 +85,15 @@ export const tests = {
       '/checkins/',
       '/colophon/',
       '/accessibility/',
-      '/privacy/'
+      '/privacy/',
+      '/articles/im-de-googling-my-familys-digital-life/',
+      '/articles/military-transition-into-the-servicenow-training-program/'
+    ],
+    // These paths also run pa11y's built-in axe runner next to htmlcs, for checks htmlcs skips (heading-order).
+    // Other pages stay htmlcs-only for now: axe flags existing contrast issues there (see the perf/a11y plan).
+    axePaths: [
+      '/articles/im-de-googling-my-familys-digital-life/',
+      '/articles/military-transition-into-the-servicenow-training-program/'
     ],
     globalIgnore: []
   }

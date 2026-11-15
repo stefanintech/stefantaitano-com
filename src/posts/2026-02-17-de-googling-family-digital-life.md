@@ -17,7 +17,7 @@ We plan to move our family overseas in 2027 and sell most of our belongings. Our
 
 A month ago, I started moving our data to private alternatives. I hit walls. I want to share the process.
 
-### Why I Chose to Move
+## Why I Chose to Move
 
 I raise two kids with my wife. I want to own our data. Google scans vacation photos, kids' faces, and front doors to train AI models. 
 
@@ -25,7 +25,7 @@ Google shuts down products without warning. Our family needs reliable infrastruc
 
 I needed a system for my wife. She wants to open an app, find a file, and close it. This constraint shaped my decisions.
 
-### What I Finished
+## What I Finished
 
 **Email (In Progress).** I set up Proton Mail using my domain, stefantaitano.com. I route it through SimpleLogin for email aliases. Retailers receive a disposable alias. Financial accounts receive a dedicated alias. My wife uses a new proton.me address. Gmail still stores 15 years of unarchived emails. We still receive mail there.
 
@@ -39,7 +39,7 @@ I needed a system for my wife. She wants to open an app, find a file, and close 
 
 **Drive and Files (In Progress).** I move files from Google Drive to Proton Drive. I organize everything first. Financial documents, legal documents, kids' records, and travel documents earn a folder before they move. I finished a third of the files.
 
-### The Mental Load
+## The Mental Load
 
 Running two systems simultaneously exhausts me. I keep passwords in Proton Pass and Bitwarden. Files live in Proton Drive and Google Drive. Photos sit in Ente and Google Photos. Finding anything requires remembering which system holds it. 
 
@@ -47,7 +47,7 @@ Migrating services creates decision fatigue. I choose replacements. I manage the
 
 Migrating forces a life audit. I review old accounts, untouched files, and forgotten photos. The process feels heavy.
 
-### Migrating With a Partner
+## Migrating With a Partner
 
 I told my wife we planned to switch to Proton. The transition created friction in her daily routine. Her calendar changed. Her email app changed. Passwords failed to auto-fill. Small issues destroy buy-in.
 
@@ -55,7 +55,7 @@ Now, I change one tool at a time. I migrate her account and all existing events 
 
 I present changes as finished tasks. I say, "I moved our passwords to Proton Pass. Your logins are there." She needs the apps to work.
 
-### Tools and Costs
+## Tools and Costs
 
 * **Proton Duo Plan ($20/month):** Includes Proton Mail, Calendar, Drive, Pass, VPN, Wallet, and the Lumo AI assistant.
 * **Ente Photos Family Plan ($5.99/month):** Provides 200GB of encrypted photo storage for five people.
@@ -64,7 +64,7 @@ I present changes as finished tasks. I say, "I moved our passwords to Proton Pas
 
 The total cost reaches $27 a month. We previously paid $20 a month for Google One and $10 a month for iCloud. This new setup costs money instead of data.
 
-### Lessons Learned
+## Lessons Learned
 
 **Migrate passwords first.** I started with email and spent weeks hunting for credentials. Moving to Proton Pass first makes finding logins instant.
 
@@ -74,7 +74,7 @@ The total cost reaches $27 a month. We previously paid $20 a month for Google On
 
 **Keep old apps installed.** Open them occasionally. Deleting your Google account creates complications.
 
-### Next Steps
+## Next Steps
 
 Next month, I finish the Proton Drive migration and the photo transfer to Ente. We rely on Gmail forwarding as we abandon the inbox.
 

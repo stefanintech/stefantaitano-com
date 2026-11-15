@@ -20,11 +20,15 @@ permalink: "pa11y.json"
         {%- set pageData = page.data -%}
       {%- endif -%}
     {%- endfor -%}
-    {%- if pageData.pa11yRunners -%}
+    {%- set runners = pageData.pa11yRunners -%}
+    {%- if not runners and meta.tests.pa11y.axePaths and path in meta.tests.pa11y.axePaths -%}
+      {%- set runners = ['htmlcs', 'axe'] -%}
+    {%- endif -%}
+    {%- if runners -%}
       {%- set urls = (urls.push({
         url: url,
         ignore: pageData.pa11yIgnore or [],
-        runners: pageData.pa11yRunners
+        runners: runners
       }), urls) -%}
     {%- else -%}
       {%- set urls = (urls.push({

@@ -2,7 +2,7 @@
 
 Fixes from the November 2026 performance and accessibility audit, one PR per phase.
 
-**Status:** Phase 1 (responsive check-in images) in progress. It misses its `/checkins/` mobile transfer target, and Stefan decides whether that's OK. Finding #3 (eager first tile) was dropped after review: in production no tile is above the fold. Phases 2–5 not started. Phases 3 and 5 need Stefan's OK before they start.
+**Status:** Phase 1 (responsive check-in images) done in #99, merged as `72bb196`. Stefan accepted the −43% `/checkins/` mobile transfer cut in place of the 60% target. Finding #3 (eager first tile) was dropped after review: in production no tile is above the fold. Phase 2 (script and accessibility fixes) in progress, approved 2026-11-15. Phases 3–5 not started. Phases 3 and 5 need Stefan's OK before they start.
 
 **Outcome:** `/` and `/checkins/` stop shipping 1600px check-in images into 144px thumbnails, builds stop re-encoding images that haven't changed, and the small script, font, and accessibility gaps from the audit are closed. Every page keeps its content and looks the same unless a phase says otherwise and has a mockup.
 
@@ -219,7 +219,7 @@ Extend these. Don't add a second image pipeline, a second layout, or a second CS
 
 Each phase is one PR and ships on its own. Phase 5 is stretch.
 
-### Phase 1 — Responsive check-in images (#1) — **in progress**
+### Phase 1 — Responsive check-in images (#1) — **Done** (#99, `72bb196`)
 
 **Build**
 
@@ -250,11 +250,11 @@ Each phase is one PR and ships on its own. Phase 5 is stretch.
 
 CLS is 0 in every run. Accessibility is 100 in every run.
 
-**`/checkins/` mobile misses the 60% target (−43%).** With the map present, the phone loads only the first five tiles' images (the lazy-load margin). Each tile is full width on a 412px, 1.75× screen, so the browser correctly picks the 800w files. Lighthouse estimates 31 KiB left to save. Getting under 60% would mean lower image quality or fewer images, which this plan rules out. Stefan decides whether to accept the miss or change the target.
+**`/checkins/` mobile misses the 60% target (−43%).** With the map present, the phone loads only the first five tiles' images (the lazy-load margin). Each tile is full width on a 412px, 1.75× screen, so the browser correctly picks the 800w files. Lighthouse estimates 31 KiB left to save. Getting under 60% would mean lower image quality or fewer images, which this plan rules out. **Stefan accepted the −43% result on 2026-11-15**, so phase 1 is done with that number.
 
 **`/checkins/` mobile stays at 99, and images aren't why.** The LCP element is the intro paragraph (TTFB about 450 ms, render delay about 1.6 s, no image in the path). That's worth a look in a later phase, not this one.
 
-### Phase 2 — Small script and accessibility fixes (#5, #6, #7, #8, `/resume/` new-tab cue)
+### Phase 2 — Small script and accessibility fixes (#5, #6, #7, #8, `/resume/` new-tab cue) — **in progress**
 
 **Build:** Move `lichess-status` out of the head into the deferred bundle, fix the theme-color swap, add `disableForReducedMotion`, fix the heading levels in the two posts, add a visually hidden "(opens in new tab)" on the two `/resume/` links, and add one article to the pa11y paths with axe.
 
@@ -263,6 +263,8 @@ CLS is 0 in every run. Accessibility is 100 in every run.
 **Gotchas:** `theme-toggle.js` must stay in the head or the theme flashes. The posts' text stays exactly as written.
 
 **Done when** pa11y (htmlcs and axe) passes with an article in the list, the two posts' headings are screenshotted before and after, and nothing else visibly changes.
+
+**Found while building.** axe runs only on the article paths (`meta.tests.pa11y.axePaths`) and on `/checkins/` (its own front matter). With axe on every path, 5 of 18 URLs fail on contrast issues that predate this phase: the `aria-hidden` arrows on `/` (17) and `/ai/` (7), the back arrow on `/links/`, the chart axis labels and the Lichess iframe ("frames should be tested") on `/chess/`, and red title text on the slides. Fixing them changes CSS, so they wait for a later phase with a mockup. pa11y's axe runner reports `heading-order` as a warning, not an error, so a new skipped heading level shows in the log but doesn't fail CI.
 
 ### Phase 3 — Build image cache (#2) — **needs Stefan's OK**
 

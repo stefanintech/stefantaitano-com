@@ -1,3 +1,7 @@
+{#- The footer Lichess badge. Deferred so it stays out of the parser-blocking head. -#}
+{%- js "defer" %}
+{% include "scripts/lichess-status.js" %}
+{% endjs -%}
 {%- set deferJs %}{% getBundle "js", "defer" %}{% endset -%}
 {%- if deferJs | trim %}
 <script type="module">{{ deferJs | safe }}</script>
