@@ -300,7 +300,7 @@ About 10 s (two-thirds) saved per warm build. The "26 cached" on a cold build is
 
 **How it's built.**
 
-- `src/assets/fonts/caveat/caveat-site-600.woff2` replaces `caveat-latin-600.woff2`. It's the same static SemiBold (600) file with no axes, subset offline with `pyftsubset` (fonttools 4.68, run from a temp venv outside the repo, so no new dependency): `--unicodes="U+0020-007E,U+00A0,U+00C9,U+00E9,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026" --layout-features="calt,liga,locl,kern,mark,mkmk" --flavor=woff2`. That's Basic Latin, no-break space, é/É, en and em dashes, curly quotes, bullet, and ellipsis. A scan of every built page found 62 distinct characters rendered in Caveat, and all of them are in that set. The one exception is U+200A (hair space), which the old file didn't have either.
+- `src/assets/fonts/caveat/caveat-site-600.woff2` replaces `caveat-latin-600.woff2`. It's the same static SemiBold (600) file with no axes, subset offline with `pyftsubset` (fonttools 4.68, run from a temp venv outside the repo, so no new dependency): `--unicodes="U+0020-007E,U+00A0,U+00C9,U+00E9,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026" --layout-features="calt,liga,locl,kern,mark,mkmk" --name-IDs="*" --flavor=woff2`. `--name-IDs="*"` keeps the whole `name` table, including the OFL license URL (ID 14). The source file has no license description (ID 13). That's Basic Latin, no-break space, é/É, en and em dashes, curly quotes, bullet, and ellipsis. A scan of every built page found 62 distinct characters rendered in Caveat, and all of them are in that set. The one exception is U+200A (hair space), which the old file didn't have either.
 - `calt` stays in. Caveat uses contextual alternates to vary repeated letters, so without them the text would look different. That's also why the file can't shrink further: the same subset without `calt` is 15.8 KB, but it doesn't look the same. `frac` was dropped. Browsers only apply it when CSS asks for it, and nothing on the site does.
 - `site.css` adds `'Caveat Fallback'`: `local('Arial Bold')` with `size-adjust: 71.5%`, `ascent-override: 134.3%`, `descent-override: 42%`, and `line-gap-override: 0%`. 71.5% is Caveat's width divided by Arial Bold's, measured in Chrome over all 84 Caveat strings on the site. The overrides are Caveat's ascent (0.96em) and descent (0.30em) divided by that. `--font-hand` is now `'Caveat', 'Caveat Fallback', cursive`. `font-display: swap` and the preload are unchanged; the preload just points at the new file.
 - OG images use `src/_config/og-fonts/caveat-latin-600.ttf` and are untouched. The slides deck doesn't use Caveat. The Caveat OFL notice in `LICENSE.MD` is unchanged.
@@ -309,8 +309,8 @@ About 10 s (two-thirds) saved per warm build. The "26 cached" on a cold build is
 
 | Measure | `main` | this phase |
 |---|---|---|
-| Caveat file | 51,296 B | **40,168 B (−21.7%)** |
-| Font transfer on `/` (Lighthouse) | 51,550 B | 40,422 B |
+| Caveat file | 51,296 B | **40,200 B (−21.6%)** |
+| Font transfer on `/` (Lighthouse) | 51,550 B | 40,422 B (measured before `--name-IDs`; the file is now 32 B larger) |
 | `/` transfer, mobile / desktop | 101.4 / 117.8 KiB | 90.6 / 107.1 KiB |
 | Swap CLS with the font held 1.5 s, all 24 pages at 1440 and 390, sum | 0.549 | **0.007** |
 | Same, worst page | 0.074 (`/404.html` at 1440) | 0.0045 (`/talks/rubyconf-2026/` at 1440) |

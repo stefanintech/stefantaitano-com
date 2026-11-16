@@ -1,6 +1,8 @@
 /* Caveat SemiBold, subset to Basic Latin plus the typographic punctuation
-   the copy uses (see docs/perf-a11y-project-plan.md, phase 4). A character
-   outside the subset falls back to 'Caveat Fallback' below. */
+   the copy uses, with pyftsubset --name-IDs="*" so the OFL license entries
+   stay in the file (full command in docs/perf-a11y-project-plan.md,
+   phase 4). A character outside the subset falls back to 'Caveat Fallback'
+   below. */
 @font-face {
   font-family: 'Caveat';
   font-style: normal;
