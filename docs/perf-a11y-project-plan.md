@@ -2,7 +2,7 @@
 
 Fixes from the November 2026 performance and accessibility audit, one PR per phase.
 
-**Status:** Phase 1 (responsive check-in images) done in #99, merged as `72bb196`. Stefan accepted the −43% `/checkins/` mobile transfer cut in place of the 60% target. Finding #3 (eager first tile) was dropped after review: in production no tile is above the fold. Phase 2 (script and accessibility fixes) done in #100, merged as `9594c97`. Phase 3 (build image cache) in progress, approved by Stefan 2026-11-15. Phases 4–5 not started. Phase 5 needs Stefan's OK before it starts.
+**Status:** Phase 1 (responsive check-in images) done in #99, merged as `72bb196`. Stefan accepted the −43% `/checkins/` mobile transfer cut in place of the 60% target. Finding #3 (eager first tile) was dropped after review: in production no tile is above the fold. Phase 2 (script and accessibility fixes) done in #100, merged as `9594c97`. Phase 3 (build image cache) done in #101, merged as `52fdaf7`. Phase 4 (Caveat subset and fallback metrics) in progress, approved by Stefan 2026-11-15. Phase 5 not started and needs Stefan's OK before it starts.
 
 **Outcome:** `/` and `/checkins/` stop shipping 1600px check-in images into 144px thumbnails, builds stop re-encoding images that haven't changed, and the small script, font, and accessibility gaps from the audit are closed. Every page keeps its content and looks the same unless a phase says otherwise and has a mockup.
 
@@ -266,7 +266,7 @@ CLS is 0 in every run. Accessibility is 100 in every run.
 
 **Found while building.** axe runs only on the article paths (`meta.tests.pa11y.axePaths`) and on `/checkins/` (its own front matter). With axe on every path, 5 of 18 URLs fail on contrast issues that predate this phase: the `aria-hidden` arrows on `/` (17) and `/ai/` (7), the back arrow on `/links/`, the chart axis labels and the Lichess iframe ("frames should be tested") on `/chess/`, and red title text on the slides. Fixing them changes CSS, so they wait for a later phase with a mockup. pa11y's axe runner reports `heading-order` as a warning, not an error, so a new skipped heading level shows in the log but doesn't fail CI.
 
-### Phase 3 — Build image cache (#2) — **in progress** (approved 2026-11-15)
+### Phase 3 — Build image cache (#2) — **Done** (#101, `52fdaf7`)
 
 **Build:** Move eleventy-img output to `.cache/img` and pass it through to `/img/`; do the same for the shortcode output.
 
@@ -288,13 +288,38 @@ CLS is 0 in every run. Accessibility is 100 in every run.
 
 About 10 s (two-thirds) saved per warm build. The "26 cached" on a cold build is eleventy-img reusing images shared between pages within the same build. `dist/` matches `main` file for file and byte for byte, except the build timestamp in `feed.xml`. Still to confirm: a Netlify deploy log with "(69 cached)" on the second deploy after the cache is filled.
 
-### Phase 4 — Font subset and fallback metrics (#4) — **mockup first**
+### Phase 4 — Font subset and fallback metrics (#4) — **in progress** (approved 2026-11-15)
 
 **Build:** Commit a subset Caveat `.woff2` under a new filename (the font cache is `immutable`) and add a `size-adjust` fallback `@font-face`.
 
 **Gotchas:** Check every heading, the slides deck, and the OG images for missing glyphs.
 
 **Done when** every page's headings render the same in before/after screenshots and `/chess/` CLS is 0.
+
+**Mockup.** The target look is no visible change, so the before screenshots of `main` are the mockup. Stefan said go on 2026-11-15.
+
+**How it's built.**
+
+- `src/assets/fonts/caveat/caveat-site-600.woff2` replaces `caveat-latin-600.woff2`. It's the same static SemiBold (600) file with no axes, subset offline with `pyftsubset` (fonttools 4.68, run from a temp venv outside the repo, so no new dependency): `--unicodes="U+0020-007E,U+00A0,U+00C9,U+00E9,U+2013,U+2014,U+2018,U+2019,U+201C,U+201D,U+2022,U+2026" --layout-features="calt,liga,locl,kern,mark,mkmk" --flavor=woff2`. That's Basic Latin, no-break space, é/É, en and em dashes, curly quotes, bullet, and ellipsis. A scan of every built page found 62 distinct characters rendered in Caveat, and all of them are in that set. The one exception is U+200A (hair space), which the old file didn't have either.
+- `calt` stays in. Caveat uses contextual alternates to vary repeated letters, so without them the text would look different. That's also why the file can't shrink further: the same subset without `calt` is 15.8 KB, but it doesn't look the same. `frac` was dropped. Browsers only apply it when CSS asks for it, and nothing on the site does.
+- `site.css` adds `'Caveat Fallback'`: `local('Arial Bold')` with `size-adjust: 71.5%`, `ascent-override: 134.3%`, `descent-override: 42%`, and `line-gap-override: 0%`. 71.5% is Caveat's width divided by Arial Bold's, measured in Chrome over all 84 Caveat strings on the site. The overrides are Caveat's ascent (0.96em) and descent (0.30em) divided by that. `--font-hand` is now `'Caveat', 'Caveat Fallback', cursive`. `font-display: swap` and the preload are unchanged; the preload just points at the new file.
+- OG images use `src/_config/og-fonts/caveat-latin-600.ttf` and are untouched. The slides deck doesn't use Caveat. The Caveat OFL notice in `LICENSE.MD` is unchanged.
+
+**Result (2026-11-15, local, Node 22.15.1, Lighthouse 12.8.2, CI's placeholder `CHECKIN_MAP_EXCLUDE`).**
+
+| Measure | `main` | this phase |
+|---|---|---|
+| Caveat file | 51,296 B | **40,168 B (−21.7%)** |
+| Font transfer on `/` (Lighthouse) | 51,550 B | 40,422 B |
+| `/` transfer, mobile / desktop | 101.4 / 117.8 KiB | 90.6 / 107.1 KiB |
+| Swap CLS with the font held 1.5 s, all 24 pages at 1440 and 390, sum | 0.549 | **0.007** |
+| Same, worst page | 0.074 (`/404.html` at 1440) | 0.0045 (`/talks/rubyconf-2026/` at 1440) |
+
+Lighthouse (`/`, `/chess/`, and `/bookshelf/`, which has the most Caveat text; mobile and desktop; 3 runs each): Perf 100 and A11y 100 in every run on both builds. FCP and LCP medians are the same. CLS is 0 everywhere except `/chess/` desktop, which is 0.023 on both builds. Locally the preloaded font arrives before first paint, so Lighthouse never sees the swap. That's why the held-font test above is the swap comparison.
+
+**`/chess/` CLS isn't the Caveat swap.** Lighthouse attributes the 0.021 shift on the intro `<p>` to `lichess.org/…/noto-sans-latin.woff2` loading inside the study iframe. It's the same on `main` and this branch. The audit guessed Caveat, and that guess was wrong. Getting `/chess/` to 0 belongs with the Lichess embed (#9), not this phase.
+
+**No visible change.** I took full-page screenshots of all 24 built pages at 1440 and 390, in light and dark: 96 of each. 94 pairs are pixel-identical. The other two (`/checkins/` at 1440) differ only inside the first tile's photo, which is image decode timing, not text. Chrome's `CSS.getPlatformFontsForNode` reports the same fonts and glyph counts on `main` and this branch for all 155 Caveat elements. Every Caveat glyph is drawn by Caveat SemiBold, and nothing falls back.
 
 ### Phase 5 — Security headers and hashed components (#11, #10) — **needs Stefan's OK, stretch**
 
