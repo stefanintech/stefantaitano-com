@@ -27,7 +27,7 @@ I needed a system for my wife. She wants to open an app, find a file, and close 
 
 ## What I Finished
 
-**Email (In Progress).** I set up Proton Mail using my domain, stefantaitano.com. I route it through SimpleLogin for email aliases. Retailers receive a disposable alias. Financial accounts receive a dedicated alias. My wife uses a new proton.me address. Gmail still stores 15 years of unarchived emails. We still receive mail there.
+**Email (In Progress).** I set up Proton Mail using my domain, [stefantaitano.com](https://stefantaitano.com). I route it through SimpleLogin for email aliases. Retailers receive a disposable alias. Financial accounts receive a dedicated alias. My wife uses a new [proton.me](https://proton.me) address. Gmail still stores 15 years of unarchived emails. We still receive mail there.
 
 **VPN (Done).** I installed Proton VPN on every device. It runs in the background. My wife never asks about it.
 
@@ -60,7 +60,7 @@ I present changes as finished tasks. I say, "I moved our passwords to Proton Pas
 * **Proton Duo Plan ($20/month):** Includes Proton Mail, Calendar, Drive, Pass, VPN, Wallet, and the Lumo AI assistant.
 * **Ente Photos Family Plan ($5.99/month):** Provides 200GB of encrypted photo storage for five people.
 * **SimpleLogin (Included):** Manages email aliases.
-* **stefantaitano.com Domain ($12/year):** Routes aliases through SimpleLogin.
+* **[stefantaitano.com](https://stefantaitano.com) Domain ($12/year):** Routes aliases through SimpleLogin.
 
 The total cost reaches $27 a month. We previously paid $20 a month for Google One and $10 a month for iCloud. This new setup costs money instead of data.
 
