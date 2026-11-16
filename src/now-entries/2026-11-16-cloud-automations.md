@@ -1,0 +1,1 @@
+I'm moving the bots and scripts that run our family's day-to-day off computers at home and onto a small cloud server, so they keep running even when the lid's closed. It runs n8n, backs up every night, and pings my phone if anything breaks.
