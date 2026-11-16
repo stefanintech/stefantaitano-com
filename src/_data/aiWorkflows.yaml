@@ -1,5 +1,5 @@
-updated: '2026-09-24'
-updatedLabel: September 2026
+updated: '2026-11-16'
+updatedLabel: November 2026
 
 # Public status vocabulary: In use | Still tuning | Experimenting
 # src/pages/ai.njk renders only some of these fields. The rest is the workflow record.
@@ -214,8 +214,11 @@ learning:
 
 experiments:
   intro: >
-    Before Muse, I used Grok Bot for a few projects. They're paused, but they
-    shaped what I want from personal AI now.
+    Before Muse, I used Grok Bot for a few projects. The three below are paused,
+    but bots still run a lot of our family's day-to-day. I'm moving them and my
+    scripts onto a small cloud server so they keep running even when I shut my
+    laptop. It runs n8n, backs up every night, and pings my phone if anything
+    breaks.
   items:
     - name: Ms. Frizzle / Mr. Frizzle
       note: family and school assistant
