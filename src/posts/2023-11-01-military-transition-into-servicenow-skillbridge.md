@@ -11,7 +11,7 @@ related:
 
 It feels like crunchtime right now. I currently have a lot of thoughts running through my mind every second of the day. Preparing to clear out the military, move my family temporarily to the west coast, all while being two weeks away from the ServiceNow training program.
 
-I’ve decided to document my journey on Medium because its a platform I use often to read raw stories from writers and creators. It's also my way of embedding my “long form” of content, other than YouTube or a Podcast, which I have the urge to start a podcast, but maybe one day.
+I’ve decided to document my journey on Medium because it's a platform I use often to read raw stories from writers and creators. It's also my way of embedding my “long form” of content, other than YouTube or a Podcast, which I have the urge to start a podcast, but maybe one day.
 
 Overall, I’d love to share a timeline on how I got started in tech.
 
@@ -25,9 +25,9 @@ This led me to go deep into learning about how to become a software engineer. I 
 
 Through their videos, I learned about a free way to do this, without a degree, [The Odin Project](https://www.theodinproject.com) (TOP).
 
-The Odin Project is a free, self pace course, that takes you from not knowing any code, to becoming a full stack web developer. You have the option of either learning Ruby on Rails, or going with JavaScript and learning the MERN stack (MongoDB, Express, React, Node).
+The Odin Project is a free, self-paced course, that takes you from not knowing any code, to becoming a full stack web developer. You have the option of either learning Ruby on Rails, or going with JavaScript and learning the MERN stack (MongoDB, Express, React, Node).
 
-I learned quickly that it was difficult to learn on my own, and asking for help wasnt easy for me. I gave up on TOP because I could not grasp the concept of if/else statements and functions in JavaScript.
+I learned quickly that it was difficult to learn on my own, and asking for help wasn't easy for me. I gave up on TOP because I could not grasp the concept of if/else statements and functions in JavaScript.
 
 ## The Come Up — Reddit
 
@@ -59,7 +59,7 @@ My goals are hefty for this cohort, but I’d love to share them for accountabil
 2. Earn Professional Scrum Master I (PSM 1)
 3. Earn ITIL v4
 
-I’m absolutely happy, excited, and nervous to be going through this training program because its the bittersweet feeling of my chapter in the military coming to an end, and a new door opening up, not only for myself, but my family.
+I’m absolutely happy, excited, and nervous to be going through this training program because it's the bittersweet feeling of my chapter in the military coming to an end, and a new door opening up, not only for myself, but my family.
 
 I applaud you for making it this far! I will be posting my journey of breaking into tech, specifically ServiceNow, weekly with you folks! Thank you for taking the time to read and look forward to your thoughts and comments!
 
