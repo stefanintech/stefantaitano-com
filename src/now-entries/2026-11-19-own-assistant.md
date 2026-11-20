@@ -1,0 +1,1 @@
+I'm running my own AI assistant now, on the same small server as my automations, so my data stays with me. It's read-only by default. It can read my mail and calendar, but it can't send anything. Most of the daily jobs aren't AI at all. They're simple scripts that stay quiet and only ping me when something changes.
