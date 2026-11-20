@@ -138,6 +138,30 @@ lastUpdated: '2026-11-19'
     </article>
   {% endfor %}
 
+  <section class="ai-section crew flow" id="crew" aria-labelledby="crew-title">
+    <h2 id="crew-title" class="ai-section__title">The crew</h2>
+    <p class="crew__note">{{ crew.note }}</p>
+    <ul class="crew-grid" role="list">
+      {% for member in crew.members %}
+        <li class="crew-card" data-crew-card="{{ member.slug }}">
+          <div
+            class="crew-card__avatar"
+            data-crew-avatar="{{ member.avatar | dump }}"
+            data-state="{{ member.state }}"
+            data-mood="{{ member.mood or 'neutral' }}"
+            hidden
+          ></div>
+          <h3 class="crew-card__name">{{ member.name }}</h3>
+          <p class="crew-card__job">{{ member.job }}</p>
+          <p class="crew-card__state">
+            <span class="visually-hidden">Status: </span>
+            <span class="crew-pill" data-state="{{ member.state }}">{{ member.state }}</span>
+          </p>
+        </li>
+      {% endfor %}
+    </ul>
+  </section>
+
   <section class="ai-section flow" aria-labelledby="ai-learning">
     <h2 id="ai-learning" class="ai-section__title">What I'm learning</h2>
     <p>{{ aiWorkflows.learning.intro }}</p>
@@ -162,6 +186,9 @@ lastUpdated: '2026-11-19'
 {% js "defer" %}
   {% include "scripts/dialog.js" %}
 {% endjs %}
+
+<script src="/assets/scripts/vendor/open-bot-avatar.js" defer></script>
+<script src="/assets/scripts/components/crew.js" defer></script>
 
 {%- css "rasa" -%}
   {%- include "css/rasa-pages.css" -%}

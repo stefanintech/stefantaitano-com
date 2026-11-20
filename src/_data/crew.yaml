@@ -1,0 +1,71 @@
+# The crew section on /ai (src/pages/ai.njk). Plan: docs/crew-project-plan.md.
+# Statuses are hand-set samples, not live data.
+# state: working | thinking | waiting | blocked | done | idle
+# mood: neutral (default) | happy
+# avatar: an Open Bot Avatar definition (100x100 viewBox, one filled path, eye pair).
+# test/crew.test.js runs every avatar through validateAvatar.
+note: Sample statuses, not live.
+
+members:
+  - slug: bolt
+    name: bolt
+    job: Code foreman. Reviews and lands pull requests.
+    state: working
+    avatar:
+      version: 1
+      id: bolt
+      name: Bolt
+      body:
+        path: M40 12C46 10 58 10 64 14C66 16 66 20 62 26L74 36L84 36C88 36 90 42 87 47L52 88C48 92 40 90 40 84L52 62L24 62C18 62 16 54 20 48L48 28L36 28C30 28 30 16 36 14C38 12 40 12 40 12Z
+      eyes: {x: 52, y: 48, spacing: 15, scale: 1.05}
+
+  - slug: inky
+    name: inky
+    job: Writer. Drafts and edits posts.
+    state: working
+    avatar:
+      version: 1
+      id: ink-drop
+      name: Ink Drop
+      body:
+        path: M50 12C56 12 61 20 64 28C74 44 82 54 82 66C82 80 68 88 50 88C32 88 18 80 18 66C18 54 26 44 36 28C39 20 44 12 50 12Z
+      eyes: {x: 50, y: 62, spacing: 17, scale: 1.15}
+
+  - slug: postcard
+    name: postcard
+    job: Check-ins. Turns visits into site cards.
+    state: done
+    mood: happy
+    avatar:
+      version: 1
+      id: postcard
+      name: Postcard
+      body:
+        path: M20 32H62V20C62 16 65 14 69 14H80C84 14 86 16 86 20V32H82C86 32 88 36 88 40V76C88 82 84 86 78 86H22C16 86 12 82 12 76V40C12 34 16 32 20 32Z
+      eyes: {x: 44, y: 56, spacing: 16, scale: 1.1}
+
+  - slug: imogen
+    name: Imogen
+    job: Alt text. Writes image descriptions.
+    state: waiting
+    avatar:
+      version: 1
+      id: impala
+      name: Impala
+      body:
+        path: M34 40C24 42 18 52 18 62C18 76 32 88 50 88C68 88 82 76 82 62C82 52 76 42 66 40ZM24 54C16 52 12 44 16 38C20 34 26 38 28 46C28 52 26 56 24 54ZM76 54C84 52 88 44 84 38C80 34 74 38 72 46C72 52 74 56 76 54ZM42 40C36 24 24 14 26 10C28 8 34 8 40 14C46 22 50 30 50 40ZM58 40C64 24 76 14 74 10C72 8 66 8 60 14C54 22 50 30 50 40Z
+      eyes: {x: 50, y: 62, spacing: 17, scale: 1.15}
+
+  - slug: captain
+    name: captain
+    job: Dispatcher. Sends each job to the right bot.
+    state: idle
+    # Peaked cap: saucer crown, band with the eyes, drooping visor.
+    # Holes: a diamond badge on the crown and a strap slit above the visor.
+    avatar:
+      version: 1
+      id: captain
+      name: Captain
+      body:
+        path: M50 14C74 14 94 20 94 30C94 37 88 42 80 45L76 62C84 64 90 68 88 74C78 82 62 84 50 84C38 84 22 82 12 74C10 68 16 64 24 62L20 45C12 42 6 37 6 30C6 20 26 14 50 14ZM50 24L45.5 30L50 36L54.5 30ZM28 65C27 65 26.5 65.7 26.5 66.5C26.5 67.3 27 68 28 68H72C73 68 73.5 67.3 73.5 66.5C73.5 65.7 73 65 72 65Z
+      eyes: {x: 50, y: 53, spacing: 17, scale: 1.05}
