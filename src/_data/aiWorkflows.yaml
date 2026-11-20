@@ -1,173 +1,83 @@
-updated: '2026-09-24'
-updatedLabel: September 2026
+updated: '2026-11-19'
+updatedLabel: November 2026
 
 # Public status vocabulary: In use | Still tuning | Experimenting
 # src/pages/ai.njk renders only some of these fields. The rest is the workflow record.
 workflows:
-  - slug: morning-family-briefing
-    title: The Morning Family Briefing
-    artifactName: The Taitano Times
+  - slug: morning-briefing
+    title: The Morning Briefing
     status: In use
-    category: Family operations
+    category: Daily operations
     tools:
-      - Muse
-      - Gmail
+      - Hermes
+      - Proton Mail
       - Google Calendar
       - Apple Reminders
     primaryTools:
-      - Muse
+      - Hermes
       - Calendar
       - Email
       - Reminders
-    question: What does our family need to know and get done this week?
-    schedule: Around 6:00 AM
+    question: What do I need to know and get done this week?
+    schedule: Around 7:00 AM
     sources:
       - Google Calendar
       - Apple Reminders
       - Paper calendar
       - Email
-      - School email
     answers:
-      - Who has what going on this week?
-      - What school and after-school activities are happening?
-      - What family events matter?
-      - What do the parents need to finish?
+      - What's on the calendar this week?
+      - What events matter?
+      - What do I need to finish?
       - What forms, due dates, or action items need attention before the week is over?
     summary: >
-      Every morning around 6 AM, Muse gives me one briefing that answers a
-      simple question: what does our family need to know and get done this
-      week?
+      Every morning around 7 AM, my own assistant, Hermes, gives me one
+      briefing that answers a simple question: what do I need to know and get
+      done this week?
     flow:
       - Calendar + email + reminders
-      - Muse
+      - Hermes
       - Morning briefing
-    artifacts:
-      - image: /assets/images/ai/taitano-times-2026-09-20-public.png
-        enlarge: true
-        alt: >-
-          Public-safe edition of the Taitano Times morning briefing with
-          sections for Today, This Week, Kids & School, Parents, Out & About,
-          news, and a family conversation prompt.
-        caption: A real morning briefing with private family details generalized or removed.
     notes:
       - heading: Why I built it
         paragraphs:
           - >
             That information lived in Google Calendar, Apple Reminders, a paper
-            calendar, regular email, and school email, and I was the one
-            putting it together. Now I read the briefing on a screen and pass
-            along whatever my partner needs. I call it the Taitano Times, but I
-            don't print it.
+            calendar, and email, and I was the one putting it together. Now the
+            briefing is the first thing I read in the morning.
       - heading: Still tuning
         paragraphs:
           - >
-            It still includes too much sometimes, gets the formatting wrong, or
-            makes wrong assumptions. There's no master prompt. It gets better
-            when I correct it. The calendar, reminders, and email are still the
-            source of truth. The briefing is just the first thing I read.
-
-  - slug: ruby-reboot
-    title: Getting Back Into Ruby Without Starting Over
-    status: In use
-    category: Learning
-    tools:
-      - ChatGPT
-      - Notion
-      - The Odin Project
-    primaryTools:
-      - ChatGPT
-      - Notion
-      - The Odin Project
-    background: >
-      Finished The Odin Project Foundations, moved into the Full-Stack Ruby on
-      Rails path, and stopped around nested collections and Enumerable over the
-      summer.
-    pairingRules:
-      - I attempt the problem first.
-      - ChatGPT gives hints, code review, debugging help, or explanations.
-      - No instant starter code or full solution.
-    sessionNote:
-      - What I practiced
-      - What I finished
-      - What was hard
-      - Where I stopped
-      - What likely comes next
-    goal: Finish the reboot and return to The Odin Project's Ruby path without restarting the course.
-    summary: >
-      I stopped working through Ruby for a couple of months. When I came back,
-      I didn't want to restart the course or pretend I remembered everything.
-      I use ChatGPT as a pair partner: I try first, ask for hints when I'm
-      stuck, and save the stopping point in Notion. It can review, debug, or
-      explain, but it doesn't hand me starter code or the full solution.
-    flow:
-      - Odin exercise
-      - My attempt
-      - ChatGPT coaching
-      - Notion stopping point
-    artifacts:
-      - image: /assets/images/ai/ruby-reboot-artifacts.png
-        enlarge: true
-        fit: true
-        alt: Ruby Reboot workflow showing Stefan’s Ruby attempt, a ChatGPT pair-programming hint, and the resulting Notion session summary.
-        caption: "A real Ruby Reboot session: my attempt, ChatGPT as a pair-programming partner, and the Notion note that preserves where I stopped."
-    notes:
-      - paragraphs:
-          - >
-            There's no schedule and no curriculum here. I learn when time
-            allows. The Notion note says what I practiced, what was hard, and
-            where I stopped, so the next session starts a lot faster.
-    topics:
-      summary: Ruby topics I've practiced so far
-      items:
-        - variables
-        - arrays
-        - each
-        - map
-        - select
-        - hashes
-        - nested collections
-        - filter
-        - find
-        - debugging
-        - p vs puts
-        - reject
-        - any?
-        - all?
-        - count
-        - sum
-        - max_by
-        - min_by
-        - sort_by
-        - group_by
+            Hermes is new, so I'm still tuning it. Calendar, reminders, and
+            email are still the source of truth. The briefing is just the
+            first thing I read.
 
   - slug: delegating-attention
     title: Delegating Attention
     status: Still tuning
     category: Monitoring
     tools:
-      - Muse
-      - Email
+      - Hermes
+      - Proton Mail
       - Push notifications
     primaryTools:
-      - Muse
+      - Hermes
       - Email
     sources:
       - Carrier email
-      - Airline email
-      - School email
+      - Store email
       - USPS Informed Delivery
     outOfScope:
-      - Weather monitoring is newer and still experimental.
       - Appointments stay in Google Calendar.
       - Prices are not part of this.
     summary: >
-      Packages, flights, and school email all have their own notification
-      streams. I'm experimenting with using Muse as one filter on top of them:
-      tell me when something needs my attention and stay quiet when it
-      doesn't.
+      Packages and orders all have their own notification streams. Hermes
+      checks my mail at 7:30 AM and 5:30 PM, and a separate tracker follows
+      orders and returns. Most of those checks are plain scripts, not AI. They
+      tell me when something needs my attention and stay quiet when it doesn't.
     flow:
       - Email
-      - Muse
+      - Hermes
       - Useful notification
     rules:
       heading: What counts as a change
@@ -178,26 +88,12 @@ workflows:
             - out for delivery
             - delivery problem
             - delivered
-        - heading: Flights
-          items:
-            - gate change
-            - delay
-            - cancellation
-            - boarding
-        - heading: School
-          items:
-            - teacher email
-            - deadline
-            - closure
-            - upcoming activity
-            - form or action I need to handle
-          note: Positive teacher feedback counts too, so I can open the email and reply myself.
       silence: If nothing important changed, stay silent.
     notes:
       - paragraphs:
           - >
-            Muse isn't the source of truth. The carrier, airline, or school
-            system still is. It doesn't reply to school email for me.
+            Hermes isn't the source of truth. The carrier or store still is.
+            It's read-only, so it can't reply to anything for me.
 
 learning:
   intro: >
@@ -215,29 +111,30 @@ learning:
 experiments:
   intro: >
     Before Muse, I used Grok Bot for a few projects. They're paused, but they
-    shaped what I want from personal AI now.
+    shaped what I want from personal AI now. I've since stopped using Muse too.
+    These days my own assistant, Hermes, runs on a small cloud server next to
+    n8n, with nightly backups and a watchdog that pings my phone if anything
+    breaks.
   items:
     - name: Ms. Frizzle / Mr. Frizzle
-      note: family and school assistant
+      note: home assistant
     - name: Marketplace / Resell Boss
       note: marketplace listing assistant
     - name: SLP Weather
       note: local weather bot
 
 tools:
-  - name: Muse
-    role: Current primary personal AI
+  - name: Hermes
+    role: My own AI assistant, on a small server I rent
+  - name: n8n
+    role: Runs my automations next to Hermes
   - name: ChatGPT
     role: Research, writing, coding, and project work
-  - name: Notion
-    role: Structured notes and learning trackers
-  - name: Gmail
-    role: Email input for the briefing and the attention layer
+  - name: Obsidian
+    role: Notes
+  - name: Proton Mail
+    role: Email input for the briefing and the mail watch
   - name: Google Calendar
     role: Schedule input for the morning briefing
   - name: Apple Reminders
     role: Task input for the morning briefing
-  - name: The Odin Project
-    role: The Ruby path I'm returning to
-  - name: Email
-    role: The input layer for package, flight, and school watches
