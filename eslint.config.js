@@ -3,7 +3,7 @@ import globals from 'globals';
 
 /**
  * Correctness rules only. Formatting stays out of this config.
- * Generated Eleventy output and the vendored slide deck are not linted.
+ * Generated Eleventy output, the vendored slide deck, and vendored browser scripts are not linted.
  */
 export default [
   {
@@ -13,7 +13,8 @@ export default [
       '.cache/**',
       'src/_includes/scripts/**',
       'src/_includes/css/**',
-      'src/assets/talks/**'
+      'src/assets/talks/**',
+      'src/assets/scripts/vendor/**'
     ]
   },
   js.configs.recommended,

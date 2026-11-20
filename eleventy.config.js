@@ -160,6 +160,9 @@ export default async function (eleventyConfig) {
     // -- interactive RubyConf presentation at a stable public URL
     'src/assets/talks/rubyconf-2026/slides/': 'talks/rubyconf-2026/slides/',
 
+    // -- vendored browser scripts (prebuilt, with their license files)
+    'src/assets/scripts/vendor/': 'assets/scripts/vendor/',
+
     // -- node_modules
     'node_modules/lite-youtube-embed/src/lite-yt-embed.{css,js}': `assets/components/`
   });
