@@ -425,6 +425,103 @@ lite-youtube {
   margin-block-start: 2.5rem;
 }
 
+/* AI: the crew. Avatars are mounted by /assets/scripts/components/crew.js. */
+.crew__note {
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.crew-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  @media (width < 40rem) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.crew-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  padding: 1.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.85rem;
+  background: var(--card);
+}
+
+.crew-card__avatar {
+  width: 7.5rem;
+  aspect-ratio: 1;
+  margin-block-end: 0.25rem;
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.crew-card__name {
+  margin: 0;
+  font-size: 1.75rem;
+  line-height: 1.1;
+}
+
+.crew-card__job {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+}
+
+.crew-card__state {
+  margin: 0.4rem 0 0;
+}
+
+/* Every pair here is at least 4.5:1 in both themes. */
+.crew-pill {
+  display: inline-block;
+  padding: 0.1rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  &[data-state='working'] {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  &[data-state='thinking'] {
+    border-style: dashed;
+    border-color: var(--text);
+    color: var(--text);
+  }
+
+  &[data-state='waiting'] {
+    border-style: dashed;
+    border-color: var(--muted);
+  }
+
+  &[data-state='blocked'] {
+    border-color: var(--text);
+    background: var(--text);
+    color: var(--bg);
+  }
+
+  &[data-state='done'] {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--bg);
+  }
+}
+
 /* Links */
 .links-profile {
   display: grid;

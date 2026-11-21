@@ -7,6 +7,9 @@ import {describe, it} from 'node:test';
 import {fileURLToPath} from 'node:url';
 import {assertAltText} from './checks/alt-text.js';
 import {futureCheckinLeaks, readCheckinEntries} from './checks/checkin-privacy.js';
+import yaml from 'js-yaml';
+// The crew data and vendor checks need no build, but run with npm run smoke.
+import './crew.test.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -352,6 +355,72 @@ describe('built site', () => {
         assert.ok(!html.includes(value), `${urlForFile(file)} contains the ${name} value`);
       }
     }
+  });
+});
+
+describe('crew section', () => {
+  const crew = /** @type {any} */ (yaml.load(readFileSync(path.join(ROOT, 'src/_data/crew.yaml'), 'utf8')));
+  const aiHtml = () => readFileSync(path.join(DIST, 'ai', 'index.html'), 'utf8');
+  const section = () => {
+    const match = aiHtml().match(/<section\b[^>]*\bid="crew"[^>]*>([\s\S]*?)<\/section>/);
+    assert.ok(match, '/ai/ has no section with id="crew"');
+    return match[1];
+  };
+  const textOf = html => html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+
+  it('renders the heading, the sample note, and one card per crew.yaml member', () => {
+    const html = section();
+    assert.match(html, /<h2\b[^>]*>\s*The crew\s*<\/h2>/);
+    assert.match(html, /Sample statuses, not live\./);
+
+    const cards = [...html.matchAll(/<li\b[^>]*class="crew-card"[^>]*>([\s\S]*?)<\/li>/g)].map(match => match[1]);
+    assert.equal(cards.length, 5);
+    assert.equal(cards.length, crew.members.length);
+
+    crew.members.forEach((member, index) => {
+      const card = cards[index];
+      const name = card.match(/<h3\b[^>]*>([\s\S]*?)<\/h3>/);
+      assert.equal(name && textOf(name[1]), member.name);
+      assert.ok(textOf(card).includes(member.job), `${member.slug}: job line missing`);
+      const pill = card.match(/<span\b([^>]*\bclass="crew-pill"[^>]*)>([\s\S]*?)<\/span>/);
+      assert.ok(pill, `${member.slug}: no state pill`);
+      assert.match(pill[1], new RegExp(`\\bdata-state="${member.state}"`));
+      assert.equal(textOf(pill[2]), member.state);
+      assert.match(card, /data-crew-avatar="/, `${member.slug}: no avatar host`);
+    });
+  });
+
+  it('sits after the workflows and before What I\'m learning', () => {
+    const html = aiHtml();
+    const crewAt = html.indexOf('id="crew"');
+    const lastWorkflow = html.lastIndexOf('class="ai-workflow');
+    const learning = html.indexOf('id="ai-learning"');
+    assert.ok(lastWorkflow > -1 && lastWorkflow < crewAt, 'crew is not after the workflows');
+    assert.ok(learning > crewAt, 'crew is not before What I\'m learning');
+  });
+
+  it('loads the avatar scripts deferred, from self, on /ai only', () => {
+    const scriptTags = html => [...html.matchAll(/<script\b[^>]*>/gi)].map(match => match[0]);
+    const vendor = /src="\/assets\/scripts\/vendor\/open-bot-avatar\.js"/;
+    const page = /src="\/assets\/scripts\/components\/crew\.js"/;
+
+    const onAi = scriptTags(aiHtml());
+    for (const re of [vendor, page]) {
+      const tag = onAi.find(tagHtml => re.test(tagHtml));
+      assert.ok(tag, `/ai/ does not load ${re}`);
+      assert.match(tag, /\sdefer\b/, `${tag} is not deferred`);
+    }
+    assert.ok(onAi.findIndex(tag => vendor.test(tag)) < onAi.findIndex(tag => page.test(tag)), 'crew.js loads before the vendored script');
+
+    const elsewhere = htmlFiles()
+      .filter(file => urlForFile(file) !== '/ai/')
+      .filter(file => /open-bot-avatar|scripts\/components\/crew\.js/.test(readFileSync(file, 'utf8')))
+      .map(urlForFile);
+    assert.deepEqual(elsewhere, []);
+
+    assert.ok(isFile(path.join(DIST, 'assets/scripts/vendor/open-bot-avatar.js')), 'vendored script was not copied');
+    assert.ok(isFile(path.join(DIST, 'assets/scripts/vendor/open-bot-avatar.LICENSE')), 'vendored license was not copied');
+    assert.ok(isFile(path.join(DIST, 'assets/scripts/components/crew.js')), 'crew.js was not built');
   });
 });
 
