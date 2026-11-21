@@ -9,7 +9,7 @@ note: Sample statuses, not live.
 members:
   - slug: bolt
     name: bolt
-    job: Handles the code. One pull request per change, and nothing merges without my OK.
+    job: Handles the code, and nothing merges without my OK.
     state: working
     avatar:
       version: 1
@@ -21,7 +21,7 @@ members:
 
   - slug: inky
     name: inky
-    job: Drafts my posts and site copy. I edit and approve every word.
+    job: Drafts my posts and site copy for me to edit.
     state: working
     avatar:
       version: 1
@@ -46,7 +46,7 @@ members:
 
   - slug: imogen
     name: Imogen
-    job: Writes the alt text, so every image works with a screen reader.
+    job: Writes alt text so every image works with a screen reader.
     state: waiting
     avatar:
       version: 1
@@ -58,7 +58,7 @@ members:
 
   - slug: captain
     name: captain
-    job: Sends each job to the right bot so I don't have to.
+    job: Sends each job to the right bot.
     state: idle
     # Peaked cap: saucer crown, band with the eyes, drooping visor.
     # Holes: a diamond badge on the crown and a strap slit above the visor.
