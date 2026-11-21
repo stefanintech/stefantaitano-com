@@ -2,7 +2,7 @@
 
 A "The crew" section on `/ai` that shows the bots that help run this site, each as a small Open Bot Avatar character with a name, a one-line job, and a state pill.
 
-**Status (20 Nov 2026):** Phase 1 is in the first PR. Phase 2 is not started. Job lines in `src/_data/crew.yaml` are provisional until the writer locks them before merge.
+**Status (20 Nov 2026):** Phase 1 is PR #109. Phase 2 is not started. Job lines live in `src/_data/crew.yaml`, so a copy change from the writer is a one-line edit there.
 
 **Cut:** live statuses from any server or API, a separate `/crew` page, per-bot detail pages, any change to headers or CSP, `open-bot-avatar` as an npm dependency, and anything about family, places, money, servers, or accounts.
 
