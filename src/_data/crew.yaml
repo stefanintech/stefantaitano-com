@@ -9,7 +9,7 @@ note: Sample statuses, not live.
 members:
   - slug: bolt
     name: bolt
-    job: Code foreman. Reviews and lands pull requests.
+    job: Handles the code. One pull request per change, and nothing merges without my OK.
     state: working
     avatar:
       version: 1
@@ -21,7 +21,7 @@ members:
 
   - slug: inky
     name: inky
-    job: Writer. Drafts and edits posts.
+    job: Drafts my posts and site copy. I edit and approve every word.
     state: working
     avatar:
       version: 1
@@ -33,7 +33,7 @@ members:
 
   - slug: postcard
     name: postcard
-    job: Check-ins. Turns visits into site cards.
+    job: Turns places I visit into check-ins on the map.
     state: done
     mood: happy
     avatar:
@@ -46,7 +46,7 @@ members:
 
   - slug: imogen
     name: Imogen
-    job: Alt text. Writes image descriptions.
+    job: Writes the alt text, so every image works with a screen reader.
     state: waiting
     avatar:
       version: 1
@@ -58,7 +58,7 @@ members:
 
   - slug: captain
     name: captain
-    job: Dispatcher. Sends each job to the right bot.
+    job: Sends each job to the right bot so I don't have to.
     state: idle
     # Peaked cap: saucer crown, band with the eyes, drooping visor.
     # Holes: a diamond badge on the crown and a strap slit above the visor.
