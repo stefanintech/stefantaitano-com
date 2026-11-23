@@ -49,8 +49,7 @@ workflows:
         paragraphs:
           - >
             Hermes is new, so I'm still tuning it. Calendar, reminders, and
-            email are still the source of truth. The briefing is just the
-            first thing I read.
+            email are still the source of truth.
 
   - slug: delegating-attention
     title: Delegating Attention
