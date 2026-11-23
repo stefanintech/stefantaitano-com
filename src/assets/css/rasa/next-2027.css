@@ -1,4 +1,4 @@
-/* Preview mockup at /next-2027/. Inlined on those pages only.
+/* Home, /now/, and /now/archive/. Inlined on those pages only.
    Crew colors are this board only. /ai keeps var(--accent).
    Dark values use the same two hooks as site.css, so a toggle and the system theme both repaint. */
 
@@ -219,6 +219,15 @@
 
 .next-archive__slug {
   color: var(--muted);
+}
+
+.next-archive__notes {
+  margin-top: 2rem;
+}
+
+.next-archive__note {
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--rule);
 }
 
 .next-more {

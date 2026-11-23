@@ -1,6 +1,8 @@
 # 2027 new year refresh
 
-Clickable mockup only. Draft preview at `/next-2027/`. The live site stays as it is.
+**Status (23 Nov 2026):** Live, at Stefan's request. `/` is this design. `/now/` is the snapshot. Dated notes are at `/now/archive/`. `/next-2027/`, `/next-2027/now/`, and `/next-2027/now/archive/` redirect. The record is `docs/specs/done-archive.md`.
+
+The brief below is the preview that shipped. "Kept off the live site" describes that preview, not the site after 23 Nov 2026.
 
 ## Goal
 

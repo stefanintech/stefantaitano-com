@@ -97,8 +97,8 @@ describe('home stream fixture build', () => {
     assert.doesNotMatch(card, /-?\d{1,3}\.\d{2,}/);
   });
 
-  it('links /now entries to their id on /now/', async () => {
-    assert.match(await build(), /href="\/now\/#now-2025-05-04"/);
+  it('links /now entries to their id on the archive', async () => {
+    assert.match(await build(), /href="\/now\/archive\/#now-2025-05-04"/);
   });
 
   it('caps the list and links the archives', async () => {

@@ -404,11 +404,11 @@ describe('crew section', () => {
     assert.ok(learning > crewAt, 'crew is not before What I\'m learning');
   });
 
-  it('loads the avatar scripts deferred, from self, on /ai and the /next-2027/ preview home only', () => {
+  it('loads the avatar scripts deferred, from self, on /ai and the home page only', () => {
     const scriptTags = html => [...html.matchAll(/<script\b[^>]*>/gi)].map(match => match[0]);
     const vendor = /src="\/assets\/scripts\/vendor\/open-bot-avatar\.js"/;
     const page = /src="\/assets\/scripts\/components\/crew-v2\.js"/;
-    const avatarPages = ['/ai/', '/next-2027/'];
+    const avatarPages = ['/ai/', '/'];
 
     for (const route of avatarPages) {
       const tags = scriptTags(readFileSync(fileForRoute(route), 'utf8'));
@@ -438,9 +438,9 @@ describe('crew section', () => {
     }
   });
 
-  it('gives the preview crew five colors and leaves /ai on the accent', () => {
+  it('gives the home crew five colors and leaves /ai on the accent', () => {
     const slugs = ['bolt', 'inky', 'postcard', 'imogen', 'captain'];
-    const home = readFileSync(fileForRoute('/next-2027/'), 'utf8');
+    const home = readFileSync(fileForRoute('/'), 'utf8');
     const cards = [...home.matchAll(/<li\b[^>]*\bdata-crew-card="([^"]+)"[^>]*>([\s\S]*?)<\/li>/g)];
     assert.deepEqual(cards.map(card => card[1]), slugs);
     const colors = cards.map(card => {
@@ -536,10 +536,11 @@ describe('crew section', () => {
   });
 });
 
-describe('2027 preview mockup', () => {
+describe('2027 home', () => {
   const boardPath = path.join(ROOT, 'src/_data/next2027Board.json');
   const boardTemplate = path.join(ROOT, 'src/_includes/next-2027/crew-board.njk');
-  const previewRoutes = ['/next-2027/', '/next-2027/now/', '/next-2027/now/archive/'];
+  const liveRoutes = ['/', '/now/', '/now/archive/'];
+  const h1s = html => [...html.matchAll(/<h1\b[^>]*>[\s\S]*?<\/h1>/gi)].map(match => match[0]);
 
   const postcardCard = html => {
     const match = html.match(/<li\b[^>]*\bdata-crew-card="postcard"[^>]*>[\s\S]*?<\/li>/);
@@ -574,14 +575,16 @@ describe('2027 preview mockup', () => {
     assert.doesNotMatch(branch, /lastJob|<time|doing/);
   });
 
-  it('renders the preview pages with noindex, a sample board, and postcard without a time', () => {
-    const home = readFileSync(fileForRoute('/next-2027/'), 'utf8');
-    const now = readFileSync(fileForRoute('/next-2027/now/'), 'utf8');
-    const archive = readFileSync(fileForRoute('/next-2027/now/archive/'), 'utf8');
+  it('renders the live pages with one h1, indexable meta, a sample board, and postcard without a time', () => {
+    const home = readFileSync(fileForRoute('/'), 'utf8');
+    const now = readFileSync(fileForRoute('/now/'), 'utf8');
+    const archive = readFileSync(fileForRoute('/now/archive/'), 'utf8');
+    const homeDescription = "I'm Stefan, a veteran and software developer. Posts, places I've been, and what I'm up to now.";
 
     for (const html of [home, now, archive]) {
-      assert.match(html, /name="robots" content="noindex, nofollow"/);
-      assert.match(html, /Preview mockup\. Not the live site\./);
+      assert.equal(h1s(html).length, 1, 'page does not have exactly one h1');
+      assert.match(html, /name="robots" content="index,follow"/);
+      assert.doesNotMatch(html, /noindex|Preview mockup/);
       assert.match(html, /<summary>More<\/summary>/);
       assert.match(html, /href="\/resume\/"/);
       assert.match(html, /href="\/feed\.xml"/);
@@ -591,6 +594,14 @@ describe('2027 preview mockup', () => {
       assert.match(html, /href="\/colophon\/"/);
     }
 
+    assert.equal(h1s(home)[0].includes('Stefan Taitano'), true);
+    assert.match(home, /<title>\s*Stefan Taitano\s*<\/title>/);
+    assert.match(home, new RegExp(`<meta name="description" content="${homeDescription}"`));
+    assert.match(home, /<link rel="canonical" href="https:\/\/stefantaitano.com\/"\s*\/?>/);
+    assert.match(home, /<meta property="og:url" content="https:\/\/stefantaitano.com\/"/);
+    assert.match(home, /<meta property="og:title" content="Stefan Taitano"/);
+    assert.match(home, new RegExp(`<meta property="og:description" content="${homeDescription}"`));
+    assert.doesNotMatch(home, /blurbs below/);
     assert.doesNotMatch(home, /placeholder copy, inky to write/);
     assert.doesNotMatch(home, /next-hello__move/);
     assert.match(home, /Hello friend, I(?:'|&#39;)m Stefan <span aria-hidden="true">👋🏽<\/span>\. I write software, play too much Deadlock, and I(?:'|&#39;)ll probably lose to you at chess\. Do you like any of that\? Let(?:'|&#39;)s be friends!/);
@@ -619,7 +630,7 @@ describe('2027 preview mockup', () => {
     const boardHtml = home.match(/<section\b[^>]*\bid="crew-board"[\s\S]*?<\/section>/);
     assert.ok(boardHtml, 'preview home has no crew board');
     assert.doesNotMatch(boardHtml[0], /UTC/);
-    assert.match(home, /<a href="\/">Everything else<\/a>/);
+    assert.match(home, /Everything else: <a href="\/articles\/">Posts<\/a>, <a href="\/checkins\/">Check-ins<\/a>, and <a href="\/now\/">Now<\/a>\./);
     assert.equal([...home.matchAll(/class="rasa-card rasa-card--/g)].length, 5);
 
     const card = postcardCard(home);
@@ -637,37 +648,80 @@ describe('2027 preview mockup', () => {
     assert.match(now, /I ran my first 10K on Oct 31 in 58:30\./);
     assert.match(now, /This site, and the crew of bots that helps me run it\./);
     assert.match(now, /Deadlock\. I(?:'|&#39;)m also playing WoW Forever and Football Manager 2027, and rewatching Ted Lasso\./);
-    assert.match(now, /href="\/next-2027\/now\/archive\/"/);
+    assert.match(now, /href="\/now\/archive\/"/);
+    assert.match(now, /<title>\s*Now\s*<\/title>/);
+    assert.match(now, /<meta name="description" content="What Stefan Taitano is focused on right now\."/);
+    assert.match(now, /<link rel="canonical" href="https:\/\/stefantaitano.com\/now\/"/);
+    assert.match(now, /<meta property="og:url" content="https:\/\/stefantaitano.com\/now\/"/);
+    assert.equal(h1s(now)[0].includes('>Now<') || /<h1[^>]*>\s*Now\s*<\/h1>/.test(h1s(now)[0]), true);
+    assert.match(now, /location\.replace\('\/now\/archive\/' \+ hash\)/);
+    const forwarders = htmlFiles()
+      .filter(file => readFileSync(file, 'utf8').includes("indexOf('#now-')"))
+      .map(urlForFile);
+    assert.deepEqual(forwarders, ['/now/']);
 
     const entries = readdirSync(path.join(ROOT, 'src/now-entries')).filter(name => name.endsWith('.md'));
-    assert.equal([...archive.matchAll(/href="\/now\/#now-/g)].length, entries.length);
+    const ids = [...archive.matchAll(/\sid="(now-[^"]+)"/g)].map(match => match[1]);
+    assert.equal(ids.length, entries.length);
+    assert.equal(new Set(ids).size, entries.length);
+    assert.match(archive, /<title>\s*Now archive\s*<\/title>/);
+    assert.match(archive, /<link rel="canonical" href="https:\/\/stefantaitano.com\/now\/archive\/"/);
+    assert.match(archive, /<h1>\s*Archive\s*<\/h1>/);
+    assert.match(archive, /href="\/now\/"/);
+
+    const stale = htmlFiles()
+      .filter(file => readFileSync(file, 'utf8').includes('href="/now/#now-'))
+      .map(urlForFile);
+    assert.deepEqual(stale, []);
+    const cardTargets = htmlFiles().flatMap(file =>
+      [...readFileSync(file, 'utf8').matchAll(/href="\/now\/archive\/#(now-[^"]+)"/g)].map(match => match[1])
+    );
+    for (const id of cardTargets) assert.ok(ids.includes(id), `${id} is missing from the archive`);
   });
 
-  it('stays out of the sitemap, the feeds, and every live page', () => {
-    for (const name of ['sitemap.xml', 'feed.xml', 'feed.json']) {
+  it('lists the live URLs in the sitemap, redirects the preview paths, and leaves those paths unbuilt', () => {
+    const sitemap = readFileSync(path.join(DIST, 'sitemap.xml'), 'utf8');
+    for (const loc of [
+      'https://stefantaitano.com/',
+      'https://stefantaitano.com/now/',
+      'https://stefantaitano.com/now/archive/'
+    ]) {
+      assert.ok(sitemap.includes(`<loc>${loc}</loc>`), `${loc} is missing from the sitemap`);
+    }
+    assert.equal(sitemap.includes('next-2027'), false, 'sitemap lists a preview path');
+
+    for (const name of ['feed.xml', 'feed.json']) {
       const text = readFileSync(path.join(DIST, name), 'utf8');
-      assert.equal(text.includes('next-2027'), false, `${name} lists the preview`);
+      assert.equal(text.includes('next-2027'), false, `${name} lists a preview path`);
+    }
+
+    const redirects = readFileSync(path.join(DIST, '_redirects'), 'utf8');
+    assert.match(redirects, /^\/next-2027\/ \/\s*$/m);
+    assert.match(redirects, /^\/next-2027\/now\/ \/now\/\s*$/m);
+    assert.match(redirects, /^\/next-2027\/now\/archive\/ \/now\/archive\/\s*$/m);
+    for (const route of ['/next-2027/', '/next-2027/now/', '/next-2027/now/archive/']) {
+      assert.equal(isFile(fileForRoute(route)), false, `${route} is still a built page`);
     }
 
     const leaks = htmlFiles()
-      .filter(file => !previewRoutes.includes(urlForFile(file)))
       .filter(file => readFileSync(file, 'utf8').includes('/next-2027/'))
       .map(urlForFile);
     assert.deepEqual(leaks, []);
+    assert.deepEqual(liveRoutes, ['/', '/now/', '/now/archive/']);
   });
 
-  it('keeps Chiang Mai and Thailand off every preview page', () => {
-    const pages = htmlFiles().filter(file => urlForFile(file).startsWith('/next-2027/'));
-    assert.ok(pages.length >= previewRoutes.length);
+  it('keeps Chiang Mai and Thailand off the home, /now/, and the archive', () => {
+    const pages = liveRoutes.map(route => fileForRoute(route));
+    assert.ok(pages.every(isFile));
     const hits = pages
       .filter(file => /Chiang Mai|Thailand/.test(readFileSync(file, 'utf8')))
       .map(urlForFile);
     assert.deepEqual(hits, []);
   });
 
-  it('shows a Lichess card and a hidden puzzle on the preview home only', () => {
-    const home = readFileSync(fileForRoute('/next-2027/'), 'utf8');
-    const now = readFileSync(fileForRoute('/next-2027/now/'), 'utf8');
+  it('shows a Lichess card and a hidden puzzle on the home page only', () => {
+    const home = readFileSync(fileForRoute('/'), 'utf8');
+    const now = readFileSync(fileForRoute('/now/'), 'utf8');
     const chess = JSON.parse(readFileSync(path.join(ROOT, 'src/_data/next2027ChessSnapshot.json'), 'utf8'));
     const card = home.match(/<a\b[^>]*class="next-lichess"[^>]*>[\s\S]*?<\/a>/);
     assert.ok(card, 'preview home has no Lichess card');
@@ -703,7 +757,8 @@ describe('2027 preview mockup', () => {
     const scriptPages = htmlFiles()
       .filter(file => readFileSync(file, 'utf8').includes('next-2027-puzzle.js'))
       .map(urlForFile);
-    assert.deepEqual(scriptPages, ['/next-2027/']);
+    assert.deepEqual(scriptPages, ['/']);
+    assert.doesNotMatch(readFileSync(fileForRoute('/ai/'), 'utf8'), /class="next-hello"|class="next-lichess"/);
   });
 });
 

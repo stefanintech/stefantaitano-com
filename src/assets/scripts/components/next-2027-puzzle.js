@@ -1,4 +1,4 @@
-// Hidden one-move puzzle on the /next-2027/ home mockup only.
+// Hidden one-move puzzle on the home page.
 const dialog = document.querySelector('[data-puzzle-dialog]');
 const openers = [...document.querySelectorAll('[data-puzzle-open]')];
 const opener = openers[0];
