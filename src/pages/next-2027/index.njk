@@ -1,0 +1,37 @@
+---
+permalink: /next-2027/index.html
+title: Stefan Taitano
+description: Preview mockup of a shorter home page. Not the live site.
+showPuzzle: true
+---
+
+<h1 class="visually-hidden">{{ meta.siteName }}</h1>
+<div class="next-hello">
+  <p class="rasa-intro">Hello friend, I'm Stefan <span aria-hidden="true">👋🏽</span>. I write software, play too much Deadlock, and I'll probably lose to you at chess. Do you like any of that? Let's be friends!</p>
+  {% include "next-2027/knight-button.njk" %}
+</div>
+<p class="next-notes">I write Field Notes, a short email on the first Monday of every month about what I'm building, playing, and learning. <a href="https://buttondown.com/stefantaitano" rel="noopener">Get the next Field Notes</a></p>
+
+{% include "next-2027/lichess-card.njk" %}
+{% include "next-2027/crew-board.njk" %}
+
+<div class="next-latest">
+  <ol class="rasa-stream" role="list">
+    {%- for entry in collections.homeStream.items %}
+      {%- if loop.index <= 5 %}
+        <li>
+          {%- if entry.type == 'post' %}{% set post = entry.item %}{% include "rasa/card-post.njk" %}
+          {%- elif entry.type == 'checkin' %}{% set checkin = entry.item %}{% include "rasa/card-checkin.njk" %}
+          {%- else %}{% set nowEntry = entry.item %}{% include "rasa/card-now.njk" %}{% endif %}
+        </li>
+      {%- endif %}
+    {%- endfor %}
+  </ol>
+  <p class="next-rest"><a href="/">Everything else</a></p>
+</div>
+
+{% include "next-2027/puzzle-dialog.njk" %}
+
+<script src="/assets/scripts/vendor/open-bot-avatar.js" defer></script>
+<script src="/assets/scripts/components/crew-v2.js" defer></script>
+<script src="/assets/scripts/components/next-2027-puzzle.js" defer></script>

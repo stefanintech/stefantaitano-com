@@ -1,0 +1,31 @@
+{# Reads sq.piece (KQRBNP) and sq.color (w or b) from the board loop. #}
+<svg class="chess-piece chess-piece--{{ sq.color }}" viewBox="0 0 40 40" aria-hidden="true">
+  {% if sq.piece == 'P' %}
+    <circle cx="20" cy="14" r="6"></circle>
+    <rect x="17" y="18" width="6" height="12"></rect>
+    <rect x="12" y="30" width="16" height="5"></rect>
+  {% elif sq.piece == 'R' %}
+    <rect x="10" y="8" width="5" height="8"></rect>
+    <rect x="18" y="8" width="4" height="8"></rect>
+    <rect x="25" y="8" width="5" height="8"></rect>
+    <rect x="12" y="14" width="16" height="16"></rect>
+    <rect x="10" y="30" width="20" height="5"></rect>
+  {% elif sq.piece == 'N' %}
+    <polygon points="8,36 8,30 14,28 12,20 16,14 22,12 24,16 22,18 28,22 32,20 34,24 28,28 28,36"></polygon>
+  {% elif sq.piece == 'B' %}
+    <circle cx="20" cy="11" r="4"></circle>
+    <polygon points="20,14 12,30 28,30"></polygon>
+    <rect x="13" y="31" width="14" height="4"></rect>
+  {% elif sq.piece == 'Q' %}
+    <circle cx="10" cy="12" r="3"></circle>
+    <circle cx="20" cy="8" r="3"></circle>
+    <circle cx="30" cy="12" r="3"></circle>
+    <polygon points="8,16 14,14 20,18 26,14 32,16 30,30 10,30"></polygon>
+    <rect x="10" y="31" width="20" height="4"></rect>
+  {% elif sq.piece == 'K' %}
+    <rect x="18" y="3" width="4" height="12"></rect>
+    <rect x="13" y="7" width="14" height="4"></rect>
+    <polygon points="10,18 30,18 27,30 13,30"></polygon>
+    <rect x="10" y="31" width="20" height="4"></rect>
+  {% endif %}
+</svg>

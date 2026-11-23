@@ -1,0 +1,33 @@
+{
+  "source": "sample",
+  "members": [
+    {
+      "slug": "bolt",
+      "doing": "Reading a pull request on this site",
+      "lastJobAt": "2026-11-22T22:40:00Z",
+      "lastJobLabel": "Nov 22, 2026, 4:40 PM CT"
+    },
+    {
+      "slug": "inky",
+      "doing": "Drafting the home hello",
+      "lastJobAt": "2026-11-22T21:15:00Z",
+      "lastJobLabel": "Nov 22, 2026, 3:15 PM CT"
+    },
+    {
+      "slug": "postcard",
+      "line": "check-ins post a day later"
+    },
+    {
+      "slug": "imogen",
+      "doing": "Writing alt text for a check-in photo",
+      "lastJobAt": "2026-11-22T19:05:00Z",
+      "lastJobLabel": "Nov 22, 2026, 1:05 PM CT"
+    },
+    {
+      "slug": "captain",
+      "doing": "Sending the next job to the right bot",
+      "lastJobAt": "2026-11-22T18:00:00Z",
+      "lastJobLabel": "Nov 22, 2026, 12:00 PM CT"
+    }
+  ]
+}

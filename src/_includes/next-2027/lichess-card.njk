@@ -1,0 +1,15 @@
+<a class="next-lichess" href="/chess/">
+  <span class="chess-grid chess-grid--mini" aria-hidden="true">
+    {% for sq in next2027Chess.final.squares %}
+      <span class="chess-sq chess-sq--{{ sq.shade }}">
+        {% if sq.piece %}{% include "next-2027/piece.njk" %}{% endif %}
+      </span>
+    {% endfor %}
+  </span>
+  <span class="next-lichess__copy">
+    <span class="next-lichess__kicker">{{ next2027PuzzleCopy.kicker }}</span>
+    <span class="next-lichess__players">{{ next2027Chess.white }} vs {{ next2027Chess.black }}</span>
+    <span class="next-lichess__result">{{ next2027Chess.result }}</span>
+    {% if next2027Chess.resultWords %}<span class="next-lichess__words">{{ next2027Chess.resultWords }}</span>{% endif %}
+  </span>
+</a>

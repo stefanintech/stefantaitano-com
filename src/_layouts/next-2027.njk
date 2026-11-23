@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="{{ meta.lang }}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>
+      {%- if title -%}
+        {{- title -}}
+      {%- else -%}
+        {{- meta.siteName -}}
+      {%- endif -%}
+    </title>
+
+    <link
+      rel="preload"
+      href="/assets/fonts/caveat/caveat-site-600.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    {% include "head/js-inline.njk" %}
+    {% include "head/schema.njk" %}
+
+    {% css "rasa" %}{% include "css/rasa-site.css" %}{% endcss %}
+    {% css "rasa" %}{% include "css/rasa-next-2027.css" %}{% endcss %}
+    <style>{% getBundle "css", "rasa" %}</style>
+
+    {% include "head/meta-info.njk" %}
+  </head>
+
+  <body class="rasa">
+    {% include "next-2027/header.njk" %}
+
+    <main id="main">
+      <p class="next-preview">Preview mockup. Not the live site.</p>
+      {{ content | safe }}
+    </main>
+
+    {% include "next-2027/footer.njk" %}
+  </body>
+</html>

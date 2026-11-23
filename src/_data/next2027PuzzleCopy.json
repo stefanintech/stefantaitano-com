@@ -1,0 +1,14 @@
+{
+  "kicker": "Latest game on Lichess",
+  "knightLabel": "Open the puzzle",
+  "title": "One move",
+  "lead": "Find the move that was played.",
+  "boardLabel": "Puzzle board",
+  "moveLabel": "Type a move",
+  "moveHint": "SAN, or squares such as e2e4.",
+  "tryLabel": "Try this move",
+  "right": "Nice. You'd beat me.",
+  "rightLink": "See the game",
+  "wrong": "Not quite, try again.",
+  "close": "Close"
+}

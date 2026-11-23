@@ -53,6 +53,11 @@ const isFile = file => {
   }
 };
 
+const fileForRoute = route => {
+  if (route === '/') return path.join(DIST, 'index.html');
+  return path.join(DIST, route.replace(/^\/+|\/+$/g, ''), 'index.html');
+};
+
 /** A site path is built when it maps to a file Eleventy wrote. */
 const builtFile = pathname => {
   let rel;
@@ -399,28 +404,306 @@ describe('crew section', () => {
     assert.ok(learning > crewAt, 'crew is not before What I\'m learning');
   });
 
-  it('loads the avatar scripts deferred, from self, on /ai only', () => {
+  it('loads the avatar scripts deferred, from self, on /ai and the /next-2027/ preview home only', () => {
     const scriptTags = html => [...html.matchAll(/<script\b[^>]*>/gi)].map(match => match[0]);
     const vendor = /src="\/assets\/scripts\/vendor\/open-bot-avatar\.js"/;
-    const page = /src="\/assets\/scripts\/components\/crew\.js"/;
+    const page = /src="\/assets\/scripts\/components\/crew-v2\.js"/;
+    const avatarPages = ['/ai/', '/next-2027/'];
 
-    const onAi = scriptTags(aiHtml());
-    for (const re of [vendor, page]) {
-      const tag = onAi.find(tagHtml => re.test(tagHtml));
-      assert.ok(tag, `/ai/ does not load ${re}`);
-      assert.match(tag, /\sdefer\b/, `${tag} is not deferred`);
+    for (const route of avatarPages) {
+      const tags = scriptTags(readFileSync(fileForRoute(route), 'utf8'));
+      for (const re of [vendor, page]) {
+        const tag = tags.find(tagHtml => re.test(tagHtml));
+        assert.ok(tag, `${route} does not load ${re}`);
+        assert.match(tag, /\sdefer\b/, `${tag} is not deferred`);
+      }
+      assert.ok(
+        tags.findIndex(tag => vendor.test(tag)) < tags.findIndex(tag => page.test(tag)),
+        `${route}: crew-v2.js loads before the vendored script`
+      );
     }
-    assert.ok(onAi.findIndex(tag => vendor.test(tag)) < onAi.findIndex(tag => page.test(tag)), 'crew.js loads before the vendored script');
 
     const elsewhere = htmlFiles()
-      .filter(file => urlForFile(file) !== '/ai/')
-      .filter(file => /open-bot-avatar|scripts\/components\/crew\.js/.test(readFileSync(file, 'utf8')))
+      .filter(file => !avatarPages.includes(urlForFile(file)))
+      .filter(file => /open-bot-avatar|scripts\/components\/crew-v2\.js/.test(readFileSync(file, 'utf8')))
       .map(urlForFile);
     assert.deepEqual(elsewhere, []);
 
     assert.ok(isFile(path.join(DIST, 'assets/scripts/vendor/open-bot-avatar.js')), 'vendored script was not copied');
     assert.ok(isFile(path.join(DIST, 'assets/scripts/vendor/open-bot-avatar.LICENSE')), 'vendored license was not copied');
     assert.ok(isFile(path.join(DIST, 'assets/scripts/components/crew.js')), 'crew.js was not built');
+    assert.ok(isFile(path.join(DIST, 'assets/scripts/components/crew-v2.js')), 'crew-v2.js was not built');
+    for (const route of avatarPages) {
+      assert.doesNotMatch(readFileSync(fileForRoute(route), 'utf8'), /src="\/assets\/scripts\/components\/crew\.js"/);
+    }
+  });
+
+  it('gives the preview crew five colors and leaves /ai on the accent', () => {
+    const slugs = ['bolt', 'inky', 'postcard', 'imogen', 'captain'];
+    const home = readFileSync(fileForRoute('/next-2027/'), 'utf8');
+    const cards = [...home.matchAll(/<li\b[^>]*\bdata-crew-card="([^"]+)"[^>]*>([\s\S]*?)<\/li>/g)];
+    assert.deepEqual(cards.map(card => card[1]), slugs);
+    const colors = cards.map(card => {
+      const color = card[2].match(/data-crew-color="([^"]+)"/);
+      assert.ok(color, `${card[1]} has no crew color`);
+      return color[1];
+    });
+    assert.deepEqual(colors, slugs.map(slug => `var(--crew-${slug})`));
+    assert.equal(new Set(colors).size, slugs.length);
+
+    const css = readFileSync(path.join(ROOT, 'src/assets/css/rasa/next-2027.css'), 'utf8');
+    const site = readFileSync(path.join(ROOT, 'src/assets/css/rasa/site.css'), 'utf8');
+    const block = (source, pattern) => {
+      const match = source.match(pattern);
+      assert.ok(match, `missing ${pattern}`);
+      return match[1];
+    };
+    const props = text => Object.fromEntries(
+      [...text.matchAll(/--crew-([a-z]+):\s*(#[0-9a-f]{6})/g)].map(([, slug, hex]) => [slug, hex])
+    );
+    const light = props(block(css, /:root \{\s*([^}]*--crew-bolt:[^}]*)\}/));
+    const systemDark = props(block(css, /:root:not\(\[data-theme='light'\]\) \{\s*([^}]*)\}/));
+    const explicitDark = props(block(css, /:root\[data-theme='dark'\] \{\s*([^}]*)\}/));
+    const edges = Object.fromEntries(
+      [...css.matchAll(/--crew-([a-z]+)-edge:\s*(#[0-9a-f]{6})/g)].map(([, slug, hex]) => [slug, hex])
+    );
+    assert.deepEqual(Object.keys(light), slugs);
+    assert.deepEqual(Object.keys(edges), slugs);
+    assert.deepEqual(systemDark, explicitDark);
+    assert.equal(new Set(Object.values(light)).size, slugs.length);
+    assert.equal(new Set(Object.values(edges)).size, slugs.length);
+    assert.equal(new Set(Object.values(explicitDark)).size, slugs.length);
+    for (const slug of slugs) assert.notEqual(light[slug], explicitDark[slug], `${slug} does not change with the theme`);
+
+    const cardLight = site.match(/:root \{[^}]*--card:\s*(#[0-9a-f]{6})/)[1];
+    const cardDark = site.match(/:root\[data-theme='dark'\] \{[^}]*--card:\s*(#[0-9a-f]{6})/)[1];
+    const eye = '#151515';
+    const channel = value => {
+      const scaled = value / 255;
+      return scaled <= 0.04045 ? scaled / 12.92 : ((scaled + 0.055) / 1.055) ** 2.4;
+    };
+    const luminance = hex => {
+      const number = parseInt(hex.slice(1), 16);
+      return 0.2126 * channel(number >> 16) + 0.7152 * channel((number >> 8) & 255) + 0.0722 * channel(number & 255);
+    };
+    const contrast = (a, b) => {
+      const [lighter, darker] = [luminance(a), luminance(b)].sort((left, right) => right - left);
+      return (lighter + 0.05) / (darker + 0.05);
+    };
+    const hue = hex => {
+      const number = parseInt(hex.slice(1), 16);
+      const red = (number >> 16) / 255;
+      const green = ((number >> 8) & 255) / 255;
+      const blue = (number & 255) / 255;
+      const max = Math.max(red, green, blue);
+      const min = Math.min(red, green, blue);
+      const delta = max - min;
+      if (delta === 0) return 0;
+      const sector = max === red ? ((green - blue) / delta) % 6
+        : max === green ? (blue - red) / delta + 2
+          : (red - green) / delta + 4;
+      return (sector * 60 + 360) % 360;
+    };
+    const apart = (left, right) => {
+      const gap = Math.abs(hue(left) - hue(right));
+      return Math.min(gap, 360 - gap);
+    };
+    for (let index = 0; index < slugs.length; index += 1) {
+      for (let other = index + 1; other < slugs.length; other += 1) {
+        assert.ok(apart(light[slugs[index]], light[slugs[other]]) >= 40, `${slugs[index]} and ${slugs[other]} are too close in hue`);
+      }
+    }
+    assert.match(css, /\.next-board \[data-crew-avatar\] canvas \{\s*filter:\s*drop-shadow\(1px 0 0 var\(--crew-edge\)\)/);
+    assert.match(css, /:root:not\(\[data-theme='light'\]\) \.next-board \[data-crew-avatar\] canvas \{\s*filter: none;/);
+    assert.match(css, /:root\[data-theme='dark'\] \.next-board \[data-crew-avatar\] canvas \{\s*filter: none;/);
+    for (const slug of slugs) {
+      assert.ok(contrast(edges[slug], cardLight) >= 3, `${slug} light outline is under 3:1 on the card`);
+      assert.ok(contrast(explicitDark[slug], cardDark) >= 3, `${slug} dark is under 3:1 on the card`);
+      assert.ok(contrast(light[slug], eye) >= 3, `${slug} light hides the eyes`);
+      assert.ok(contrast(explicitDark[slug], eye) >= 3, `${slug} dark hides the eyes`);
+      assert.ok(apart(light[slug], edges[slug]) <= 15, `${slug} outline is not its own hue`);
+      assert.match(css, new RegExp(`\\[data-crew-card='${slug}'\\] \\[data-crew-avatar\\] \\{[^}]*--crew-edge: var\\(--crew-${slug}-edge\\)`));
+      assert.match(home, new RegExp(`--crew-${slug}:${light[slug]}`));
+      assert.match(home, new RegExp(`--crew-${slug}-edge:${edges[slug]}`));
+      assert.match(home, new RegExp(`--crew-${slug}:${explicitDark[slug]}`));
+    }
+
+    const ai = aiHtml();
+    assert.doesNotMatch(ai, /data-crew-color|--crew-bolt/);
+    const script = readFileSync(path.join(DIST, 'assets/scripts/components/crew-v2.js'), 'utf8');
+    assert.match(script, /var\(--accent\)/);
+    assert.match(script, /crewColor/);
+  });
+});
+
+describe('2027 preview mockup', () => {
+  const boardPath = path.join(ROOT, 'src/_data/next2027Board.json');
+  const boardTemplate = path.join(ROOT, 'src/_includes/next-2027/crew-board.njk');
+  const previewRoutes = ['/next-2027/', '/next-2027/now/', '/next-2027/now/archive/'];
+
+  const postcardCard = html => {
+    const match = html.match(/<li\b[^>]*\bdata-crew-card="postcard"[^>]*>[\s\S]*?<\/li>/);
+    assert.ok(match, 'preview home has no postcard card');
+    return match[0];
+  };
+
+  it('keeps postcard to a fixed line with no time in the sample file or the template', () => {
+    const board = JSON.parse(readFileSync(boardPath, 'utf8'));
+    assert.equal(board.source, 'sample');
+    assert.deepEqual(
+      board.members.map(member => member.slug),
+      ['bolt', 'inky', 'postcard', 'imogen', 'captain']
+    );
+
+    for (const member of board.members) {
+      if (member.slug === 'postcard') {
+        assert.deepEqual(Object.keys(member).sort(), ['line', 'slug']);
+        assert.equal(member.line, 'check-ins post a day later');
+      } else {
+        assert.deepEqual(Object.keys(member).sort(), ['doing', 'lastJobAt', 'lastJobLabel', 'slug']);
+        assert.match(member.lastJobLabel, /^[A-Z][a-z]{2} \d{1,2}, \d{4}, \d{1,2}:\d{2} [AP]M CT$/);
+        assert.doesNotMatch(`${member.doing} ${member.lastJobLabel}`, /mail|calendar|inbox|finance|UTC/i);
+      }
+    }
+
+    const template = readFileSync(boardTemplate, 'utf8');
+    const start = template.indexOf("card.slug == 'postcard'");
+    const branch = template.slice(start, template.indexOf('{%- else %}', start));
+    assert.ok(start > -1, 'postcard branch missing');
+    assert.match(branch, /check-ins post a day later/);
+    assert.doesNotMatch(branch, /lastJob|<time|doing/);
+  });
+
+  it('renders the preview pages with noindex, a sample board, and postcard without a time', () => {
+    const home = readFileSync(fileForRoute('/next-2027/'), 'utf8');
+    const now = readFileSync(fileForRoute('/next-2027/now/'), 'utf8');
+    const archive = readFileSync(fileForRoute('/next-2027/now/archive/'), 'utf8');
+
+    for (const html of [home, now, archive]) {
+      assert.match(html, /name="robots" content="noindex, nofollow"/);
+      assert.match(html, /Preview mockup\. Not the live site\./);
+      assert.match(html, /<summary>More<\/summary>/);
+      assert.match(html, /href="\/resume\/"/);
+      assert.match(html, /href="\/feed\.xml"/);
+      assert.match(html, /href="\/feed\.json"/);
+      assert.match(html, /href="\/privacy\/"/);
+      assert.match(html, /href="\/accessibility\/"/);
+      assert.match(html, /href="\/colophon\/"/);
+    }
+
+    assert.doesNotMatch(home, /placeholder copy, inky to write/);
+    assert.doesNotMatch(home, /next-hello__move/);
+    assert.match(home, /Hello friend, I(?:'|&#39;)m Stefan <span aria-hidden="true">👋🏽<\/span>\. I write software, play too much Deadlock, and I(?:'|&#39;)ll probably lose to you at chess\. Do you like any of that\? Let(?:'|&#39;)s be friends!/);
+    assert.match(home, /I write Field Notes, a short email on the first Monday of every month about what I(?:'|&#39;)m building, playing, and learning\./);
+    const helloAt = home.indexOf('Hello friend');
+    const notesAt = home.indexOf('I write Field Notes');
+    const cardAt = home.indexOf('class="next-lichess"');
+    assert.ok(helloAt > -1 && helloAt < notesAt && notesAt < cardAt, 'Field Notes is not between the hello and the Lichess card');
+    const fieldNotes = [...home.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)]
+      .map(match => match[0])
+      .filter(tag => tag.includes('https://buttondown.com/stefantaitano'));
+    assert.equal(fieldNotes.length, 2);
+    assert.ok(fieldNotes.every(tag => tag.includes('rel="noopener"')));
+    assert.ok(fieldNotes.some(tag => />Get the next Field Notes<\/a>/.test(tag)));
+    assert.ok(fieldNotes.some(tag => />Get Field Notes<\/a>/.test(tag)));
+    for (const html of [now, archive]) {
+      const footerLink = [...html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)]
+        .map(match => match[0])
+        .find(tag => tag.includes('https://buttondown.com/stefantaitano') && />Get Field Notes<\/a>/.test(tag));
+      assert.ok(footerLink, 'preview footer is missing Get Field Notes');
+      assert.match(footerLink, /rel="noopener"/);
+    }
+    assert.doesNotMatch(home, /Here(?:'|&#39;)s the latest/);
+    assert.match(home, /Sample data/);
+    assert.match(home, /Nov 22, 2026, 4:40 PM CT/);
+    const boardHtml = home.match(/<section\b[^>]*\bid="crew-board"[\s\S]*?<\/section>/);
+    assert.ok(boardHtml, 'preview home has no crew board');
+    assert.doesNotMatch(boardHtml[0], /UTC/);
+    assert.match(home, /<a href="\/">Everything else<\/a>/);
+    assert.equal([...home.matchAll(/class="rasa-card rasa-card--/g)].length, 5);
+
+    const card = postcardCard(home);
+    assert.match(card, /check-ins post a day later/);
+    assert.doesNotMatch(card, /<time\b|Last job|lastJob|\d{4}-\d{2}-\d{2}/);
+    assert.equal([...home.matchAll(/data-crew-card="/g)].length, 5);
+
+    assert.doesNotMatch(now, /placeholder copy, inky to write/);
+    assert.doesNotMatch(now, /The move|Placeholder\./);
+    for (const heading of ['Work', 'Learning', 'Running', 'Building', 'Playing']) {
+      assert.match(now, new RegExp(`<h2\\b[^>]*>${heading}</h2>`));
+    }
+    assert.match(now, /Writing software for a living\./);
+    assert.match(now, /Working through the Linux course on Boot\.dev\./);
+    assert.match(now, /I ran my first 10K on Oct 31 in 58:30\./);
+    assert.match(now, /This site, and the crew of bots that helps me run it\./);
+    assert.match(now, /Deadlock\. I(?:'|&#39;)m also playing WoW Forever and Football Manager 2027, and rewatching Ted Lasso\./);
+    assert.match(now, /href="\/next-2027\/now\/archive\/"/);
+
+    const entries = readdirSync(path.join(ROOT, 'src/now-entries')).filter(name => name.endsWith('.md'));
+    assert.equal([...archive.matchAll(/href="\/now\/#now-/g)].length, entries.length);
+  });
+
+  it('stays out of the sitemap, the feeds, and every live page', () => {
+    for (const name of ['sitemap.xml', 'feed.xml', 'feed.json']) {
+      const text = readFileSync(path.join(DIST, name), 'utf8');
+      assert.equal(text.includes('next-2027'), false, `${name} lists the preview`);
+    }
+
+    const leaks = htmlFiles()
+      .filter(file => !previewRoutes.includes(urlForFile(file)))
+      .filter(file => readFileSync(file, 'utf8').includes('/next-2027/'))
+      .map(urlForFile);
+    assert.deepEqual(leaks, []);
+  });
+
+  it('keeps Chiang Mai and Thailand off every preview page', () => {
+    const pages = htmlFiles().filter(file => urlForFile(file).startsWith('/next-2027/'));
+    assert.ok(pages.length >= previewRoutes.length);
+    const hits = pages
+      .filter(file => /Chiang Mai|Thailand/.test(readFileSync(file, 'utf8')))
+      .map(urlForFile);
+    assert.deepEqual(hits, []);
+  });
+
+  it('shows a Lichess card and a hidden puzzle on the preview home only', () => {
+    const home = readFileSync(fileForRoute('/next-2027/'), 'utf8');
+    const now = readFileSync(fileForRoute('/next-2027/now/'), 'utf8');
+    const chess = JSON.parse(readFileSync(path.join(ROOT, 'src/_data/next2027ChessSnapshot.json'), 'utf8'));
+    const card = home.match(/<a\b[^>]*class="next-lichess"[^>]*>[\s\S]*?<\/a>/);
+    assert.ok(card, 'preview home has no Lichess card');
+    assert.match(card[0], /href="\/chess\/"/);
+    assert.match(card[0], /Latest game on Lichess/);
+    assert.ok(card[0].includes(chess.result), 'Lichess card has no result');
+    assert.ok(card[0].includes(chess.white) && card[0].includes(chess.black));
+    assert.equal([...card[0].matchAll(/class="chess-sq /g)].length, 64);
+
+    const dialog = home.match(/<dialog\b[\s\S]*?<\/dialog>/);
+    assert.ok(dialog, 'preview home has no puzzle dialog');
+    assert.match(dialog[0], /role="dialog"/);
+    assert.ok(dialog[0].includes(chess.puzzle.text), 'dialog is missing the text position');
+    assert.match(dialog[0], new RegExp(`data-from="${chess.puzzle.from}"`));
+    assert.match(dialog[0], new RegExp(`data-to="${chess.puzzle.to}"`));
+
+    const knights = [...home.matchAll(/<button\b[^>]*>/g)].map(match => match[0]).filter(tag => tag.includes('data-puzzle-open'));
+    assert.equal(knights.length, 2);
+    for (const tag of knights) assert.match(tag, /aria-label="Open the puzzle"/);
+    const knightRule = home.match(/(?:^|})(\.next-knight)\{([^}]+)\}/);
+    assert.ok(knightRule, 'preview home is missing the knight button rule');
+    for (const prop of ['width', 'height', 'min-width', 'min-height']) {
+      assert.match(knightRule[2], new RegExp(`(?:^|;)${prop}:44px(?:;|$)`), `knight ${prop} is under 44px`);
+    }
+    const helloAt = home.indexOf('Hello friend');
+    const firstKnight = home.indexOf('data-puzzle-open');
+    const cardAt = home.indexOf('class="next-lichess"');
+    assert.ok(helloAt > -1 && helloAt < firstKnight && firstKnight < cardAt, 'knight is not beside the hello');
+
+    assert.match(home, /src="\/assets\/scripts\/components\/next-2027-puzzle\.js"/);
+    const nowBody = now.slice(now.indexOf('<body'));
+    assert.doesNotMatch(nowBody, /class="next-lichess"|data-puzzle-open|next-2027-puzzle\.js|<dialog\b/);
+    const scriptPages = htmlFiles()
+      .filter(file => readFileSync(file, 'utf8').includes('next-2027-puzzle.js'))
+      .map(urlForFile);
+    assert.deepEqual(scriptPages, ['/next-2027/']);
   });
 });
 

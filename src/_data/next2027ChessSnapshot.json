@@ -1,0 +1,24 @@
+{
+  "studyId": "SIFyPf3b",
+  "chapterId": "PVv0YbR8",
+  "white": "ask17",
+  "black": "Late2TheBoard",
+  "result": "0-1",
+  "finalFen": "r5k1/1q3pp1/7p/K7/2p5/1bP5/7P/8 w - - 12 45",
+  "puzzle": {
+    "ply": 20,
+    "san": "Nxh5",
+    "from": "f6",
+    "to": "h5",
+    "fen": "r2q1rk1/1ppb1pp1/p1np1n1p/2b1p2Q/4P2B/1BNP4/PPP2PPP/R3K1NR b KQ - 5 10",
+    "text": "Black to move: king g8, queen d8, rooks a8, f8, bishops c5, d7, knights c6, f6, pawns a6, b7, c7, d6, e5, f7, g7, h6; white king e1, queen h5, rooks a1, h1, bishops b3, h4, knights c3, g1, pawns a2, b2, c2, d3, e4, f2, g2, h2",
+    "because": "Captures the queen.",
+    "accept": [
+      "f6h5",
+      "nh5",
+      "nfh5",
+      "n6h5",
+      "nf6h5"
+    ]
+  }
+}
