@@ -407,7 +407,7 @@ describe('crew section', () => {
   it('loads the avatar scripts deferred, from self, on /ai and the /next-2027/ preview home only', () => {
     const scriptTags = html => [...html.matchAll(/<script\b[^>]*>/gi)].map(match => match[0]);
     const vendor = /src="\/assets\/scripts\/vendor\/open-bot-avatar\.js"/;
-    const page = /src="\/assets\/scripts\/components\/crew\.js"/;
+    const page = /src="\/assets\/scripts\/components\/crew-v2\.js"/;
     const avatarPages = ['/ai/', '/next-2027/'];
 
     for (const route of avatarPages) {
@@ -419,19 +419,23 @@ describe('crew section', () => {
       }
       assert.ok(
         tags.findIndex(tag => vendor.test(tag)) < tags.findIndex(tag => page.test(tag)),
-        `${route}: crew.js loads before the vendored script`
+        `${route}: crew-v2.js loads before the vendored script`
       );
     }
 
     const elsewhere = htmlFiles()
       .filter(file => !avatarPages.includes(urlForFile(file)))
-      .filter(file => /open-bot-avatar|scripts\/components\/crew\.js/.test(readFileSync(file, 'utf8')))
+      .filter(file => /open-bot-avatar|scripts\/components\/crew-v2\.js/.test(readFileSync(file, 'utf8')))
       .map(urlForFile);
     assert.deepEqual(elsewhere, []);
 
     assert.ok(isFile(path.join(DIST, 'assets/scripts/vendor/open-bot-avatar.js')), 'vendored script was not copied');
     assert.ok(isFile(path.join(DIST, 'assets/scripts/vendor/open-bot-avatar.LICENSE')), 'vendored license was not copied');
     assert.ok(isFile(path.join(DIST, 'assets/scripts/components/crew.js')), 'crew.js was not built');
+    assert.ok(isFile(path.join(DIST, 'assets/scripts/components/crew-v2.js')), 'crew-v2.js was not built');
+    for (const route of avatarPages) {
+      assert.doesNotMatch(readFileSync(fileForRoute(route), 'utf8'), /src="\/assets\/scripts\/components\/crew\.js"/);
+    }
   });
 
   it('gives the preview crew five colors and leaves /ai on the accent', () => {
@@ -492,7 +496,7 @@ describe('crew section', () => {
 
     const ai = aiHtml();
     assert.doesNotMatch(ai, /data-crew-color|--crew-bolt/);
-    const script = readFileSync(path.join(DIST, 'assets/scripts/components/crew.js'), 'utf8');
+    const script = readFileSync(path.join(DIST, 'assets/scripts/components/crew-v2.js'), 'utf8');
     assert.match(script, /var\(--accent\)/);
     assert.match(script, /crewColor/);
   });
