@@ -185,6 +185,22 @@
   padding-block-end: 0.75rem;
 }
 
+.next-hello {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.next-hello .rasa-intro {
+  flex: 1 1 auto;
+  margin: 0;
+}
+
+.next-hello .next-knight {
+  flex: none;
+  margin-top: 0.15rem;
+}
+
 .next-lichess {
   display: grid;
   grid-template-columns: 8.5rem minmax(0, 1fr);

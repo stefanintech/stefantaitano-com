@@ -1,6 +1,7 @@
 // Hidden one-move puzzle on the /next-2027/ home mockup only.
 const dialog = document.querySelector('[data-puzzle-dialog]');
-const opener = document.querySelector('[data-puzzle-open]');
+const openers = [...document.querySelectorAll('[data-puzzle-open]')];
+const opener = openers[0];
 const board = dialog && dialog.querySelector('[data-puzzle-board]');
 const form = dialog && dialog.querySelector('[data-puzzle-form]');
 const feedback = dialog && dialog.querySelector('[data-puzzle-feedback]');
@@ -109,7 +110,7 @@ if (dialog && opener && board && form && feedback && wrong && right && more && c
     dialog.close();
   };
 
-  opener.addEventListener('click', () => open(opener));
+  for (const button of openers) button.addEventListener('click', () => open(button));
   closeButton.addEventListener('click', close);
 
   dialog.addEventListener('close', () => {

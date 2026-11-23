@@ -492,7 +492,8 @@ describe('2027 preview mockup', () => {
 
     assert.doesNotMatch(home, /placeholder copy, inky to write/);
     assert.doesNotMatch(home, /next-hello__move/);
-    assert.match(home, /Hi, I(?:'|&#39;)m Stefan\. I write software, I(?:'|&#39;)m a dad, and I(?:'|&#39;)m probably learning something new right now\. Here(?:'|&#39;)s the latest\./);
+    assert.match(home, /Hello friend, I(?:'|&#39;)m Stefan <span aria-hidden="true">👋🏽<\/span>\. I write software, I(?:'|&#39;)m a dad, and I(?:'|&#39;)m probably learning something new right now\. Do you like World of Warcraft or chess\? Let(?:'|&#39;)s be friends!/);
+    assert.doesNotMatch(home, /Here(?:'|&#39;)s the latest/);
     assert.match(home, /Sample data/);
     assert.match(home, /Nov 22, 2026, 4:40 PM CT/);
     const boardHtml = home.match(/<section\b[^>]*\bid="crew-board"[\s\S]*?<\/section>/);
@@ -563,9 +564,13 @@ describe('2027 preview mockup', () => {
     assert.match(dialog[0], new RegExp(`data-from="${chess.puzzle.from}"`));
     assert.match(dialog[0], new RegExp(`data-to="${chess.puzzle.to}"`));
 
-    const knight = [...home.matchAll(/<button\b[^>]*>/g)].map(match => match[0]).find(tag => tag.includes('data-puzzle-open'));
-    assert.ok(knight, 'knight button missing');
-    assert.match(knight, /aria-label="Open the puzzle"/);
+    const knights = [...home.matchAll(/<button\b[^>]*>/g)].map(match => match[0]).filter(tag => tag.includes('data-puzzle-open'));
+    assert.equal(knights.length, 2);
+    for (const tag of knights) assert.match(tag, /aria-label="Open the puzzle"/);
+    const helloAt = home.indexOf('Hello friend');
+    const firstKnight = home.indexOf('data-puzzle-open');
+    const cardAt = home.indexOf('class="next-lichess"');
+    assert.ok(helloAt > -1 && helloAt < firstKnight && firstKnight < cardAt, 'knight is not beside the hello');
 
     assert.match(home, /src="\/assets\/scripts\/components\/next-2027-puzzle\.js"/);
     const nowBody = now.slice(now.indexOf('<body'));

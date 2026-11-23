@@ -6,7 +6,10 @@ showPuzzle: true
 ---
 
 <h1 class="visually-hidden">{{ meta.siteName }}</h1>
-<p class="rasa-intro">Hi, I'm Stefan. I write software, I'm a dad, and I'm probably learning something new right now. Here's the latest.</p>
+<div class="next-hello">
+  <p class="rasa-intro">Hello friend, I'm Stefan <span aria-hidden="true">👋🏽</span>. I write software, I'm a dad, and I'm probably learning something new right now. Do you like World of Warcraft or chess? Let's be friends!</p>
+  {% include "next-2027/knight-button.njk" %}
+</div>
 
 {% include "next-2027/lichess-card.njk" %}
 {% include "next-2027/crew-board.njk" %}
