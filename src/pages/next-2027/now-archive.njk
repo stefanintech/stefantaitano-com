@@ -1,18 +1,20 @@
 ---
-permalink: /next-2027/now/archive/index.html
+permalink: /now/archive/index.html
 title: Now archive
-description: Preview mockup listing the dated now notes. Not the live site.
+description: Dated notes.
+redirectFrom:
+  - /next-2027/now/archive/
 ---
 
 <h1>Archive</h1>
-<p class="next-now__lead">Dated notes already on <a href="/now/">/now</a>. <a href="/next-2027/now/">Current snapshot</a>.</p>
+<p class="next-now__lead">Dated notes. <a href="/now/">Current snapshot</a>.</p>
 
 <ol class="next-archive" role="list">
   {%- for entry in collections.nowEntries %}
     {%- set day = entry.date | formatDateUtc('YYYY-MM-DD') %}
     {%- set slug = entry.fileSlug %}
     <li>
-      <a href="/now/#{{ entry | nowAnchor }}">
+      <a href="#{{ entry | nowAnchor }}">
         <time datetime="{{ day }}">{{ entry.date | formatDateUtc('MMMM D, YYYY') }}</time>
         {%- if slug and slug != day %}
           <span class="next-archive__slug">{{ slug | replace('-', ' ') }}</span>
@@ -21,3 +23,19 @@ description: Preview mockup listing the dated now notes. Not the live site.
     </li>
   {%- endfor %}
 </ol>
+
+<div class="rasa-prose next-archive__notes">
+  {%- for entry in collections.nowEntries %}
+    <article class="next-archive__note">
+      <p class="now-entry__date" id="{{ entry | nowAnchor }}">
+        <time datetime="{{ entry.date | formatDateUtc('YYYY-MM-DD') }}">{{ entry.date | formatDateUtc('MMMM D, YYYY') }}</time>
+      </p>
+      {{ entry.templateContent | safe }}
+    </article>
+  {%- endfor %}
+</div>
+
+{%- css "rasa" -%}
+  {%- include "css/rasa-prose.css" -%}
+  {%- include "css/rasa-now.css" -%}
+{%- endcss -%}

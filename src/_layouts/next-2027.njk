@@ -3,6 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% if redirectNowHash %}
+    <script>
+      (function () {
+        var hash = location.hash;
+        if (hash.indexOf('#now-') === 0) location.replace('/now/archive/' + hash);
+      })();
+    </script>
+    {% endif %}
 
     <title>
       {%- if title -%}
@@ -34,7 +42,6 @@
     {% include "next-2027/header.njk" %}
 
     <main id="main">
-      <p class="next-preview">Preview mockup. Not the live site.</p>
       {{ content | safe }}
     </main>
 
