@@ -433,6 +433,69 @@ describe('crew section', () => {
     assert.ok(isFile(path.join(DIST, 'assets/scripts/vendor/open-bot-avatar.LICENSE')), 'vendored license was not copied');
     assert.ok(isFile(path.join(DIST, 'assets/scripts/components/crew.js')), 'crew.js was not built');
   });
+
+  it('gives the preview crew five colors and leaves /ai on the accent', () => {
+    const slugs = ['bolt', 'inky', 'postcard', 'imogen', 'captain'];
+    const home = readFileSync(fileForRoute('/next-2027/'), 'utf8');
+    const cards = [...home.matchAll(/<li\b[^>]*\bdata-crew-card="([^"]+)"[^>]*>([\s\S]*?)<\/li>/g)];
+    assert.deepEqual(cards.map(card => card[1]), slugs);
+    const colors = cards.map(card => {
+      const color = card[2].match(/data-crew-color="([^"]+)"/);
+      assert.ok(color, `${card[1]} has no crew color`);
+      return color[1];
+    });
+    assert.deepEqual(colors, slugs.map(slug => `var(--crew-${slug})`));
+    assert.equal(new Set(colors).size, slugs.length);
+
+    const css = readFileSync(path.join(ROOT, 'src/assets/css/rasa/next-2027.css'), 'utf8');
+    const site = readFileSync(path.join(ROOT, 'src/assets/css/rasa/site.css'), 'utf8');
+    const block = (source, pattern) => {
+      const match = source.match(pattern);
+      assert.ok(match, `missing ${pattern}`);
+      return match[1];
+    };
+    const props = text => Object.fromEntries(
+      [...text.matchAll(/--crew-([a-z]+):\s*(#[0-9a-f]{6})/g)].map(([, slug, hex]) => [slug, hex])
+    );
+    const light = props(block(css, /:root \{\s*([^}]*--crew-bolt:[^}]*)\}/));
+    const systemDark = props(block(css, /:root:not\(\[data-theme='light'\]\) \{\s*([^}]*)\}/));
+    const explicitDark = props(block(css, /:root\[data-theme='dark'\] \{\s*([^}]*)\}/));
+    assert.deepEqual(Object.keys(light), slugs);
+    assert.deepEqual(systemDark, explicitDark);
+    assert.equal(new Set(Object.values(light)).size, slugs.length);
+    assert.equal(new Set(Object.values(explicitDark)).size, slugs.length);
+    for (const slug of slugs) assert.notEqual(light[slug], explicitDark[slug], `${slug} does not change with the theme`);
+
+    const cardLight = site.match(/:root \{[^}]*--card:\s*(#[0-9a-f]{6})/)[1];
+    const cardDark = site.match(/:root\[data-theme='dark'\] \{[^}]*--card:\s*(#[0-9a-f]{6})/)[1];
+    const eye = '#151515';
+    const channel = value => {
+      const scaled = value / 255;
+      return scaled <= 0.04045 ? scaled / 12.92 : ((scaled + 0.055) / 1.055) ** 2.4;
+    };
+    const luminance = hex => {
+      const number = parseInt(hex.slice(1), 16);
+      return 0.2126 * channel(number >> 16) + 0.7152 * channel((number >> 8) & 255) + 0.0722 * channel(number & 255);
+    };
+    const contrast = (a, b) => {
+      const [lighter, darker] = [luminance(a), luminance(b)].sort((left, right) => right - left);
+      return (lighter + 0.05) / (darker + 0.05);
+    };
+    for (const slug of slugs) {
+      assert.ok(contrast(light[slug], cardLight) >= 3, `${slug} light is under 3:1 on the card`);
+      assert.ok(contrast(explicitDark[slug], cardDark) >= 3, `${slug} dark is under 3:1 on the card`);
+      assert.ok(contrast(light[slug], eye) >= 3, `${slug} light hides the eyes`);
+      assert.ok(contrast(explicitDark[slug], eye) >= 3, `${slug} dark hides the eyes`);
+      assert.match(home, new RegExp(`--crew-${slug}:${light[slug]}`));
+      assert.match(home, new RegExp(`--crew-${slug}:${explicitDark[slug]}`));
+    }
+
+    const ai = aiHtml();
+    assert.doesNotMatch(ai, /data-crew-color|--crew-bolt/);
+    const script = readFileSync(path.join(DIST, 'assets/scripts/components/crew.js'), 'utf8');
+    assert.match(script, /var\(--accent\)/);
+    assert.match(script, /crewColor/);
+  });
 });
 
 describe('2027 preview mockup', () => {

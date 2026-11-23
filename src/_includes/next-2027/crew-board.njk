@@ -12,6 +12,7 @@
         <div
           class="next-board__avatar"
           data-crew-avatar="{{ card.avatar | dump }}"
+          data-crew-color="var(--crew-{{ card.slug }})"
           data-state="{{ card.state }}"
           data-mood="{{ card.mood }}"
           hidden

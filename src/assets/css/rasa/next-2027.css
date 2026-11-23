@@ -1,4 +1,32 @@
-/* Preview mockup at /next-2027/. Inlined on those pages only. */
+/* Preview mockup at /next-2027/. Inlined on those pages only.
+   Crew colors are this board only. /ai keeps var(--accent).
+   Dark values use the same two hooks as site.css, so a toggle and the system theme both repaint. */
+
+:root {
+  --crew-bolt: #ea580c;
+  --crew-inky: #c45c4a;
+  --crew-postcard: #4d7c0f;
+  --crew-imogen: #db2777;
+  --crew-captain: #a16207;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --crew-bolt: #fdba74;
+    --crew-inky: #f7b7a3;
+    --crew-postcard: #c9d48a;
+    --crew-imogen: #f9a8d4;
+    --crew-captain: #f6d27a;
+  }
+}
+
+:root[data-theme='dark'] {
+  --crew-bolt: #fdba74;
+  --crew-inky: #f7b7a3;
+  --crew-postcard: #c9d48a;
+  --crew-imogen: #f9a8d4;
+  --crew-captain: #f6d27a;
+}
 
 .next-preview {
   margin: 0;
@@ -56,6 +84,26 @@
   border: 1px solid var(--rule);
   border-radius: 0.85rem;
   background: var(--card);
+}
+
+.next-board [data-crew-card='bolt'] [data-crew-avatar] {
+  color: var(--crew-bolt);
+}
+
+.next-board [data-crew-card='inky'] [data-crew-avatar] {
+  color: var(--crew-inky);
+}
+
+.next-board [data-crew-card='postcard'] [data-crew-avatar] {
+  color: var(--crew-postcard);
+}
+
+.next-board [data-crew-card='imogen'] [data-crew-avatar] {
+  color: var(--crew-imogen);
+}
+
+.next-board [data-crew-card='captain'] [data-crew-avatar] {
+  color: var(--crew-captain);
 }
 
 .next-board__avatar {
