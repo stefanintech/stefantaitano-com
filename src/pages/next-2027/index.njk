@@ -2,11 +2,13 @@
 permalink: /next-2027/index.html
 title: Stefan Taitano
 description: Preview mockup of a shorter home page. Not the live site.
+showPuzzle: true
 ---
 
 <h1 class="visually-hidden">{{ meta.siteName }}</h1>
 <p class="rasa-intro">Hi, I'm Stefan. I write software, I'm a dad, and I'm probably learning something new right now. Here's the latest.</p>
 
+{% include "next-2027/lichess-card.njk" %}
 {% include "next-2027/crew-board.njk" %}
 
 <div class="next-latest">
@@ -24,5 +26,8 @@ description: Preview mockup of a shorter home page. Not the live site.
   <p class="next-rest"><a href="/">Everything else</a></p>
 </div>
 
+{% include "next-2027/puzzle-dialog.njk" %}
+
 <script src="/assets/scripts/vendor/open-bot-avatar.js" defer></script>
 <script src="/assets/scripts/components/crew.js" defer></script>
+<script src="/assets/scripts/components/next-2027-puzzle.js" defer></script>

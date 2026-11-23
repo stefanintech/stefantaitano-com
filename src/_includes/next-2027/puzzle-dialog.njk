@@ -1,0 +1,56 @@
+<dialog
+  id="next-puzzle"
+  class="next-puzzle"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="next-puzzle-title"
+  aria-describedby="next-puzzle-position"
+  data-puzzle-dialog
+  data-from="{{ next2027Chess.puzzle.from }}"
+  data-to="{{ next2027Chess.puzzle.to }}"
+  data-side="{{ next2027Chess.puzzle.side }}"
+  data-accept="{{ next2027Chess.puzzle.accept }}"
+  data-right="{{ next2027PuzzleCopy.right }}"
+  data-wrong="{{ next2027PuzzleCopy.wrong }}"
+>
+  <div class="next-puzzle__head">
+    <h2 id="next-puzzle-title">{{ next2027PuzzleCopy.title }}</h2>
+    <button type="button" class="next-puzzle__close" data-puzzle-close>{{ next2027PuzzleCopy.close }}</button>
+  </div>
+  <p class="next-puzzle__lead">{{ next2027PuzzleCopy.lead }}</p>
+  <p id="next-puzzle-position" class="visually-hidden">{{ next2027Chess.puzzle.text }}</p>
+  <div
+    class="chess-grid chess-grid--play"
+    role="grid"
+    aria-label="{{ next2027PuzzleCopy.boardLabel }}"
+    data-puzzle-board
+    data-side="{{ next2027Chess.puzzle.side }}"
+  >
+    {% for sq in next2027Chess.puzzle.squares %}
+      <button
+        type="button"
+        role="gridcell"
+        class="chess-sq chess-sq--{{ sq.shade }}"
+        data-square="{{ sq.id }}"
+        {% if sq.piece %}data-piece="{{ sq.piece }}" data-color="{{ sq.color }}"{% endif %}
+        aria-label="{{ sq.label }}"
+        tabindex="{% if sq.id == next2027Chess.puzzle.cursor %}0{% else %}-1{% endif %}"
+      >
+        {% if sq.piece %}{% include "next-2027/piece.njk" %}{% endif %}
+      </button>
+    {% endfor %}
+  </div>
+  <form class="next-puzzle__form" data-puzzle-form>
+    <label for="next-puzzle-move">{{ next2027PuzzleCopy.moveLabel }}</label>
+    <span class="next-puzzle__hint" id="next-puzzle-hint">{{ next2027PuzzleCopy.moveHint }}</span>
+    <div class="next-puzzle__entry">
+      <input id="next-puzzle-move" name="move" type="text" autocomplete="off" spellcheck="false" aria-describedby="next-puzzle-hint">
+      <button type="submit">{{ next2027PuzzleCopy.tryLabel }}</button>
+    </div>
+  </form>
+  <p class="next-puzzle__feedback" data-puzzle-feedback aria-live="polite">
+    <span data-puzzle-wrong hidden>{{ next2027PuzzleCopy.wrong }}</span>
+    <span data-puzzle-right hidden>{{ next2027PuzzleCopy.right }}</span>
+    <a href="/chess/" data-puzzle-more hidden>{{ next2027PuzzleCopy.rightLink }}</a>
+  </p>
+</dialog>

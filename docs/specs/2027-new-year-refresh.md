@@ -12,6 +12,8 @@ Subtract until the home page is a short hello, one signature feature, and a few 
 2. **Slim home.** A short hello, then the crew board, then the 3 to 5 latest items from the existing collections, then one link to everything else. The hello is final copy from inky, approved by Stefan: "Hi, I'm Stefan. I write software, I'm a dad, and I'm probably learning something new right now. Here's the latest."
 3. **`/now` as one snapshot.** `/next-2027/now/` has five sections, in order: Work, Learning, Running, Building, Playing. That copy is final, from inky, approved by Stefan. `/next-2027/now/archive/` lists the existing dated `/now` entries.
 4. **Trimmed footer.** A few links stay visible. Resume, feeds, privacy, accessibility, and colophon sit under a "More" disclosure.
+5. **Lichess card.** On `/next-2027/` only, a small card shows the final position of the featured game in `src/_data/study.json`, the result, the players, and the line "Latest game on Lichess". The card links to `/chess/`. The position is computed at build time from `https://lichess.org/api/study/{studyId}/{chapterId}.pgn`. `src/_data/chessSan.js` replays the moves. There is no live rating and no client fetch. If the fetch fails, the build uses `src/_data/next2027ChessSnapshot.json`.
+6. **Hidden puzzle.** Typing `e` then `4` on the mockup home (ignored in a text field), or clicking the knight button in the footer, opens a dialog. The puzzle is one move from that same game: ply 20, `10... Nxh5`, knight from f6 to h5. It is the move that captures the queen. The answer is from-square and to-square only. Copy for the card and the dialog lives in `src/_data/next2027PuzzleCopy.json`. The sentences other than "Latest game on Lichess", "Nice. You'd beat me.", and "Not quite, try again." are placeholders until Stefan says otherwise. The screen-reader position is one field, `puzzle.text`, generated from the FEN.
 
 ## What is mock, and what is real
 
@@ -24,6 +26,11 @@ Mock, and labeled on the page:
 
 - Crew board activity lines and last job times, from `src/_data/next2027Board.json`. Sample data, not a feed. Visible times are US Central (`America/Chicago`), such as "Nov 22, 2026, 4:40 PM CT".
 - Postcard's line, which is fixed in the template. The JSON file has no time for postcard, and the template will not print one even if a later file adds it.
+
+Real, computed for this mockup:
+
+- The Lichess card's final position, players, and result, from the featured study chapter.
+- The puzzle position at ply 20 of that game. The knight button and the `e` then `4` keys stay on `/next-2027/` only.
 
 Real, read from the site as it is:
 
@@ -46,3 +53,4 @@ The board JSON is a flat list of `{slug, doing, lastJobAt, lastJobLabel}` plus p
 - Are Home, Now, Posts, and Check-ins the right few footer links?
 - Should "Everything else" keep pointing at the current home, or at posts, check-ins, and `/now` as separate links?
 - What may the later JSON file say for bolt, inky, Imogen, and captain, given that mail, calendar, finance, and personal contents stay out, and postcard never gets a time?
+- Which placeholder sentences in `src/_data/next2027PuzzleCopy.json` should stay?

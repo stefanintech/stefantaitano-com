@@ -28,5 +28,16 @@
     <button type="button" id="dark-theme-toggle" data-theme="dark">{{ meta.themeSwitch.dark }}</button>
   </div>
 
-  <p class="rasa-footer__copy">&copy; {% year %} {{ meta.siteName }}</p>
+  {% if showPuzzle %}
+    <div class="next-footer__end">
+      <button type="button" class="next-knight" data-puzzle-open aria-label="{{ next2027PuzzleCopy.knightLabel }}">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <polygon points="8,36 8,30 14,28 12,20 16,14 22,12 24,16 22,18 28,22 32,20 34,24 28,28 28,36"></polygon>
+        </svg>
+      </button>
+      <p class="rasa-footer__copy">&copy; {% year %} {{ meta.siteName }}</p>
+    </div>
+  {% else %}
+    <p class="rasa-footer__copy">&copy; {% year %} {{ meta.siteName }}</p>
+  {% endif %}
 </footer>

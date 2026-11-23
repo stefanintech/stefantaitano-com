@@ -184,3 +184,220 @@
 .next-more ul {
   padding-block-end: 0.75rem;
 }
+
+.next-lichess {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 0.85rem 1rem;
+  align-items: center;
+  margin-top: 1.25rem;
+  padding: 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.85rem;
+  background: var(--card);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.next-lichess:hover {
+  border-color: var(--accent);
+}
+
+.next-lichess__copy {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.next-lichess__kicker,
+.next-lichess__words {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.next-lichess__players,
+.next-lichess__result {
+  font-family: var(--font-hand);
+  font-size: 1.75rem;
+  line-height: 1.1;
+}
+
+.chess-grid {
+  --sq-light: #f0d9b5;
+  --sq-dark: #b58863;
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  width: 8.5rem;
+  aspect-ratio: 1;
+  border-radius: 0.35rem;
+  overflow: hidden;
+}
+
+.chess-grid--play {
+  width: min(100%, 20rem);
+}
+
+.chess-sq {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: var(--sq-light);
+  color: inherit;
+}
+
+.chess-sq--dark {
+  background: var(--sq-dark);
+}
+
+button.chess-sq {
+  cursor: pointer;
+  font: inherit;
+}
+
+.chess-sq[data-selected='true'],
+.chess-sq:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+
+.chess-piece {
+  width: 86%;
+  height: 86%;
+  fill: currentColor;
+  stroke: #1c1610;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.chess-piece--w {
+  color: #fffdf8;
+}
+
+.chess-piece--b {
+  color: #1c1610;
+}
+
+.next-footer__end {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.next-footer__end .rasa-footer__copy {
+  margin: 0;
+}
+
+.next-knight {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0.2rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.next-knight svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+}
+
+.next-puzzle,
+.next-puzzle::backdrop {
+  animation: none;
+  transition: none;
+}
+
+.next-puzzle {
+  width: min(26rem, calc(100% - 2rem));
+  max-height: calc(100% - 2rem);
+  margin: auto;
+  padding: 1.15rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.85rem;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.next-puzzle::backdrop {
+  background: rgb(25 21 14 / 0.55);
+}
+
+.next-puzzle__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.next-puzzle__head h2 {
+  margin: 0;
+}
+
+.next-puzzle__close,
+.next-puzzle__form button {
+  min-height: 2.75rem;
+  padding: 0.35rem 0.8rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.next-puzzle__lead,
+.next-puzzle__hint,
+.next-puzzle__feedback {
+  margin: 0.75rem 0 0;
+}
+
+.next-puzzle__hint {
+  display: block;
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.next-puzzle__form label {
+  display: block;
+  margin-top: 0.9rem;
+  font-weight: 700;
+}
+
+.next-puzzle__entry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.next-puzzle__entry input {
+  flex: 1 1 8rem;
+  min-height: 2.75rem;
+  min-width: 0;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--rule);
+  border-radius: 0.6rem;
+  background: var(--card);
+  color: var(--text);
+  font: inherit;
+}
+
+.next-puzzle__feedback a {
+  margin-inline-start: 0.35rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .next-puzzle,
+  .next-puzzle::backdrop,
+  .chess-sq {
+    animation: none;
+    transition: none;
+    scroll-behavior: auto;
+  }
+}

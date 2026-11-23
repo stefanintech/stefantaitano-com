@@ -543,6 +543,38 @@ describe('2027 preview mockup', () => {
       .map(urlForFile);
     assert.deepEqual(hits, []);
   });
+
+  it('shows a Lichess card and a hidden puzzle on the preview home only', () => {
+    const home = readFileSync(fileForRoute('/next-2027/'), 'utf8');
+    const now = readFileSync(fileForRoute('/next-2027/now/'), 'utf8');
+    const chess = JSON.parse(readFileSync(path.join(ROOT, 'src/_data/next2027ChessSnapshot.json'), 'utf8'));
+    const card = home.match(/<a\b[^>]*class="next-lichess"[^>]*>[\s\S]*?<\/a>/);
+    assert.ok(card, 'preview home has no Lichess card');
+    assert.match(card[0], /href="\/chess\/"/);
+    assert.match(card[0], /Latest game on Lichess/);
+    assert.ok(card[0].includes(chess.result), 'Lichess card has no result');
+    assert.ok(card[0].includes(chess.white) && card[0].includes(chess.black));
+    assert.equal([...card[0].matchAll(/class="chess-sq /g)].length, 64);
+
+    const dialog = home.match(/<dialog\b[\s\S]*?<\/dialog>/);
+    assert.ok(dialog, 'preview home has no puzzle dialog');
+    assert.match(dialog[0], /role="dialog"/);
+    assert.ok(dialog[0].includes(chess.puzzle.text), 'dialog is missing the text position');
+    assert.match(dialog[0], new RegExp(`data-from="${chess.puzzle.from}"`));
+    assert.match(dialog[0], new RegExp(`data-to="${chess.puzzle.to}"`));
+
+    const knight = [...home.matchAll(/<button\b[^>]*>/g)].map(match => match[0]).find(tag => tag.includes('data-puzzle-open'));
+    assert.ok(knight, 'knight button missing');
+    assert.match(knight, /aria-label="Open the puzzle"/);
+
+    assert.match(home, /src="\/assets\/scripts\/components\/next-2027-puzzle\.js"/);
+    const nowBody = now.slice(now.indexOf('<body'));
+    assert.doesNotMatch(nowBody, /class="next-lichess"|data-puzzle-open|next-2027-puzzle\.js|<dialog\b/);
+    const scriptPages = htmlFiles()
+      .filter(file => readFileSync(file, 'utf8').includes('next-2027-puzzle.js'))
+      .map(urlForFile);
+    assert.deepEqual(scriptPages, ['/next-2027/']);
+  });
 });
 
 describe('coordinate scan', () => {
