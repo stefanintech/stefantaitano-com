@@ -570,7 +570,7 @@ describe('2027 preview mockup', () => {
       .filter(tag => tag.includes('https://buttondown.com/stefantaitano'));
     assert.equal(fieldNotes.length, 2);
     assert.ok(fieldNotes.every(tag => tag.includes('rel="noopener"')));
-    assert.ok(fieldNotes.some(tag => />Get the next one<\/a>/.test(tag)));
+    assert.ok(fieldNotes.some(tag => />Get the next Field Notes<\/a>/.test(tag)));
     assert.ok(fieldNotes.some(tag => />Get Field Notes<\/a>/.test(tag)));
     for (const html of [now, archive]) {
       const footerLink = [...html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)]
