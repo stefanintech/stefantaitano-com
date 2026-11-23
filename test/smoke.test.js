@@ -560,6 +560,25 @@ describe('2027 preview mockup', () => {
     assert.doesNotMatch(home, /placeholder copy, inky to write/);
     assert.doesNotMatch(home, /next-hello__move/);
     assert.match(home, /Hello friend, I(?:'|&#39;)m Stefan <span aria-hidden="true">👋🏽<\/span>\. I write software, play too much Deadlock, and I(?:'|&#39;)ll probably lose to you at chess\. Do you like any of that\? Let(?:'|&#39;)s be friends!/);
+    assert.match(home, /I write Field Notes, a short email on the first Monday of every month about what I(?:'|&#39;)m building, playing, and learning\./);
+    const helloAt = home.indexOf('Hello friend');
+    const notesAt = home.indexOf('I write Field Notes');
+    const cardAt = home.indexOf('class="next-lichess"');
+    assert.ok(helloAt > -1 && helloAt < notesAt && notesAt < cardAt, 'Field Notes is not between the hello and the Lichess card');
+    const fieldNotes = [...home.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)]
+      .map(match => match[0])
+      .filter(tag => tag.includes('https://buttondown.com/stefantaitano'));
+    assert.equal(fieldNotes.length, 2);
+    assert.ok(fieldNotes.every(tag => tag.includes('rel="noopener"')));
+    assert.ok(fieldNotes.some(tag => />Get the next one<\/a>/.test(tag)));
+    assert.ok(fieldNotes.some(tag => />Get Field Notes<\/a>/.test(tag)));
+    for (const html of [now, archive]) {
+      const footerLink = [...html.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)]
+        .map(match => match[0])
+        .find(tag => tag.includes('https://buttondown.com/stefantaitano') && />Get Field Notes<\/a>/.test(tag));
+      assert.ok(footerLink, 'preview footer is missing Get Field Notes');
+      assert.match(footerLink, /rel="noopener"/);
+    }
     assert.doesNotMatch(home, /Here(?:'|&#39;)s the latest/);
     assert.match(home, /Sample data/);
     assert.match(home, /Nov 22, 2026, 4:40 PM CT/);

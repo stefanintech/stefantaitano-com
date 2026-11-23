@@ -249,6 +249,21 @@
   margin-top: calc(0.15rem + (1.75rem - 44px) / 2);
 }
 
+.next-notes {
+  margin: 0.5rem 0 0;
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.next-notes a {
+  color: inherit;
+}
+
+.next-notes + .next-lichess {
+  margin-top: 1rem;
+}
+
 .next-lichess {
   display: grid;
   grid-template-columns: 8.5rem minmax(0, 1fr);
