@@ -460,7 +460,8 @@ describe('2027 preview mockup', () => {
         assert.equal(member.line, 'check-ins post a day later');
       } else {
         assert.deepEqual(Object.keys(member).sort(), ['doing', 'lastJobAt', 'lastJobLabel', 'slug']);
-        assert.doesNotMatch(`${member.doing} ${member.lastJobLabel}`, /mail|calendar|inbox|finance/i);
+        assert.match(member.lastJobLabel, /^[A-Z][a-z]{2} \d{1,2}, \d{4}, \d{1,2}:\d{2} [AP]M CT$/);
+        assert.doesNotMatch(`${member.doing} ${member.lastJobLabel}`, /mail|calendar|inbox|finance|UTC/i);
       }
     }
 
@@ -489,10 +490,14 @@ describe('2027 preview mockup', () => {
       assert.match(html, /href="\/colophon\/"/);
     }
 
-    assert.match(home, /placeholder copy, inky to write/);
-    assert.match(home, /class="next-hello__move"/);
-    assert.match(home, /Heading to Chiang Mai in early 2027\./);
+    assert.doesNotMatch(home, /placeholder copy, inky to write/);
+    assert.doesNotMatch(home, /next-hello__move/);
+    assert.match(home, /Hi, I(?:'|&#39;)m Stefan\. I write software, I(?:'|&#39;)m a dad, and I(?:'|&#39;)m probably learning something new right now\. Here(?:'|&#39;)s the latest\./);
     assert.match(home, /Sample data/);
+    assert.match(home, /Nov 22, 2026, 4:40 PM CT/);
+    const boardHtml = home.match(/<section\b[^>]*\bid="crew-board"[\s\S]*?<\/section>/);
+    assert.ok(boardHtml, 'preview home has no crew board');
+    assert.doesNotMatch(boardHtml[0], /UTC/);
     assert.match(home, /<a href="\/">Everything else<\/a>/);
     assert.equal([...home.matchAll(/class="rasa-card rasa-card--/g)].length, 5);
 
@@ -501,11 +506,16 @@ describe('2027 preview mockup', () => {
     assert.doesNotMatch(card, /<time\b|Last job|lastJob|\d{4}-\d{2}-\d{2}/);
     assert.equal([...home.matchAll(/data-crew-card="/g)].length, 5);
 
-    assert.match(now, /placeholder copy, inky to write/);
-    for (const heading of ['Work', 'Learning', 'The move', 'Running', 'Building']) {
+    assert.doesNotMatch(now, /placeholder copy, inky to write/);
+    assert.doesNotMatch(now, /The move|Placeholder\./);
+    for (const heading of ['Work', 'Learning', 'Running', 'Building', 'Playing']) {
       assert.match(now, new RegExp(`<h2\\b[^>]*>${heading}</h2>`));
     }
-    assert.match(now, /Placeholder\./);
+    assert.match(now, /Writing software for a living\./);
+    assert.match(now, /Working through the Linux course on Boot\.dev\./);
+    assert.match(now, /I ran my first 10K on Oct 31 in 58:30\./);
+    assert.match(now, /This site, and the crew of bots that helps me run it\./);
+    assert.match(now, /WoW Forever\./);
     assert.match(now, /href="\/next-2027\/now\/archive\/"/);
 
     const entries = readdirSync(path.join(ROOT, 'src/now-entries')).filter(name => name.endsWith('.md'));
@@ -523,6 +533,15 @@ describe('2027 preview mockup', () => {
       .filter(file => readFileSync(file, 'utf8').includes('/next-2027/'))
       .map(urlForFile);
     assert.deepEqual(leaks, []);
+  });
+
+  it('keeps Chiang Mai and Thailand off every preview page', () => {
+    const pages = htmlFiles().filter(file => urlForFile(file).startsWith('/next-2027/'));
+    assert.ok(pages.length >= previewRoutes.length);
+    const hits = pages
+      .filter(file => /Chiang Mai|Thailand/.test(readFileSync(file, 'utf8')))
+      .map(urlForFile);
+    assert.deepEqual(hits, []);
   });
 });
 
