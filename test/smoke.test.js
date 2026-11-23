@@ -567,6 +567,11 @@ describe('2027 preview mockup', () => {
     const knights = [...home.matchAll(/<button\b[^>]*>/g)].map(match => match[0]).filter(tag => tag.includes('data-puzzle-open'));
     assert.equal(knights.length, 2);
     for (const tag of knights) assert.match(tag, /aria-label="Open the puzzle"/);
+    const knightRule = home.match(/(?:^|})(\.next-knight)\{([^}]+)\}/);
+    assert.ok(knightRule, 'preview home is missing the knight button rule');
+    for (const prop of ['width', 'height', 'min-width', 'min-height']) {
+      assert.match(knightRule[2], new RegExp(`(?:^|;)${prop}:44px(?:;|$)`), `knight ${prop} is under 44px`);
+    }
     const helloAt = home.indexOf('Hello friend');
     const firstKnight = home.indexOf('data-puzzle-open');
     const cardAt = home.indexOf('class="next-lichess"');

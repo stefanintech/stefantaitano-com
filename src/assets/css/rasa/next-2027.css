@@ -198,7 +198,7 @@
 
 .next-hello .next-knight {
   flex: none;
-  margin-top: 0.15rem;
+  margin-top: calc(0.15rem + (1.75rem - 44px) / 2);
 }
 
 .next-lichess {
@@ -308,18 +308,33 @@ button.chess-sq {
 .next-knight {
   display: grid;
   place-items: center;
-  width: 1.75rem;
-  height: 1.75rem;
-  padding: 0.2rem;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
+  position: relative;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: calc((1.75rem - 44px) / 2);
+  padding: 0;
+  border: 0;
   background: transparent;
   color: var(--muted);
 }
 
+.next-knight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: auto;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+
 .next-knight svg {
-  width: 100%;
-  height: 100%;
+  position: relative;
+  width: calc(1.75rem - 0.4rem - 2px);
+  height: calc(1.75rem - 0.4rem - 2px);
   fill: currentColor;
 }
 
