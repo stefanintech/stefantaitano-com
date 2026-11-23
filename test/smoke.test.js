@@ -53,6 +53,11 @@ const isFile = file => {
   }
 };
 
+const fileForRoute = route => {
+  if (route === '/') return path.join(DIST, 'index.html');
+  return path.join(DIST, route.replace(/^\/+|\/+$/g, ''), 'index.html');
+};
+
 /** A site path is built when it maps to a file Eleventy wrote. */
 const builtFile = pathname => {
   let rel;
@@ -399,21 +404,27 @@ describe('crew section', () => {
     assert.ok(learning > crewAt, 'crew is not before What I\'m learning');
   });
 
-  it('loads the avatar scripts deferred, from self, on /ai only', () => {
+  it('loads the avatar scripts deferred, from self, on /ai and the /next-2027/ preview home only', () => {
     const scriptTags = html => [...html.matchAll(/<script\b[^>]*>/gi)].map(match => match[0]);
     const vendor = /src="\/assets\/scripts\/vendor\/open-bot-avatar\.js"/;
     const page = /src="\/assets\/scripts\/components\/crew\.js"/;
+    const avatarPages = ['/ai/', '/next-2027/'];
 
-    const onAi = scriptTags(aiHtml());
-    for (const re of [vendor, page]) {
-      const tag = onAi.find(tagHtml => re.test(tagHtml));
-      assert.ok(tag, `/ai/ does not load ${re}`);
-      assert.match(tag, /\sdefer\b/, `${tag} is not deferred`);
+    for (const route of avatarPages) {
+      const tags = scriptTags(readFileSync(fileForRoute(route), 'utf8'));
+      for (const re of [vendor, page]) {
+        const tag = tags.find(tagHtml => re.test(tagHtml));
+        assert.ok(tag, `${route} does not load ${re}`);
+        assert.match(tag, /\sdefer\b/, `${tag} is not deferred`);
+      }
+      assert.ok(
+        tags.findIndex(tag => vendor.test(tag)) < tags.findIndex(tag => page.test(tag)),
+        `${route}: crew.js loads before the vendored script`
+      );
     }
-    assert.ok(onAi.findIndex(tag => vendor.test(tag)) < onAi.findIndex(tag => page.test(tag)), 'crew.js loads before the vendored script');
 
     const elsewhere = htmlFiles()
-      .filter(file => urlForFile(file) !== '/ai/')
+      .filter(file => !avatarPages.includes(urlForFile(file)))
       .filter(file => /open-bot-avatar|scripts\/components\/crew\.js/.test(readFileSync(file, 'utf8')))
       .map(urlForFile);
     assert.deepEqual(elsewhere, []);
@@ -421,6 +432,97 @@ describe('crew section', () => {
     assert.ok(isFile(path.join(DIST, 'assets/scripts/vendor/open-bot-avatar.js')), 'vendored script was not copied');
     assert.ok(isFile(path.join(DIST, 'assets/scripts/vendor/open-bot-avatar.LICENSE')), 'vendored license was not copied');
     assert.ok(isFile(path.join(DIST, 'assets/scripts/components/crew.js')), 'crew.js was not built');
+  });
+});
+
+describe('2027 preview mockup', () => {
+  const boardPath = path.join(ROOT, 'src/_data/next2027Board.json');
+  const boardTemplate = path.join(ROOT, 'src/_includes/next-2027/crew-board.njk');
+  const previewRoutes = ['/next-2027/', '/next-2027/now/', '/next-2027/now/archive/'];
+
+  const postcardCard = html => {
+    const match = html.match(/<li\b[^>]*\bdata-crew-card="postcard"[^>]*>[\s\S]*?<\/li>/);
+    assert.ok(match, 'preview home has no postcard card');
+    return match[0];
+  };
+
+  it('keeps postcard to a fixed line with no time in the sample file or the template', () => {
+    const board = JSON.parse(readFileSync(boardPath, 'utf8'));
+    assert.equal(board.source, 'sample');
+    assert.deepEqual(
+      board.members.map(member => member.slug),
+      ['bolt', 'inky', 'postcard', 'imogen', 'captain']
+    );
+
+    for (const member of board.members) {
+      if (member.slug === 'postcard') {
+        assert.deepEqual(Object.keys(member).sort(), ['line', 'slug']);
+        assert.equal(member.line, 'check-ins post a day later');
+      } else {
+        assert.deepEqual(Object.keys(member).sort(), ['doing', 'lastJobAt', 'lastJobLabel', 'slug']);
+        assert.doesNotMatch(`${member.doing} ${member.lastJobLabel}`, /mail|calendar|inbox|finance/i);
+      }
+    }
+
+    const template = readFileSync(boardTemplate, 'utf8');
+    const start = template.indexOf("card.slug == 'postcard'");
+    const branch = template.slice(start, template.indexOf('{%- else %}', start));
+    assert.ok(start > -1, 'postcard branch missing');
+    assert.match(branch, /check-ins post a day later/);
+    assert.doesNotMatch(branch, /lastJob|<time|doing/);
+  });
+
+  it('renders the preview pages with noindex, a sample board, and postcard without a time', () => {
+    const home = readFileSync(fileForRoute('/next-2027/'), 'utf8');
+    const now = readFileSync(fileForRoute('/next-2027/now/'), 'utf8');
+    const archive = readFileSync(fileForRoute('/next-2027/now/archive/'), 'utf8');
+
+    for (const html of [home, now, archive]) {
+      assert.match(html, /name="robots" content="noindex, nofollow"/);
+      assert.match(html, /Preview mockup\. Not the live site\./);
+      assert.match(html, /<summary>More<\/summary>/);
+      assert.match(html, /href="\/resume\/"/);
+      assert.match(html, /href="\/feed\.xml"/);
+      assert.match(html, /href="\/feed\.json"/);
+      assert.match(html, /href="\/privacy\/"/);
+      assert.match(html, /href="\/accessibility\/"/);
+      assert.match(html, /href="\/colophon\/"/);
+    }
+
+    assert.match(home, /placeholder copy, inky to write/);
+    assert.match(home, /class="next-hello__move"/);
+    assert.match(home, /Heading to Chiang Mai in early 2027\./);
+    assert.match(home, /Sample data/);
+    assert.match(home, /<a href="\/">Everything else<\/a>/);
+    assert.equal([...home.matchAll(/class="rasa-card rasa-card--/g)].length, 5);
+
+    const card = postcardCard(home);
+    assert.match(card, /check-ins post a day later/);
+    assert.doesNotMatch(card, /<time\b|Last job|lastJob|\d{4}-\d{2}-\d{2}/);
+    assert.equal([...home.matchAll(/data-crew-card="/g)].length, 5);
+
+    assert.match(now, /placeholder copy, inky to write/);
+    for (const heading of ['Work', 'Learning', 'The move', 'Running', 'Building']) {
+      assert.match(now, new RegExp(`<h2\\b[^>]*>${heading}</h2>`));
+    }
+    assert.match(now, /Placeholder\./);
+    assert.match(now, /href="\/next-2027\/now\/archive\/"/);
+
+    const entries = readdirSync(path.join(ROOT, 'src/now-entries')).filter(name => name.endsWith('.md'));
+    assert.equal([...archive.matchAll(/href="\/now\/#now-/g)].length, entries.length);
+  });
+
+  it('stays out of the sitemap, the feeds, and every live page', () => {
+    for (const name of ['sitemap.xml', 'feed.xml', 'feed.json']) {
+      const text = readFileSync(path.join(DIST, name), 'utf8');
+      assert.equal(text.includes('next-2027'), false, `${name} lists the preview`);
+    }
+
+    const leaks = htmlFiles()
+      .filter(file => !previewRoutes.includes(urlForFile(file)))
+      .filter(file => readFileSync(file, 'utf8').includes('/next-2027/'))
+      .map(urlForFile);
+    assert.deepEqual(leaks, []);
   });
 });
 

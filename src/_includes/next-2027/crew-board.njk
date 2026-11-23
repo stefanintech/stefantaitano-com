@@ -1,0 +1,32 @@
+{# Sample crew board for the /next-2027/ home mockup.
+   Names and avatars come from crew.yaml. Activity comes from next2027Board.
+   Postcard is a fixed line only. Do not print a doing line or a time for that card. #}
+<section class="next-board" id="crew-board" aria-labelledby="next-board-title">
+  <div class="next-board__head">
+    <h2 id="next-board-title">The crew</h2>
+    <p class="next-board__tag">Sample data</p>
+  </div>
+  <ul class="next-board__grid" role="list">
+    {%- for card in next2027Crew.members %}
+      <li class="next-board__card" data-crew-card="{{ card.slug }}">
+        <div
+          class="next-board__avatar"
+          data-crew-avatar="{{ card.avatar | dump }}"
+          data-state="{{ card.state }}"
+          data-mood="{{ card.mood }}"
+          hidden
+        ></div>
+        <h3 class="next-board__name">{{ card.name }}</h3>
+        {%- if card.slug == 'postcard' %}
+          <p class="next-board__line">check-ins post a day later</p>
+        {%- else %}
+          <p class="next-board__doing">{{ card.doing }}</p>
+          <p class="next-board__when">
+            Last job
+            <time datetime="{{ card.lastJobAt }}">{{ card.lastJobLabel }}</time>
+          </p>
+        {%- endif %}
+      </li>
+    {%- endfor %}
+  </ul>
+</section>

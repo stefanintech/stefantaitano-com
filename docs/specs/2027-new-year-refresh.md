@@ -24,12 +24,12 @@ Mock, and labeled on the page:
 
 Real, read from the site as it is:
 
-- Bot names, jobs are not shown, and avatar drawings from `src/_data/crew.yaml`, mounted with the vendored Open Bot Avatar script.
+- Bot names and avatar drawings from `src/_data/crew.yaml`, mounted with the vendored Open Bot Avatar script. The job line from `/ai` is not repeated on these cards.
 - The latest items, from `collections.homeStream` (posts, published check-ins, and `/now` entries).
 - The archive list, one link per existing `/now` entry, pointing at `/now/#…`.
 - Footer links to pages that already exist (resume, both feeds, privacy, accessibility, colophon, posts, check-ins).
 
-The board JSON is a flat list of `{slug, doing, lastJobAt, lastJobLabel}` plus postcard as `{slug, line}` only. A later phase can replace that file with a privacy-safe JSON feed. Mail, calendar, finance, and personal contents stay out of it. Postcard stays the fixed line.
+The board JSON is a flat list of `{slug, doing, lastJobAt, lastJobLabel}` plus postcard as `{slug, line}` only. `src/_data/next2027Crew.js` joins that file to `crew.yaml` for the page. Postcard's joined card has no time fields. A later phase can replace the JSON with a privacy-safe feed. Mail, calendar, finance, and personal contents stay out of it. Postcard stays the fixed line.
 
 ## Kept off the live site
 
