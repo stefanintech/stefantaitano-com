@@ -3,29 +3,42 @@
    Dark values use the same two hooks as site.css, so a toggle and the system theme both repaint. */
 
 :root {
-  --crew-bolt: #ea580c;
-  --crew-inky: #c45c4a;
-  --crew-postcard: #4d7c0f;
-  --crew-imogen: #db2777;
-  --crew-captain: #a16207;
+  --crew-bolt: #efbf9f;
+  --crew-inky: #c9ace2;
+  --crew-postcard: #afdecd;
+  --crew-imogen: #f0b3cc;
+  --crew-captain: #a9d2ec;
+  --crew-bolt-edge: #ba6b36;
+  --crew-inky-edge: #9f65d2;
+  --crew-postcard-edge: #2a8f6a;
+  --crew-imogen-edge: #cd548d;
+  --crew-captain-edge: #3486b5;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --crew-bolt: #fdba74;
-    --crew-inky: #f7b7a3;
-    --crew-postcard: #c9d48a;
-    --crew-imogen: #f9a8d4;
-    --crew-captain: #f6d27a;
+    --crew-bolt: #f3c6a6;
+    --crew-inky: #d4b6ea;
+    --crew-postcard: #c4eadc;
+    --crew-imogen: #f3bdd4;
+    --crew-captain: #b7daf0;
+  }
+
+  :root:not([data-theme='light']) .next-board [data-crew-avatar] canvas {
+    filter: none;
   }
 }
 
 :root[data-theme='dark'] {
-  --crew-bolt: #fdba74;
-  --crew-inky: #f7b7a3;
-  --crew-postcard: #c9d48a;
-  --crew-imogen: #f9a8d4;
-  --crew-captain: #f6d27a;
+  --crew-bolt: #f3c6a6;
+  --crew-inky: #d4b6ea;
+  --crew-postcard: #c4eadc;
+  --crew-imogen: #f3bdd4;
+  --crew-captain: #b7daf0;
+}
+
+:root[data-theme='dark'] .next-board [data-crew-avatar] canvas {
+  filter: none;
 }
 
 .next-preview {
@@ -86,24 +99,37 @@
   background: var(--card);
 }
 
+.next-board [data-crew-avatar] canvas {
+  filter:
+    drop-shadow(1px 0 0 var(--crew-edge))
+    drop-shadow(-1px 0 0 var(--crew-edge))
+    drop-shadow(0 1px 0 var(--crew-edge))
+    drop-shadow(0 -1px 0 var(--crew-edge));
+}
+
 .next-board [data-crew-card='bolt'] [data-crew-avatar] {
   color: var(--crew-bolt);
+  --crew-edge: var(--crew-bolt-edge);
 }
 
 .next-board [data-crew-card='inky'] [data-crew-avatar] {
   color: var(--crew-inky);
+  --crew-edge: var(--crew-inky-edge);
 }
 
 .next-board [data-crew-card='postcard'] [data-crew-avatar] {
   color: var(--crew-postcard);
+  --crew-edge: var(--crew-postcard-edge);
 }
 
 .next-board [data-crew-card='imogen'] [data-crew-avatar] {
   color: var(--crew-imogen);
+  --crew-edge: var(--crew-imogen-edge);
 }
 
 .next-board [data-crew-card='captain'] [data-crew-avatar] {
   color: var(--crew-captain);
+  --crew-edge: var(--crew-captain-edge);
 }
 
 .next-board__avatar {

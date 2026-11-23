@@ -464,9 +464,14 @@ describe('crew section', () => {
     const light = props(block(css, /:root \{\s*([^}]*--crew-bolt:[^}]*)\}/));
     const systemDark = props(block(css, /:root:not\(\[data-theme='light'\]\) \{\s*([^}]*)\}/));
     const explicitDark = props(block(css, /:root\[data-theme='dark'\] \{\s*([^}]*)\}/));
+    const edges = Object.fromEntries(
+      [...css.matchAll(/--crew-([a-z]+)-edge:\s*(#[0-9a-f]{6})/g)].map(([, slug, hex]) => [slug, hex])
+    );
     assert.deepEqual(Object.keys(light), slugs);
+    assert.deepEqual(Object.keys(edges), slugs);
     assert.deepEqual(systemDark, explicitDark);
     assert.equal(new Set(Object.values(light)).size, slugs.length);
+    assert.equal(new Set(Object.values(edges)).size, slugs.length);
     assert.equal(new Set(Object.values(explicitDark)).size, slugs.length);
     for (const slug of slugs) assert.notEqual(light[slug], explicitDark[slug], `${slug} does not change with the theme`);
 
@@ -485,12 +490,41 @@ describe('crew section', () => {
       const [lighter, darker] = [luminance(a), luminance(b)].sort((left, right) => right - left);
       return (lighter + 0.05) / (darker + 0.05);
     };
+    const hue = hex => {
+      const number = parseInt(hex.slice(1), 16);
+      const red = (number >> 16) / 255;
+      const green = ((number >> 8) & 255) / 255;
+      const blue = (number & 255) / 255;
+      const max = Math.max(red, green, blue);
+      const min = Math.min(red, green, blue);
+      const delta = max - min;
+      if (delta === 0) return 0;
+      const sector = max === red ? ((green - blue) / delta) % 6
+        : max === green ? (blue - red) / delta + 2
+          : (red - green) / delta + 4;
+      return (sector * 60 + 360) % 360;
+    };
+    const apart = (left, right) => {
+      const gap = Math.abs(hue(left) - hue(right));
+      return Math.min(gap, 360 - gap);
+    };
+    for (let index = 0; index < slugs.length; index += 1) {
+      for (let other = index + 1; other < slugs.length; other += 1) {
+        assert.ok(apart(light[slugs[index]], light[slugs[other]]) >= 40, `${slugs[index]} and ${slugs[other]} are too close in hue`);
+      }
+    }
+    assert.match(css, /\.next-board \[data-crew-avatar\] canvas \{\s*filter:\s*drop-shadow\(1px 0 0 var\(--crew-edge\)\)/);
+    assert.match(css, /:root:not\(\[data-theme='light'\]\) \.next-board \[data-crew-avatar\] canvas \{\s*filter: none;/);
+    assert.match(css, /:root\[data-theme='dark'\] \.next-board \[data-crew-avatar\] canvas \{\s*filter: none;/);
     for (const slug of slugs) {
-      assert.ok(contrast(light[slug], cardLight) >= 3, `${slug} light is under 3:1 on the card`);
+      assert.ok(contrast(edges[slug], cardLight) >= 3, `${slug} light outline is under 3:1 on the card`);
       assert.ok(contrast(explicitDark[slug], cardDark) >= 3, `${slug} dark is under 3:1 on the card`);
       assert.ok(contrast(light[slug], eye) >= 3, `${slug} light hides the eyes`);
       assert.ok(contrast(explicitDark[slug], eye) >= 3, `${slug} dark hides the eyes`);
+      assert.ok(apart(light[slug], edges[slug]) <= 15, `${slug} outline is not its own hue`);
+      assert.match(css, new RegExp(`\\[data-crew-card='${slug}'\\] \\[data-crew-avatar\\] \\{[^}]*--crew-edge: var\\(--crew-${slug}-edge\\)`));
       assert.match(home, new RegExp(`--crew-${slug}:${light[slug]}`));
+      assert.match(home, new RegExp(`--crew-${slug}-edge:${edges[slug]}`));
       assert.match(home, new RegExp(`--crew-${slug}:${explicitDark[slug]}`));
     }
 
