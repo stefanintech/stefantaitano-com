@@ -492,7 +492,7 @@ describe('2027 preview mockup', () => {
 
     assert.doesNotMatch(home, /placeholder copy, inky to write/);
     assert.doesNotMatch(home, /next-hello__move/);
-    assert.match(home, /Hello friend, I(?:'|&#39;)m Stefan <span aria-hidden="true">👋🏽<\/span>\. I write software, play too much World of Warcraft, and I(?:'|&#39;)ll probably lose to you at chess\. Do you like any of that\? Let(?:'|&#39;)s be friends!/);
+    assert.match(home, /Hello friend, I(?:'|&#39;)m Stefan <span aria-hidden="true">👋🏽<\/span>\. I write software, play too much Deadlock, and I(?:'|&#39;)ll probably lose to you at chess\. Do you like any of that\? Let(?:'|&#39;)s be friends!/);
     assert.doesNotMatch(home, /Here(?:'|&#39;)s the latest/);
     assert.match(home, /Sample data/);
     assert.match(home, /Nov 22, 2026, 4:40 PM CT/);
@@ -516,7 +516,7 @@ describe('2027 preview mockup', () => {
     assert.match(now, /Working through the Linux course on Boot\.dev\./);
     assert.match(now, /I ran my first 10K on Oct 31 in 58:30\./);
     assert.match(now, /This site, and the crew of bots that helps me run it\./);
-    assert.match(now, /WoW Forever\./);
+    assert.match(now, /Deadlock\. I(?:'|&#39;)m also playing WoW Forever and Football Manager 2027, and rewatching Ted Lasso\./);
     assert.match(now, /href="\/next-2027\/now\/archive\/"/);
 
     const entries = readdirSync(path.join(ROOT, 'src/now-entries')).filter(name => name.endsWith('.md'));
