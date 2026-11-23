@@ -492,7 +492,7 @@ describe('2027 preview mockup', () => {
 
     assert.doesNotMatch(home, /placeholder copy, inky to write/);
     assert.doesNotMatch(home, /next-hello__move/);
-    assert.match(home, /Hello friend, I(?:'|&#39;)m Stefan <span aria-hidden="true">👋🏽<\/span>\. I write software, I(?:'|&#39;)m a dad, and I(?:'|&#39;)m probably learning something new right now\. Do you like World of Warcraft or chess\? Let(?:'|&#39;)s be friends!/);
+    assert.match(home, /Hello friend, I(?:'|&#39;)m Stefan <span aria-hidden="true">👋🏽<\/span>\. I write software, play too much World of Warcraft, and I(?:'|&#39;)ll probably lose to you at chess\. Do you like any of that\? Let(?:'|&#39;)s be friends!/);
     assert.doesNotMatch(home, /Here(?:'|&#39;)s the latest/);
     assert.match(home, /Sample data/);
     assert.match(home, /Nov 22, 2026, 4:40 PM CT/);
