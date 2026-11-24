@@ -109,11 +109,10 @@ learning:
 
 experiments:
   intro: >
-    Before Muse, I used Grok Bot for a few projects. They're paused, but they
-    shaped what I want from personal AI now. I've since stopped using Muse too.
-    These days my own assistant, Hermes, runs on a small cloud server next to
-    n8n, with nightly backups and a watchdog that pings my phone if anything
-    breaks.
+    I started with a few Grok Bot projects. They're paused now, but they shaped
+    what I want from personal AI. The crew above still runs on Grok Bot, and my
+    own assistant, Hermes, runs on a small cloud server next to n8n, with
+    nightly backups and a watchdog that pings my phone if anything breaks.
   items:
     - name: Ms. Frizzle / Mr. Frizzle
       note: home assistant
