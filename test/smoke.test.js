@@ -404,11 +404,11 @@ describe('crew section', () => {
     assert.ok(learning > crewAt, 'crew is not before What I\'m learning');
   });
 
-  it('loads the avatar scripts deferred, from self, on /ai and the home page only', () => {
+  it('loads the avatar scripts deferred, from self, on /ai only', () => {
     const scriptTags = html => [...html.matchAll(/<script\b[^>]*>/gi)].map(match => match[0]);
     const vendor = /src="\/assets\/scripts\/vendor\/open-bot-avatar\.js"/;
     const page = /src="\/assets\/scripts\/components\/crew-v2\.js"/;
-    const avatarPages = ['/ai/', '/'];
+    const avatarPages = ['/ai/'];
 
     for (const route of avatarPages) {
       const tags = scriptTags(readFileSync(fileForRoute(route), 'utf8'));
@@ -422,6 +422,8 @@ describe('crew section', () => {
         `${route}: crew-v2.js loads before the vendored script`
       );
     }
+
+    assert.doesNotMatch(readFileSync(fileForRoute('/'), 'utf8'), /open-bot-avatar|scripts\/components\/crew-v2\.js/);
 
     const elsewhere = htmlFiles()
       .filter(file => !avatarPages.includes(urlForFile(file)))
@@ -438,20 +440,15 @@ describe('crew section', () => {
     }
   });
 
-  it('gives the home crew five colors and leaves /ai on the accent', () => {
+  it('keeps five crew colors in the board stylesheet and leaves them off / and /ai', () => {
     const slugs = ['bolt', 'inky', 'postcard', 'imogen', 'captain'];
     const home = readFileSync(fileForRoute('/'), 'utf8');
-    const cards = [...home.matchAll(/<li\b[^>]*\bdata-crew-card="([^"]+)"[^>]*>([\s\S]*?)<\/li>/g)];
-    assert.deepEqual(cards.map(card => card[1]), slugs);
-    const colors = cards.map(card => {
-      const color = card[2].match(/data-crew-color="([^"]+)"/);
-      assert.ok(color, `${card[1]} has no crew color`);
-      return color[1];
-    });
-    assert.deepEqual(colors, slugs.map(slug => `var(--crew-${slug})`));
-    assert.equal(new Set(colors).size, slugs.length);
+    const template = readFileSync(path.join(ROOT, 'src/_includes/next-2027/crew-board.njk'), 'utf8');
+    assert.match(template, /data-crew-card="\{\{ card\.slug \}\}"/);
+    assert.match(template, /data-crew-color="var\(--crew-\{\{ card\.slug \}\}\)"/);
+    assert.doesNotMatch(home, /id="crew-board"|Sample data|data-crew-card|--crew-bolt/);
 
-    const css = readFileSync(path.join(ROOT, 'src/assets/css/rasa/next-2027.css'), 'utf8');
+    const css = readFileSync(path.join(ROOT, 'src/assets/css/rasa/next-2027-board.css'), 'utf8');
     const site = readFileSync(path.join(ROOT, 'src/assets/css/rasa/site.css'), 'utf8');
     const block = (source, pattern) => {
       const match = source.match(pattern);
@@ -523,10 +520,8 @@ describe('crew section', () => {
       assert.ok(contrast(explicitDark[slug], eye) >= 3, `${slug} dark hides the eyes`);
       assert.ok(apart(light[slug], edges[slug]) <= 15, `${slug} outline is not its own hue`);
       assert.match(css, new RegExp(`\\[data-crew-card='${slug}'\\] \\[data-crew-avatar\\] \\{[^}]*--crew-edge: var\\(--crew-${slug}-edge\\)`));
-      assert.match(home, new RegExp(`--crew-${slug}:${light[slug]}`));
-      assert.match(home, new RegExp(`--crew-${slug}-edge:${edges[slug]}`));
-      assert.match(home, new RegExp(`--crew-${slug}:${explicitDark[slug]}`));
     }
+    assert.doesNotMatch(readFileSync(path.join(ROOT, 'src/assets/css/rasa/next-2027.css'), 'utf8'), /--crew-|\\.next-board/);
 
     const ai = aiHtml();
     assert.doesNotMatch(ai, /data-crew-color|--crew-bolt/);
@@ -541,12 +536,6 @@ describe('2027 home', () => {
   const boardTemplate = path.join(ROOT, 'src/_includes/next-2027/crew-board.njk');
   const liveRoutes = ['/', '/now/', '/now/archive/'];
   const h1s = html => [...html.matchAll(/<h1\b[^>]*>[\s\S]*?<\/h1>/gi)].map(match => match[0]);
-
-  const postcardCard = html => {
-    const match = html.match(/<li\b[^>]*\bdata-crew-card="postcard"[^>]*>[\s\S]*?<\/li>/);
-    assert.ok(match, 'preview home has no postcard card');
-    return match[0];
-  };
 
   it('keeps postcard to a fixed line with no time in the sample file or the template', () => {
     const board = JSON.parse(readFileSync(boardPath, 'utf8'));
@@ -575,7 +564,7 @@ describe('2027 home', () => {
     assert.doesNotMatch(branch, /lastJob|<time|doing/);
   });
 
-  it('renders the live pages with one h1, indexable meta, a sample board, and postcard without a time', () => {
+  it('renders the live pages with one h1 and indexable meta, and leaves the sample board off the home page', () => {
     const home = readFileSync(fileForRoute('/'), 'utf8');
     const now = readFileSync(fileForRoute('/now/'), 'utf8');
     const archive = readFileSync(fileForRoute('/now/archive/'), 'utf8');
@@ -608,8 +597,13 @@ describe('2027 home', () => {
     assert.match(home, /I write Field Notes, a short email on the first Monday of every month about what I(?:'|&#39;)m building, playing, and learning\./);
     const helloAt = home.indexOf('Hello friend');
     const notesAt = home.indexOf('I write Field Notes');
+    const streamAt = home.indexOf('class="rasa-stream"');
+    const restAt = home.indexOf('Everything else:');
     const cardAt = home.indexOf('class="next-lichess"');
-    assert.ok(helloAt > -1 && helloAt < notesAt && notesAt < cardAt, 'Field Notes is not between the hello and the Lichess card');
+    assert.ok(
+      helloAt > -1 && helloAt < notesAt && notesAt < streamAt && streamAt < restAt && restAt < cardAt,
+      'latest work is not between Field Notes and the Lichess card'
+    );
     const fieldNotes = [...home.matchAll(/<a\b[^>]*>[\s\S]*?<\/a>/g)]
       .map(match => match[0])
       .filter(tag => tag.includes('https://buttondown.com/stefantaitano'));
@@ -625,18 +619,10 @@ describe('2027 home', () => {
       assert.match(footerLink, /rel="noopener"/);
     }
     assert.doesNotMatch(home, /Here(?:'|&#39;)s the latest/);
-    assert.match(home, /Sample data/);
-    assert.match(home, /Nov 22, 2026, 4:40 PM CT/);
-    const boardHtml = home.match(/<section\b[^>]*\bid="crew-board"[\s\S]*?<\/section>/);
-    assert.ok(boardHtml, 'preview home has no crew board');
-    assert.doesNotMatch(boardHtml[0], /UTC/);
+    assert.doesNotMatch(home, /Sample data|id="crew-board"|data-crew-card|Nov 22, 2026, 4:40 PM CT/);
+    assert.doesNotMatch(readFileSync(path.join(ROOT, 'src/_layouts/next-2027.njk'), 'utf8'), /next-2027-board/);
     assert.match(home, /Everything else: <a href="\/articles\/">Posts<\/a>, <a href="\/checkins\/">Check-ins<\/a>, and <a href="\/now\/">Now<\/a>\./);
     assert.equal([...home.matchAll(/class="rasa-card rasa-card--/g)].length, 5);
-
-    const card = postcardCard(home);
-    assert.match(card, /check-ins post a day later/);
-    assert.doesNotMatch(card, /<time\b|Last job|lastJob|\d{4}-\d{2}-\d{2}/);
-    assert.equal([...home.matchAll(/data-crew-card="/g)].length, 5);
 
     assert.doesNotMatch(now, /placeholder copy, inky to write/);
     assert.doesNotMatch(now, /The move|Placeholder\./);
@@ -730,6 +716,11 @@ describe('2027 home', () => {
     assert.ok(card[0].includes(chess.result), 'Lichess card has no result');
     assert.ok(card[0].includes(chess.white) && card[0].includes(chess.black));
     assert.equal([...card[0].matchAll(/class="chess-sq /g)].length, 64);
+    const cardCss = readFileSync(path.join(ROOT, 'src/assets/css/rasa/next-2027.css'), 'utf8');
+    assert.match(cardCss, /\.next-lichess \{[^}]*grid-template-columns:\s*7\.25rem/);
+    assert.match(cardCss, /\.chess-grid \{[^}]*width:\s*7\.25rem/);
+    assert.match(cardCss, /\.next-lichess__players,\s*\.next-lichess__result \{[^}]*font-size:\s*1\.5rem/);
+    assert.doesNotMatch(cardCss, /8\.5rem|font-size:\s*1\.75rem/);
 
     const dialog = home.match(/<dialog\b[\s\S]*?<\/dialog>/);
     assert.ok(dialog, 'preview home has no puzzle dialog');
